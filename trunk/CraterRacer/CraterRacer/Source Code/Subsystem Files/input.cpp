@@ -2,8 +2,8 @@
 
 Input::Input() 
 {
-	inputs[0] = false;
-	inputs[1] = false;
-	inputs[2] = false;
-	inputs[3] = false;
+	inputs[Arrow::LEFT] = false;
+	inputs[Arrow::UP] = false;
+	inputs[Arrow::RIGHT] = false;
+	inputs[Arrow::DOWN] = false;
 }

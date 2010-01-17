@@ -5,6 +5,8 @@
 class Input
 {
 public:
+	enum Arrow { LEFT, UP, RIGHT, DOWN };
+
 	Input(void);
 
 private:
