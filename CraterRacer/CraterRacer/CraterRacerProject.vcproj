@@ -588,10 +588,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\input.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\Source Code\Entity Files\meteor.cpp"
 					>
 				</File>
@@ -621,10 +617,6 @@
 				</File>
 				<File
 					RelativePath=".\Source Code\Entity Files\entity.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Source Code\Entity Files\input.h"
 					>
 				</File>
 				<File
@@ -672,6 +664,14 @@
 		<Filter
 			Name="SubSystem Files"
 			>
+			<File
+				RelativePath=".\Source Code\Subsystem Files\input.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source Code\Subsystem Files\input.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Source Code\Subsystem Files\Renderable.cpp"
 				>

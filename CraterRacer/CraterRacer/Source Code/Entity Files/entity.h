@@ -17,7 +17,8 @@ class Entity {
 
 		virtual void update(void);
 
-private:
+protected: 
+		//just inheriting classes can access these
 		Renderable renderable;
 		Vec3	   position;
 
