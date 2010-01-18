@@ -14,7 +14,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 #endif
 
 
-	RacerApp* pApp = new RacerApp;
+	RacerApp* pApp = new RacerApp();
 
     // Set the callback functions
 	DXUTSetCallbackD3D9DeviceCreated( RacerApp::OnCreateDevice );
@@ -35,6 +35,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
     DXUTSetCursorSettings( true, true );		// Show the cursor and clip it when in full screen
     DXUTCreateWindow( L"Crater Racer" );
     DXUTCreateDevice( true, 640, 480 );
+	DXUTToggleFullScreen();
 
     // Start the render loop
 	//gameLoop();
@@ -42,5 +43,5 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 
 	delete pApp;
 
-    return pApp->GetExitCode();	
+    return 0;	
 }

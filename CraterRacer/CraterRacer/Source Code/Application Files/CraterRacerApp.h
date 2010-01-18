@@ -22,6 +22,7 @@ public:
 	//Public Interface----------------------------------------
 
 	RacerApp();
+	~RacerApp();
 
 
 	// WIN32 Functions ----------------------------------------
