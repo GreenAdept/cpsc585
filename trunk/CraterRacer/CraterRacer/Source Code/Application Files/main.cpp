@@ -24,7 +24,9 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
     DXUTSetCallbackD3D9DeviceLost( RacerApp::OnLostDevice );
 	DXUTSetCallbackD3D9FrameRender( RacerApp::OnRender );
 	DXUTSetCallbackFrameMove( RacerApp::OnUpdateGame );
-	//DXUTSetCallbackKeyboard( KeyboardProc );
+	DXUTSetCallbackKeyboard( RacerApp::OnKeyboard );
+	DXUTSetCallbackDeviceChanging( RacerApp::ModifyDeviceSettings );
+	DXUTSetCallbackD3D9DeviceAcceptable( RacerApp::IsD3D9DeviceAcceptable );
 
     // TODO: Perform any application-level initialization here
 
@@ -35,7 +37,6 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
     DXUTSetCursorSettings( true, true );		// Show the cursor and clip it when in full screen
     DXUTCreateWindow( L"Crater Racer" );
     DXUTCreateDevice( true, 640, 480 );
-	DXUTToggleFullScreen();
 
     // Start the render loop
 	//gameLoop();

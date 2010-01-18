@@ -72,7 +72,7 @@
 				Name="VCLinkerTool"
 				UseLibraryDependencyInputs="true"
 				AdditionalOptions="/IGNORE:4089"
-				AdditionalDependencies="dxerr.lib dxguid.lib d3dx9d.lib d3d9.lib d3dx10d.lib  DXUT.lib DXUTopt.lib winmm.lib comctl32.lib NxCharacter.lib NxCooking.lib PhysXLoader.lib"
+				AdditionalDependencies="dxerr.lib dxguid.lib d3dx9d.lib d3d9.lib d3dx10d.lib DXUT.lib DXUTopt.lib winmm.lib comctl32.lib NxCharacter.lib NxCooking.lib PhysXLoader.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="PhysX\Lib;DXUT\Optional\Debug;DXUT\Core\Debug;DirectX\Lib"
 				GenerateManifest="true"
@@ -689,6 +689,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\Constants.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

@@ -12,6 +12,7 @@
 
 #include "d3d10.h"
 
+
 //---------------------------------------------------------------------------
 // D3D10_TX_VERSION:
 // --------------
@@ -97,6 +98,7 @@
 #define D3D10_SHADER_ENABLE_STRICTNESS              (1 << 11)
 #define D3D10_SHADER_ENABLE_BACKWARDS_COMPATIBILITY (1 << 12)
 #define D3D10_SHADER_IEEE_STRICTNESS                (1 << 13)
+#define D3D10_SHADER_WARNINGS_ARE_ERRORS            (1 << 18)
 
 
 // optimization level flags
@@ -136,6 +138,9 @@ typedef enum _D3D10_SHADER_VARIABLE_CLASS
     D3D10_SVC_MATRIX_COLUMNS,
     D3D10_SVC_OBJECT,
     D3D10_SVC_STRUCT,
+    
+    D3D11_SVC_INTERFACE_CLASS,
+    D3D11_SVC_INTERFACE_POINTER,
 
     // force 32-bit size enum
     D3D10_SVC_FORCE_DWORD = 0x7fffffff
@@ -146,6 +151,9 @@ typedef enum _D3D10_SHADER_VARIABLE_FLAGS
 {
     D3D10_SVF_USERPACKED = 1,
     D3D10_SVF_USED       = 2,
+
+    D3D11_SVF_INTERFACE_POINTER = 4,
+    D3D11_SVF_INTERFACE_PARAMETER = 8,
 
     // force 32-bit size enum
     D3D10_SVF_FORCE_DWORD = 0x7fffffff
@@ -189,6 +197,28 @@ typedef enum _D3D10_SHADER_VARIABLE_TYPE
 
     D3D10_SVT_TEXTURECUBEARRAY = 34,
 
+    D3D11_SVT_HULLSHADER = 35,
+    D3D11_SVT_DOMAINSHADER = 36,
+
+    D3D11_SVT_INTERFACE_POINTER = 37,
+    D3D11_SVT_COMPUTESHADER = 38,
+
+    D3D11_SVT_DOUBLE = 39,
+    
+    D3D11_SVT_RWTEXTURE1D,
+    D3D11_SVT_RWTEXTURE1DARRAY,
+    D3D11_SVT_RWTEXTURE2D,
+    D3D11_SVT_RWTEXTURE2DARRAY,
+    D3D11_SVT_RWTEXTURE3D,
+    D3D11_SVT_RWBUFFER,
+
+    D3D11_SVT_BYTEADDRESS_BUFFER,
+    D3D11_SVT_RWBYTEADDRESS_BUFFER,
+    D3D11_SVT_STRUCTURED_BUFFER,
+    D3D11_SVT_RWSTRUCTURED_BUFFER,
+    D3D11_SVT_APPEND_STRUCTURED_BUFFER,
+    D3D11_SVT_CONSUME_STRUCTURED_BUFFER,
+
     // force 32-bit size enum
     D3D10_SVT_FORCE_DWORD = 0x7fffffff
 
@@ -215,6 +245,14 @@ typedef enum _D3D10_SHADER_INPUT_TYPE
     D3D10_SIT_TBUFFER,
     D3D10_SIT_TEXTURE,
     D3D10_SIT_SAMPLER,
+    D3D11_SIT_UAV_RWTYPED,
+    D3D11_SIT_STRUCTURED,
+    D3D11_SIT_UAV_RWSTRUCTURED,
+    D3D11_SIT_BYTEADDRESS,
+    D3D11_SIT_UAV_RWBYTEADDRESS,
+    D3D11_SIT_UAV_APPEND_STRUCTURED,
+    D3D11_SIT_UAV_CONSUME_STRUCTURED,
+    D3D11_SIT_UAV_RWSTRUCTURED_WITH_COUNTER,
 } D3D10_SHADER_INPUT_TYPE, *LPD3D10_SHADER_INPUT_TYPE;
 
 typedef enum _D3D10_SHADER_CBUFFER_FLAGS
@@ -246,11 +284,20 @@ typedef enum D3D10_NAME
     D3D10_NAME_INSTANCE_ID = 8,
     D3D10_NAME_IS_FRONT_FACE = 9,
     D3D10_NAME_SAMPLE_INDEX = 10,
+    D3D11_NAME_FINAL_QUAD_EDGE_TESSFACTOR = 11, 
+    D3D11_NAME_FINAL_QUAD_INSIDE_TESSFACTOR = 12, 
+    D3D11_NAME_FINAL_TRI_EDGE_TESSFACTOR = 13, 
+    D3D11_NAME_FINAL_TRI_INSIDE_TESSFACTOR = 14, 
+    D3D11_NAME_FINAL_LINE_DETAIL_TESSFACTOR = 15,
+    D3D11_NAME_FINAL_LINE_DENSITY_TESSFACTOR = 16,
 
     // Names meaningful to HLSL only
     D3D10_NAME_TARGET = 64,
     D3D10_NAME_DEPTH = 65,
     D3D10_NAME_COVERAGE = 66,
+    D3D11_NAME_DEPTH_GREATER_EQUAL = 67,
+    D3D11_NAME_DEPTH_LESS_EQUAL = 68,
+
 } D3D10_NAME;
 
 typedef enum D3D10_RESOURCE_RETURN_TYPE
@@ -297,7 +344,7 @@ typedef enum _D3D10_INCLUDE_TYPE
 // Open()
 //    Opens an include file.  If successful, it should fill in ppData and
 //    pBytes.  The data pointer returned must remain valid until Close is
-//    subsequently called.
+//    subsequently called.  The name of the file is encoded in UTF-8 format.
 // Close()
 //    Closes an include file.  If Open was successful, Close is guaranteed
 //    to be called before the API using this interface returns.

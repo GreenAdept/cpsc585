@@ -178,7 +178,7 @@
  ***************************************************************************/
 
 // The currently recommended way to express format information for XMA2 files
-// is the XMAWAVEFORMATEX structure.  This structure is fully compliant with
+// is the XMA2WAVEFORMATEX structure.  This structure is fully compliant with
 // the WAVEFORMATEX standard and contains all the information needed to parse
 // and manage XMA2 files in a compact way.
 
@@ -244,10 +244,10 @@ typedef struct XMASTREAMFORMAT
     DWORD LoopEnd;           // Bit offset of the frame containing the loop end.
     BYTE  SubframeData;      // Two 4-bit numbers specifying the exact location of
                              // the loop points within the frames that contain them.
-                             //  1st 4 bits: Which subframe of the end frame does
-                             //              the loop end at.  Ranges from 0 to 3.
-                             //  2nd 4 bits: Which subframe of the start frame does
-                             //              the loop begin at.  Ranges from 1 to 4.
+                             //   SubframeEnd: Subframe of the loop end frame where
+                             //                the loop ends.  Ranges from 0 to 3.
+                             //   SubframeSkip: Subframes to skip in the start frame to
+                             //                 reach the loop.  Ranges from 0 to 4.
     BYTE  Channels;          // Number of channels in the stream (1 or 2)
     WORD  ChannelMask;       // Spatial positions of the channels in the stream
 } XMASTREAMFORMAT;
@@ -382,11 +382,14 @@ __inline DWORD GetXmaPacketSkipCount(__in_bcount(4) const BYTE* pPacket)
  *  XMA helper functions
  ***************************************************************************/
 
-// Try to use ASSERT and TRACE macros if available
-#ifdef ASSERT
-    #define XMA2DEFS_ASSERT ASSERT
-#else
-    #define XMA2DEFS_ASSERT(a)
+// We define a local ASSERT macro to equal the global one if it exists.
+// You can define XMA2DEFS_ASSERT in advance to override this default.
+#ifndef XMA2DEFS_ASSERT
+    #ifdef ASSERT
+        #define XMA2DEFS_ASSERT ASSERT
+    #else
+        #define XMA2DEFS_ASSERT(a) /* No-op by default */
+    #endif
 #endif
 
 
@@ -399,7 +402,7 @@ __inline HRESULT GetXmaBlockContainingSample
 (
     DWORD nBlockCount,                      // Blocks in the file (= seek table entries)
     __in_ecount(nBlockCount) const DWORD* pSeekTable,  // Pointer to the seek table data
-    DWORD nDesiredSample,                   // Decoder sample to locate
+    DWORD nDesiredSample,                   // Decoded sample to locate
     __out DWORD* pnBlockContainingSample,   // Index of the block containing the sample
     __out DWORD* pnSampleOffsetWithinBlock  // Position of the sample in this block
 )
@@ -414,7 +417,6 @@ __inline HRESULT GetXmaBlockContainingSample
 
     for (nBlock = 0; nBlock < nBlockCount; ++nBlock)
     {
-        // REVISE: Is byte-swapping required?
         nTotalSamplesSoFar = pSeekTable[nBlock];
         if (nTotalSamplesSoFar > nDesiredSample)
         {
@@ -434,8 +436,8 @@ __inline HRESULT GetXmaBlockContainingSample
 __inline DWORD GetXmaFrameLengthInBits
 (
     __in_bcount(nBitPosition / 8 + 3)
-    const BYTE* pPacket,  // Pointer to XMA packet[s] containing the frame
-    DWORD nBitPosition    // Bit offset of the frame within this packet
+    __in const BYTE* pPacket,  // Pointer to XMA packet[s] containing the frame
+    DWORD nBitPosition         // Bit offset of the frame within this packet
 )
 {
     DWORD nRegion;
