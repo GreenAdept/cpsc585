@@ -2,8 +2,7 @@
 #ifndef H_RENDERABLE
 #define H_RENDERABLE
 
-#include "DXUT.h"
-typedef D3DXVECTOR3 Vec3;
+#include "..\..\Constants.h"
 
 
 class Renderable {

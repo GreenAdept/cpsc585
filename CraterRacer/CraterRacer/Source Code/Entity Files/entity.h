@@ -4,10 +4,10 @@
 
 #include <iostream>
 #include "DXUT.h"
+#include "..\..\Constants.h"
 #include "renderable.h"
 
 using namespace std;
-typedef D3DXVECTOR3 Vec3;
 
 
 class Entity {
