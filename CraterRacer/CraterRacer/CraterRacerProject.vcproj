@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;&quot;Source Code\SubSystem Files&quot;;&quot;Source Code\Application Files&quot;;&quot;Source Code\Entity Files&quot;;&quot;Source Code\Resource Files&quot;;DXUT\Optional;DXUT\Core;DirectX\Include"
+				AdditionalIncludeDirectories="&quot;Source\Utility Files&quot;;PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;&quot;Source Code\SubSystem Files&quot;;&quot;Source Code\Application Files&quot;;&quot;Source Code\Entity Files&quot;;&quot;Source Code\Resource Files&quot;;DXUT\Optional;DXUT\Core;DirectX\Include"
 				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;PROFILE;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="0"
@@ -70,9 +70,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseLibraryDependencyInputs="true"
+				UseLibraryDependencyInputs="false"
 				AdditionalOptions="/IGNORE:4089"
-				AdditionalDependencies="dxerr.lib dxguid.lib d3dx9d.lib d3d9.lib d3dx10d.lib DXUT.lib DXUTopt.lib winmm.lib comctl32.lib NxCharacter.lib NxCooking.lib PhysXLoader.lib"
+				AdditionalDependencies="DXUT.lib DXUTopt.lib dxerr.lib dxguid.lib d3dx9d.lib d3d9.lib d3dx10d.lib winmm.lib comctl32.lib NxCharacter.lib NxCooking.lib PhysXLoader.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="PhysX\Lib;DXUT\Optional\Debug;DXUT\Core\Debug;DirectX\Lib"
 				GenerateManifest="true"
@@ -689,10 +689,22 @@
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\Constants.h"
+		<Filter
+			Name="Utility Files"
 			>
-		</File>
+			<File
+				RelativePath=".\Source Code\Utility Files\Constants.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Effect Files"
+			>
+			<File
+				RelativePath=".\Source Code\Effect Files\Scene.fx"
+				>
+			</File>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>
