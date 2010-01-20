@@ -1,7 +1,7 @@
 #include "prop.h"
 
 Prop::Prop() {
-	renderable.canBeRendered = false;
+	//renderable.canBeRendered = false;
 	Entity();
-	cout << renderable.canBeRendered << endl;
+	//cout << renderable.canBeRendered << endl;
 }

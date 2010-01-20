@@ -22,6 +22,7 @@
 			IntermediateDirectory="Debug"
 			ConfigurationType="4"
 			InheritedPropertySheets="$(VCInstallDir)VCProjectDefaults\UpgradeFromVC71.vsprops"
+			UseOfMFC="0"
 			CharacterSet="1"
 			>
 			<Tool
@@ -43,10 +44,10 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\DirectX\Include;..\Core"
-				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;PROFILE;_WINDOWS;_LIB"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
-				RuntimeLibrary="1"
+				RuntimeLibrary="3"
 				UsePrecompiledHeader="1"
 				PrecompiledHeaderThrough="dxut.h"
 				WarningLevel="3"
@@ -64,8 +65,9 @@
 			/>
 			<Tool
 				Name="VCLibrarianTool"
+				LinkLibraryDependencies="true"
 				OutputFile="$(OutDir)/DXUTOpt.lib"
-				AdditionalLibraryDirectories="..\..\DirectX\Lib"
+				AdditionalLibraryDirectories="..\DirectX\Lib"
 			/>
 			<Tool
 				Name="VCALinkTool"

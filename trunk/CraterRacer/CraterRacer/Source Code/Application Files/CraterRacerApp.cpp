@@ -12,7 +12,6 @@ GameObj* m_pGame = NULL;
 RacerApp::RacerApp()
 {
 	m_pGame = new GameObj();
-
 }
 
 
@@ -22,7 +21,11 @@ RacerApp::RacerApp()
 RacerApp::~RacerApp()
 {
 	if( m_pGame )
+	{
+		m_pGame->processCallback( ON_DESTROY );
 		delete m_pGame;
+		m_pGame = NULL;
+	}
 }
 
 
@@ -43,21 +46,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 
 LRESULT CALLBACK RacerApp::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing, void* pUserContext )
 {
-	LRESULT result = 0;
-
-	switch (uMsg) 
-	{
-        case WM_KEYDOWN: 
-		case WM_KEYUP:
-
-			m_pGame->addInput( uMsg, wParam );
-			break;
-	
-		default:
-			return 0;
-	}
-
-	return result;
+	return 0;
 }
 
 
@@ -66,13 +55,18 @@ LRESULT CALLBACK RacerApp::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserContext )
 {
-	if( bKeyDown )
+	if( m_pGame )
 	{
 		// online virtual key codes: http://msdn.microsoft.com/en-us/library/ms927178.aspx
 		switch( nChar ) 
 		{
-		case  VK_SPACE:
-			DXUTToggleFullScreen();
+			case  VK_SPACE:
+				//pause game here
+				break;
+
+			default:
+				m_pGame->addInput( bKeyDown, nChar );
+				break;
 		}
 	}
 }
@@ -91,36 +85,14 @@ void CALLBACK RacerApp::OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* p
 //--------------------------------------------------------------------------------------
 // 
 //--------------------------------------------------------------------------------------
-LRESULT RacerApp::OnDeviceChange(int eventType)
-{			
-	return TRUE;
-}
-
-
-//--------------------------------------------------------------------------------------
-// 
-//--------------------------------------------------------------------------------------
-LRESULT RacerApp::OnDisplayChange(int colorDepth, int width, int height)
-{	
-	return 0;
-}
-
-
-//--------------------------------------------------------------------------------------
-// 
-//--------------------------------------------------------------------------------------
-LRESULT RacerApp::OnClose()
+HRESULT CALLBACK RacerApp::OnResetDevice( IDirect3DDevice9* device, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
-	return 0;
-}
 
+	if( m_pGame )
+		m_pGame->processCallback( ON_RESET, device, pBackBufferSurfaceDesc );
+	
+	device->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
 
-
-//--------------------------------------------------------------------------------------
-// 
-//--------------------------------------------------------------------------------------
-HRESULT CALLBACK RacerApp::OnResetDevice(IDirect3DDevice9* pd3dDevice, const D3DSURFACE_DESC*, void* pUserContext  )
-{
 	return S_OK;
 }
 
@@ -130,7 +102,8 @@ HRESULT CALLBACK RacerApp::OnResetDevice(IDirect3DDevice9* pd3dDevice, const D3D
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnLostDevice(void* pUserContext )
 {
-	
+	if( m_pGame )
+		m_pGame->processCallback( ON_LOST );
 }
 
 
@@ -143,12 +116,12 @@ void CALLBACK RacerApp::OnRender( IDirect3DDevice9* pd3dDevice, double fTime, fl
 	HRESULT hr;
 
     // Clear the render target and the zbuffer 
-    V( pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 50, 45, 50, 170 ), 1.0f, 0 ) );
+    V( pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 150,0, 20, 30 ), 1.0f, 0 ) );
 
     // Render the scene
     if( SUCCEEDED( pd3dDevice->BeginScene() ) )
     {
-		m_pGame->render( );
+		m_pGame->render( pd3dDevice );
 
         V( pd3dDevice->EndScene() );
     }
@@ -160,17 +133,21 @@ void CALLBACK RacerApp::OnRender( IDirect3DDevice9* pd3dDevice, double fTime, fl
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK RacerApp::OnCreateDevice( IDirect3DDevice9* pd3dDevice, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
+	m_pGame->initGame( pd3dDevice, pBackBufferSurfaceDesc );
+
 	return S_OK;
 }
 
 
-//--------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------
 //
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnDestroyDevice( void* pUserContext )
 {
-	
+	if( m_pGame )
+		m_pGame->processCallback( ON_DESTROY );
 }
+
 
 //--------------------------------------------------------------------------------------
 // Rejects any D3D9 devices that aren't acceptable to the app by returning false
@@ -199,45 +176,6 @@ bool CALLBACK RacerApp::IsD3D9DeviceAcceptable( D3DCAPS9* pCaps, D3DFORMAT Adapt
 //--------------------------------------------------------------------------------------
 bool CALLBACK RacerApp::ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext )
 {
-    if( pDeviceSettings->ver == DXUT_D3D9_DEVICE )
-    {
-        IDirect3D9* pD3D = DXUTGetD3D9Object();
-        D3DCAPS9 Caps;
-        pD3D->GetDeviceCaps( pDeviceSettings->d3d9.AdapterOrdinal, pDeviceSettings->d3d9.DeviceType, &Caps );
-
-        // If device doesn't support HW T&L or doesn't support 1.1 vertex shaders in HW 
-        // then switch to SWVP.
-        if( ( Caps.DevCaps & D3DDEVCAPS_HWTRANSFORMANDLIGHT ) == 0 ||
-            Caps.VertexShaderVersion < D3DVS_VERSION( 1, 1 ) )
-        {
-            pDeviceSettings->d3d9.BehaviorFlags = D3DCREATE_SOFTWARE_VERTEXPROCESSING;
-        }
-
-        // Debugging vertex shaders requires either REF or software vertex processing 
-        // and debugging pixel shaders requires REF.  
-#ifdef DEBUG_VS
-        if( pDeviceSettings->d3d9.DeviceType != D3DDEVTYPE_REF )
-        {
-            pDeviceSettings->d3d9.BehaviorFlags &= ~D3DCREATE_HARDWARE_VERTEXPROCESSING;
-            pDeviceSettings->d3d9.BehaviorFlags &= ~D3DCREATE_PUREDEVICE;
-            pDeviceSettings->d3d9.BehaviorFlags |= D3DCREATE_SOFTWARE_VERTEXPROCESSING;
-        }
-#endif
-#ifdef DEBUG_PS
-        pDeviceSettings->d3d9.DeviceType = D3DDEVTYPE_REF;
-#endif
-    }
-
-    // For the first device created if its a REF device, optionally display a warning dialog box
-    static bool s_bFirstTime = true;
-    if( s_bFirstTime )
-    {
-        s_bFirstTime = false;
-        if( ( DXUT_D3D9_DEVICE == pDeviceSettings->ver && pDeviceSettings->d3d9.DeviceType == D3DDEVTYPE_REF ) ||
-            ( DXUT_D3D10_DEVICE == pDeviceSettings->ver &&
-              pDeviceSettings->d3d10.DriverType == D3D10_DRIVER_TYPE_REFERENCE ) )
-            DXUTDisplaySwitchingToREFWarning( pDeviceSettings->ver );
-    }
-
     return true;
 }
+

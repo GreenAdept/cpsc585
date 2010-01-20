@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "DXUT.h"
-#include "..\..\Constants.h"
+#include "..\Utility Files\Constants.h"
 #include "renderable.h"
 
 using namespace std;
@@ -12,16 +12,18 @@ using namespace std;
 
 class Entity {
 	public:
-		Entity(void);
-		Renderable getRenderable() { return renderable; }
+		Entity( ) {}
+		Entity( IDirect3DDevice9* device, const D3DSURFACE_DESC* ) ;
+		~Entity( );
+		
+		Renderable* getRenderable();
 
 		virtual void update(void);
 
 protected: 
 		//just inheriting classes can access these
-		Renderable renderable;
-		Vec3	   position;
-
+		Renderable*		m_pRenderable;
+		Vec3			m_vPosition;
 };
 
 #endif
