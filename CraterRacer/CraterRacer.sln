@@ -1,17 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CraterRacer", "CraterRacer\CraterRacerProject.vcproj", "{28F8B217-38AB-4A1B-B331-213C91489E89}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E0CF097B-F22D-465B-A884-D89E55BD7ECD} = {E0CF097B-F22D-465B-A884-D89E55BD7ECD}
-		{86994195-BAD7-45DF-8F19-54339E3C5A0E} = {86994195-BAD7-45DF-8F19-54339E3C5A0E}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXUTCore", "CraterRacer\DXUT\Core\DXUTCore_2008.vcproj", "{E0CF097B-F22D-465B-A884-D89E55BD7ECD}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DXUTOptional", "CraterRacer\DXUT\Optional\DXUTOptional_2008.vcproj", "{86994195-BAD7-45DF-8F19-54339E3C5A0E}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E0CF097B-F22D-465B-A884-D89E55BD7ECD} = {E0CF097B-F22D-465B-A884-D89E55BD7ECD}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,18 +15,6 @@ Global
 		{28F8B217-38AB-4A1B-B331-213C91489E89}.Profile|Win32.Build.0 = Profile|Win32
 		{28F8B217-38AB-4A1B-B331-213C91489E89}.Release|Win32.ActiveCfg = Release|Win32
 		{28F8B217-38AB-4A1B-B331-213C91489E89}.Release|Win32.Build.0 = Release|Win32
-		{E0CF097B-F22D-465B-A884-D89E55BD7ECD}.Debug|Win32.ActiveCfg = Debug|Win32
-		{E0CF097B-F22D-465B-A884-D89E55BD7ECD}.Debug|Win32.Build.0 = Debug|Win32
-		{E0CF097B-F22D-465B-A884-D89E55BD7ECD}.Profile|Win32.ActiveCfg = Profile|Win32
-		{E0CF097B-F22D-465B-A884-D89E55BD7ECD}.Profile|Win32.Build.0 = Profile|Win32
-		{E0CF097B-F22D-465B-A884-D89E55BD7ECD}.Release|Win32.ActiveCfg = Release|Win32
-		{E0CF097B-F22D-465B-A884-D89E55BD7ECD}.Release|Win32.Build.0 = Release|Win32
-		{86994195-BAD7-45DF-8F19-54339E3C5A0E}.Debug|Win32.ActiveCfg = Debug|Win32
-		{86994195-BAD7-45DF-8F19-54339E3C5A0E}.Debug|Win32.Build.0 = Debug|Win32
-		{86994195-BAD7-45DF-8F19-54339E3C5A0E}.Profile|Win32.ActiveCfg = Release|Win32
-		{86994195-BAD7-45DF-8F19-54339E3C5A0E}.Profile|Win32.Build.0 = Release|Win32
-		{86994195-BAD7-45DF-8F19-54339E3C5A0E}.Release|Win32.ActiveCfg = Release|Win32
-		{86994195-BAD7-45DF-8F19-54339E3C5A0E}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
