@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;Source\Utility Files&quot;;PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;&quot;Source Code\SubSystem Files&quot;;&quot;Source Code\Application Files&quot;;&quot;Source Code\Entity Files&quot;;&quot;Source Code\Resource Files&quot;;DXUT\Optional;DXUT\Core;DirectX\Include"
+				AdditionalIncludeDirectories="&quot;Source\Utility Files&quot;;PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;&quot;Source Code\SubSystem Files&quot;;&quot;Source Code\Application Files&quot;;&quot;Source Code\Entity Files&quot;;&quot;Source Code\Resource Files&quot;;&quot;$(DXSDK_DIR)\Include&quot;;Headers"
 				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;PROFILE;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="0"
@@ -74,7 +74,7 @@
 				AdditionalOptions="/IGNORE:4089"
 				AdditionalDependencies="DXUT.lib DXUTopt.lib dxerr.lib dxguid.lib d3dx9d.lib d3d9.lib d3dx10d.lib winmm.lib comctl32.lib NxCharacter.lib NxCooking.lib PhysXLoader.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="PhysX\Lib;DXUT\Optional\Debug;DXUT\Core\Debug;DirectX\Lib"
+				AdditionalLibraryDirectories="PhysX\Lib;Libs;&quot;$(DXSDK_DIR)\Lib\x86&quot;"
 				GenerateManifest="true"
 				DelayLoadDLLs=""
 				GenerateDebugInformation="true"

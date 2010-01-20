@@ -21,6 +21,7 @@ Entity::Entity( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurface )
 	m_vPosition = Vec3( 0.0f, 0.0f, 0.0f );
 }
 
+
 Renderable* Entity::getRenderable( )
 {
 	return m_pRenderable->getUpdatedRenderable( m_vPosition );
