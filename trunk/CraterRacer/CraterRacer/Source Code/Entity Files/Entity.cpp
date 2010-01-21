@@ -1,3 +1,8 @@
+/*
+The main entity class.  All entities extend this class.
+Each entity has a renderable object that can be displayed by the Renderer.
+*/
+
 #include "Entity.h"
 
 Entity::~Entity() 

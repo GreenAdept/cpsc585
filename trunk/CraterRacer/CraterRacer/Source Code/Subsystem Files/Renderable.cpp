@@ -1,3 +1,8 @@
+/*
+The Renderable object.  Each entity has a renderable object.
+The rendering system takes the renderable object from each entity and displays it.
+*/
+
 #include "Renderable.h"
 
 //--------------------------------------------------------------------------------------

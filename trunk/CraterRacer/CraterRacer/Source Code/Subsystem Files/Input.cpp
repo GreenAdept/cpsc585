@@ -1,3 +1,7 @@
+/*
+The input system.
+*/
+
 #include "Input.h"
 
 Input::Input() 

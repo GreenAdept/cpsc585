@@ -1,3 +1,7 @@
+/*
+The Prop entity.
+*/
+
 #include "Prop.h"
 
 Prop::Prop() {

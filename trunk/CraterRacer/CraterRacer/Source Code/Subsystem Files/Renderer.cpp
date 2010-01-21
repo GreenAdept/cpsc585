@@ -1,5 +1,9 @@
-#include "Renderer.h"
+/*
+The Rendering system.
+The rendering system takes the renderable object from each entity and displays it.
+*/
 
+#include "Renderer.h"
 
 //--------------------------------------------------------------------------------------
 // 
