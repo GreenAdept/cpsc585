@@ -8,7 +8,7 @@
 //--------------------------------------------------------
 
 #include <vector>
-#include "renderable.h"
+#include "Renderable.h"
 #include "..\Utility Files\Constants.h"
 
 using namespace std;
