@@ -6,7 +6,7 @@
 //		INCLUDES
 //--------------------------------------------------------
 
-#include "resource.h"
+#include "Resource.h"
 #include "GameObj.h"
 
 #include "..\Utility Files\Constants.h"

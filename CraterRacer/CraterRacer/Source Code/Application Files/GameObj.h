@@ -7,16 +7,16 @@
 //--------------------------------------------------------
 
 #include "..\Utility Files\Constants.h"
-#include "resource.h"
+#include "Resource.h"
 #include <iostream>
 #include <vector>
-#include "vehicle.h"
-#include "playerVehicle.h"
-#include "renderer.h"
-#include "renderable.h"
+#include "Vehicle.h"
+#include "PlayerVehicle.h"
+#include "Renderer.h"
+#include "Renderable.h"
 //#include "simulator.h"
-#include "prop.h"
-#include "input.h"
+#include "Prop.h"
+#include "Input.h"
 
 
 //--------------------------------------------------------
