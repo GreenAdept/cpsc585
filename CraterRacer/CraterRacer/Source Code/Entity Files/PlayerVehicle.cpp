@@ -1,3 +1,7 @@
+/*
+The Player Vehicle class.  This class extends Vehicle, which extends Entity.
+*/
+
 #include "PlayerVehicle.h"
 
 PlayerVehicle::PlayerVehicle() {}

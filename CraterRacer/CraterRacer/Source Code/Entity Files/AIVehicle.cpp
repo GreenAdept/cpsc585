@@ -1,3 +1,7 @@
+/*
+The AI Vehicle class.  This class extends Vehicle, which extends Entity.
+*/
+
 #include "AIVehicle.h"
 
 AIVehicle::AIVehicle() {}
