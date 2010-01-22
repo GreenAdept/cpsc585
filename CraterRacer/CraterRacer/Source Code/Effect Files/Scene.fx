@@ -1,5 +1,7 @@
 //--------------------------------------------------------------------------------------
 // File: DisplayMesh.fx
+// A simple effect file to get our hardware rendering support working.  This file is 
+// adapted from an effect file in the DirectX SDK samples.
 //--------------------------------------------------------------------------------------
 
 

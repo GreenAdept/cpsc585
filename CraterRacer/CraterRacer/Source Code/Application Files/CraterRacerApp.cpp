@@ -4,46 +4,31 @@
 //--------------------------------------------------------------------------------------
 #include "CraterRacerApp.h"
 
-GameObj* m_pGame = NULL;
+GameObj* g_pGame = NULL;	//global game used by the RacerApp class
+ 
 
 //--------------------------------------------------------------------------------------
-// 
-//--------------------------------------------------------------------------------------
-RacerApp::RacerApp()
-{
-	m_pGame = new GameObj();
-}
-
-
-//--------------------------------------------------------------------------------------
-// 
-//--------------------------------------------------------------------------------------
-RacerApp::~RacerApp()
-{
-	if( m_pGame )
-	{
-		m_pGame->processCallback( ON_DESTROY );
-		delete m_pGame;
-		m_pGame = NULL;
-	}
-}
-
-
-//--------------------------------------------------------------------------------------
-// 
+// Function:  OnUpdateGame
+// This is the callback called by DXUT in the render loop.  It is called right before
+// the render function is called.  We are using this function to update our game (do
+// simulations and collision detection)
+// INPUTS:  double fTime = time in seconds that the application has been running so far
+//			float fElapsedTime = time since the last render loop ended
+//			*pUserContext = we aren't using this
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pUserContext  )
 {
-	m_pGame->processInput( );
-	m_pGame->simulate( fElapsedTime );
+	g_pGame->processInput( );
+	g_pGame->simulate( fElapsedTime );
 }
 
 
 
 //--------------------------------------------------------------------------------------
-//
+// Function: MsgProc
+// This callback function is called by windows when any message occurs.  Right now we
+// are not using it.
 //--------------------------------------------------------------------------------------
-
 LRESULT CALLBACK RacerApp::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing, void* pUserContext )
 {
 	return 0;
@@ -51,11 +36,12 @@ LRESULT CALLBACK RacerApp::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 
 
 //--------------------------------------------------------------------------------------
-// 
+// Function: OnKeyboard
+// When a key on the keyboard is pressed or released, this function is called.
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserContext )
 {
-	if( m_pGame )
+	if( g_pGame )
 	{
 		// online virtual key codes: http://msdn.microsoft.com/en-us/library/ms927178.aspx
 		switch( nChar ) 
@@ -65,7 +51,7 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 				break;
 
 			default:
-				m_pGame->addInput( bKeyDown, nChar );
+				g_pGame->addInput( bKeyDown, nChar );
 				break;
 		}
 	}
@@ -73,23 +59,25 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 
 
 //--------------------------------------------------------------------------------------
-// 
+// Function:  OnGUIEvent
+// We do not use this function yet, but will use it for managing the pre-game screen
+// and pause screen.
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, void* pUserContext )
 {
-
 
 }
 
 
 //--------------------------------------------------------------------------------------
-// 
+// Function: OnResetDevice
+// This function is called when the window size changes.  In here we want to reset
+// all objects that rely on the back buffer size.
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK RacerApp::OnResetDevice( IDirect3DDevice9* device, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
-
-	if( m_pGame )
-		m_pGame->processCallback( ON_RESET, device, pBackBufferSurfaceDesc );
+	if( g_pGame )
+		g_pGame->processCallback( ON_RESET, device, pBackBufferSurfaceDesc );
 	
 	device->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
 
@@ -98,18 +86,21 @@ HRESULT CALLBACK RacerApp::OnResetDevice( IDirect3DDevice9* device, const D3DSUR
 
 
 //--------------------------------------------------------------------------------------
-// 
+// Function:  OnLostDevice
+// This function is called right before the device is destroyed.  We want to prepare 
+// anything attached to the device for the upcoming destruction.
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnLostDevice(void* pUserContext )
 {
-	if( m_pGame )
-		m_pGame->processCallback( ON_LOST );
+	if( g_pGame )
+		g_pGame->processCallback( ON_LOST );
 }
 
 
 
 //--------------------------------------------------------------------------------------
-//
+// Function: OnRender
+// This callback function is called every frame to render the scene.  
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnRender( IDirect3DDevice9* pd3dDevice, double fTime, float fElapsedTime, void* pUserContext  )
 {
@@ -121,7 +112,8 @@ void CALLBACK RacerApp::OnRender( IDirect3DDevice9* pd3dDevice, double fTime, fl
     // Render the scene
     if( SUCCEEDED( pd3dDevice->BeginScene() ) )
     {
-		m_pGame->render( pd3dDevice );
+		//get the game to render all of its components
+		g_pGame->render( pd3dDevice );
 
         V( pd3dDevice->EndScene() );
     }
@@ -129,28 +121,33 @@ void CALLBACK RacerApp::OnRender( IDirect3DDevice9* pd3dDevice, double fTime, fl
 
 
 //--------------------------------------------------------------------------------------
-//
+// Function: OnCreateDevice
+// This function is called when a device is created.  We are using this function
+// as the place to initialize the game (by initializing its components with the device)
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK RacerApp::OnCreateDevice( IDirect3DDevice9* pd3dDevice, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
-	m_pGame->initGame( pd3dDevice, pBackBufferSurfaceDesc );
+	g_pGame->initGame( pd3dDevice, pBackBufferSurfaceDesc );
 
 	return S_OK;
 }
 
 
 //-------------------------------------------------------------------------------------
-//
+// Function:  OnDestroyDevice
+// This function is called when a device is destroyed.  We will use this function to 
+// release any memory attached to the device that we need to clean up.
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnDestroyDevice( void* pUserContext )
 {
-	if( m_pGame )
-		m_pGame->processCallback( ON_DESTROY );
+	if( g_pGame )
+		g_pGame->processCallback( ON_DESTROY );
 }
 
 
 //--------------------------------------------------------------------------------------
-// Rejects any D3D9 devices that aren't acceptable to the app by returning false
+// Function:  IsD3D9DeviceAcceptable
+// This function rejects any D3D9 devices that aren't acceptable to the app by returning false
 //--------------------------------------------------------------------------------------
 bool CALLBACK RacerApp::IsD3D9DeviceAcceptable( D3DCAPS9* pCaps, D3DFORMAT AdapterFormat,
                                       D3DFORMAT BackBufferFormat, bool bWindowed, void* pUserContext )
@@ -172,10 +169,31 @@ bool CALLBACK RacerApp::IsD3D9DeviceAcceptable( D3DCAPS9* pCaps, D3DFORMAT Adapt
 
 
 //--------------------------------------------------------------------------------------
-// Called right before creating a D3D9 or D3D10 device, allowing the app to modify the device settings as needed
+// Function:  ModifyDeviceSettings
+// This function is called right before creating a D3D9 or D3D10 device, allowing the app to modify the 
+// device settings as needed.
+// We do not use this function yet.
 //--------------------------------------------------------------------------------------
 bool CALLBACK RacerApp::ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext )
 {
     return true;
 }
 
+
+//--------------------------------------------------------------------------------------
+RacerApp::RacerApp()
+{
+	g_pGame = new GameObj(); 
+}
+
+
+//--------------------------------------------------------------------------------------
+RacerApp::~RacerApp()
+{
+	if( g_pGame )
+	{
+		g_pGame->processCallback( ON_DESTROY ); //release the memory/objects used by the game
+		delete g_pGame;
+		g_pGame = NULL;
+	}
+}

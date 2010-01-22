@@ -19,9 +19,13 @@
 #include "Input.h"
 
 
-//--------------------------------------------------------
+//-----------------------------------------------------------------
 //		CLASS: GameObj
-//--------------------------------------------------------
+//
+//		This class represents our racing game and its components
+//		(which include all Rendering, Input Management, Physics, etc.
+//		subsystems)
+//------------------------------------------------------------------
 
 class GameObj
 {
@@ -31,21 +35,21 @@ public:
 	GameObj( );
 	~GameObj( );
 
-	void processInput	(  );
-	void addInput		( bool isKeyDown, UINT virtualKeyCode );
-	void simulate		( float fElapsedTime );
-	void render			( Device* device );
-	void initGame		( Device* device, const D3DSURFACE_DESC* );
-	void processCallback( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
+	void processInput	 (  );
+	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );
+	void simulate		 ( float fElapsedTime );
+	void render			 ( Device* device );
+	void initGame		 ( Device* device, const D3DSURFACE_DESC* );
+	void processCallback ( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
 
 private:
 	//Date Members ---------------------------------------
 
-	vector<Entity*> m_Entities;
-	Renderer*		m_Renderer;
-	Input			m_InputManager;
-	MCamera			m_Camera;
+	vector<Entity*> m_Entities;		// list of all scene objects
+	Renderer*		m_Renderer;		// rendering subsystem
+	Input			m_InputManager;	// input management subsystem
+	MCamera			m_Camera;		// main camera to follow behind vehicle
 	//Simulator		m_Simulator;
 };
 
-#endif GAME_OBJ_H
+#endif GAME_OBJ_H 
