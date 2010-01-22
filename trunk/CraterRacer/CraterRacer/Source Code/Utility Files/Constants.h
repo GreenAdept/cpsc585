@@ -2,12 +2,19 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
+#define NOMINMAX
 #include "DXUT.h"
+//#define NOMINMAX
 #include "SDKmesh.h"
+//#define NOMINMAX
 #include "DXUTgui.h"
+//#define NOMINMAX
 #include "DXUTmisc.h"
+//#define NOMINMAX
 #include "DXUTCamera.h"
+//#define NOMINMAX
 #include "DXUTSettingsDlg.h"
+//#define NOMINMAX
 #include "SDKmisc.h"
 
 

@@ -1,5 +1,6 @@
 //#include "Main.h"
 
+#define NOMINMAX
 #include "DXUT.h"
 #include "CraterRacerApp.h"
 
