@@ -1,18 +1,26 @@
 /*
-The main entity class.  All entities extend this class.
-Each entity has a renderable object that can be displayed by the Renderer.
+* The main entity class.  All entities extend this class.
+* Each entity has a renderable object that can be displayed by the Renderer.
 */
 
 #include "Entity.h"
 
-Entity::~Entity() 
+
+//--------------------------------------------------------------------------------------
+// Function:  Destructor 
+//--------------------------------------------------------------------------------------
+Entity::~Entity( ) 
 {
 	if( m_pRenderable )
 		delete m_pRenderable;
 }
 
 
-Entity::Entity( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurface ) 
+//--------------------------------------------------------------------------------------
+// Function:  Constructor
+// Initializes renderable based on device input.
+//--------------------------------------------------------------------------------------
+Entity::Entity( Device* device ) 
 {
 	// Temporarily initialize an object, but will eventually be reading this
 	// from file and initializing the entities from file data.
@@ -27,10 +35,11 @@ Entity::Entity( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurface )
 }
 
 
+//--------------------------------------------------------------------------------------
+// Function:  getRenderable
+// Returns the entity's renderable.
+//--------------------------------------------------------------------------------------
 Renderable* Entity::getRenderable( )
 {
 	return m_pRenderable->getUpdatedRenderable( m_vPosition );
 }
-
-
-void Entity::update() {}

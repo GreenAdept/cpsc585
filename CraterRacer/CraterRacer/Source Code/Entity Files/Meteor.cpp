@@ -1,5 +1,5 @@
 /*
-The Meteor entity.
+* The Meteor entity.
 */
 
 #include "Meteor.h"

@@ -1,6 +1,10 @@
 #pragma once
-#ifndef H_Fractal
-#define H_Fractal
+#ifndef ENTITY_H
+#define ENTITY_H
+
+//--------------------------------------------------------
+//		INCLUDES
+//--------------------------------------------------------
 
 #include <iostream>
 #include "DXUT.h"
@@ -10,20 +14,34 @@
 using namespace std;
 
 
-class Entity {
-	public:
-		Entity( ) {}
-		Entity( IDirect3DDevice9* device, const D3DSURFACE_DESC* ) ;
-		~Entity( );
-		
-		Renderable* getRenderable();
+//-----------------------------------------------------------------
+//		CLASS: Entity
+//
+//		This is the base class of all the objects in our game.
+//		An entity is not abstract yet, but should not be instantiated 
+//		on its own.
+//------------------------------------------------------------------
 
-		virtual void update(void);
+class Entity 
+{
+public:
+		
+	//Public interface -----------------------------------------
+
+	Entity ( ) { }
+	Entity ( Device* device );
+	~Entity( );
+		
+	Renderable*		getRenderable( );
+	virtual void	update( void ) {}
 
 protected: 
-		//just inheriting classes can access these
-		Renderable*		m_pRenderable;
-		Vec3			m_vPosition;
+	
+	//Accessible to all inheriting classes ---------------------
+
+	Renderable*		m_pRenderable; 
+	Vec3			m_vPosition;
+
 };
 
-#endif
+#endif //ENTITY_H

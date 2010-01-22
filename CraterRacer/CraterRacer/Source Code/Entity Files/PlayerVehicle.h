@@ -2,12 +2,31 @@
 #ifndef PLAYERVEHICLE_H
 #define PLAYERVEHICLE_H
 
+//--------------------------------------------------------
+//		INCLUDES
+//--------------------------------------------------------
+
 #include "Vehicle.h"
 
-class PlayerVehicle: public Vehicle {
-	public:
-		PlayerVehicle(void);
+//---------------------------------------------------------
+//		CLASS: PlayerVehicle
+//
+//		This represents a vehicle object that is controlled
+//		by a player.
+//---------------------------------------------------------
 
-		void update(void);
+class PlayerVehicle: public Vehicle 
+{
+
+public:
+
+	//Public interface ------------------------------------
+
+	PlayerVehicle( void );
+	PlayerVehicle( Device* device );
+
+	void update( void );
+
 };
-#endif
+
+#endif //PLAYERVEHICLE_H

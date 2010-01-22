@@ -1,11 +1,26 @@
 /*
-The AI Vehicle class.  This class extends Vehicle, which extends Entity.
+* The AI Vehicle class.  This class extends Vehicle, which extends Entity and represents
+* a vehicle controlled by our game algorithms.
 */
 
 #include "AIVehicle.h"
 
-AIVehicle::AIVehicle() {}
+//--------------------------------------------------------------------------------------
+// Function:  Constructor
+// Initializes the AI vehicle and sends the device to entity base class to initialize
+// its renderable.
+//--------------------------------------------------------------------------------------
+AIVehicle::AIVehicle( Device* device ): Vehicle( device )
+{
 
-void AIVehicle::update() {
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  update
+// Will update the position/orientation of the vehicle eventually.
+//--------------------------------------------------------------------------------------
+void AIVehicle::update( ) 
+{
 	cout << "test3" << endl;
 }

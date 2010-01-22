@@ -2,15 +2,35 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
 
+//--------------------------------------------------------
+//		INCLUDES
+//--------------------------------------------------------
+
 #include <iostream>
 #include "Entity.h"
 
 using namespace std;
 
-class Vehicle: public Entity {
-	public:
-		Vehicle(void);
 
-		virtual void update(void);
+//---------------------------------------------------------
+//		CLASS: Vehicle
+//
+//		This is the base class of a vehicle object.  It
+//		is abstract so cannot be instantiated by itself.
+//---------------------------------------------------------
+
+class Vehicle: public Entity 
+{
+
+public:
+
+	// Public interface ------------------------------------
+
+	Vehicle( void ) {}
+	Vehicle( Device* );
+
+	virtual void update(void) = 0;
+
 };
-#endif
+
+#endif //VEHICLE_H
