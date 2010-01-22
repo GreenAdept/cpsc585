@@ -566,7 +566,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Resource Files\resource.h"
+				RelativePath=".\Source Code\Resource Files\Resource.h"
 				>
 			</File>
 		</Filter>
@@ -658,7 +658,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Application Files\main.cpp"
+				RelativePath=".\Source Code\Application Files\Main.cpp"
 				>
 			</File>
 		</Filter>
@@ -695,6 +695,14 @@
 			</File>
 			<File
 				RelativePath=".\Source Code\Subsystem Files\Renderer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Simulator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Simulator.h"
 				>
 			</File>
 		</Filter>
