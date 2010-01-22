@@ -5,25 +5,6 @@
 
 
 //--------------------------------------------------------------------------------------
-GameObj::GameObj( )
-{
-   
-}
-
-
-//--------------------------------------------------------------------------------------
-GameObj::~GameObj( )
-{
-	for (unsigned int i = 0; i < m_Entities.size(); i++) 
-	{
-		// delete all entities to ensure no memory leaks occur
-		if( m_Entities[i] )
-			delete m_Entities[i];
-	}
-}
-
-
-//--------------------------------------------------------------------------------------
 // Function:  initGame
 // Here we initialize the game's camera and scene.  Eventually we want to read all of this
 // in via file IO.  
@@ -45,7 +26,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 		delete m_Entities[i];
 
 	m_Entities.clear();
-	m_Entities.push_back( new Entity( device, pSurface ) );
+	m_Entities.push_back( new PlayerVehicle( device ) );
 }
 
 
@@ -131,5 +112,19 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 		// let the renderables know their device was reset
 		for( unsigned int i = 0; i < m_Entities.size(); i++ ) 
 			 m_Entities[i]->getRenderable( )->resetDevice( device );
+	}
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  Destructor 
+//--------------------------------------------------------------------------------------
+GameObj::~GameObj( )
+{
+	for (unsigned int i = 0; i < m_Entities.size(); i++) 
+	{
+		// delete all entities to ensure no memory leaks occur
+		if( m_Entities[i] )
+			delete m_Entities[i];
 	}
 }

@@ -577,11 +577,11 @@
 				Name="CPP Files"
 				>
 				<File
-					RelativePath=".\Source Code\Entity Files\aiVehicle.cpp"
+					RelativePath=".\Source Code\Entity Files\AIVehicle.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\crater.cpp"
+					RelativePath=".\Source Code\Entity Files\Crater.cpp"
 					>
 				</File>
 				<File
@@ -589,19 +589,19 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\meteor.cpp"
+					RelativePath=".\Source Code\Entity Files\Meteor.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\playerVehicle.cpp"
+					RelativePath=".\Source Code\Entity Files\PlayerVehicle.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\prop.cpp"
+					RelativePath=".\Source Code\Entity Files\Prop.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\vehicle.cpp"
+					RelativePath=".\Source Code\Entity Files\Vehicle.cpp"
 					>
 				</File>
 			</Filter>
@@ -609,31 +609,31 @@
 				Name="Header Files"
 				>
 				<File
-					RelativePath=".\Source Code\Entity Files\aiVehicle.h"
+					RelativePath=".\Source Code\Entity Files\AIVehicle.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\crater.h"
+					RelativePath=".\Source Code\Entity Files\Crater.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\entity.h"
+					RelativePath=".\Source Code\Entity Files\Entity.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\meteor.h"
+					RelativePath=".\Source Code\Entity Files\Meteor.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\playerVehicle.h"
+					RelativePath=".\Source Code\Entity Files\PlayerVehicle.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\prop.h"
+					RelativePath=".\Source Code\Entity Files\Prop.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\vehicle.h"
+					RelativePath=".\Source Code\Entity Files\Vehicle.h"
 					>
 				</File>
 			</Filter>
@@ -666,11 +666,11 @@
 			Name="SubSystem Files"
 			>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\input.cpp"
+				RelativePath=".\Source Code\Subsystem Files\Input.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\input.h"
+				RelativePath=".\Source Code\Subsystem Files\Input.h"
 				>
 			</File>
 			<File

@@ -32,7 +32,7 @@ class GameObj
 public:
 	//Public Interface -----------------------------------
 
-	GameObj( );
+	GameObj( ) {}
 	~GameObj( );
 
 	void processInput	 (  );
