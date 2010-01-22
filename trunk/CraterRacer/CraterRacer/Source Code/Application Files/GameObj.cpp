@@ -12,21 +12,16 @@
 void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurface )
 {
 	//init camera to new device, with perspective view
-	float fAspectRatio = pSurface->Width / ( FLOAT )pSurface->Height;
-	m_Camera.SetProjParams( D3DX_PI / 4, fAspectRatio, 0.1f, 1000.0f );
-	m_Camera.SetWindow( pSurface->Width, pSurface->Height );
-	
-	// Setup the camera's view parameters
-    Vec3 vecEye( 0.0f, 0.0f, -5.0f );
-    Vec3 vecAt ( 0.0f, 0.0f, -0.0f );
-    m_Camera.SetViewParams( &vecEye, &vecAt );
+	m_Camera.updateWindow (pSurface);
 
 	//testing...adding one entity/object to the list, first make sure the list is empty
 	for( unsigned int i = 0; i < m_Entities.size(); i++ ) 
 		delete m_Entities[i];
 
+	PlayerVehicle *pv = new PlayerVehicle (device);
 	m_Entities.clear();
-	m_Entities.push_back( new PlayerVehicle( device ) );
+	m_Entities.push_back (pv);
+	m_Camera.setTarget (pv);
 }
 
 
@@ -63,7 +58,7 @@ void GameObj::render( Device* device )
 	}
 
 	// pass the renderables off to the renderer to do all the work
-	m_Renderer->render( device, renderables, m_Camera );
+	m_Renderer->render( device, renderables, m_Camera.getCamera() );
 }
 
 
@@ -105,9 +100,7 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 	else if( type == ON_RESET )
 	{
 		// re-adjust the camera's projection parameters
-		float fAspectRatio = pBackSurface->Width / ( FLOAT )pBackSurface->Height;
-		m_Camera.SetProjParams( D3DX_PI / 4, fAspectRatio, 0.1f, 1000.0f );
-		m_Camera.SetWindow( pBackSurface->Width, pBackSurface->Height );
+		m_Camera.updateWindow (pBackSurface);
 
 		// let the renderables know their device was reset
 		for( unsigned int i = 0; i < m_Entities.size(); i++ ) 

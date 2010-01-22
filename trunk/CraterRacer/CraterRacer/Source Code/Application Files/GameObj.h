@@ -17,6 +17,7 @@
 //#include "simulator.h"
 #include "Prop.h"
 #include "Input.h"
+#include "GameCamera.h"
 
 
 //-----------------------------------------------------------------
@@ -48,7 +49,7 @@ private:
 	vector<Entity*> m_Entities;		// list of all scene objects
 	Renderer*		m_Renderer;		// rendering subsystem
 	Input			m_InputManager;	// input management subsystem
-	MCamera			m_Camera;		// main camera to follow behind vehicle
+	GameCamera		m_Camera;		// main camera to follow behind vehicle
 	//Simulator		m_Simulator;
 };
 
