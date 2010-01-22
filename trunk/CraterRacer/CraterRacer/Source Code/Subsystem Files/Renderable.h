@@ -7,11 +7,14 @@
 //		INCLUDES
 //--------------------------------------------------------
 
-#include "..\Utility Files\Constants.h"
+#include "..\Utility Files\Constants.h" //typedefs and constants used in this class
 
 
 //--------------------------------------------------------
 //		CLASS: Renderable
+//
+//		This class contains all entity information needed
+//		by the renderer.
 //--------------------------------------------------------
 
 class Renderable 
@@ -44,8 +47,8 @@ public:
 	
 	Effect*			 m_pEffect;
 	Matrix			 m_matWorld;
-	Handle			 m_hRenderObj;         // Handle to RenderObj technique
-	Device*			 m_pDevice;
+	Handle			 m_hRenderObj;      // Handle to loaded effect
+	Device*			 m_pDevice;			// the device attached to the mesh and effect
 };
 
 #endif // RENDERABLE_H

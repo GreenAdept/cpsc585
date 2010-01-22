@@ -72,7 +72,7 @@
 				Name="VCLinkerTool"
 				UseLibraryDependencyInputs="false"
 				AdditionalOptions="/IGNORE:4089"
-				AdditionalDependencies="DXUT.lib DXUTopt.lib dxerr.lib dxguid.lib d3dx9d.lib d3d9.lib d3dx10d.lib winmm.lib comctl32.lib NxCharacter.lib NxCooking.lib PhysXLoader.lib"
+				AdditionalDependencies="DXUT.lib DXUTOpt.lib dxerr.lib dxguid.lib d3dx9d.lib d3d9.lib d3dx10d.lib winmm.lib comctl32.lib NxCharacter.lib NxCooking.lib PhysXLoader.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="PhysX\Lib;Libs;&quot;$(DXSDK_DIR)\Lib\x86&quot;"
 				GenerateManifest="true"

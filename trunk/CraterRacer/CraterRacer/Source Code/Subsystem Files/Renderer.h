@@ -2,7 +2,6 @@
 #ifndef H_RENDERER
 #define H_RENDERER
 
-
 //--------------------------------------------------------
 //		INCLUDES
 //--------------------------------------------------------
@@ -15,6 +14,9 @@ using namespace std;
 
 //--------------------------------------------------------
 //		CLASS: Renderer
+//
+//		This rendering subsystem handles all drawing to
+//		the screen (device) for our game.  
 //--------------------------------------------------------
 
 class Renderer 
