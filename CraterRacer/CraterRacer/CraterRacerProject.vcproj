@@ -666,6 +666,14 @@
 			Name="SubSystem Files"
 			>
 			<File
+				RelativePath=".\Source Code\Subsystem Files\GameCamera.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source Code\Subsystem Files\GameCamera.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Source Code\Subsystem Files\Input.cpp"
 				>
 			</File>
