@@ -26,6 +26,7 @@ public:
 	PlayerVehicle( Device* device );
 
 	void update( void );
+	void setInput(Input::Arrow dir, bool isKeyDown);
 
 };
 

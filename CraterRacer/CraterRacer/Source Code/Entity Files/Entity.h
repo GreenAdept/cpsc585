@@ -10,8 +10,7 @@
 #include "DXUT.h"
 #include "..\Utility Files\Constants.h"
 #include "Renderable.h"
-
-using namespace std;
+#include "Input.h"
 
 
 //-----------------------------------------------------------------
@@ -35,12 +34,15 @@ public:
 	Renderable*		getRenderable( );
 	virtual void	update( void ) {}
 
+	void setInput(Input::Arrow dir, bool isKeyDown);
+
 protected: 
 	
 	//Accessible to all inheriting classes ---------------------
 
 	Renderable*		m_pRenderable; 
 	Vec3			m_vPosition;
+
 
 };
 
