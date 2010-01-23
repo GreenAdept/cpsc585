@@ -5,9 +5,11 @@
 class Input
 {
 public:
-	enum Arrow { LEFT, UP, RIGHT, DOWN };
+	static enum Arrow { LEFT, UP, RIGHT, DOWN };
 
 	Input(void);
+	void setInput(Arrow dir, bool isKeyDown);
+	void reset();
 
 private:
 	bool inputs[4];
