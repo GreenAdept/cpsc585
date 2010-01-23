@@ -44,6 +44,11 @@ Renderable* Entity::getRenderable( )
 	return m_pRenderable->getUpdatedRenderable( m_vPosition );
 }
 
+void Entity::update( Vec3 newPosition )
+{
+	m_vPosition = newPosition;
+}
+
 void Entity::setInput(Input::Arrow dir, bool isKeyDown)
 {
 

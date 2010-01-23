@@ -32,16 +32,18 @@ public:
 	~Entity( );
 		
 	Renderable*		getRenderable( );
-	virtual void	update( void ) {}
+	virtual void	update( Vec3 newPosition );
 
 	void setInput(Input::Arrow dir, bool isKeyDown);
+
+private:
+	Vec3			m_vPosition;
 
 protected: 
 	
 	//Accessible to all inheriting classes ---------------------
 
 	Renderable*		m_pRenderable; 
-	Vec3			m_vPosition;
 
 
 };
