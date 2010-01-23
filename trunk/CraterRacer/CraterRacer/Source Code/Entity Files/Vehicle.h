@@ -8,6 +8,8 @@
 
 #include <iostream>
 #include "Entity.h"
+#include "Input.h"
+#include "VehicleAI.h"
 
 using namespace std;
 
@@ -30,6 +32,10 @@ public:
 	Vehicle( Device* );
 
 	virtual void update(void) = 0;
+	virtual void setInput(Input::Arrow dir, bool isKeyDown) = 0;
+
+protected:
+	VehicleAI mind;
 
 };
 

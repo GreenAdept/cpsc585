@@ -24,3 +24,8 @@ void PlayerVehicle::update( )
 {
 	
 }
+
+void PlayerVehicle::setInput(Input::Arrow dir, bool isKeyDown)
+{
+	mind.setInput(dir, isKeyDown);
+}

@@ -43,3 +43,8 @@ Renderable* Entity::getRenderable( )
 {
 	return m_pRenderable->getUpdatedRenderable( m_vPosition );
 }
+
+void Entity::setInput(Input::Arrow dir, bool isKeyDown)
+{
+
+}

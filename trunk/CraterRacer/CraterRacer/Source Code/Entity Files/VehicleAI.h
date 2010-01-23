@@ -5,7 +5,8 @@ class VehicleAI : public AI
 {
 public:
 	VehicleAI();
-	~VehicleAI();
+	void setInput(Input::Arrow dir, bool isKeyDown);
+
 private:
 	Input input;
 

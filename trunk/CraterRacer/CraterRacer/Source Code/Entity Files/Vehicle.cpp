@@ -6,5 +6,4 @@
 
 Vehicle::Vehicle( Device* device ): Entity( device )
 {
-
 }
