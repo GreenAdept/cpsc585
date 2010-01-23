@@ -30,8 +30,28 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 //--------------------------------------------------------------------------------------
 void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 {
-
-
+	Entity e = *(m_Entities[0]);
+	switch (virtualKeyCode)
+	{
+	case VK_LEFT:
+		//add left-ward force to player vehicle
+		e.setInput(Input::Arrow::LEFT, isKeyDown);
+		break;
+	case VK_UP:
+		//add upward force to player vehicle
+		e.setInput(Input::Arrow::UP, isKeyDown);
+		break;
+	case VK_RIGHT:
+		//add right-ward force to player vehicle
+		e.setInput(Input::Arrow::RIGHT, isKeyDown);
+		break;
+	case VK_DOWN:
+		//add downward force to player vehicle
+		e.setInput(Input::Arrow::DOWN, isKeyDown);
+		break;
+	default:
+		break;
+	}
 }
 
 
