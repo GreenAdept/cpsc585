@@ -9,8 +9,6 @@
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
 
-//#include <GL/glut.h>
-
 #include <stdio.h>
 
 #include "NxPhysics.h"
@@ -21,14 +19,22 @@
 class Simulator {
 public:
 	Simulator();
-	void simulate(vector<Entity*> entities);
+	void simulate(vector<Entity*> entities, double elapsedTime);
+private:
+	void InitNx(void);
+	NxActor* createGroundPlane(void);
+	NxActor* createBox(void);
+	void startPhysics(double deltaTime);
+
+	NxActor* groundPlane;
+	NxActor* gSelectedActor;
 };
 
 /*#include "DrawObjects.h"
 #include "HUD.h"
 
 #include "DebugRenderer.h"
-#include "CommonCode.h"
+#include "CommonCode.h"*/
 
 /*void PrintControls();
 void ProcessCameraKeys();
@@ -61,15 +67,15 @@ NxActor* CreateBounds3();
 NxActor* CreateSegment();
 NxActor* CreateRay();
 
-void InitializeHUD();
+//void InitializeHUD();
 
 void InitNx();
 void ReleaseNx();
 void ResetNx();
 
 void StartPhysics();
-void GetPhysicsResults();
+void GetPhysicsResults();*/
 
-int main(int argc, char** argv);*/
+//int main(int argc, char** argv);
 
 #endif SIMULATOR_H

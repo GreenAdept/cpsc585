@@ -714,11 +714,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Simulator.cpp"
+				RelativePath=".\Source Code\Subsystem Files\Simulator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Simulator.h"
+				RelativePath=".\Source Code\Subsystem Files\Simulator.h"
 				>
 			</File>
 		</Filter>
