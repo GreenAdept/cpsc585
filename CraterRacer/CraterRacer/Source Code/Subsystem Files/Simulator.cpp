@@ -13,6 +13,79 @@ NxPhysicsSDK*     gPhysicsSDK = NULL;
 NxScene*          gScene = NULL;
 NxVec3            gDefaultGravity(0,-9.8,0);
 
+Simulator::Simulator() {
+	InitNx();
+}
+
+void Simulator::simulate(vector<Entity*> entities, double elapsedTime) {
+	startPhysics(elapsedTime);
+}
+
+void Simulator::InitNx() {
+	//Create the Phyics SDK
+	gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
+	if (!gPhysicsSDK) return;
+
+	//Create the scene
+	NxSceneDesc sceneDesc;
+	sceneDesc.gravity = gDefaultGravity;
+	sceneDesc.simType = NX_SIMULATION_SW;
+	gScene = gPhysicsSDK->createScene(sceneDesc);
+
+	//Set the physics parameters
+	gPhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.01);
+
+	//Set the debug visualization parameters
+	gPhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 1);
+	gPhysicsSDK->setParameter(NX_VISUALIZE_COLLISION_SHAPES, 1);
+	gPhysicsSDK->setParameter(NX_VISUALIZE_ACTOR_AXES, 1);
+
+	//Create the default material
+	NxMaterial* defaultMaterial = gScene->getMaterialFromIndex(0);
+	defaultMaterial->setRestitution(0.5);
+	defaultMaterial->setStaticFriction(0.5);
+	defaultMaterial->setDynamicFriction(0.5);
+
+	//Create the objects in the scene
+	groundPlane = createGroundPlane();
+	gSelectedActor = createBox();
+}
+
+NxActor* Simulator::createGroundPlane() {
+	NxPlaneShapeDesc planeDesc;
+	NxActorDesc actorDesc;
+	actorDesc.shapes.pushBack(&planeDesc);
+	return gScene->createActor(actorDesc);
+}
+
+NxActor* Simulator::createBox() {
+	//The height of the box
+	NxReal boxStartHeight = 3.5;
+
+	//Add a single shape actor to the scene
+	NxActorDesc actorDesc;
+	NxBodyDesc bodyDesc;
+
+	//The actor has one shape, a box, 1m on a side
+	NxBoxShapeDesc boxDesc;
+	boxDesc.dimensions.set(0.5, 0.5, 0.5);
+	actorDesc.shapes.pushBack(&boxDesc);
+
+	actorDesc.body = &bodyDesc;
+	actorDesc.density = 10.0f;
+	actorDesc.globalPose.t = NxVec3(0, boxStartHeight, 0);
+	assert(actorDesc.isValid());
+	NxActor* pActor = gScene->createActor(actorDesc);
+	assert(pActor);
+
+	return pActor;
+}
+
+void Simulator::startPhysics(double deltaTime) {
+	gScene->simulate(deltaTime);
+	gScene->flushStream();
+}
+
 // User report globals
 //DebugRenderer     gDebugRenderer;
 
@@ -20,9 +93,9 @@ NxVec3            gDefaultGravity(0,-9.8,0);
 //HUD hud;
  
 // Display globals
-int gMainHandle;
+/*int gMainHandle;
 int mx = 0;
-int my = 0;
+int my = 0;*/
 
 /*// Camera globals
 float	gCameraAspectRatio = 1.0f;
@@ -32,12 +105,12 @@ NxVec3	gCameraRight(-1,0,0);
 const NxReal gCameraSpeed = 10;*/
 
 // Force globals
-NxVec3	gForceVec(0,0,0);
+/*NxVec3	gForceVec(0,0,0);
 NxReal	gForceStrength	= 20000;
-bool	bForceMode		= true;
+bool	bForceMode		= true;*/
 
 // Keyboard globals
-#define MAX_KEYS 256
+/*#define MAX_KEYS 256
 bool gKeys[MAX_KEYS];
 
 // Simulation globals
@@ -45,17 +118,13 @@ NxReal	gDeltaTime			= 1.0/60.0;
 bool	bHardwareScene		= false;
 bool	bPause				= false;
 bool	bShadows			= true;
-bool	bDebugWireframeMode = false;
+bool	bDebugWireframeMode = false;*/
 
 // Actor globals
 /*NxActor* groundPlane = NULL;
 
 // Focus actor
 NxActor* gSelectedActor = NULL;*/
-
-Simulator::Simulator() {}
-
-void Simulator::simulate(vector<Entity*> entities) {}
 
 /*void PrintControls()
 {

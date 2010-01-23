@@ -67,7 +67,7 @@ void GameObj::render( Device* device )
 //--------------------------------------------------------------------------------------
 void GameObj::simulate( float fElapsedTime )
 {
-	//m_Simulator.simulate(entities);
+	m_Simulator.simulate(m_Entities, fElapsedTime);
 }
 
 
