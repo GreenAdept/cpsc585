@@ -9,25 +9,29 @@
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
 
-#include <stdio.h>
+#include <iostream>
+#include <vector>
+
 
 #include "NxPhysics.h"
 
 #include "Entity.h"
-#include <vector>
+
+using namespace std;
 
 class Simulator {
 public:
 	Simulator();
 	void simulate(vector<Entity*> entities, double elapsedTime);
+	NxActor* createBox(Vec3 pos, double size);
 private:
 	void InitNx(void);
 	NxActor* createGroundPlane(void);
-	NxActor* createBox(void);
-	void startPhysics(double deltaTime);
-
-	NxActor* groundPlane;
-	NxActor* gSelectedActor;
+	void startPhysics(void);
+	void getPhysicsResults(void);
+	void processInput(void);
+	void processForceKeys(void);
+	NxVec3 applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength);
 };
 
 /*#include "DrawObjects.h"

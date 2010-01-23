@@ -1,24 +1,40 @@
-// ===============================================================================
-//						  NVIDIA PHYSX SDK TRAINING PROGRAMS
-//						     LESSON 101 : PRIMARY SHAPE
-//
-//						    Written by QA BJ, 6-2-2008
-// ===============================================================================
-
 #include "Simulator.h"
-//#include "UpdateTime.h"
 
 // Physics SDK globals
 NxPhysicsSDK*     gPhysicsSDK = NULL;
 NxScene*          gScene = NULL;
 NxVec3            gDefaultGravity(0,-9.8,0);
 
+//Force globals
+NxVec3 gForceVec(0, 0, 0);
+NxReal gForceStrength = 20000;
+bool bForceMode = true;
+
+// Keyboard globals
+#define MAX_KEYS 256
+bool gKeys[MAX_KEYS];
+
+//Time global
+double deltaTime;
+
+//Actor globals
+NxActor* groundPlane = NULL;
+NxActor* gSelectedActor = NULL;
+Vec3 boxPos;
+double boxSize;
+
 Simulator::Simulator() {
 	InitNx();
 }
 
 void Simulator::simulate(vector<Entity*> entities, double elapsedTime) {
-	startPhysics(elapsedTime);
+	deltaTime = elapsedTime;
+	startPhysics();
+	getPhysicsResults();
+
+	//Update entities
+	NxVec3 vec = gSelectedActor->getGlobalPosition();
+	entities[0]->update(Vec3(vec.x, vec.y, vec.z));
 }
 
 void Simulator::InitNx() {
@@ -48,7 +64,7 @@ void Simulator::InitNx() {
 
 	//Create the objects in the scene
 	groundPlane = createGroundPlane();
-	gSelectedActor = createBox();
+	//gSelectedActor = createBox(Vec3(), 5);
 }
 
 NxActor* Simulator::createGroundPlane() {
@@ -58,7 +74,7 @@ NxActor* Simulator::createGroundPlane() {
 	return gScene->createActor(actorDesc);
 }
 
-NxActor* Simulator::createBox() {
+NxActor* Simulator::createBox(Vec3 pos, double size) {
 	//The height of the box
 	NxReal boxStartHeight = 3.5;
 
@@ -68,23 +84,74 @@ NxActor* Simulator::createBox() {
 
 	//The actor has one shape, a box, 1m on a side
 	NxBoxShapeDesc boxDesc;
-	boxDesc.dimensions.set(0.5, 0.5, 0.5);
+	//boxDesc.dimensions.set(0.5, 0.5, 0.5);
+	boxDesc.dimensions.set(size, size, size);
 	actorDesc.shapes.pushBack(&boxDesc);
 
 	actorDesc.body = &bodyDesc;
 	actorDesc.density = 10.0f;
-	actorDesc.globalPose.t = NxVec3(0, boxStartHeight, 0);
+	//actorDesc.globalPose.t = NxVec3(0, boxStartHeight, 0);
+	actorDesc.globalPose.t = NxVec3(pos.x, pos.y, pos.z);
 	assert(actorDesc.isValid());
 	NxActor* pActor = gScene->createActor(actorDesc);
 	assert(pActor);
 
+	gSelectedActor = pActor;
+
 	return pActor;
 }
 
-void Simulator::startPhysics(double deltaTime) {
+void Simulator::startPhysics() {
 	gScene->simulate(deltaTime);
 	gScene->flushStream();
 }
+
+void Simulator::getPhysicsResults() {
+	while (!gScene->fetchResults(NX_RIGID_BODY_FINISHED, true));
+	processInput();
+}
+
+void Simulator::processInput() {
+	processForceKeys();
+}
+
+void Simulator::processForceKeys() {
+	// Process force keys
+	for (int i = 0; i < MAX_KEYS; i++)
+	{	
+		if (!gKeys[i])  { continue; }
+
+		switch (i)
+		{
+			// Force controls
+			case 'i': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0,1),gForceStrength);		break; }
+			case 'k': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0,-1),gForceStrength);	break; }
+			case 'j': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(1,0,0),gForceStrength);		break; }
+			case 'l': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(-1,0,0),gForceStrength);	break; }
+			case 'u': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,1,0),gForceStrength);		break; }
+			case 'm': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,-1,0),gForceStrength);	break; }
+
+		    // Return box to (0,3.5,0)
+			case 't': 
+			{ 
+				if (gSelectedActor) 
+				{
+					gSelectedActor->setGlobalPosition(NxVec3(0,3.5,0)); 
+					gScene->flushCaches();
+				}
+				break; 
+			}
+		}
+	}
+}
+
+NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength) {
+	NxVec3 forceVec = forceStrength*forceDir*deltaTime;
+	actor->addForce(forceVec);
+	return forceVec;
+}
+
+
 
 // User report globals
 //DebugRenderer     gDebugRenderer;
