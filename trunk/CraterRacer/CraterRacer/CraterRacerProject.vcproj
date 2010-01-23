@@ -577,6 +577,10 @@
 				Name="CPP Files"
 				>
 				<File
+					RelativePath=".\Source Code\Entity Files\AI.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Source Code\Entity Files\AIVehicle.cpp"
 					>
 				</File>
@@ -604,14 +608,14 @@
 					RelativePath=".\Source Code\Entity Files\Vehicle.cpp"
 					>
 				</File>
+				<File
+					RelativePath=".\Source Code\Entity Files\VehicleAI.cpp"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Header Files"
 				>
-				<File
-					RelativePath=".\Source Code\Entity Files\AI.cpp"
-					>
-				</File>
 				<File
 					RelativePath=".\Source Code\Entity Files\AI.h"
 					>
@@ -642,10 +646,6 @@
 				</File>
 				<File
 					RelativePath=".\Source Code\Entity Files\Vehicle.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Source Code\Entity Files\VehicleAI.cpp"
 					>
 				</File>
 				<File
