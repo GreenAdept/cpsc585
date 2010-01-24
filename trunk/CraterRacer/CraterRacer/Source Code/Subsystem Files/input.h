@@ -9,6 +9,7 @@ public:
 
 	Input(void);
 	void setInput(Arrow dir, bool isKeyDown);
+	bool* getInput();
 	void reset();
 
 private:

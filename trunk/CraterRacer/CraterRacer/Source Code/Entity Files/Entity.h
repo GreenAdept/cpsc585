@@ -36,6 +36,7 @@ public:
 	void			update( Vec3 newPostion, Matrix* mat );
 
 	void setInput(Input::Arrow dir, bool isKeyDown);
+	bool* getInput();
 
 private:
 	Vec3			m_vPosition;

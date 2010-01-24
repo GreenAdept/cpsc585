@@ -25,8 +25,9 @@ public:
 	PlayerVehicle( void );
 	PlayerVehicle( Device* device );
 
-	void update( void );
+	//void update( void );
 	void setInput(Input::Arrow dir, bool isKeyDown);
+	bool* getInput();
 
 };
 
