@@ -19,5 +19,5 @@ void Input::reset()
 
 void Input::setInput(Input::Arrow dir, bool isKeyDown)
 {
-	inputs[dir] = true;
+	inputs[dir] = isKeyDown;
 }
