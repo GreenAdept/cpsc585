@@ -59,3 +59,9 @@ void Entity::setInput(Input::Arrow dir, bool isKeyDown)
 {
 
 }
+
+bool* Entity::getInput()
+{
+	bool input[] = { false, false, false, false };
+	return input;
+}

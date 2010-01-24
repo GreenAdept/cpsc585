@@ -21,3 +21,8 @@ void Input::setInput(Input::Arrow dir, bool isKeyDown)
 {
 	inputs[dir] = isKeyDown;
 }
+
+bool* Input::getInput()
+{
+	return inputs;
+}
