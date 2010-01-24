@@ -49,6 +49,12 @@ void Entity::update( Vec3 newPosition )
 	m_vPosition = newPosition;
 }
 
+void Entity::update( Vec3 newPosition, Matrix* mat )
+{
+	m_vPosition = newPosition;
+	m_pRenderable->m_matWorld = *mat;
+}
+
 void Entity::setInput(Input::Arrow dir, bool isKeyDown)
 {
 

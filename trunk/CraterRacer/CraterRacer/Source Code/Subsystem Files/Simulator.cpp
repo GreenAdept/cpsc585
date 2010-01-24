@@ -20,24 +20,37 @@ double deltaTime;
 //Actor globals
 NxActor* groundPlane = NULL;
 NxActor* gSelectedActor = NULL;
+vector< NxActor* > gActors;
 Vec3 boxPos;
 double boxSize;
 
-Simulator::Simulator() {
+
+Simulator::Simulator() 
+{
 	InitNx();
 }
 
-void Simulator::simulate(vector<Entity*> entities, double elapsedTime) {
+
+void Simulator::simulate( vector<Entity*> entities, double elapsedTime ) 
+{
+	NxF32* mat;
 	deltaTime = elapsedTime;
 	startPhysics();
 	getPhysicsResults();
 
-	//Update entities
-	NxVec3 vec = gSelectedActor->getGlobalPosition();
-	entities[0]->update(Vec3(vec.x, vec.y, vec.z));
+	//Update all the entity positions based on PhysX simulated actor positions
+	for( int i=0; i < gActors.size(); i++ )
+	{
+		NxVec3 vec = gActors[i]->getGlobalPosition();
+		gActors[i]->getGlobalPose().getRowMajor44( mat );
+		
+		entities[0]->update( Vec3(vec.x, vec.y, vec.z) );//, (Matrix*)&mat[0] );
+	}
 }
 
-void Simulator::InitNx() {
+
+void Simulator::InitNx( void ) 
+{
 	//Create the Phyics SDK
 	gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
 	if (!gPhysicsSDK) return;
@@ -62,17 +75,19 @@ void Simulator::InitNx() {
 	defaultMaterial->setStaticFriction(0.5);
 	defaultMaterial->setDynamicFriction(0.5);
 
-	//Create the objects in the scene
-	groundPlane = createGroundPlane();
-	//gSelectedActor = createBox(Vec3(), 5);
+	//Create the ground
+	groundPlane = createGroundPlane( );
 }
 
-NxActor* Simulator::createGroundPlane() {
+
+NxActor* Simulator::createGroundPlane() 
+{
 	NxPlaneShapeDesc planeDesc;
 	NxActorDesc actorDesc;
 	actorDesc.shapes.pushBack(&planeDesc);
 	return gScene->createActor(actorDesc);
 }
+
 
 NxActor* Simulator::createBox(Vec3 pos, double size) {
 	//The height of the box
@@ -101,19 +116,26 @@ NxActor* Simulator::createBox(Vec3 pos, double size) {
 	return pActor;
 }
 
-void Simulator::startPhysics() {
+
+void Simulator::startPhysics() 
+{
 	gScene->simulate(deltaTime);
 	gScene->flushStream();
 }
 
-void Simulator::getPhysicsResults() {
+
+void Simulator::getPhysicsResults() 
+{
 	while (!gScene->fetchResults(NX_RIGID_BODY_FINISHED, true));
 	processInput();
 }
 
-void Simulator::processInput() {
+
+void Simulator::processInput()
+{
 	processForceKeys();
 }
+
 
 void Simulator::processForceKeys() {
 	// Process force keys
@@ -151,6 +173,135 @@ NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, cons
 	return forceVec;
 }
 
+
+//--------------------------------------------------------------------------------------
+// Function:  Destructor
+// Clears up all the memory used by PhysX by releasing all actors, the scene and the
+// Physics SDK.
+//--------------------------------------------------------------------------------------
+Simulator::~Simulator() 
+{
+	//release all actors
+	for( int i=0; i < gActors.size(); i++ )
+	{
+		gScene->releaseActor( *gActors[i] );
+		gActors[i] = NULL;
+	}
+	
+	//now release the scene and physics SDK
+	if(gPhysicsSDK != NULL)
+	{
+		if(gScene != NULL) gPhysicsSDK->releaseScene(*gScene);
+		gScene = NULL;
+		NxReleasePhysicsSDK(gPhysicsSDK);
+		gPhysicsSDK = NULL;
+	}
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  addActor
+// Creates an actor under PhysX simulation based on specified mesh and position.  The
+// actor is added to the the list of all scene objects.
+//--------------------------------------------------------------------------------------
+void Simulator::addActor( Mesh* mesh, Vec3& pos )
+{
+	gActors.push_back( createMeshActor( mesh, pos ) );
+}
+
+
+
+//--------------------------------------------------------------------------------------
+// Function:  getVertsFromDXMesh
+// Creates a list of NxVec3 vertices from a mesh object.
+// This function is adapted from one off of gamedev.net at the following link.  This is just
+// temporary to get it working for milestone 1.
+// http://www.gamedev.net/community/forums/topic.asp?topic_id=534809&forum_id=10&gforum_id=0
+//--------------------------------------------------------------------------------------
+NxVec3* Simulator::getVertsFromDXMesh( Mesh* mesh )
+{
+	//initialize variables we need in this function
+	DWORD numVerts		= mesh->m_dwNumVertices;
+	DWORD numFaces		= mesh->m_dwNumFaces;
+	NxVec3* verts		= new NxVec3[ numVerts ]; //the vertices we will be returning
+	BYTE *ptr			= NULL;
+	BYTE *lpIB			= NULL;
+	LPD3DXMESH mesh_dx	= mesh->GetMesh(); 
+	DWORD fvf;
+	DWORD vertSize;
+
+	//get the vertex format and its size
+	fvf = mesh_dx->GetFVF();
+	vertSize = D3DXGetFVFVertexSize(fvf);
+
+	//transfer vertex values from DXMesh into NX verts list
+	mesh_dx->LockVertexBuffer(0, (LPVOID*)&ptr);
+	for( DWORD i=0; i < numVerts; i++ )
+	{
+		NxVec3 *vPtr =( NxVec3* )ptr;
+		verts[i].x = vPtr->x;
+		verts[i].y = vPtr->y;
+		verts[i].z = vPtr->z;
+		ptr += vertSize;		
+	}
+	mesh_dx->UnlockVertexBuffer();
+	return verts;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  createMeshActor
+// Creates a PhysX actor given a mesh and position.  It returns the pointer to the new
+// actor.  This function was adapted from a couple examples off of gamedev.net.
+// http://www.gamedev.net/community/forums
+//--------------------------------------------------------------------------------------
+NxActor* Simulator::createMeshActor( Mesh* mesh, Vec3& pos )
+{
+	NxBodyDesc bodyDesc;
+	NxConvexMeshDesc temp_convexDesc;
+
+	//set up the description of a convex mesh using data from our known Mesh
+	temp_convexDesc.numVertices		 = mesh->m_dwNumVertices;
+	temp_convexDesc.pointStrideBytes = sizeof( NxVec3 );
+	temp_convexDesc.points			 = getVertsFromDXMesh( mesh );
+	temp_convexDesc.flags 			 = NX_CF_COMPUTE_CONVEX;
+	bodyDesc.solverIterationCount	 = 3;
+
+	//set up the description of the actor's shape we will create
+	NxConvexShapeDesc convexShapeDesc;
+	convexShapeDesc.localPose.t		= NxVec3(0,0,0);
+	convexShapeDesc.mass			= 0;
+	convexShapeDesc.density			= .001;
+
+	//get PhysX to build it's own version of the mesh based on our temp description
+	NxInitCooking();
+	MemoryWriteBuffer buf;
+	bool status = NxCookConvexMesh( temp_convexDesc, buf );
+
+	//save this new mesh in our actor's shape description
+	MemoryReadBuffer readBuffer( buf.data );
+	convexShapeDesc.meshData = gPhysicsSDK->createConvexMesh( readBuffer );
+
+	//initialize our actor and add the new PhysX mesh to it
+	NxActorDesc actorDesc;
+	bodyDesc.linearVelocity = NxVec3(0.0);
+	actorDesc.shapes.pushBack( &convexShapeDesc );
+	actorDesc.body = &bodyDesc;
+	actorDesc.density = 10.0;
+
+	actorDesc.globalPose.t = NxVec3(pos.x, pos.y, pos.z);
+	assert(actorDesc.isValid());
+
+	//create the actor and add it to the global scene
+	NxActor* pActor = gScene->createActor(actorDesc);
+	assert(pActor);
+	actorDesc.contactReportFlags = NX_NOTIFY_ALL;
+
+	//clear up the temporary description
+	delete temp_convexDesc.points;
+
+	return pActor;
+}
 
 
 // User report globals

@@ -8,7 +8,7 @@
 
 #include <iostream>
 #include "DXUT.h"
-#include "..\Utility Files\Constants.h"
+#include "Constants.h"
 #include "Renderable.h"
 #include "Input.h"
 
@@ -33,6 +33,7 @@ public:
 		
 	Renderable*		getRenderable( );
 	virtual void	update( Vec3 newPosition );
+	void			update( Vec3 newPostion, Matrix* mat );
 
 	void setInput(Input::Arrow dir, bool isKeyDown);
 
@@ -44,7 +45,6 @@ protected:
 	//Accessible to all inheriting classes ---------------------
 
 	Renderable*		m_pRenderable; 
-
 
 };
 
