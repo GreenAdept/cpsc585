@@ -11,17 +11,23 @@
 //--------------------------------------------------------------------------------------
 void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurface )
 {
+	m_Simulator = new Simulator();
+
 	//init camera to new device, with perspective view
-	m_Camera.updateWindow (pSurface);
+	m_Camera.updateWindow( pSurface );
 
 	//testing...adding one entity/object to the list, first make sure the list is empty
 	for( unsigned int i = 0; i < m_Entities.size(); i++ ) 
 		delete m_Entities[i];
+	PlayerVehicle *pv = new PlayerVehicle( device );
+	
+	//add this new entity to simulator subsystem so it can be managed by PhysX
+	Vec3 pos( 0.0f, 10.0f, 0.0f );
+	m_Simulator->addActor( pv->getRenderable()->m_pMesh, pos );
 
-	PlayerVehicle *pv = new PlayerVehicle (device);
 	m_Entities.clear();
-	m_Entities.push_back (pv);
-	m_Camera.setTarget (pv);
+	m_Entities.push_back( pv );
+	m_Camera.setTarget( pv );
 }
 
 
@@ -30,24 +36,24 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 //--------------------------------------------------------------------------------------
 void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 {
-	Entity e = *(m_Entities[0]);
+	Entity* e = m_Entities[0];
 	switch (virtualKeyCode)
 	{
 	case VK_LEFT:
 		//add left-ward force to player vehicle
-		e.setInput(Input::Arrow::LEFT, isKeyDown);
+		e->setInput(Input::Arrow::LEFT, isKeyDown);
 		break;
 	case VK_UP:
 		//add upward force to player vehicle
-		e.setInput(Input::Arrow::UP, isKeyDown);
+		e->setInput(Input::Arrow::UP, isKeyDown);
 		break;
 	case VK_RIGHT:
 		//add right-ward force to player vehicle
-		e.setInput(Input::Arrow::RIGHT, isKeyDown);
+		e->setInput(Input::Arrow::RIGHT, isKeyDown);
 		break;
 	case VK_DOWN:
 		//add downward force to player vehicle
-		e.setInput(Input::Arrow::DOWN, isKeyDown);
+		e->setInput(Input::Arrow::DOWN, isKeyDown);
 		break;
 	default:
 		break;
@@ -77,8 +83,12 @@ void GameObj::render( Device* device )
 		renderables[i] = m_Entities[i]->getRenderable( );
 	}
 
+	
+	m_Renderer->renderFloor( );
+
 	// pass the renderables off to the renderer to do all the work
 	m_Renderer->render( device, renderables, m_Camera.getCamera() );
+
 }
 
 
@@ -87,7 +97,7 @@ void GameObj::render( Device* device )
 //--------------------------------------------------------------------------------------
 void GameObj::simulate( float fElapsedTime )
 {
-	m_Simulator.simulate(m_Entities, fElapsedTime);
+	m_Simulator->simulate(m_Entities, fElapsedTime);
 }
 
 
@@ -140,4 +150,7 @@ GameObj::~GameObj( )
 		if( m_Entities[i] )
 			delete m_Entities[i];
 	}
+
+	if( m_Simulator )
+		delete m_Simulator;
 }

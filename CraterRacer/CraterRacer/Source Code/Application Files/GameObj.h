@@ -50,7 +50,7 @@ private:
 	Renderer*		m_Renderer;		// rendering subsystem
 	Input			m_InputManager;	// input management subsystem
 	GameCamera		m_Camera;		// main camera to follow behind vehicle
-	Simulator		m_Simulator;
+	Simulator*		m_Simulator;
 };
 
 #endif GAME_OBJ_H 

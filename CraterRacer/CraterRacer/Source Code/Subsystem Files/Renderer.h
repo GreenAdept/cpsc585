@@ -29,8 +29,8 @@ public:
 	Renderer ( ) {}
 	~Renderer( ) {}
 
-	void render( Device* device, vector<Renderable*>, MCamera& );
-
+	void render		( Device* device, vector<Renderable*>, MCamera& );
+	void renderFloor( );
 
 private:
 

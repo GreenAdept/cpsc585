@@ -6,6 +6,18 @@
 #include "Renderer.h"
 
 //--------------------------------------------------------------------------------------
+// Function: renderFloor
+// This function is temporary.  It draws the floor as a simple plane at (0,0,0).  
+// Eventually the track mesh will be drawn instead.
+//--------------------------------------------------------------------------------------
+void Renderer::renderFloor( )
+{
+	
+
+}
+
+
+//--------------------------------------------------------------------------------------
 // Function: render
 // Draws objects to the specified screen (device).  These renderables of these objects 
 // are passed to this function and contain all the rendering-specific information needed

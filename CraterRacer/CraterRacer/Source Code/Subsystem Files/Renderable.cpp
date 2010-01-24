@@ -34,7 +34,8 @@ Renderable::Renderable( const Renderable& renderableCopy  )
 	m_hRenderObj = m_pEffect->GetTechniqueByName( "RenderScene" );
 
 	// Compute the objects world matrix and bounding box
-	computeMeshWorldMatrix( m_pMesh->GetMesh(), m_matWorld );
+	D3DXMatrixIdentity( &m_matWorld );
+	//computeMeshWorldMatrix( m_pMesh->GetMesh(), m_matWorld );
 }
 
 

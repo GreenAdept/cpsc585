@@ -11,21 +11,33 @@
 
 #include <iostream>
 #include <vector>
-
+#include "Constants.h"
 
 #include "NxPhysics.h"
-
+#include "NxCooking.h"
+#include "Stream.h"
 #include "Entity.h"
 
 using namespace std;
 
-class Simulator {
+class Simulator 
+{
+
 public:
+
 	Simulator();
+	~Simulator();
+
 	void simulate(vector<Entity*> entities, double elapsedTime);
-	NxActor* createBox(Vec3 pos, double size);
+	void addActor( Mesh* mesh, Vec3& pos );
+
 private:
-	void InitNx(void);
+
+	void InitNx();
+
+	NxVec3* getVertsFromDXMesh( Mesh* mesh );
+	NxActor* createMeshActor( Mesh* mesh,  Vec3& pos );
+	NxActor* createBox(Vec3 pos, double size);
 	NxActor* createGroundPlane(void);
 	void startPhysics(void);
 	void getPhysicsResults(void);
