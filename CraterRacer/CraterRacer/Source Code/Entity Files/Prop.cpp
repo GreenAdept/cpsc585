@@ -6,7 +6,7 @@ The Prop entity.
 
 Prop::Prop() {
 	//renderable.canBeRendered = false;
-	Prop();
+	//Entity();
 	//cout << renderable.canBeRendered << endl;
 }
 

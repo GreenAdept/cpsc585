@@ -37,6 +37,7 @@ public:
 
 	virtual void setInput(Input::Arrow dir, bool isKeyDown) = 0;
 	virtual bool* getInput() = 0;
+	virtual void resetInput() = 0;
 
 private:
 	Vec3			m_vPosition;

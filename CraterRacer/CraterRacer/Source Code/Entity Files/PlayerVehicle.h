@@ -28,6 +28,7 @@ public:
 	//void update( void );
 	void setInput(Input::Arrow dir, bool isKeyDown);
 	bool* getInput();
+	void resetInput();
 
 };
 

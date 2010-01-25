@@ -14,4 +14,8 @@ bool* VehicleAI::getInput()
 	return input.getInput();
 }
 
+void VehicleAI::resetInput()
+{
+	input.reset();
+}
 

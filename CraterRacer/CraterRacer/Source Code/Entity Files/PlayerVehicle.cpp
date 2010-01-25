@@ -34,3 +34,8 @@ bool* PlayerVehicle::getInput()
 {
 	return mind.getInput();
 }
+
+void PlayerVehicle::resetInput()
+{
+	mind.resetInput();
+}
