@@ -3,11 +3,11 @@
 // Physics SDK globals
 NxPhysicsSDK*     gPhysicsSDK = NULL;
 NxScene*          gScene = NULL;
-NxVec3            gDefaultGravity(0,2,0);
+NxVec3            gDefaultGravity(0,-2,0);
 
 //Force globals
 NxVec3 gForceVec(0, 0, 0);
-NxReal gForceStrength = 100;
+NxReal gForceStrength = 10000;
 bool bForceMode = true;
 
 // Keyboard globals
@@ -43,21 +43,20 @@ void Simulator::simulate( vector<Entity*> entities, double elapsedTime )
 	startPhysics();
 	getPhysicsResults();
 
-	//Update all the entity positions based on PhysX simulated actor positions
-	for( int i=0; i < gActors.size(); i++ )
-	{
+	////Update all the entity positions based on PhysX simulated actor positions
+	//for( int i=0; i < gActors.size(); i++ )
+	//{
 		input = entities[0]->getInput();
 		processForceKeys();
 
 		entities[0]->resetInput();
 
-		NxVec3 vec = gActors[i]->getGlobalPosition();
-		gActors[i]->getGlobalPose().getRowMajor44( mat );
+		NxVec3 vec =  gSelectedActor->getGlobalPosition();//gActors[i]->getGlobalPosition();
+		//gActors[i]->getGlobalPose().getRowMajor44( mat );
 
 		entities[0]->update( Vec3(vec.x, vec.y, vec.z) );//, (Matrix*)&mat[0] );
 		debug.writeToFile(vec);
-
-	}
+	//}
 }
 
 
@@ -108,7 +107,7 @@ NxActor* Simulator::createGroundPlane()
 }
 
 
-NxActor* Simulator::createBox(Vec3 pos, double size) {
+void Simulator::createBox(Vec3 pos, double size) {
 	//The height of the box
 	NxReal boxStartHeight = 3.5;
 
@@ -131,8 +130,6 @@ NxActor* Simulator::createBox(Vec3 pos, double size) {
 	assert(pActor);
 
 	gSelectedActor = pActor;
-
-	return pActor;
 }
 
 
@@ -192,12 +189,12 @@ void Simulator::processForceKeys() {
 		if (!input[i]) { continue; } 
 		switch (i)
 		{
-			case 0: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0.1,0,0),gForceStrength);
+			case 0: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(-1,0,0),gForceStrength);
 				debug.writeToFile("left");
 				break; }
-			case 1: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0.1,0),gForceStrength); break; }
-			case 2: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(-0.1,0,0),gForceStrength); break; }
-			case 3: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,-0.1,0),gForceStrength); break; }
+			case 1: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,1,0),gForceStrength); break; }
+			case 2: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(1,0,0),gForceStrength); break; }
+			case 3: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,-1,0),gForceStrength); break; }
 		}
 	}
 	
