@@ -6,7 +6,6 @@
 //		INCLUDES
 //--------------------------------------------------------
 
-#include <iostream>
 #include "Entity.h"
 #include "Input.h"
 #include "VehicleAI.h"

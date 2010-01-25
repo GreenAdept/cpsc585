@@ -9,7 +9,6 @@
 #ifndef SIMULATOR_H
 #define SIMULATOR_H
 
-#include <iostream>
 #include <vector>
 #include "Constants.h"
 
