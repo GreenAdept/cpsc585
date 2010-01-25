@@ -7,16 +7,15 @@
 // Constructor:
 // The constructor for VehicleAI.
 //--------------------------------------------------------------------------------------
-VehicleAI::VehicleAI()
-{
+VehicleAI::VehicleAI() {
+
 }
 
 //--------------------------------------------------------------------------------------
 // Function: setInput
 // Delegates set input to input system.
 //--------------------------------------------------------------------------------------
-void VehicleAI::setInput(Input::Arrow dir, bool isKeyDown)
-{
+void VehicleAI::setInput(Input::Arrow dir, bool isKeyDown) {
 	input.setInput(dir, isKeyDown);
 }
 
@@ -24,8 +23,7 @@ void VehicleAI::setInput(Input::Arrow dir, bool isKeyDown)
 // Function: getInput
 // Delegates get input to input system.
 //--------------------------------------------------------------------------------------
-bool* VehicleAI::getInput()
-{
+bool* VehicleAI::getInput() {
 	return input.getInput();
 }
 
@@ -33,16 +31,23 @@ bool* VehicleAI::getInput()
 // Function: resetInput
 // Delegates reset input to input system.
 //--------------------------------------------------------------------------------------
-void VehicleAI::resetInput()
-{
+void VehicleAI::resetInput() {
 	input.reset();
+}
+
+//--------------------------------------------------------------------------------------
+// Function: setPosition
+// Informs the AI of the vehicle's current position.
+//--------------------------------------------------------------------------------------
+void VehicleAI::setPosition (Vec3 pos) {
+	position = pos;
 }
 
 //--------------------------------------------------------------------------------------
 // Function: think
 // A stub for the thinking section of the AI.
 //--------------------------------------------------------------------------------------
-void VehicleAI::think()
-{
+void VehicleAI::think() {
+
 }
 

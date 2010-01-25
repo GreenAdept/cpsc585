@@ -1,10 +1,15 @@
-/*
-The AI system.
-*/
+#ifndef AI_H
+#define AI_H
 
-class AI
-{
+//---------------------------------------------
+// Class: AI
+// AI abstract base class, from which concrete
+// AI classes will be derived.
+//---------------------------------------------
+
+class AI {
 public:
-	AI();
-	virtual void think() = 0;
+	virtual void think () = 0;
 };
+
+#endif
