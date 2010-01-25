@@ -1,3 +1,7 @@
+/*
+ The prop class.
+*/
+
 #pragma once
 #ifndef PROP_H
 #define PROP_H

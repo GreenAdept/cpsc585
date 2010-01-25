@@ -22,5 +22,4 @@ AIVehicle::AIVehicle( Device* device ): Vehicle( device )
 //--------------------------------------------------------------------------------------
 void AIVehicle::update( ) 
 {
-	cout << "test3" << endl;
 }

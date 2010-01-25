@@ -6,7 +6,6 @@
 //		INCLUDES
 //--------------------------------------------------------
 
-#include <iostream>
 #include "DXUT.h"
 #include "Constants.h"
 #include "Renderable.h"
