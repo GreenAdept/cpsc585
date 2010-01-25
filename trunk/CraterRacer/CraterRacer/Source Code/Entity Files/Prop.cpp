@@ -6,6 +6,17 @@ The Prop entity.
 
 Prop::Prop() {
 	//renderable.canBeRendered = false;
-	Entity();
+	Prop();
 	//cout << renderable.canBeRendered << endl;
+}
+
+void Prop::setInput(Input::Arrow dir, bool isKeyDown)
+{
+
+}
+
+bool* Prop::getInput()
+{
+	bool input[] = { false, false, false, false };
+	return input;
 }

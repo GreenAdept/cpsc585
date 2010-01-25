@@ -24,6 +24,8 @@ vector< NxActor* > gActors;
 Vec3 boxPos;
 double boxSize;
 
+bool* input = new bool[4];
+
 
 Simulator::Simulator() 
 {
@@ -41,9 +43,16 @@ void Simulator::simulate( vector<Entity*> entities, double elapsedTime )
 	//Update all the entity positions based on PhysX simulated actor positions
 	for( int i=0; i < gActors.size(); i++ )
 	{
+		input = entities[0]->getInput();
+		if (input[0]) gKeys[97] = true;
+		if (input[1]) gKeys[98] = true;
+		if (input[2]) gKeys[99] = true;
+		if (input[3]) gKeys[100] = true;
+		processForceKeys();
+
 		NxVec3 vec = gActors[i]->getGlobalPosition();
 		gActors[i]->getGlobalPose().getRowMajor44( mat );
-		
+
 		entities[0]->update( Vec3(vec.x, vec.y, vec.z) );//, (Matrix*)&mat[0] );
 	}
 }
@@ -77,6 +86,11 @@ void Simulator::InitNx( void )
 
 	//Create the ground
 	groundPlane = createGroundPlane( );
+
+	input[0] = false;
+	input[1] = false;
+	input[2] = false;
+	input[3] = false;
 }
 
 
@@ -139,6 +153,7 @@ void Simulator::processInput()
 
 void Simulator::processForceKeys() {
 	// Process force keys
+	/*
 	for (int i = 0; i < MAX_KEYS; i++)
 	{	
 		if (!gKeys[i])  { continue; }
@@ -146,10 +161,10 @@ void Simulator::processForceKeys() {
 		switch (i)
 		{
 			// Force controls
-			case 'i': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0,1),gForceStrength);		break; }
-			case 'k': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0,-1),gForceStrength);	break; }
-			case 'j': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(1,0,0),gForceStrength);		break; }
-			case 'l': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(-1,0,0),gForceStrength);	break; }
+			case 'a': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0,1),gForceStrength);		break; }
+			case 'b': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0,-1),gForceStrength);	break; }
+			case 'c': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(1,0,0),gForceStrength);		break; }
+			case 'd': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(-1,0,0),gForceStrength);	break; }
 			case 'u': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,1,0),gForceStrength);		break; }
 			case 'm': { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,-1,0),gForceStrength);	break; }
 
@@ -165,6 +180,20 @@ void Simulator::processForceKeys() {
 			}
 		}
 	}
+	*/
+	
+	for (int i = 0; i < 4; i++)
+	{
+		if (!input[i]) { continue; } 
+		switch (i)
+		{
+		case 0: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(-0.1,0,0),gForceStrength); break; }
+		case 1: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0,0.1),gForceStrength); break; }
+		case 2: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0.1,0,0),gForceStrength); break; }
+		case 3: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0,-0.1),gForceStrength); break; }
+		}
+	}
+	
 }
 
 NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength) {
@@ -299,7 +328,7 @@ NxActor* Simulator::createMeshActor( Mesh* mesh, Vec3& pos )
 
 	//clear up the temporary description
 	delete temp_convexDesc.points;
-
+	gSelectedActor = pActor;
 	return pActor;
 }
 
