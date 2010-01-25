@@ -7,7 +7,7 @@ NxVec3            gDefaultGravity(0,-9.8,0);
 
 //Force globals
 NxVec3 gForceVec(0, 0, 0);
-NxReal gForceStrength = 20000;
+NxReal gForceStrength = 500;
 bool bForceMode = true;
 
 // Keyboard globals
