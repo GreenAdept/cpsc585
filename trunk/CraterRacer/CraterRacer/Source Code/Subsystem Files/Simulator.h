@@ -17,6 +17,8 @@
 #include "Stream.h"
 #include "Entity.h"
 
+#include <iostream>
+
 using namespace std;
 
 class Simulator 

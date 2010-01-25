@@ -22,7 +22,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	PlayerVehicle *pv = new PlayerVehicle( device );
 	
 	//add this new entity to simulator subsystem so it can be managed by PhysX
-	Vec3 pos( 0.0f, 10.0f, 0.0f );
+	Vec3 pos( 0.0f, -10.0f, 0.0f );
 	m_Simulator->addActor( pv->getRenderable()->m_pMesh, pos );
 
 	m_Entities.clear();

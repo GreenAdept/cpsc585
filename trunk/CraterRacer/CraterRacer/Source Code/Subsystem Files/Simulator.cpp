@@ -3,11 +3,11 @@
 // Physics SDK globals
 NxPhysicsSDK*     gPhysicsSDK = NULL;
 NxScene*          gScene = NULL;
-NxVec3            gDefaultGravity(0,-9.8,0);
+NxVec3            gDefaultGravity(0,2,0);
 
 //Force globals
 NxVec3 gForceVec(0, 0, 0);
-NxReal gForceStrength = 500;
+NxReal gForceStrength = 100;
 bool bForceMode = true;
 
 // Keyboard globals
@@ -96,6 +96,8 @@ NxActor* Simulator::createGroundPlane()
 {
 	NxPlaneShapeDesc planeDesc;
 	NxActorDesc actorDesc;
+	//planeDesc.normal = NxVec3(0, -1, 0);
+	planeDesc.d = -10;
 	actorDesc.shapes.pushBack(&planeDesc);
 	return gScene->createActor(actorDesc);
 }
@@ -185,7 +187,9 @@ void Simulator::processForceKeys() {
 		if (!input[i]) { continue; } 
 		switch (i)
 		{
-			case 0: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0.1,0,0),gForceStrength); break; }
+			case 0: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0.1,0,0),gForceStrength);
+				cout << "left";
+				break; }
 			case 1: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0.1,0),gForceStrength); break; }
 			case 2: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(-0.1,0,0),gForceStrength); break; }
 			case 3: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,-0.1,0),gForceStrength); break; }
