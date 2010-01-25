@@ -26,6 +26,9 @@ double boxSize;
 
 bool* input = new bool[4];
 
+//Debugging
+DebugWriter debug;
+
 
 Simulator::Simulator() 
 {
@@ -188,7 +191,7 @@ void Simulator::processForceKeys() {
 		switch (i)
 		{
 			case 0: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0.1,0,0),gForceStrength);
-				cout << "left";
+				debug.writeToFile("left");
 				break; }
 			case 1: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0.1,0),gForceStrength); break; }
 			case 2: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(-0.1,0,0),gForceStrength); break; }
