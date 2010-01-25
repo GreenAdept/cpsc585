@@ -55,3 +55,6 @@ void Entity::update( Vec3 newPosition, Matrix* mat )
 	m_pRenderable->m_matWorld = *mat;
 }
 
+Vec3 Entity::getPosition() {
+	return m_vPosition;
+}

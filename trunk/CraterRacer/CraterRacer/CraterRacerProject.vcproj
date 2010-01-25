@@ -682,11 +682,11 @@
 			Name="SubSystem Files"
 			>
 			<File
-				RelativePath=".\DebugWriter.cpp"
+				RelativePath=".\Source Code\Subsystem Files\DebugWriter.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\DebugWriter.h"
+				RelativePath=".\Source Code\Subsystem Files\DebugWriter.h"
 				>
 			</File>
 			<File
@@ -735,6 +735,10 @@
 			>
 			<File
 				RelativePath=".\Source Code\Utility Files\Constants.h"
+				>
+			</File>
+			<File
+				RelativePath=".\debug.txt"
 				>
 			</File>
 			<File
