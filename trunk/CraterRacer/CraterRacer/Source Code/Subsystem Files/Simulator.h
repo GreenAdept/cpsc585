@@ -32,6 +32,7 @@ public:
 
 	void simulate(vector<Entity*> entities, double elapsedTime);
 	void addActor( Mesh* mesh, Vec3& pos );
+	void createBox(Vec3 pos, double size);
 
 private:
 
@@ -39,7 +40,6 @@ private:
 
 	NxVec3* getVertsFromDXMesh( Mesh* mesh );
 	NxActor* createMeshActor( Mesh* mesh,  Vec3& pos );
-	NxActor* createBox(Vec3 pos, double size);
 	NxActor* createGroundPlane(void);
 	void startPhysics(void);
 	void getPhysicsResults(void);

@@ -19,14 +19,15 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	for( unsigned int i = 0; i < m_Entities.size(); i++ ) 
 		delete m_Entities[i];
 	PlayerVehicle *pv = new PlayerVehicle( device );
-	
-	//add this new entity to simulator subsystem so it can be managed by PhysX
-	Vec3 pos( 0.0f, -10.0f, 0.0f );
-	m_Simulator->addActor( pv->getRenderable()->m_pMesh, pos );
+
+	Vec3 pos( 0.0f, 0.0f, 0.0f );
+
+	pv->getRenderable()->computeMeshWorldMatrix();
+	m_Simulator->createBox( pos, pv->getRenderable()->m_fRadius );
 
 	m_Entities.clear();
 	m_Entities.push_back( pv );
-	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
+//	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
 
 	//clear debug.txt
 	debug.clearFile();
@@ -85,7 +86,6 @@ void GameObj::render( Device* device )
 		renderables[i] = m_Entities[i]->getRenderable( );
 	}
 
-	
 	m_Renderer->renderFloor( );
 
 	// pass the renderables off to the renderer to do all the work

@@ -29,7 +29,7 @@ public:
 	~Renderable( );
 
 	Renderable*	getUpdatedRenderable	( Vec3& position );
-	HRESULT		computeMeshWorldMatrix	( LPD3DXMESH mesh, Matrix& mMeshWorld );
+	HRESULT		computeMeshWorldMatrix	( );
 
 	void		releaseMemory			( );
 	void		lostDevice				( );
@@ -49,6 +49,7 @@ public:
 	Matrix			 m_matWorld;
 	Handle			 m_hRenderObj;      // Handle to loaded effect
 	Device*			 m_pDevice;			// the device attached to the mesh and effect
+	float			 m_fRadius;
 };
 
 #endif // RENDERABLE_H

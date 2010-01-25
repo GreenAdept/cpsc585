@@ -46,7 +46,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;Source Code\Utility Files&quot;;PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;&quot;Source Code\SubSystem Files&quot;;&quot;Source Code\Application Files&quot;;&quot;Source Code\Entity Files&quot;;&quot;Source Code\Resource Files&quot;;&quot;$(DXSDK_DIR)\Include&quot;;Headers"
+				AdditionalIncludeDirectories="&quot;Source Code\Subsystem Files&quot;;&quot;Source Code\Utility Files&quot;;PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;&quot;Source Code\SubSystem Files&quot;;&quot;Source Code\Application Files&quot;;&quot;Source Code\Entity Files&quot;;&quot;Source Code\Resource Files&quot;;&quot;$(DXSDK_DIR)\Include&quot;;Headers"
 				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;PROFILE;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="0"

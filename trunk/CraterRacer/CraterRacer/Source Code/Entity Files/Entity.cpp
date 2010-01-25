@@ -49,6 +49,7 @@ void Entity::update( Vec3 newPosition )
 	m_vPosition = newPosition;
 }
 
+
 void Entity::update( Vec3 newPosition, Matrix* mat )
 {
 	m_vPosition = newPosition;

@@ -35,7 +35,6 @@ Renderable::Renderable( const Renderable& renderableCopy  )
 
 	// Compute the objects world matrix and bounding box
 	D3DXMatrixIdentity( &m_matWorld );
-	//computeMeshWorldMatrix( m_pMesh->GetMesh(), m_matWorld );
 }
 
 
@@ -44,12 +43,12 @@ Renderable::Renderable( const Renderable& renderableCopy  )
 // This function is taken from the samples in the DirectX Framework just to get it 
 // (but we will put our own in soon!)
 //--------------------------------------------------------------------------------------
-HRESULT Renderable::computeMeshWorldMatrix( LPD3DXMESH pMesh, Matrix& mMeshWorld )
+HRESULT Renderable::computeMeshWorldMatrix( )
 {
-	D3DXMatrixIdentity( &mMeshWorld );
+	D3DXMatrixIdentity( &m_matWorld  );
 
     LPDIRECT3DVERTEXBUFFER9 pVB;
-    if( FAILED( pMesh->GetVertexBuffer( &pVB ) ) )
+    if( FAILED( m_pMesh->GetMesh()->GetVertexBuffer( &pVB ) ) )
         return E_FAIL;
 
     LPVOID pVBData;
@@ -57,15 +56,9 @@ HRESULT Renderable::computeMeshWorldMatrix( LPD3DXMESH pMesh, Matrix& mMeshWorld
     {
         D3DXVECTOR3 vCtr;
         float fRadius;
-        D3DXComputeBoundingSphere( ( D3DXVECTOR3* )pVBData, pMesh->GetNumVertices(),
-                                   D3DXGetFVFVertexSize( pMesh->GetFVF() ),
-                                   &vCtr, &fRadius );
-
-        D3DXMatrixTranslation( &mMeshWorld, -vCtr.x, -vCtr.y, -vCtr.z );
-        Matrix m;
-        D3DXMatrixScaling( &m, 1 / fRadius, 1 / fRadius, 1 / fRadius );
-        D3DXMatrixMultiply( &mMeshWorld, &mMeshWorld, &m );
-
+        D3DXComputeBoundingSphere( ( D3DXVECTOR3* )pVBData, m_pMesh->m_dwNumVertices,
+                                   D3DXGetFVFVertexSize( m_pMesh->GetMesh()->GetFVF() ),
+                                   &vCtr, &m_fRadius );
         pVB->Unlock();
     }
 
@@ -82,6 +75,8 @@ HRESULT Renderable::computeMeshWorldMatrix( LPD3DXMESH pMesh, Matrix& mMeshWorld
 //--------------------------------------------------------------------------------------
 Renderable* Renderable::getUpdatedRenderable( Vec3& pos )
 {
+	D3DXMatrixIdentity( &m_matWorld  );
+	D3DXMatrixTranslation( &m_matWorld, pos.x, pos.y, pos.z );
 	m_vPosition = pos;
 	return this;
 }
