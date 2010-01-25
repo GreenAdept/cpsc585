@@ -38,6 +38,8 @@ public:
 	virtual bool* getInput() = 0;
 	virtual void resetInput() = 0;
 
+	Vec3 getPosition();
+
 private:
 	Vec3			m_vPosition;
 

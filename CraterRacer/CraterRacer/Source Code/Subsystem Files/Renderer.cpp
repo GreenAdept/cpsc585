@@ -49,6 +49,8 @@ void Renderer::render( Device* device, vector<Renderable*> renderables, MCamera&
 		tempMesh = dxMesh->GetMesh();
 		pEffect = tempR->m_pEffect;
 		mMeshWorld = tempR->m_matWorld;
+
+		//tempR->computeMeshWorldMatrix();
    
 		// get the projection & view matrix from the camera class
 		mWorld = *g_Camera.GetWorldMatrix();

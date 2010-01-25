@@ -55,6 +55,8 @@ void Simulator::simulate( vector<Entity*> entities, double elapsedTime )
 		gActors[i]->getGlobalPose().getRowMajor44( mat );
 
 		entities[0]->update( Vec3(vec.x, vec.y, vec.z) );//, (Matrix*)&mat[0] );
+		debug.writeToFile(vec);
+
 	}
 }
 

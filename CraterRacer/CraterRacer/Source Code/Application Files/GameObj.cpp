@@ -3,7 +3,6 @@
 //--------------------------------------------------------------------------------------
 #include "GameObj.h"
 
-
 //--------------------------------------------------------------------------------------
 // Function:  initGame
 // Here we initialize the game's camera and scene.  Eventually we want to read all of this
@@ -28,6 +27,9 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	m_Entities.clear();
 	m_Entities.push_back( pv );
 	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
+
+	//clear debug.txt
+	debug.clearFile();
 }
 
 
@@ -98,6 +100,8 @@ void GameObj::render( Device* device )
 void GameObj::simulate( float fElapsedTime )
 {
 	m_Simulator->simulate(m_Entities, fElapsedTime);
+	debug.writeToFile("game obj");
+	debug.writeToFile(m_Entities[0]->getPosition());
 }
 
 
