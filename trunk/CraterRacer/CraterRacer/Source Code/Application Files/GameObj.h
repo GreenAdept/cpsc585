@@ -18,6 +18,7 @@
 #include "Prop.h"
 #include "Input.h"
 #include "GameCamera.h"
+#include "DebugWriter.h"
 
 
 //-----------------------------------------------------------------
@@ -51,6 +52,7 @@ private:
 	Input			m_InputManager;	// input management subsystem
 	GameCamera		m_Camera;		// main camera to follow behind vehicle
 	Simulator*		m_Simulator;
+	DebugWriter		debug;
 };
 
 #endif GAME_OBJ_H 

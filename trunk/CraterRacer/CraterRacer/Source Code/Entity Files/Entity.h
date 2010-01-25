@@ -10,6 +10,7 @@
 #include "Constants.h"
 #include "Renderable.h"
 #include "Input.h"
+#include "AI.h"
 
 
 //-----------------------------------------------------------------
@@ -31,6 +32,7 @@ public:
 	~Entity( );
 		
 	Renderable*		getRenderable( );
+	virtual AI*		getAI( ) { return 0; }
 	virtual void	update( Vec3 newPosition );
 	void			update( Vec3 newPostion, Matrix* mat );
 
@@ -40,14 +42,12 @@ public:
 
 	Vec3 getPosition();
 
-private:
-	Vec3			m_vPosition;
-
 protected: 
 	
 	//Accessible to all inheriting classes ---------------------
 
-	Renderable*		m_pRenderable; 
+	Renderable*		m_pRenderable;
+	Vec3			m_vPosition;
 
 };
 

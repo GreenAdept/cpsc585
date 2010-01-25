@@ -23,3 +23,10 @@ AIVehicle::AIVehicle( Device* device ): Vehicle( device )
 void AIVehicle::update( ) 
 {
 }
+
+
+AI* AIVehicle::getAI () {
+	mind.setPosition (m_vPosition);
+	//insert more data brokering here
+	return &mind;
+}
