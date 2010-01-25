@@ -27,7 +27,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 
 	m_Entities.clear();
 	m_Entities.push_back( pv );
-	m_Camera.setTarget( pv );
+	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
 }
 
 
