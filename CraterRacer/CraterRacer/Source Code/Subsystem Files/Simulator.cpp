@@ -102,7 +102,7 @@ NxActor* Simulator::createGroundPlane()
 	NxPlaneShapeDesc planeDesc;
 	NxActorDesc actorDesc;
 	//planeDesc.normal = NxVec3(0, -1, 0);
-	planeDesc.d = -10;
+	planeDesc.d = -8;
 	actorDesc.shapes.pushBack(&planeDesc);
 	return gScene->createActor(actorDesc);
 }

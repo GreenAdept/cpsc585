@@ -50,7 +50,7 @@ void Renderer::render( Device* device, vector<Renderable*> renderables, MCamera&
 		pEffect = tempR->m_pEffect;
 		mMeshWorld = tempR->m_matWorld;
 
-		//tempR->computeMeshWorldMatrix();
+		//tempR->computeMeshWorldMatrix(tempMesh, mMeshWorld);
    
 		// get the projection & view matrix from the camera class
 		mWorld = *g_Camera.GetWorldMatrix();
