@@ -7,5 +7,7 @@
 class Prop: public Entity {
 	public:
 		Prop(void);
+		void setInput(Input::Arrow dir, bool isKeyDown);
+		bool* getInput();
 };
 #endif

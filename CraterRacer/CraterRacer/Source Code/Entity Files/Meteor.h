@@ -7,5 +7,7 @@
 class Meteor: public Entity {
 	public:
 		Meteor(void);
+		void setInput(Input::Arrow dir, bool isKeyDown);
+		bool* getInput();
 };
 #endif

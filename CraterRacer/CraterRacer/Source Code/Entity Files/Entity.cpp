@@ -55,13 +55,3 @@ void Entity::update( Vec3 newPosition, Matrix* mat )
 	m_pRenderable->m_matWorld = *mat;
 }
 
-void Entity::setInput(Input::Arrow dir, bool isKeyDown)
-{
-
-}
-
-bool* Entity::getInput()
-{
-	bool input[] = { false, false, false, false };
-	return input;
-}
