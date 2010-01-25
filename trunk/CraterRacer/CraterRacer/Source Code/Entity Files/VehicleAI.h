@@ -7,6 +7,7 @@ public:
 	VehicleAI();
 	void setInput(Input::Arrow dir, bool isKeyDown);
 	bool* getInput();
+	void resetInput();
 
 private:
 	Input input;

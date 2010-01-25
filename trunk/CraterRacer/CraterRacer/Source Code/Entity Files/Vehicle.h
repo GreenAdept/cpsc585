@@ -32,8 +32,8 @@ public:
 	Vehicle( Device* );
 
 	//virtual void update(void) = 0;
-	virtual void setInput(Input::Arrow dir, bool isKeyDown) = 0;
-	virtual bool* getInput() = 0;
+	//virtual void setInput(Input::Arrow dir, bool isKeyDown) = 0;
+	//virtual bool* getInput() = 0;
 
 protected:
 	VehicleAI mind;

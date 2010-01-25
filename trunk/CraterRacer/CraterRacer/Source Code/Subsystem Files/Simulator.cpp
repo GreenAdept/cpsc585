@@ -44,11 +44,14 @@ void Simulator::simulate( vector<Entity*> entities, double elapsedTime )
 	for( int i=0; i < gActors.size(); i++ )
 	{
 		input = entities[0]->getInput();
-		if (input[0]) gKeys[97] = true;
-		if (input[1]) gKeys[98] = true;
-		if (input[2]) gKeys[99] = true;
-		if (input[3]) gKeys[100] = true;
 		processForceKeys();
+
+		//gKeys[97] = false;
+		//gKeys[98] = false;
+		//gKeys[99] = false;
+		//gKeys[100] = false;
+
+		entities[0]->resetInput();
 
 		NxVec3 vec = gActors[i]->getGlobalPosition();
 		gActors[i]->getGlobalPose().getRowMajor44( mat );
@@ -187,10 +190,10 @@ void Simulator::processForceKeys() {
 		if (!input[i]) { continue; } 
 		switch (i)
 		{
-		case 0: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(-0.1,0,0),gForceStrength); break; }
-		case 1: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0,0.1),gForceStrength); break; }
-		case 2: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0.1,0,0),gForceStrength); break; }
-		case 3: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0,-0.1),gForceStrength); break; }
+		case 0: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0.1,0,0),gForceStrength); break; }
+		case 1: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,0.1,0),gForceStrength); break; }
+		case 2: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(-0.1,0,0),gForceStrength); break; }
+		case 3: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,-0.1,0),gForceStrength); break; }
 		}
 	}
 	
