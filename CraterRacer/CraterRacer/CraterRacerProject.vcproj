@@ -682,6 +682,14 @@
 			Name="SubSystem Files"
 			>
 			<File
+				RelativePath=".\DebugWriter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DebugWriter.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Source Code\Subsystem Files\GameCamera.cpp"
 				>
 			</File>

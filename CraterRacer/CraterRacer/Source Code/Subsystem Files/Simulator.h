@@ -16,6 +16,7 @@
 #include "NxCooking.h"
 #include "Stream.h"
 #include "Entity.h"
+#include "DebugWriter.h"
 
 #include <iostream>
 
