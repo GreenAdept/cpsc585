@@ -3,11 +3,11 @@
 // Physics SDK globals
 NxPhysicsSDK*     gPhysicsSDK = NULL;
 NxScene*          gScene = NULL;
-NxVec3            gDefaultGravity(0,-2,0);
+NxVec3            gDefaultGravity(0,-9.8,0);
 
 //Force globals
 NxVec3 gForceVec(0, 0, 0);
-NxReal gForceStrength = 10000;
+NxReal gForceStrength = 1000000;
 bool bForceMode = true;
 
 // Keyboard globals
@@ -19,8 +19,7 @@ double deltaTime;
 
 //Actor globals
 NxActor* groundPlane = NULL;
-NxActor* gSelectedActor = NULL;
-vector< NxActor* > gActors;
+vector< NxActor* > gVehicles;
 Vec3 boxPos;
 double boxSize;
 
@@ -36,27 +35,39 @@ Simulator::Simulator()
 }
 
 
-void Simulator::simulate( vector<Entity*> entities, double elapsedTime ) 
+void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime ) 
 {
-	NxF32* mat;
+	NxF32 mat[4][4];
 	deltaTime = elapsedTime;
 	startPhysics();
 	getPhysicsResults();
 
-	////Update all the entity positions based on PhysX simulated actor positions
-	//for( int i=0; i < gActors.size(); i++ )
-	//{
-		input = entities[0]->getInput();
+	//Update all the entity positions based on PhysX simulated actor positions
+	for( int i=0; i < gVehicles.size(); i++ )
+	{
+		//Get the inputs associated with vehicle
+		input = vehicles[i]->getInput();
+
+		//Add forces to the vehicle based on input
 		processForceKeys();
 
-		entities[0]->resetInput();
+		//Empty input to make it ready for next frame
+		vehicles[i]->resetInput();
 
-		NxVec3 vec =  gSelectedActor->getGlobalPosition();//gActors[i]->getGlobalPosition();
-		//gActors[i]->getGlobalPose().getRowMajor44( mat );
+		//Get the new position of the vehicle in vector and matrix formats
+		NxVec3 vec	 = gVehicles[i]->getGlobalPosition();
+		float height = vehicles[i]->getBoundingBox().m_fHeight;
 
-		entities[0]->update( Vec3(vec.x, vec.y, vec.z) );//, (Matrix*)&mat[0] );
-		debug.writeToFile(vec);
-	//}
+		gVehicles[i]->getGlobalPose().getColumnMajor44( mat );
+		Matrix m = Matrix( mat[0] );
+		D3DXMatrixTranslation( &m, vec.x, 0.0, vec.z );
+
+		//Update the vehicle position in the game
+		vehicles[i]->update( Vec3(vec.x, 0, vec.z), m );
+
+		/*debug.writeToFile( "Position: " );
+		debug.writeToFile(vec);*/
+	}
 }
 
 
@@ -83,8 +94,8 @@ void Simulator::InitNx( void )
 	//Create the default material
 	NxMaterial* defaultMaterial = gScene->getMaterialFromIndex(0);
 	defaultMaterial->setRestitution(0.5);
-	defaultMaterial->setStaticFriction(0.5);
-	defaultMaterial->setDynamicFriction(0.5);
+	defaultMaterial->setStaticFriction(0.0);
+	defaultMaterial->setDynamicFriction(0.0);
 
 	//Create the ground
 	groundPlane = createGroundPlane( );
@@ -100,36 +111,40 @@ NxActor* Simulator::createGroundPlane()
 {
 	NxPlaneShapeDesc planeDesc;
 	NxActorDesc actorDesc;
-	//planeDesc.normal = NxVec3(0, -1, 0);
-	planeDesc.d = -10;
+	planeDesc.normal = NxVec3(0, 1, 0);
+	planeDesc.d = 0;
 	actorDesc.shapes.pushBack(&planeDesc);
 	return gScene->createActor(actorDesc);
 }
 
 
-void Simulator::createBox(Vec3 pos, double size) {
-	//The height of the box
-	NxReal boxStartHeight = 3.5;
-
+//--------------------------------------------------------------------------------------
+// Function:  createVehicle
+// Creates a box character in the PhysX scene representing a vehicle.
+//--------------------------------------------------------------------------------------
+void Simulator::createVehicle( Vec3 pos, BoundingBox b ) 
+{
 	//Add a single shape actor to the scene
 	NxActorDesc actorDesc;
 	NxBodyDesc bodyDesc;
 
-	//The actor has one shape, a box, 1m on a side
+	//Create a box with the supplied bounding box dimensions
 	NxBoxShapeDesc boxDesc;
-	//boxDesc.dimensions.set(0.5, 0.5, 0.5);
-	boxDesc.dimensions.set(size, size, size);
-	actorDesc.shapes.pushBack(&boxDesc);
+	boxDesc.dimensions.set( b.m_fWidth, b.m_fHeight, b.m_fLength );
+	actorDesc.shapes.pushBack( &boxDesc );
 
+	//Initialize the vehicle
 	actorDesc.body = &bodyDesc;
 	actorDesc.density = 10.0f;
-	//actorDesc.globalPose.t = NxVec3(0, boxStartHeight, 0);
-	actorDesc.globalPose.t = NxVec3(pos.x, pos.y, pos.z);
-	assert(actorDesc.isValid());
-	NxActor* pActor = gScene->createActor(actorDesc);
-	assert(pActor);
+	actorDesc.globalPose.t = NxVec3( pos.x, pos.y + b.m_fHeight, pos.z );
+	assert( actorDesc.isValid() );
 
-	gSelectedActor = pActor;
+	//Create the vehicle in the scene
+	NxActor* pActor = gScene->createActor(actorDesc);
+	assert( pActor );
+
+	//Add the vehicle to global list of all vehicles
+	gVehicles.push_back( pActor );
 }
 
 
@@ -183,18 +198,38 @@ void Simulator::processForceKeys() {
 		}
 	}
 	*/
-	
-	for (int i = 0; i < 4; i++)
+
+	// iterate through all the vehicles
+	for( int v = 0; v < gVehicles.size(); v++ )
 	{
-		if (!input[i]) { continue; } 
-		switch (i)
+		for( int i = 0; i < 4; i++ )
 		{
-			case 0: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(-1,0,0),gForceStrength);
-				debug.writeToFile("left");
-				break; }
-			case 1: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,1,0),gForceStrength); break; }
-			case 2: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(1,0,0),gForceStrength); break; }
-			case 3: { gForceVec = applyForceToActor(gSelectedActor,NxVec3(0,-1,0),gForceStrength); break; }
+			if(!input[i]) { continue; } 
+
+			switch (i)
+			{
+				case LEFT: 
+				{ 
+					gForceVec = applyForceToActor( gVehicles[v], NxVec3(-1,0,0), gForceStrength );
+					debug.writeToFile("left");
+					break; 
+				}
+				case RIGHT: 
+				{ 
+					gForceVec = applyForceToActor( gVehicles[v], NxVec3(0,0,1), gForceStrength ); 
+					break; 
+				}
+				case FORWARD: 
+				{ 
+					gForceVec = applyForceToActor( gVehicles[v], NxVec3(1,0,0), gForceStrength );
+					break; 
+				}
+				case BACKWARD: 
+				{ 
+					gForceVec = applyForceToActor( gVehicles[v], NxVec3(0,0,-1), gForceStrength ); 
+					break; 
+				}
+			}
 		}
 	}
 	
@@ -215,10 +250,10 @@ NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, cons
 Simulator::~Simulator() 
 {
 	//release all actors
-	for( int i=0; i < gActors.size(); i++ )
+	for( int i=0; i < gVehicles.size(); i++ )
 	{
-		gScene->releaseActor( *gActors[i] );
-		gActors[i] = NULL;
+		gScene->releaseActor( *gVehicles[i] );
+		gVehicles[i] = NULL;
 	}
 	
 	//now release the scene and physics SDK
@@ -239,7 +274,7 @@ Simulator::~Simulator()
 //--------------------------------------------------------------------------------------
 void Simulator::addActor( Mesh* mesh, Vec3& pos )
 {
-	gActors.push_back( createMeshActor( mesh, pos ) );
+	//gActors.push_back( createMeshActor( mesh, pos ) );
 }
 
 
@@ -332,7 +367,7 @@ NxActor* Simulator::createMeshActor( Mesh* mesh, Vec3& pos )
 
 	//clear up the temporary description
 	delete temp_convexDesc.points;
-	gSelectedActor = pActor;
+
 	return pActor;
 }
 

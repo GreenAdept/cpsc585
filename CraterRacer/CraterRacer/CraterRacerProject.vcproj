@@ -605,7 +605,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Vehicle.cpp"
+					RelativePath=".\Source Code\Entity Files\Terrain.cpp"
 					>
 				</File>
 				<File
@@ -645,6 +645,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Source Code\Entity Files\Terrain.h"
+					>
+				</File>
+				<File
 					RelativePath=".\Source Code\Entity Files\Vehicle.h"
 					>
 				</File>
@@ -681,14 +685,6 @@
 		<Filter
 			Name="SubSystem Files"
 			>
-			<File
-				RelativePath=".\Source Code\Subsystem Files\DebugWriter.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\Source Code\Subsystem Files\DebugWriter.h"
-				>
-			</File>
 			<File
 				RelativePath=".\Source Code\Subsystem Files\GameCamera.cpp"
 				>
@@ -739,6 +735,14 @@
 			</File>
 			<File
 				RelativePath=".\debug.txt"
+				>
+			</File>
+			<File
+				RelativePath=".\Source Code\Subsystem Files\DebugWriter.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source Code\Subsystem Files\DebugWriter.h"
 				>
 			</File>
 			<File

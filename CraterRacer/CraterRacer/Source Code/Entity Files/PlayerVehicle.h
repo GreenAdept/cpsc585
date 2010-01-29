@@ -22,8 +22,7 @@ public:
 
 	//Public interface ------------------------------------
 
-	PlayerVehicle( void );
-	PlayerVehicle( Device* device );
+	PlayerVehicle( void ) { }
 
 	//void update( void );
 	void setInput(Input::Arrow dir, bool isKeyDown);

@@ -17,21 +17,20 @@ Entity::~Entity( )
 
 
 //--------------------------------------------------------------------------------------
-// Function:  Constructor
-// Initializes renderable based on device input.
+// Function:  initialize
+// Temporarily initialize an object this way, but will eventually be reading this
+// from file and initializing the entities from a data file.
 //--------------------------------------------------------------------------------------
-Entity::Entity( Device* device ) 
+void Entity::initialize( Device* device, Vec3 pos, LPCWSTR filename )
 {
-	// Temporarily initialize an object, but will eventually be reading this
-	// from file and initializing the entities from file data.
 	Renderable tempRenderable;
 	tempRenderable.m_bCanBeRendered = true;
-	tempRenderable.m_Filename = OBJ_FILE;
+	tempRenderable.m_Filename = filename;
 	tempRenderable.m_pDevice = device;
-	tempRenderable.m_vPosition = Vec3(0.0,0.0,0.0);
+	tempRenderable.m_vPosition = pos;
 
 	m_pRenderable = new Renderable( tempRenderable );
-	m_vPosition = Vec3( 0.0f, 0.0f, 0.0f );
+	m_vPosition = pos;
 }
 
 
@@ -41,21 +40,33 @@ Entity::Entity( Device* device )
 //--------------------------------------------------------------------------------------
 Renderable* Entity::getRenderable( )
 {
-	return m_pRenderable->getUpdatedRenderable( m_vPosition );
+	return m_pRenderable->getRenderable( );
 }
 
-void Entity::update( Vec3 newPosition )
+
+//--------------------------------------------------------------------------------------
+// Function:  getBoundingBox
+// Returns the entity's renderable.
+//--------------------------------------------------------------------------------------
+BoundingBox Entity::getBoundingBox( )
+{
+	return m_pRenderable->getBoundingBox( );
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  update
+// Update the entity's new position in the game.
+//--------------------------------------------------------------------------------------
+void Entity::update( Vec3 newPosition, Matrix mat )
 {
 	m_vPosition = newPosition;
+
+	m_pRenderable->m_matWorld = mat;
 }
 
 
-void Entity::update( Vec3 newPosition, Matrix* mat )
+Vec3 Entity::getPosition() 
 {
-	m_vPosition = newPosition;
-	m_pRenderable->m_matWorld = *mat;
-}
-
-Vec3 Entity::getPosition() {
 	return m_vPosition;
 }

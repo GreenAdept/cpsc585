@@ -6,7 +6,7 @@
 // Include files
 //-------------------------------------------------
 
-#include "..\Utility Files\Constants.h"
+#include "Constants.h"
 #include "Entity.h"
 
 //-------------------------------------------------

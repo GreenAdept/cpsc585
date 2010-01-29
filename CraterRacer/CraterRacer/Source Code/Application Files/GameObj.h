@@ -19,6 +19,7 @@
 #include "Input.h"
 #include "GameCamera.h"
 #include "DebugWriter.h"
+#include "Terrain.h"
 
 
 //-----------------------------------------------------------------
@@ -47,12 +48,13 @@ public:
 private:
 	//Date Members ---------------------------------------
 
-	vector<Entity*> m_Entities;		// list of all scene objects
-	Renderer*		m_Renderer;		// rendering subsystem
-	Input			m_InputManager;	// input management subsystem
-	GameCamera		m_Camera;		// main camera to follow behind vehicle
-	Simulator*		m_Simulator;
-	DebugWriter		debug;
+	vector<Vehicle*> m_Vehicles;		// list of all vehicles
+	Renderer*		 m_Renderer;		// rendering subsystem
+	Input			 m_InputManager;	// input management subsystem
+	GameCamera		 m_Camera;		// main camera to follow behind vehicle
+	Simulator*		 m_Simulator;
+	DebugWriter		 debug;
+	Terrain*		 m_Terrain;
 };
 
 #endif GAME_OBJ_H 

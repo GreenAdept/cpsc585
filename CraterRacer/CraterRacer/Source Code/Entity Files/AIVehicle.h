@@ -16,16 +16,15 @@
 //		by our game algorithms.
 //---------------------------------------------------------
 
-class AIVehicle: public Vehicle {
+class AIVehicle: public Vehicle 
+{
 	VehicleAI mind;
 public:
 
 	//Public interface -----------------------------------------
 
 	AIVehicle( void ){ }
-	AIVehicle( Device* );
-
-	void update(void);
 	AI* getAI(void);
+
 };
 #endif

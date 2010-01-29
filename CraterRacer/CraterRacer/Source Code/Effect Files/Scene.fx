@@ -34,7 +34,7 @@ void VertScene( float4 Pos : POSITION,
     oPos = mul( Pos, g_mWorldViewProjection );
 
     float3 N = normalize( mul( Normal, (float3x3)g_mWorld ) );
-    Diffuse = saturate( dot( (float3)N, float3( 0.0f, 0.0f, -1.0f ) ) ) * g_vDiffuse;
+    Diffuse = saturate( dot( (float3)N, float3( -1.0f, 1.0f, -1.0f ) ) ) * g_vDiffuse;
 
     oTex = Tex;
 }
@@ -43,7 +43,7 @@ void VertScene( float4 Pos : POSITION,
 float4 PixScene( float2 Tex : TEXCOORD0,
                  float4 Diffuse : COLOR0 ) : COLOR0
 {
-    return tex2D( g_samScene, Tex ) * Diffuse;
+    return  tex2D( g_samScene, Tex ) * Diffuse; 
 }
                 
 

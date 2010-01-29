@@ -28,8 +28,9 @@ public:
 	Renderable( const Renderable& renderableCopy ) ;
 	~Renderable( );
 
-	Renderable*	getUpdatedRenderable	( Vec3& position );
-	HRESULT		computeMeshWorldMatrix	( );
+	Renderable*	getRenderable			( );
+	BoundingBox getBoundingBox			( );
+	HRESULT		computeMeshWorldMatrix	( Vec3 startPos );
 
 	void		releaseMemory			( );
 	void		lostDevice				( );
@@ -49,7 +50,7 @@ public:
 	Matrix			 m_matWorld;
 	Handle			 m_hRenderObj;      // Handle to loaded effect
 	Device*			 m_pDevice;			// the device attached to the mesh and effect
-	float			 m_fRadius;
+	BoundingBox		 m_BoundingBox;
 };
 
 #endif // RENDERABLE_H
