@@ -6,26 +6,6 @@
 #include "PlayerVehicle.h"
 
 //--------------------------------------------------------------------------------------
-// Function:  Constructor
-// Initializes the player vehicle and sends the device to entity base class to initialize
-// its renderable.
-//--------------------------------------------------------------------------------------
-PlayerVehicle::PlayerVehicle( Device* device ): Vehicle( device )
-{
-
-}
-
-
-//--------------------------------------------------------------------------------------
-// Function:  update
-// Will update the position/orientation of the vehicle eventually.
-//--------------------------------------------------------------------------------------
-//void PlayerVehicle::update( ) 
-//{
-//	
-//}
-
-//--------------------------------------------------------------------------------------
 // Function:  setInput
 // Delegates setting the input to mind.
 //--------------------------------------------------------------------------------------

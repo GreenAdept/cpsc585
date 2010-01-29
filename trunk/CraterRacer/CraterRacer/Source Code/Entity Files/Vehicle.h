@@ -27,16 +27,14 @@ public:
 
 	// Public interface ------------------------------------
 
-	Vehicle( void ) {}
-	Vehicle( Device* );
+	Vehicle( void ) { }
 
-	//virtual void update(void) = 0;
-	//virtual void setInput(Input::Arrow dir, bool isKeyDown) = 0;
-	//virtual bool* getInput() = 0;
+	virtual void setInput(Input::Arrow dir, bool isKeyDown) = 0;
+	virtual bool* getInput() = 0;
+	virtual void resetInput() = 0;
 
 protected:
 	VehicleAI mind;
-
 };
 
 #endif //VEHICLE_H

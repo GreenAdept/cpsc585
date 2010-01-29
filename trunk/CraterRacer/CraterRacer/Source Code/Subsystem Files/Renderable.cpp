@@ -34,7 +34,7 @@ Renderable::Renderable( const Renderable& renderableCopy  )
 	m_hRenderObj = m_pEffect->GetTechniqueByName( "RenderScene" );
 
 	// Compute the objects world matrix and bounding box
-	D3DXMatrixIdentity( &m_matWorld );
+	computeMeshWorldMatrix( m_vPosition	);
 }
 
 
@@ -43,10 +43,12 @@ Renderable::Renderable( const Renderable& renderableCopy  )
 // This function is taken from the samples in the DirectX Framework just to get it 
 // (but we will put our own in soon!)
 //--------------------------------------------------------------------------------------
-HRESULT Renderable::computeMeshWorldMatrix( )
+HRESULT Renderable::computeMeshWorldMatrix( Vec3 startPos )
 {
 	D3DXMatrixIdentity( &m_matWorld  );
+	Vec3 min, max;
 
+	//make sure the mesh has vertex data first
     LPDIRECT3DVERTEXBUFFER9 pVB;
     if( FAILED( m_pMesh->GetMesh()->GetVertexBuffer( &pVB ) ) )
         return E_FAIL;
@@ -55,10 +57,19 @@ HRESULT Renderable::computeMeshWorldMatrix( )
     if( SUCCEEDED( pVB->Lock( 0, 0, &pVBData, D3DLOCK_READONLY ) ) )
     {
         D3DXVECTOR3 vCtr;
-        float fRadius;
-        D3DXComputeBoundingSphere( ( D3DXVECTOR3* )pVBData, m_pMesh->m_dwNumVertices,
+		float radius = 0;
+        D3DXComputeBoundingBox( ( D3DXVECTOR3* )pVBData, m_pMesh->m_dwNumVertices,
                                    D3DXGetFVFVertexSize( m_pMesh->GetMesh()->GetFVF() ),
-                                   &vCtr, &m_fRadius );
+                                   &min, &max );
+
+		//translate the object to the position we want it to be in
+		D3DXMatrixTranslation( &m_matWorld, startPos.x, startPos.y, startPos.z );
+
+		//set the bounding box values for future reference
+		m_BoundingBox.m_fHeight = max.y - min.y;
+		m_BoundingBox.m_fWidth = max.x - min.x;
+		m_BoundingBox.m_fLength = max.z - min.z;		
+
         pVB->Unlock();
     }
 
@@ -70,15 +81,19 @@ HRESULT Renderable::computeMeshWorldMatrix( )
 
 //--------------------------------------------------------------------------------------
 // Function:  getUpdatedRenderable
-// Updates the renderable's position then returns itself so it is ready to be drawn 
-// by the renderer.
 //--------------------------------------------------------------------------------------
-Renderable* Renderable::getUpdatedRenderable( Vec3& pos )
+Renderable* Renderable::getRenderable( )
 {
-	D3DXMatrixIdentity( &m_matWorld  );
-	D3DXMatrixTranslation( &m_matWorld, pos.x, pos.y, pos.z );
-	m_vPosition = pos;
 	return this;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  getUpdatedRenderable
+//--------------------------------------------------------------------------------------
+BoundingBox Renderable::getBoundingBox( )
+{
+	return m_BoundingBox;
 }
 
 

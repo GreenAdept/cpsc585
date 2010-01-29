@@ -16,10 +16,13 @@
 //		DEFINITIONS
 //--------------------------------------------------------
 
-#define OBJ_FILE		L"Media\\Meshes\\Dwarf\\Dwarf.x"
+#define OBJ_FILE		L"Media\\Meshes\\CarBox.x"
 #define OBJ_EFFECT		L"Source Code\\Effect Files\\Scene.fx"
+#define TERRAIN_FILE	L"Media\\Meshes\\Floor.x"
 
 enum ProcessType { ON_LOST, ON_RESET, ON_DESTROY };
+enum Directions { LEFT, RIGHT, FORWARD, BACKWARD }; 
+
 
 //--------------------------------------------------------
 //		TYPEDEFS
@@ -39,6 +42,18 @@ typedef IDirect3DTexture9			Texture;
 typedef IDirect3DVertexDeclaration9 VDecl;
 typedef LPDIRECT3DINDEXBUFFER9		IndexBuffer;
 typedef D3DINDEXBUFFER_DESC			IBufferDesc;
+
+
+//--------------------------------------------------------
+//		STRUCTS
+//--------------------------------------------------------
+
+struct BoundingBox
+{
+	float m_fWidth;
+	float m_fHeight;
+	float m_fLength;
+};
 
 
 #endif

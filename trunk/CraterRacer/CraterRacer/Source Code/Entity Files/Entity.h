@@ -28,19 +28,18 @@ public:
 	//Public interface -----------------------------------------
 
 	Entity ( ) { }
-	Entity ( Device* device );
 	~Entity( );
 		
-	Renderable*		getRenderable( );
-	virtual AI*		getAI( ) { return 0; }
-	virtual void	update( Vec3 newPosition );
-	void			update( Vec3 newPostion, Matrix* mat );
+	// Accessors
+	Renderable*		getRenderable	( );
+	BoundingBox		getBoundingBox	( );
+	Vec3			getPosition		( );
 
-	virtual void setInput(Input::Arrow dir, bool isKeyDown) = 0;
-	virtual bool* getInput() = 0;
-	virtual void resetInput() = 0;
+	void			initialize		( Device* device, Vec3 pos, LPCWSTR filename );
 
-	Vec3 getPosition();
+	virtual AI*		getAI			( ) { return 0; }
+
+	void			update			( Vec3 newPostion, Matrix mat );
 
 protected: 
 	

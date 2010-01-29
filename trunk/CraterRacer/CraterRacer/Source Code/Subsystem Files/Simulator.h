@@ -15,7 +15,7 @@
 #include "NxPhysics.h"
 #include "NxCooking.h"
 #include "Stream.h"
-#include "Entity.h"
+#include "Vehicle.h"
 #include "DebugWriter.h"
 
 #include <iostream>
@@ -30,9 +30,9 @@ public:
 	Simulator();
 	~Simulator();
 
-	void simulate(vector<Entity*> entities, double elapsedTime);
+	void simulate(vector<Vehicle*> entities, double elapsedTime);
 	void addActor( Mesh* mesh, Vec3& pos );
-	void createBox(Vec3 pos, double size);
+	void createVehicle( Vec3 pos, BoundingBox b );
 
 private:
 

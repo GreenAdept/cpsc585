@@ -12,22 +12,25 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 {
 	m_Simulator = new Simulator();
 
+	Vec3 pos( 0.0f, 0.0f, 0.0f );
+	Vec3 terrainPos( -100.0f, 0.0f, 0.0f );
+
 	//init camera to new device, with perspective view
 	m_Camera.updateWindow( pSurface );
 
-	//testing...adding one entity/object to the list, first make sure the list is empty
-	for( unsigned int i = 0; i < m_Entities.size(); i++ ) 
-		delete m_Entities[i];
-	PlayerVehicle *pv = new PlayerVehicle( device );
+	Vehicle *pv = new PlayerVehicle( );
+	pv->initialize( device, pos, OBJ_FILE );
 
-	Vec3 pos( 0.0f, 0.0f, 0.0f );
+	//create the terrain
+	m_Terrain = new Terrain( );
+	m_Terrain->initialize( device, pos, TERRAIN_FILE );
 
-	pv->getRenderable()->computeMeshWorldMatrix();
-	m_Simulator->createBox( pos, pv->getRenderable()->m_fRadius );
+	//add our vehicle to the PhysX system
+	m_Simulator->createVehicle( pos, pv->getBoundingBox() );
 
-	m_Entities.clear();
-	m_Entities.push_back( pv );
-//	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
+	//m_Entities.clear();
+	m_Vehicles.push_back( pv );
+	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
 
 	//clear debug.txt
 	debug.clearFile();
@@ -39,24 +42,24 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 //--------------------------------------------------------------------------------------
 void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 {
-	Entity* e = m_Entities[0];
+	Vehicle* v = m_Vehicles[0];
 	switch (virtualKeyCode)
 	{
 	case VK_LEFT:
 		//add left-ward force to player vehicle
-		e->setInput(Input::Arrow::LEFT, isKeyDown);
+		v->setInput(Input::Arrow::LEFT, isKeyDown);
 		break;
 	case VK_UP:
 		//add upward force to player vehicle
-		e->setInput(Input::Arrow::UP, isKeyDown);
+		v->setInput(Input::Arrow::UP, isKeyDown);
 		break;
 	case VK_RIGHT:
 		//add right-ward force to player vehicle
-		e->setInput(Input::Arrow::RIGHT, isKeyDown);
+		v->setInput(Input::Arrow::RIGHT, isKeyDown);
 		break;
 	case VK_DOWN:
 		//add downward force to player vehicle
-		e->setInput(Input::Arrow::DOWN, isKeyDown);
+		v->setInput(Input::Arrow::DOWN, isKeyDown);
 		break;
 	default:
 		break;
@@ -79,14 +82,14 @@ void GameObj::processInput( )
 //--------------------------------------------------------------------------------------
 void GameObj::render( Device* device )
 {
-	vector<Renderable*> renderables( m_Entities.size() );
+	vector<Renderable*> renderables( m_Vehicles.size() );
 	
 	// Render all the entities by retrieving their renderable components
-	for (unsigned int i = 0; i < m_Entities.size(); i++) {
-		renderables[i] = m_Entities[i]->getRenderable( );
+	for (unsigned int i = 0; i < m_Vehicles.size(); i++) {
+		renderables[i] = m_Vehicles[i]->getRenderable( );
 	}
 
-	m_Renderer->renderFloor( );
+	renderables.push_back( m_Terrain->getRenderable() );
 
 	// pass the renderables off to the renderer to do all the work
 	m_Renderer->render( device, renderables, m_Camera.getCamera() );
@@ -99,9 +102,9 @@ void GameObj::render( Device* device )
 //--------------------------------------------------------------------------------------
 void GameObj::simulate( float fElapsedTime )
 {
-	m_Simulator->simulate(m_Entities, fElapsedTime);
-	debug.writeToFile("game obj");
-	debug.writeToFile(m_Entities[0]->getPosition());
+	m_Simulator->simulate( m_Vehicles, fElapsedTime );
+	//debug.writeToFile("game obj");
+	//debug.writeToFile( m_Vehicles[0]->getPosition());
 }
 
 
@@ -117,16 +120,22 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 	{
 		// make sure the renderables are aware their device is being destroyed, so they
 		// can release the appropriate memory
-		for( unsigned int i = 0; i < m_Entities.size(); i++ ) 
-			 m_Entities[i]->getRenderable( )->releaseMemory( );
+		for( unsigned int i = 0; i < m_Vehicles.size(); i++ ) 
+			 m_Vehicles[i]->getRenderable( )->releaseMemory( );
+
+		if( m_Terrain )
+			m_Terrain->getRenderable( )->releaseMemory( );
 	}
 
 	// when the device is lost, we want to prepare some of objects for destruction or reset
 	else if( type == ON_LOST )
 	{
 		// make sure the renderables are aware their device is lost
-		for( unsigned int i = 0; i < m_Entities.size(); i++ ) 
-			 m_Entities[i]->getRenderable( )->lostDevice( );
+		for( unsigned int i = 0; i < m_Vehicles.size(); i++ ) 
+			 m_Vehicles[i]->getRenderable( )->lostDevice( );
+
+		if( m_Terrain )
+			m_Terrain->getRenderable( )->lostDevice( );
 	}
 
 	// when the device is reset the dimensions might have changed, so we want to make sure
@@ -137,8 +146,11 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 		m_Camera.updateWindow (pBackSurface);
 
 		// let the renderables know their device was reset
-		for( unsigned int i = 0; i < m_Entities.size(); i++ ) 
-			 m_Entities[i]->getRenderable( )->resetDevice( device );
+		for( unsigned int i = 0; i < m_Vehicles.size(); i++ ) 
+			 m_Vehicles[i]->getRenderable( )->resetDevice( device );
+
+		if( m_Terrain )
+			m_Terrain->getRenderable( )->resetDevice( device );
 	}
 }
 
@@ -148,13 +160,16 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 //--------------------------------------------------------------------------------------
 GameObj::~GameObj( )
 {
-	for (unsigned int i = 0; i < m_Entities.size(); i++) 
+	for (unsigned int i = 0; i < m_Vehicles.size(); i++) 
 	{
 		// delete all entities to ensure no memory leaks occur
-		if( m_Entities[i] )
-			delete m_Entities[i];
+		if( m_Vehicles[i] )
+			delete m_Vehicles[i];
 	}
 
 	if( m_Simulator )
 		delete m_Simulator;
+
+	if( m_Terrain )
+			delete m_Terrain;
 }
