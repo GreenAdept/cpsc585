@@ -4,7 +4,4 @@
   
  #include "Vehicle.h" 
   
- Vehicle::Vehicle( Device* device ): Entity( device ) 
- { 
- } 
  

@@ -24,6 +24,7 @@ Vec3 boxPos;
 double boxSize;
 
 bool* input = new bool[4];
+Vec3 p1_dir(0.0, 0.0, 0.0);
 
 //Debugging
 DebugWriter debug;
@@ -46,13 +47,14 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 	for( int i=0; i < gVehicles.size(); i++ )
 	{
 		//Get the inputs associated with vehicle
-		input = vehicles[i]->getInput();
+		//keyboard controls
+		//input = vehicles[i]->getInput();
+
+		// XBox controls
+		p1_dir = vehicles[i]->getDir();
 
 		//Add forces to the vehicle based on input
 		processForceKeys();
-
-		//Empty input to make it ready for next frame
-		vehicles[i]->resetInput();
 
 		//Get the new position of the vehicle in vector and matrix formats
 		NxVec3 vec	 = gVehicles[i]->getGlobalPosition();
@@ -104,6 +106,8 @@ void Simulator::InitNx( void )
 	input[1] = false;
 	input[2] = false;
 	input[3] = false;
+
+	p1_dir = Vec3(0.0, 0.0, 0.0);
 }
 
 

@@ -46,7 +46,6 @@ public:
 
 	// GAME Stuff ----------------------------------------------
 
-
 	// GUI Data Members ----------------------------------------
 
 	//CDXUTDialogResourceManager*	 m_dResourceManager;	// manager for shared resources of dialogs

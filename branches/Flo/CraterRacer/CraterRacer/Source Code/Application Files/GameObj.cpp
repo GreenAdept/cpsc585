@@ -11,6 +11,7 @@
 void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurface )
 {
 	m_Simulator = new Simulator();
+	m_Controller1 = new XBox360Controller(0); //player 1 controller
 
 	Vec3 pos( 0.0f, 0.0f, 0.0f );
 	Vec3 terrainPos( -100.0f, 0.0f, 0.0f );
@@ -70,9 +71,11 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 //--------------------------------------------------------------------------------------
 // Function: processInput
 //--------------------------------------------------------------------------------------
-void GameObj::processInput( )
+void GameObj::processInput( float fElapsedTime )
 {
-
+	m_Controller1->Update(fElapsedTime);
+	Vehicle* v = m_Vehicles[0];
+	v->setDir(Vec3(m_Controller1->LeftThumbstick.GetX(), m_Controller1->LeftThumbstick.GetY(), 0));
 }
 
 

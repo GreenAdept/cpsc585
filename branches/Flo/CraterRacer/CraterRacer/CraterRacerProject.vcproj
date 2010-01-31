@@ -609,6 +609,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Source Code\Entity Files\Vehicle.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Source Code\Entity Files\VehicleAI.cpp"
 					>
 				</File>
@@ -723,6 +727,10 @@
 			</File>
 			<File
 				RelativePath=".\Source Code\Subsystem Files\Simulator.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Source Code\Subsystem Files\XBox360Controller.h"
 				>
 			</File>
 		</Filter>

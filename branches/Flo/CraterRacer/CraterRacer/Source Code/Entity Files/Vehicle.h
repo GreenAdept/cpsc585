@@ -30,7 +30,9 @@ public:
 	Vehicle( void ) { }
 
 	virtual void setInput(Input::Arrow dir, bool isKeyDown) = 0;
+	virtual void setDir(Vec3 vec) = 0;
 	virtual bool* getInput() = 0;
+	virtual Vec3 getDir() = 0;
 	virtual void resetInput() = 0;
 
 protected:
