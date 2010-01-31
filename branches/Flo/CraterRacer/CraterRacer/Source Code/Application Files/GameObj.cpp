@@ -75,7 +75,7 @@ void GameObj::processInput( float fElapsedTime )
 {
 	m_Controller1->Update(fElapsedTime);
 	Vehicle* v = m_Vehicles[0];
-	v->setDir(Vec3(m_Controller1->LeftThumbstick.GetX(), m_Controller1->LeftThumbstick.GetY(), 0));
+	v->setDir(Vec3(m_Controller1->LeftThumbstick.GetX(), 0, m_Controller1->LeftThumbstick.GetY()));
 }
 
 

@@ -67,8 +67,10 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		//Update the vehicle position in the game
 		vehicles[i]->update( Vec3(vec.x, 0, vec.z), m );
 
-		/*debug.writeToFile( "Position: " );
-		debug.writeToFile(vec);*/
+		debug.writeToFile( "Position: " );
+		debug.writeToFile(vec);
+		debug.writeToFile("Stick movement: ");
+		debug.writeToFile(p1_dir);
 	}
 }
 
@@ -204,6 +206,7 @@ void Simulator::processForceKeys() {
 	*/
 
 	// iterate through all the vehicles
+	/*
 	for( int v = 0; v < gVehicles.size(); v++ )
 	{
 		for( int i = 0; i < 4; i++ )
@@ -236,7 +239,11 @@ void Simulator::processForceKeys() {
 			}
 		}
 	}
-	
+	*/
+
+	//xbox controllers
+	gForceVec = applyForceToActor(gVehicles[0], NxVec3(p1_dir.x, 0, p1_dir.z), gForceStrength);
+
 }
 
 NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength) {

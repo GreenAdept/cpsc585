@@ -1,1344 +1,3360 @@
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
-left
+Position: 
+0 2.02 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+-0 0 -0
+Position: 
+0 2 0
+Stick movement: 
+-0.0353173 0 -0.999376
+Position: 
+0 2 0
+Stick movement: 
+-0.0353173 0 -0.999376
+Position: 
+-6.88503e-005 2 -0.00194826
+Stick movement: 
+-0.0353173 0 -0.999376
+Position: 
+-0.000462138 2 -0.0130771
+Stick movement: 
+-0.0353173 0 -0.999376
+Position: 
+-0.00138368 2 -0.0391541
+Stick movement: 
+-0.0385456 0 -0.999257
+Position: 
+-0.00187115 2 -0.0528146
+Stick movement: 
+-0.0385456 0 -0.999257
+Position: 
+-0.00187115 2 -0.0528146
+Stick movement: 
+-0.0385456 0 -0.999257
+Position: 
+-0.00298566 2 -0.0837536
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.00500494 2 -0.13915
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0068335 2 -0.188518
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0068335 2 -0.188518
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.00788063 2 -0.216626
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.00895908 2 -0.24554
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0100634 2 -0.275122
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0112015 2 -0.305574
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0135869 2 -0.369291
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.017669 2 -0.477855
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.017669 2 -0.477855
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0192056 2 -0.518574
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0207683 2 -0.559968
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0223633 2 -0.602194
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0239944 2 -0.64535
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0308903 2 -0.827546
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0308903 2 -0.827546
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.032808 2 -0.878088
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.034753 2 -0.929333
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0407766 2 -1.08793
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0474393 2 -1.26299
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0474393 2 -1.26299
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0498709 2 -1.32677
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0523306 2 -1.39128
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0573674 2 -1.52332
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0653082 2 -1.73132
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0681209 2 -1.80493
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0709653 2 -1.87935
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0738409 2 -1.95457
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0796996 2 -2.1078
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0858199 2 -2.26776
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0889817 2 -2.35036
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.0921737 2 -2.43374
+Stick movement: 
+-0.0383115 0 -0.987248
+Position: 
+-0.101952 2 -2.68908
+Stick movement: 
+-0.0417421 0 -0.999128
+Position: 
+-0.108849 2 -2.86876
+Stick movement: 
+-0.0245061 0 -0.401389
+Position: 
+-0.11241 2 -2.96118
+Stick movement: 
+-0.003626 0 -0.0323803
+Position: 
+-0.115985 2 -3.0538
+Stick movement: 
+-0 0 -0
+Position: 
+-0.119561 2 -3.14643
+Stick movement: 
+0 0 -0
+Position: 
+-0.123137 2 -3.23906
+Stick movement: 
+0 0 0
+Position: 
+-0.126713 2 -3.3317
+Stick movement: 
+0 0 0
+Position: 
+-0.141017 2 -3.70222
+Stick movement: 
+0 0 0
+Position: 
+-0.144593 2 -3.79486
+Stick movement: 
+0 0 0
+Position: 
+-0.144593 2 -3.79486
+Stick movement: 
+0 0 0
+Position: 
+-0.148169 2 -3.88749
+Stick movement: 
+0 0 0
+Position: 
+-0.169624 2 -4.44328
+Stick movement: 
+0 0 -0
+Position: 
+-0.169624 2 -4.44328
+Stick movement: 
+0 0 -0
+Position: 
+-0.176776 2 -4.62855
+Stick movement: 
+0 0 -0
+Position: 
+-0.183928 2 -4.81381
+Stick movement: 
+-0 0 0
+Position: 
+-0.194656 2 -5.09171
+Stick movement: 
+-0 0 0
+Position: 
+-0.201808 2 -5.27697
+Stick movement: 
+-0 0 0
+Position: 
+-0.201808 2 -5.27697
+Stick movement: 
+-0 0 0
+Position: 
+-0.205384 2 -5.36961
+Stick movement: 
+-0.00186004 0 0.014596
+Position: 
+-0.216116 2 -5.64747
+Stick movement: 
+-0.23407 0 0.97222
+Position: 
+-0.216116 2 -5.64747
+Stick movement: 
+-0.243239 0 0.969966
+Position: 
+-0.229151 2 -5.91578
+Stick movement: 
+-0.234409 0 0.972138
+Position: 
+-0.234556 2 -6.00089
+Stick movement: 
+-0.22552 0 0.974239
+Position: 
+-0.240117 2 -6.08532
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.245861 2 -6.16895
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.258056 2 -6.33303
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.271307 2 -6.49234
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.285997 2 -6.64517
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.285997 2 -6.64517
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.294007 2 -6.71859
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.30219 2 -6.79122
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.319233 2 -6.93344
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.347008 2 -7.13681
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.357215 2 -7.20032
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.367584 2 -7.2631
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.389018 2 -7.38553
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.423599 2 -7.55822
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.436059 2 -7.61157
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.448691 2 -7.66416
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.461514 2 -7.71587
+Stick movement: 
+-0.22552 0 0.974239
+Position: 
+-0.474535 2 -7.76672
+Stick movement: 
+-0.22552 0 0.974239
+Position: 
+-0.487751 2 -7.81672
+Stick movement: 
+-0.22552 0 0.974239
+Position: 
+-0.542615 2 -8.0081
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.542615 2 -8.0081
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.557446 2 -8.05104
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.572431 2 -8.09329
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.587593 2 -8.13474
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.650312 2 -8.2912
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.667091 2 -8.32536
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.684033 2 -8.35879
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.718445 2 -8.42326
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.736007 2 -8.45389
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.736007 2 -8.45389
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.772081 2 -8.51087
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.809407 2 -8.56221
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.84824 2 -8.60675
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.84824 2 -8.60675
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.868291 2 -8.62616
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.90893 2 -8.66256
+Stick movement: 
+-0.22552 0 0.974239
+Position: 
+-0.972586 2 -8.70524
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-0.994654 2 -8.71572
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-1.01705 2 -8.72472
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-1.08539 2 -8.74651
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-1.13263 2 -8.75349
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-1.18158 2 -8.75273
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-1.18158 2 -8.75273
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-1.20675 2 -8.74924
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-1.23209 2 -8.74494
+Stick movement: 
+-0.216574 0 0.976266
+Position: 
+-1.2834 2 -8.73357
+Stick movement: 
+-0.207573 0 0.978219
+Position: 
+-1.33581 2 -8.71713
+Stick movement: 
+-0.186379 0 0.982478
+Position: 
+-1.38989 2 -8.69254
+Stick movement: 
+-0.152526 0 0.988299
+Position: 
+-1.38989 2 -8.69254
+Stick movement: 
+-0.136946 0 0.990578
+Position: 
+-1.41741 2 -8.67752
+Stick movement: 
+-0.114959 0 0.99337
+Position: 
+-1.44503 2 -8.66174
+Stick movement: 
+-0.114959 0 0.99337
+Position: 
+-1.50058 2 -8.6275
+Stick movement: 
+-0.0353184 0 0.999376
+Position: 
+-1.52852 2 -8.60841
+Stick movement: 
+-0.0353184 0 0.999376
+Position: 
+-1.58449 2 -8.56777
+Stick movement: 
+0.0513862 0 0.998679
+Position: 
+-1.61247 2 -8.54479
+Stick movement: 
+0.0513862 0 0.998679
+Position: 
+-1.64041 2 -8.52102
+Stick movement: 
+0.0513862 0 0.998679
+Position: 
+-1.69617 2 -8.47103
+Stick movement: 
+0.0513862 0 0.998679
+Position: 
+-1.77915 2 -8.38338
+Stick movement: 
+0.136976 0 0.990574
+Position: 
+-1.8065 2 -8.35005
+Stick movement: 
+0.195529 0 0.980698
+Position: 
+-1.83365 2 -8.31553
+Stick movement: 
+0.225548 0 0.974232
+Position: 
+-1.86063 2 -8.28018
+Stick movement: 
+0.284458 0 0.958689
+Position: 
+-1.88739 2 -8.24403
+Stick movement: 
+0.391317 0 0.920256
+Position: 
+-1.91383 2 -8.207
+Stick movement: 
+0.438503 0 0.89873
+Position: 
+-1.99099 2 -8.09114
+Stick movement: 
+0.562231 0 0.82698
+Position: 
+-2.03825 2 -8.00634
+Stick movement: 
+0.724238 0 0.689551
+Position: 
+-2.06014 2 -7.96158
+Stick movement: 
+0.748036 0 0.663658
+Position: 
+-2.06014 2 -7.96158
+Stick movement: 
+0.765809 0 0.643068
+Position: 
+-2.08109 2 -7.91598
+Stick movement: 
+0.776522 0 0.630091
+Position: 
+-2.10147 2 -7.86991
+Stick movement: 
+0.809957 0 0.586489
+Position: 
+-2.17513 2 -7.6796
+Stick movement: 
+0.856831 0 0.515597
+Position: 
+-2.20261 2 -7.57801
+Stick movement: 
+0.870706 0 0.491803
+Position: 
+-2.21327 2 -7.52533
+Stick movement: 
+0.870706 0 0.491803
+Position: 
+-2.22295 2 -7.4721
+Stick movement: 
+0.874349 0 0.485297
+Position: 
+-2.23193 2 -7.41847
+Stick movement: 
+0.874349 0 0.485297
+Position: 
+-2.24008 2 -7.36438
+Stick movement: 
+0.874349 0 0.485297
+Position: 
+-2.25406 2 -7.25492
+Stick movement: 
+0.874349 0 0.485297
+Position: 
+-2.26627 2 -7.08587
+Stick movement: 
+0.874349 0 0.485297
+Position: 
+-2.26704 2 -7.02769
+Stick movement: 
+0.874349 0 0.485297
+Position: 
+-2.26674 2 -6.96891
+Stick movement: 
+0.874349 0 0.485297
+Position: 
+-2.2632 2 -6.84973
+Stick movement: 
+0.874349 0 0.485297
+Position: 
+-2.25387 2 -6.72733
+Stick movement: 
+0.874349 0 0.485297
+Position: 
+-2.14974 2 -6.20065
+Stick movement: 
+0.874349 0 0.485297
+Position: 
+-2.14974 2 -6.20065
+Stick movement: 
+0.877718 0 0.479177
+Position: 
+-2.12483 2 -6.12822
+Stick movement: 
+0.877718 0 0.479177
+Position: 
+-2.09921 2 -6.0554
+Stick movement: 
+0.875564 0 0.483102
+Position: 
+-2.04547 2 -5.90839
+Stick movement: 
+0.875564 0 0.483102
+Position: 
+-2.04547 2 -5.90839
+Stick movement: 
+0.875564 0 0.483102
+Position: 
+-1.95384 2 -5.68179
+Stick movement: 
+0.880586 0 0.473887
+Position: 
+-1.91999 2 -5.60444
+Stick movement: 
+0.880586 0 0.473887
+Position: 
+-1.88509 2 -5.52653
+Stick movement: 
+0.880586 0 0.473887
+Position: 
+-1.88509 2 -5.52653
+Stick movement: 
+0.880586 0 0.473887
+Position: 
+-1.77395 2 -5.28933
+Stick movement: 
+0.884149 0 0.467205
+Position: 
+-1.73398 2 -5.2087
+Stick movement: 
+0.888495 0 0.458887
+Position: 
+-1.60722 2 -4.96323
+Stick movement: 
+0.890433 0 0.455115
+Position: 
+-1.60722 2 -4.96323
+Stick movement: 
+0.890433 0 0.455115
+Position: 
+-1.56137 2 -4.87955
+Stick movement: 
+0.890433 0 0.455115
+Position: 
+-1.51477 2 -4.7955
+Stick movement: 
+0.890433 0 0.455115
+Position: 
+-1.41905 2 -4.62608
+Stick movement: 
+0.890433 0 0.455115
+Position: 
+-1.26746 2 -4.36787
+Stick movement: 
+0.890433 0 0.455115
+Position: 
+-1.21318 2 -4.27988
+Stick movement: 
+0.890433 0 0.455115
+Position: 
+-1.15794 2 -4.1914
+Stick movement: 
+0.890433 0 0.455115
+Position: 
+-0.987135 2 -3.92336
+Stick movement: 
+0.893235 0 0.44959
+Position: 
+-0.865557 2 -3.74076
+Stick movement: 
+0.893235 0 0.44959
+Position: 
+-0.801859 2 -3.64799
+Stick movement: 
+0.893235 0 0.44959
+Position: 
+-0.73743 2 -3.55485
+Stick movement: 
+0.893235 0 0.44959
+Position: 
+-0.672194 2 -3.4613
+Stick movement: 
+0.893235 0 0.44959
+Position: 
+-0.539529 2 -3.27311
+Stick movement: 
+0.893235 0 0.44959
+Position: 
+-0.402376 2 -3.08265
+Stick movement: 
+0.891072 0 0.453862
+Position: 
+-0.258504 2 -2.8888
+Stick movement: 
+0.895699 0 0.444661
+Position: 
+-0.184145 2 -2.79066
+Stick movement: 
+0.930642 0 0.36593
+Position: 
+-0.0324241 2 -2.59303
+Stick movement: 
+0.964513 0 0.264037
+Position: 
+-0.0324241 2 -2.59303
+Stick movement: 
+0.702466 0 0.174007
+Position: 
+0.0455343 2 -2.4935
+Stick movement: 
+0 0 0
+Position: 
+0.12378 2 -2.3939
+Stick movement: 
+-0 0 -0
+Position: 
+0.202026 2 -2.2943
+Stick movement: 
+-0 0 -0
+Position: 
+0.280272 2 -2.1947
+Stick movement: 
+-0 0 -0
+Position: 
+0.358518 2 -2.0951
+Stick movement: 
+-0 0 -0
+Position: 
+0.51501 2 -1.8959
+Stick movement: 
+-0 0 -0
+Position: 
+0.671501 2 -1.6967
+Stick movement: 
+-0 0 -0
+Position: 
+0.749747 2 -1.5971
+Stick movement: 
+-0 0 -0
+Position: 
+0.749747 2 -1.5971
+Stick movement: 
+-0 0 -0
+Position: 
+0.827993 2 -1.4975
+Stick movement: 
+-0 0 -0
+Position: 
+0.984485 2 -1.2983
+Stick movement: 
+-0 0 -0
+Position: 
+0.984485 2 -1.2983
+Stick movement: 
+-0.0009336 0 -0.00847035
+Position: 
+1.14098 2 -1.09911
+Stick movement: 
+-0.00852149 0 -0.341346
+Position: 
+1.37568 2 -0.801651
+Stick movement: 
+0.0546059 0 -0.998508
+Position: 
+1.45397 2 -0.704525
+Stick movement: 
+0.0513847 0 -0.998679
+Position: 
+1.45397 2 -0.704525
+Stick movement: 
+0.0509416 0 -0.981214
+Position: 
+1.53232 2 -0.60869
+Stick movement: 
+0.0158356 0 -0.972942
+Position: 
+1.61071 2 -0.513714
+Stick movement: 
+0.00317202 0 -0.96603
+Position: 
+1.6891 2 -0.419534
+Stick movement: 
+0.00317202 0 -0.96603
+Position: 
+2.00271 2 -0.0518985
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+2.08111 2 0.0352438
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+2.23789 2 0.206974
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+2.31628 2 0.291399
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+2.47302 2 0.456219
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+2.62971 2 0.614147
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+2.70804 2 0.690739
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+2.70804 2 0.690739
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+2.78637 2 0.766185
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+3.09961 2 1.05994
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+3.25615 2 1.19396
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+3.25615 2 1.19396
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+3.3344 2 1.25754
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+3.41264 2 1.32033
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+3.49088 2 1.3822
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+3.56911 2 1.44323
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+3.64734 2 1.5034
+Stick movement: 
+0.00318461 0 -0.972779
+Position: 
+3.72556 2 1.56272
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+3.96022 2 1.73553
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+3.96022 2 1.73553
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+4.03843 2 1.78963
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+4.19482 2 1.89551
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+4.42935 2 2.0461
+Stick movement: 
+-0.00628432 0 -0.96605
+Position: 
+4.58563 2 2.13618
+Stick movement: 
+0.00317202 0 -0.96603
+Position: 
+4.66377 2 2.1779
+Stick movement: 
+0.00317202 0 -0.96603
+Position: 
+4.7419 2 2.21867
+Stick movement: 
+-0.022062 0 -0.966355
+Position: 
+4.82003 2 2.25862
+Stick movement: 
+-0.034682 0 -0.966844
+Position: 
+4.89813 2 2.29771
+Stick movement: 
+-0.034682 0 -0.966844
+Position: 
+5.13224 2 2.40961
+Stick movement: 
+-0.0756588 0 -0.963273
+Position: 
+5.28786 2 2.47558
+Stick movement: 
+-0.106794 0 -0.953815
+Position: 
+5.28786 2 2.47558
+Stick movement: 
+-0.106794 0 -0.953815
+Position: 
+5.3654 2 2.50535
+Stick movement: 
+-0.106794 0 -0.953815
+Position: 
+5.44286 2 2.5344
+Stick movement: 
+-0.115936 0 -0.948663
+Position: 
+5.52022 2 2.56267
+Stick movement: 
+-0.128742 0 -0.950764
+Position: 
+5.6746 2 2.61645
+Stick movement: 
+-0.160572 0 -0.950313
+Position: 
+5.90483 2 2.68812
+Stick movement: 
+-0.236582 0 -0.937704
+Position: 
+5.98085 2 2.70822
+Stick movement: 
+-0.283118 0 -0.93976
+Position: 
+6.05651 2 2.72704
+Stick movement: 
+-0.372221 0 -0.924355
+Position: 
+6.13192 2 2.74512
+Stick movement: 
+-0.435374 0 -0.877535
+Position: 
+6.20699 2 2.76245
+Stick movement: 
+-0.48844 0 -0.872598
+Position: 
+6.28163 2 2.77898
+Stick movement: 
+-0.539237 0 -0.842154
+Position: 
+6.42955 2 2.80974
+Stick movement: 
+-0.594435 0 -0.733775
+Position: 
+6.57486 2 2.83675
+Stick movement: 
+-0.702747 0 -0.706494
+Position: 
+6.71557 2 2.85845
+Stick movement: 
+-0.734704 0 -0.616366
+Position: 
+6.71557 2 2.85845
+Stick movement: 
+-0.742255 0 -0.589364
+Position: 
+6.78375 2 2.86722
+Stick movement: 
+-0.740562 0 -0.574215
+Position: 
+6.85138 2 2.87556
+Stick movement: 
+-0.755833 0 -0.575917
+Position: 
+6.91833 2 2.88339
+Stick movement: 
+-0.804889 0 -0.585413
+Position: 
+7.11484 2 2.9036
+Stick movement: 
+-0.805285 0 -0.514512
+Position: 
+7.23814 2 2.91173
+Stick movement: 
+-0.807273 0 -0.494665
+Position: 
+7.29755 2 2.91433
+Stick movement: 
+-0.815716 0 -0.476977
+Position: 
+7.29755 2 2.91433
+Stick movement: 
+-0.795628 0 -0.46779
+Position: 
+7.356 2 2.91637
+Stick movement: 
+-0.795628 0 -0.46779
+Position: 
+7.41378 2 2.91801
+Stick movement: 
+-0.795628 0 -0.46779
+Position: 
+7.58264 2 2.9203
+Stick movement: 
+-0.814064 0 -0.473151
+Position: 
+7.68776 2 2.91746
+Stick movement: 
+-0.814064 0 -0.473151
+Position: 
+7.73787 2 2.91461
+Stick movement: 
+-0.814064 0 -0.473151
+Position: 
+7.78714 2 2.91128
+Stick movement: 
+-0.814064 0 -0.473151
+Position: 
+7.8356 2 2.90747
+Stick movement: 
+-0.814064 0 -0.473151
+Position: 
+7.88343 2 2.9033
+Stick movement: 
+-0.815345 0 -0.463566
+Position: 
+7.97689 2 2.8937
+Stick movement: 
+-0.815345 0 -0.463566
+Position: 
+8.10718 2 2.87365
+Stick movement: 
+-0.815345 0 -0.463566
+Position: 
+8.10718 2 2.87365
+Stick movement: 
+-0.834086 0 -0.468874
+Position: 
+8.14701 2 2.86492
+Stick movement: 
+-0.834086 0 -0.468874
+Position: 
+8.18618 2 2.85582
+Stick movement: 
+-0.834086 0 -0.468874
+Position: 
+8.22455 2 2.84628
+Stick movement: 
+-0.834086 0 -0.468874
+Position: 
+8.29907 2 2.82593
+Stick movement: 
+-0.834086 0 -0.468874
+Position: 
+8.40112 2 2.78995
+Stick movement: 
+-0.834086 0 -0.468874
+Position: 
+8.43138 2 2.77584
+Stick movement: 
+-0.856182 0 -0.468363
+Position: 
+8.46097 2 2.76137
+Stick movement: 
+-0.856182 0 -0.468363
+Position: 
+8.48988 2 2.74651
+Stick movement: 
+-0.851368 0 -0.45705
+Position: 
+8.51797 2 2.73122
+Stick movement: 
+-0.851368 0 -0.45705
+Position: 
+8.5719 2 2.69942
+Stick movement: 
+-0.864377 0 -0.447289
+Position: 
+8.62185 2 2.66552
+Stick movement: 
+-0.881142 0 -0.431875
+Position: 
+8.64469 2 2.64748
+Stick movement: 
+-0.879542 0 -0.399093
+Position: 
+8.66654 2 2.62898
+Stick movement: 
+-0.90328 0 -0.3982
+Position: 
+8.68743 2 2.61004
+Stick movement: 
+-0.91254 0 -0.390642
+Position: 
+8.70752 2 2.59076
+Stick movement: 
+-0.904307 0 -0.36965
+Position: 
+8.72672 2 2.5711
+Stick movement: 
+-0.899009 0 -0.355927
+Position: 
+8.76271 2 2.53082
+Stick movement: 
+-0.891324 0 -0.335667
+Position: 
+8.79305 2 2.48834
+Stick movement: 
+-0.912951 0 -0.34312
+Position: 
+8.80591 2 2.46623
+Stick movement: 
+-0.902405 0 -0.33168
+Position: 
+8.81803 2 2.44384
+Stick movement: 
+-0.902405 0 -0.33168
+Position: 
+8.82925 2 2.42112
+Stick movement: 
+-0.902405 0 -0.33168
+Position: 
+8.83976 2 2.39814
+Stick movement: 
+-0.904344 0 -0.319738
+Position: 
+8.86626 2 2.32738
+Stick movement: 
+-0.904344 0 -0.319738
+Position: 
+8.87676 2 2.27766
+Stick movement: 
+-0.905301 0 -0.304611
+Position: 
+8.87676 2 2.27766
+Stick movement: 
+-0.905301 0 -0.304611
+Position: 
+8.87898 2 2.25175
+Stick movement: 
+-0.893959 0 -0.290434
+Position: 
+8.88046 2 2.2256
+Stick movement: 
+-0.889594 0 -0.27767
+Position: 
+8.8811 2 2.19918
+Stick movement: 
+-0.886428 0 -0.26821
+Position: 
+8.87589 2 2.09111
+Stick movement: 
+-0.890167 0 -0.259934
+Position: 
+8.87052 2 2.06288
+Stick movement: 
+-0.893244 0 -0.26934
+Position: 
+8.8567 2 2.00549
+Stick movement: 
+-0.893244 0 -0.26934
+Position: 
+8.84832 2 1.97635
+Stick movement: 
+-0.893244 0 -0.26934
+Position: 
+8.81633 2 1.88688
+Stick movement: 
+-0.897074 0 -0.261042
+Position: 
+8.80206 2 1.85598
+Stick movement: 
+-0.897074 0 -0.261042
+Position: 
+8.78685 2 1.82481
+Stick movement: 
+-0.897074 0 -0.261042
+Position: 
+8.77084 2 1.79341
+Stick movement: 
+-0.894088 0 -0.251687
+Position: 
+8.75405 2 1.76178
+Stick movement: 
+-0.904017 0 -0.241402
+Position: 
+8.73647 2 1.72993
+Stick movement: 
+-0.904017 0 -0.241402
+Position: 
+8.67929 2 1.63321
+Stick movement: 
+-0.918598 0 -0.222792
+Position: 
+8.63367 2 1.5668
+Stick movement: 
+-0.946625 0 -0.199706
+Position: 
+8.60817 2 1.53296
+Stick movement: 
+-0.946625 0 -0.199706
+Position: 
+8.60817 2 1.53296
+Stick movement: 
+-0.951559 0 -0.191374
+Position: 
+8.58138 2 1.49885
+Stick movement: 
+-0.951559 0 -0.191374
+Position: 
+8.5253 2 1.43012
+Stick movement: 
+-0.951559 0 -0.191374
+Position: 
+8.46544 2 1.36064
+Stick movement: 
+-0.956549 0 -0.183024
+Position: 
+8.35963 2 1.25326
+Stick movement: 
+-0.960998 0 -0.171651
+Position: 
+8.27839 2 1.17964
+Stick movement: 
+-0.966337 0 -0.163284
+Position: 
+8.23507 2 1.14235
+Stick movement: 
+-0.966337 0 -0.163284
+Position: 
+8.23507 2 1.14235
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+8.19035 2 1.10482
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+8.14488 2 1.06718
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+8.09856 2 1.0294
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+8.05132 2 0.991476
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+7.85389 2 0.838413
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+7.80011 2 0.79944
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+7.69079 2 0.721214
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+7.57523 2 0.641989
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+7.51464 2 0.601928
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+7.45303 2 0.561703
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+7.39057 2 0.521343
+Stick movement: 
+-0.964491 0 -0.154239
+Position: 
+7.32726 2 0.480845
+Stick movement: 
+-0.98637 0 -0.156197
+Position: 
+7.26309 2 0.440212
+Stick movement: 
+-0.98637 0 -0.156197
+Position: 
+7.19811 2 0.39945
+Stick movement: 
+-0.98637 0 -0.156197
+Position: 
+7.06536 2 0.317486
+Stick movement: 
+-0.98637 0 -0.156197
+Position: 
+6.92753 2 0.234715
+Stick movement: 
+-0.98637 0 -0.156197
+Position: 
+6.8558 2 0.192886
+Stick movement: 
+-0.98637 0 -0.156197
+Position: 
+6.78318 2 0.150913
+Stick movement: 
+-0.98637 0 -0.156197
+Position: 
+6.70976 2 0.108814
+Stick movement: 
+-0.98637 0 -0.156197
+Position: 
+6.63551 2 0.0665853
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+6.48425 2 -0.0183086
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+6.32809 2 -0.103973
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+6.24744 2 -0.147207
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+6.16577 2 -0.190603
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+6.08327 2 -0.234129
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+5.9999 2 -0.27779
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+5.91562 2 -0.321595
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+5.65803 2 -0.453755
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+5.47767 2 -0.543216
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+5.38471 2 -0.588382
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+5.19537 2 -0.67925
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+4.90046 2 -0.817266
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+4.79859 2 -0.86383
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+4.69509 2 -0.910649
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+4.59085 2 -0.957585
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+4.48574 2 -1.00466
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+4.37985 2 -1.05185
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+3.94721 2 -1.24206
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+3.83425 2 -1.29036
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+3.72045 2 -1.3388
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+3.60582 2 -1.38736
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+3.49042 2 -1.43605
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+3.37412 2 -1.48488
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+3.02004 2 -1.63218
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+2.77561 2 -1.73169
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+2.65064 2 -1.78188
+Stick movement: 
+-0.963896 0 -0.151225
+Position: 
+2.65064 2 -1.78188
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+2.52449 2 -1.83225
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+2.39748 2 -1.88276
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+2.01081 2 -2.03515
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+1.74521 2 -2.13797
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+1.60947 2 -2.18983
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+1.60947 2 -2.18983
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+1.47244 2 -2.24189
+Stick movement: 
+-0.978408 0 -0.152502
+Position: 
+1.33462 2 -2.29408
+Stick movement: 
+-0.984061 0 -0.144057
+Position: 
+1.19586 2 -2.34641
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+0.774412 2 -2.50417
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+0.483626 2 -2.61087
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+0.483626 2 -2.61087
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+0.335122 2 -2.6647
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+0.185901 2 -2.71864
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+0.0358268 2 -2.77271
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+-0.267101 2 -2.88129
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+-0.730084 2 -3.0455
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+-0.888388 2 -3.10085
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+-0.888388 2 -3.10085
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+-1.04794 2 -3.1564
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+-1.20828 2 -3.21207
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+-1.36956 2 -3.26788
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+-1.69473 2 -3.37992
+Stick movement: 
+-0.985775 0 -0.153146
+Position: 
+-2.19411 2 -3.54978
+Stick movement: 
+-0.97358 0 -0.16397
+Position: 
+-2.19411 2 -3.54978
+Stick movement: 
+-0.97358 0 -0.16397
+Position: 
+-2.36498 2 -3.60711
+Stick movement: 
+-0.372184 0 -0.080314
+Position: 
+-2.5364 2 -3.66453
+Stick movement: 
+-0 0 0
+Position: 
+-2.70796 2 -3.72199
+Stick movement: 
+-0 0 0
+Position: 
+-3.05109 2 -3.83691
+Stick movement: 
+-0 0 -0
+Position: 
+-3.39422 2 -3.95182
+Stick movement: 
+-0 0 -0
+Position: 
+-3.73735 2 -4.06674
+Stick movement: 
+-0 0 -0
+Position: 
+-3.73735 2 -4.06674
+Stick movement: 
+-0 0 -0
+Position: 
+-3.90891 2 -4.1242
+Stick movement: 
+-0 0 -0
+Position: 
+-4.08047 2 -4.18165
+Stick movement: 
+-0 0 0
+Position: 
+-4.25204 2 -4.23911
+Stick movement: 
+-0 0 0
+Position: 
+-4.76673 2 -4.41149
+Stick movement: 
+-0 0 0
+Position: 
+-5.28143 2 -4.58386
+Stick movement: 
+0.0608571 0 0.236012
+Position: 
+-5.45292 2 -4.64105
+Stick movement: 
+0.10714 0 0.633122
+Position: 
+-5.45292 2 -4.64105
+Stick movement: 
+0.120549 0 0.746486
+Position: 
+-5.62427 2 -4.69741
+Stick movement: 
+0.0992121 0 0.995066
+Position: 
+-5.79552 2 -4.75302
+Stick movement: 
+0.0992121 0 0.995066
+Position: 
+-5.96668 2 -4.80768
+Stick movement: 
+0.0992121 0 0.995066
+Position: 
+-6.47963 2 -4.9664
+Stick movement: 
+0.0896971 0 0.995969
+Position: 
+-6.82072 2 -5.06314
+Stick movement: 
+0.0896971 0 0.995969
+Position: 
+-6.82072 2 -5.06314
+Stick movement: 
+0.0896971 0 0.995969
+Position: 
+-6.99097 2 -5.10828
+Stick movement: 
+0.0896971 0 0.995969
+Position: 
+-7.16116 2 -5.15267
+Stick movement: 
+0.0896971 0 0.995969
+Position: 
+-7.33125 2 -5.19611
+Stick movement: 
+0.0896971 0 0.995969
+Position: 
+-8.0108 2 -5.36044
+Stick movement: 
+0.0896971 0 0.995969
+Position: 
+-8.18025 2 -5.39672
+Stick movement: 
+0.0896971 0 0.995969
+Position: 
+-8.34962 2 -5.43207
+Stick movement: 
+0.0896971 0 0.995969
+Position: 
+-8.51892 2 -5.46661
+Stick movement: 
+0.0896971 0 0.995969
+Position: 
+-9.02629 2 -5.56456
+Stick movement: 
+0.121294 0 0.992617
+Position: 
+-9.36366 2 -5.62118
+Stick movement: 
+0.143227 0 0.98969
+Position: 
+-9.86787 2 -5.69173
+Stick movement: 
+0.161844 0 0.986816
+Position: 
+-10.2024 2 -5.72797
+Stick movement: 
+0.17109 0 0.985255
+Position: 
+-10.5355 2 -5.75507
+Stick movement: 
+0.189444 0 0.981892
+Position: 
+-10.7015 2 -5.76598
+Stick movement: 
+0.2046 0 0.978846
+Position: 
+-11.033 2 -5.78455
+Stick movement: 
+0.211218 0 0.977439
+Position: 
+-11.5285 2 -5.80464
+Stick movement: 
+0.228747 0 0.973486
+Position: 
+-11.8566 2 -5.80784
+Stick movement: 
+0.259954 0 0.965621
+Position: 
+-11.8566 2 -5.80784
+Stick movement: 
+0.291098 0 0.956693
+Position: 
+-12.0198 2 -5.80582
+Stick movement: 
+0.299842 0 0.953989
+Position: 
+-12.3454 2 -5.79943
+Stick movement: 
+0.366495 0 0.93042
+Position: 
+-12.6692 2 -5.78808
+Stick movement: 
+0.394324 0 0.918972
+Position: 
+-12.9903 2 -5.76983
+Stick movement: 
+0.466652 0 0.859154
+Position: 
+-13.1496 2 -5.75803
+Stick movement: 
+0.480921 0 0.844667
+Position: 
+-13.3086 2 -5.74554
+Stick movement: 
+0.540167 0 0.841558
+Position: 
+-13.4671 2 -5.73237
+Stick movement: 
+0.56059 0 0.828094
+Position: 
+-14.2519 2 -5.6547
+Stick movement: 
+0.716439 0 0.69765
+Position: 
+-14.2519 2 -5.6547
+Stick movement: 
+0.728217 0 0.685347
+Position: 
+-14.4049 2 -5.63424
+Stick movement: 
+0.749639 0 0.661847
+Position: 
+-14.5573 2 -5.61323
+Stick movement: 
+0.756797 0 0.65365
+Position: 
+-14.7091 2 -5.59167
+Stick movement: 
+0.804984 0 0.58552
+Position: 
+-14.8602 2 -5.5695
+Stick movement: 
+0.825525 0 0.564366
+Position: 
+-15.4574 2 -5.476
+Stick movement: 
+0.89438 0 0.447308
+Position: 
+-15.8867 2 -5.39453
+Stick movement: 
+0.945822 0 0.324687
+Position: 
+-16.0242 2 -5.36461
+Stick movement: 
+0.951317 0 0.308215
+Position: 
+-16.1609 2 -5.33442
+Stick movement: 
+0.95601 0 0.293333
+Position: 
+-16.2969 2 -5.30399
+Stick movement: 
+0.95894 0 0.28361
+Position: 
+-16.5659 2 -5.24224
+Stick movement: 
+0.969966 0 0.243239
+Position: 
+-16.9593 2 -5.14681
+Stick movement: 
+0.978756 0 0.205029
+Position: 
+-17.0867 2 -5.11409
+Stick movement: 
+0.980462 0 0.196709
+Position: 
+-17.2129 2 -5.08113
+Stick movement: 
+0.981567 0 0.191119
+Position: 
+-17.4623 2 -5.01458
+Stick movement: 
+0.983677 0 0.179942
+Position: 
+-17.5854 2 -4.98101
+Stick movement: 
+0.983677 0 0.179942
+Position: 
+-17.9472 2 -4.8789
+Stick movement: 
+0.983677 0 0.179942
+Position: 
+-18.0635 2 -4.84408
+Stick movement: 
+0.983677 0 0.179942
+Position: 
+-18.2937 2 -4.774
+Stick movement: 
+0.983677 0 0.179942
+Position: 
+-18.6313 2 -4.66748
+Stick movement: 
+0.983677 0 0.179942
+Position: 
+-18.8451 2 -4.59439
+Stick movement: 
+0.983677 0 0.179942
+Position: 
+-18.8451 2 -4.59439
+Stick movement: 
+0.983677 0 0.179942
+Position: 
+-18.9485 2 -4.55721
+Stick movement: 
+0.987547 0 0.157323
+Position: 
+-19.051 2 -4.51988
+Stick movement: 
+0.987547 0 0.157323
+Position: 
+-19.1527 2 -4.48241
+Stick movement: 
+0.991678 0 0.128745
+Position: 
+-19.4526 2 -4.36928
+Stick movement: 
+0.998591 0 0.0530579
+Position: 
+-19.6439 2 -4.29298
+Stick movement: 
+0.999996 0 0.0029908
+Position: 
+-19.7367 2 -4.25467
+Stick movement: 
+0.999892 0 -0.0147083
+Position: 
+-19.7367 2 -4.25467
+Stick movement: 
+0.998088 0 -0.0618037
+Position: 
+-19.8282 2 -4.2164
+Stick movement: 
+0.996845 0 -0.0793716
+Position: 
+-19.9188 2 -4.17818
+Stick movement: 
+0.99345 0 -0.114271
+Position: 
+-20.0086 2 -4.14005
+Stick movement: 
+0.990924 0 -0.134424
+Position: 
+-20.1856 2 -4.06413
+Stick movement: 
+0.988002 0 -0.15444
+Position: 
+-20.3576 2 -3.98889
+Stick movement: 
+0.985683 0 -0.168607
+Position: 
+-20.4411 2 -3.95168
+Stick movement: 
+0.984199 0 -0.177064
+Position: 
+-20.5234 2 -3.91467
+Stick movement: 
+0.980474 0 -0.196651
+Position: 
+-20.6049 2 -3.87783
+Stick movement: 
+0.977597 0 -0.210485
+Position: 
+-20.6856 2 -3.84115
+Stick movement: 
+0.975785 0 -0.218731
+Position: 
+-20.7653 2 -3.80467
+Stick movement: 
+0.973911 0 -0.22693
+Position: 
+-21.0755 2 -3.66078
+Stick movement: 
+0.969307 0 -0.245854
+Position: 
+-21.0755 2 -3.66078
+Stick movement: 
+0.966527 0 -0.256565
+Position: 
+-21.1483 2 -3.62595
+Stick movement: 
+0.966527 0 -0.256565
+Position: 
+-21.2202 2 -3.59135
+Stick movement: 
+0.966527 0 -0.256565
+Position: 
+-21.3616 2 -3.5228
+Stick movement: 
+0.966527 0 -0.256565
+Position: 
+-21.6295 2 -3.38967
+Stick movement: 
+0.962173 0 -0.27244
+Position: 
+-21.6913 2 -3.35779
+Stick movement: 
+0.959914 0 -0.280296
+Position: 
+-21.752 2 -3.32622
+Stick movement: 
+0.959914 0 -0.280296
+Position: 
+-21.752 2 -3.32622
+Stick movement: 
+0.959914 0 -0.280296
+Position: 
+-21.8116 2 -3.29498
+Stick movement: 
+0.959914 0 -0.280296
+Position: 
+-21.8703 2 -3.26399
+Stick movement: 
+0.957602 0 -0.288096
+Position: 
+-22.041 2 -3.17266
+Stick movement: 
+0.957602 0 -0.288096
+Position: 
+-22.1461 2 -3.11437
+Stick movement: 
+0.957602 0 -0.288096
+Position: 
+-22.1957 2 -3.08611
+Stick movement: 
+0.957602 0 -0.288096
+Position: 
+-22.2919 2 -3.03051
+Stick movement: 
+0.957602 0 -0.288096
+Position: 
+-22.3385 2 -3.00315
+Stick movement: 
+0.957602 0 -0.288096
+Position: 
+-22.4691 2 -2.92387
+Stick movement: 
+0.954436 0 -0.298416
+Position: 
+-22.5087 2 -2.89861
+Stick movement: 
+0.954436 0 -0.298416
+Position: 
+-22.5474 2 -2.87368
+Stick movement: 
+0.954436 0 -0.298416
+Position: 
+-22.6583 2 -2.80044
+Stick movement: 
+0.954436 0 -0.298416
+Position: 
+-22.7249 2 -2.7539
+Stick movement: 
+0.954436 0 -0.298416
+Position: 
+-22.7828 2 -2.71009
+Stick movement: 
+0.952005 0 -0.306082
+Position: 
+-22.8093 2 -2.68899
+Stick movement: 
+0.952005 0 -0.306082
+Position: 
+-22.8093 2 -2.68899
+Stick movement: 
+0.954436 0 -0.298416
+Position: 
+-22.8346 2 -2.66824
+Stick movement: 
+0.954436 0 -0.298416
+Position: 
+-22.859 2 -2.64775
+Stick movement: 
+0.954436 0 -0.298416
+Position: 
+-22.9053 2 -2.60762
+Stick movement: 
+0.954436 0 -0.298416
+Position: 
+-22.9471 2 -2.56887
+Stick movement: 
+0.952005 0 -0.306082
+Position: 
+-22.9823 2 -2.5322
+Stick movement: 
+0.952005 0 -0.306082
+Position: 
+-22.9823 2 -2.5322
+Stick movement: 
+0.952005 0 -0.306082
+Position: 
+-22.9969 2 -2.51482
+Stick movement: 
+0.952005 0 -0.306082
+Position: 
+-23.0108 2 -2.49769
+Stick movement: 
+0.952005 0 -0.306082
+Position: 
+-23.0238 2 -2.48083
+Stick movement: 
+0.952005 0 -0.306082
+Position: 
+-23.0669 2 -2.41627
+Stick movement: 
+0.952005 0 -0.306082
+Position: 
+-23.0735 2 -2.40149
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-23.079 2 -2.38704
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-23.079 2 -2.38704
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-23.0834 2 -2.37297
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-23.087 2 -2.35915
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-23.0927 2 -2.30679
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-23.0894 2 -2.29528
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-23.0853 2 -2.28401
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-23.0803 2 -2.27302
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-23.0601 2 -2.24186
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-23.0227 2 -2.21634
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-23.0227 2 -2.21634
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.9853 2 -2.20346
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.9853 2 -2.20346
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.9637 2 -2.19797
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.9412 2 -2.19277
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.8427 2 -2.17482
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.8142 2 -2.17164
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.7528 2 -2.16664
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.7528 2 -2.16664
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.6845 2 -2.16397
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.6117 2 -2.16277
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.5329 2 -2.16357
+Stick movement: 
+0.949535 0 -0.313662
+Position: 
+-22.4451 2 -2.16734
+Stick movement: 
+0.947008 0 -0.321209
+Position: 
+-22.3985 2 -2.17011
+Stick movement: 
+0.944436 0 -0.328695
+Position: 
+-22.351 2 -2.17321
+Stick movement: 
+0.940934 0 -0.338589
+Position: 
+-22.2031 2 -2.18438
+Stick movement: 
+0.93826 0 -0.345931
+Position: 
+-22.0953 2 -2.19518
+Stick movement: 
+0.931858 0 -0.362824
+Position: 
+-22.0388 2 -2.20152
+Stick movement: 
+0.931858 0 -0.362824
+Position: 
+-22.0388 2 -2.20152
+Stick movement: 
+0.92905 0 -0.369953
+Position: 
+-21.9812 2 -2.20832
+Stick movement: 
+0.92905 0 -0.369953
+Position: 
+-21.9228 2 -2.21542
+Stick movement: 
+0.927162 0 -0.374662
+Position: 
+-21.6804 2 -2.24738
+Stick movement: 
+0.915485 0 -0.402353
+Position: 
+-21.6152 2 -2.25729
+Stick movement: 
+0.908446 0 -0.418001
+Position: 
+-21.5492 2 -2.26754
+Stick movement: 
+0.90538 0 -0.424603
+Position: 
+-21.3466 2 -2.3005
+Stick movement: 
+0.901143 0 -0.433522
+Position: 
+-21.3466 2 -2.3005
+Stick movement: 
+0.901143 0 -0.433522
+Position: 
+-21.1272 2 -2.34138
+Stick movement: 
+0.901143 0 -0.433522
+Position: 
+-21.1272 2 -2.34138
+Stick movement: 
+0.901143 0 -0.433522
+Position: 
+-21.0493 2 -2.35729
+Stick movement: 
+0.901143 0 -0.433522
+Position: 
+-20.9706 2 -2.37358
+Stick movement: 
+0.901143 0 -0.433522
+Position: 
+-20.8912 2 -2.39026
+Stick movement: 
+0.898408 0 -0.439162
+Position: 
+-20.811 2 -2.40729
+Stick movement: 
+0.898408 0 -0.439162
+Position: 
+-20.5653 2 -2.46087
+Stick movement: 
+0.898408 0 -0.439162
+Position: 
+-20.3941 2 -2.5002
+Stick movement: 
+0.898408 0 -0.439162
+Position: 
+-20.3057 2 -2.52121
+Stick movement: 
+0.89085 0 -0.454297
+Position: 
+-20.2163 2 -2.54274
+Stick movement: 
+0.886949 0 -0.461867
+Position: 
+-20.1261 2 -2.56468
+Stick movement: 
+0.886949 0 -0.461867
+Position: 
+-19.7576 2 -2.65649
+Stick movement: 
+0.879654 0 -0.475614
+Position: 
+-19.6618 2 -2.68137
+Stick movement: 
+0.872911 0 -0.48788
+Position: 
+-19.5647 2 -2.70702
+Stick movement: 
+0.872911 0 -0.48788
+Position: 
+-19.4667 2 -2.7331
+Stick movement: 
+0.868812 0 -0.495141
+Position: 
+-19.2687 2 -2.78646
+Stick movement: 
+0.856986 0 -0.51534
+Position: 
+-19.1679 2 -2.81417
+Stick movement: 
+0.854266 0 -0.519835
+Position: 
+-19.0661 2 -2.84247
+Stick movement: 
+0.854266 0 -0.519835
+Position: 
+-18.8607 2 -2.90022
+Stick movement: 
+0.850767 0 -0.525544
+Position: 
+-18.5431 2 -2.99267
+Stick movement: 
+0.847174 0 -0.531316
+Position: 
+-18.3221 2 -3.06002
+Stick movement: 
+0.844707 0 -0.535229
+Position: 
+-18.0941 2 -3.13174
+Stick movement: 
+0.826018 0 -0.563644
+Position: 
+-18.0941 2 -3.13174
+Stick movement: 
+0.812237 0 -0.583328
+Position: 
+-17.4971 2 -3.32917
+Stick movement: 
+0.742229 0 -0.670147
+Position: 
+-17.3716 2 -3.37319
+Stick movement: 
+0.732843 0 -0.680397
+Position: 
+-17.2452 2 -3.41797
+Stick movement: 
+0.732843 0 -0.680397
+Position: 
+-17.2452 2 -3.41797
+Stick movement: 
+0.724571 0 -0.6892
+Position: 
+-17.118 2 -3.46357
+Stick movement: 
+0.724571 0 -0.6892
+Position: 
+-16.8617 2 -3.55646
+Stick movement: 
+0.724571 0 -0.6892
+Position: 
+-16.4683 2 -3.70434
+Stick movement: 
+0.724571 0 -0.6892
+Position: 
+-16.3339 2 -3.75673
+Stick movement: 
+0.724571 0 -0.6892
+Position: 
+-16.1989 2 -3.80976
+Stick movement: 
+0.724571 0 -0.6892
+Position: 
+-15.927 2 -3.91752
+Stick movement: 
+0.724571 0 -0.6892
+Position: 
+-15.927 2 -3.91752
+Stick movement: 
+0.724571 0 -0.6892
+Position: 
+-15.3692 2 -4.1463
+Stick movement: 
+0.724571 0 -0.6892
+Position: 
+-15.2255 2 -4.20754
+Stick movement: 
+0.7203 0 -0.693663
+Position: 
+-14.9356 2 -4.33247
+Stick movement: 
+0.7203 0 -0.693663
+Position: 
+-14.6421 2 -4.46078
+Stick movement: 
+0.713283 0 -0.700876
+Position: 
+-14.3443 2 -4.59333
+Stick movement: 
+0.685188 0 -0.728366
+Position: 
+-14.0414 2 -4.73102
+Stick movement: 
+0.460872 0 -0.526062
+Position: 
+-13.888 2 -4.80199
+Stick movement: 
+0.0525228 0 -0.081896
+Position: 
+-13.7343 2 -4.87326
+Stick movement: 
+0 0 -0
+Position: 
+-13.5806 2 -4.94456
+Stick movement: 
+0 0 -0
+Position: 
+-13.2732 2 -5.08715
+Stick movement: 
+0 0 -0
+Position: 
+-12.9658 2 -5.22974
+Stick movement: 
+0 0 -0
+Position: 
+-12.812 2 -5.30104
+Stick movement: 
+0 0 -0
+Position: 
+-12.5046 2 -5.44363
+Stick movement: 
+0 0 -0
+Position: 
+-12.3509 2 -5.51493
+Stick movement: 
+0 0 -0
+Position: 
+-12.1972 2 -5.58622
+Stick movement: 
+0 0 -0
+Position: 
+-11.7361 2 -5.80011
+Stick movement: 
+0 0 -0
+Position: 
+-11.5824 2 -5.87141
+Stick movement: 
+0 0 -0
+Position: 
+-11.275 2 -6.014
+Stick movement: 
+0 0 -0
+Position: 
+-11.1213 2 -6.0853
+Stick movement: 
+0 0 -0
+Position: 
+-10.8139 2 -6.22789
+Stick movement: 
+0 0 -0
+Position: 
+-10.8139 2 -6.22789
+Stick movement: 
+0 0 -0
+Position: 
+-10.6602 2 -6.29918
+Stick movement: 
+0 0 -0
+Position: 
+-10.199 2 -6.51307
+Stick movement: 
+0 0 -0
+Position: 
+-9.73791 2 -6.72696
+Stick movement: 
+0 0 -0
+Position: 
+-9.58421 2 -6.79826
+Stick movement: 
+0 0 -0
+Position: 
+-9.4305 2 -6.86955
+Stick movement: 
+0 0 -0
+Position: 
+-9.4305 2 -6.86955
+Stick movement: 
+0 0 -0
+Position: 
+-9.27679 2 -6.94085
+Stick movement: 
+0 0 -0
+Position: 
+-9.12309 2 -7.01215
+Stick movement: 
+0 0 -0
+Position: 
+-8.81567 2 -7.15474
+Stick movement: 
+0 0 -0
+Position: 
+-8.35455 2 -7.36863
+Stick movement: 
+0 0 -0
+Position: 
+-8.20085 2 -7.43992
+Stick movement: 
+0 0 -0
+Position: 
+-8.04714 2 -7.51122
+Stick movement: 
+0 0 -0
+Position: 
+-8.04714 2 -7.51122
+Stick movement: 
+0 0 -0
+Position: 
+-7.89343 2 -7.58252
+Stick movement: 
+0 0 -0
+Position: 
+-7.58602 2 -7.72511
+Stick movement: 
+0 0 -0
+Position: 
+-6.97119 2 -8.01029
+Stick movement: 
+0 0 -0
+Position: 
+-6.97119 2 -8.01029
+Stick movement: 
+0 0 -0
+Position: 
+-6.66378 2 -8.15288
+Stick movement: 
+0 0 -0
+Position: 
+-6.66378 2 -8.15288
+Stick movement: 
+0 0 -0
+Position: 
+-6.51007 2 -8.22418
+Stick movement: 
+0 0 -0
+Position: 
+-6.35636 2 -8.29548
+Stick movement: 
+0 0 -0
+Position: 
+-5.74154 2 -8.58066
+Stick movement: 
+0 0 -0
+Position: 
+-5.58783 2 -8.65195
+Stick movement: 
+0 0 -0
+Position: 
+-5.43412 2 -8.72325
+Stick movement: 
+0 0 -0
+Position: 
+-5.28041 2 -8.79455
+Stick movement: 
+0 0 -0
+Position: 
+-5.12671 2 -8.86584
+Stick movement: 
+0 0 -0
+Position: 
+-4.51188 2 -9.15102
+Stick movement: 
+0 0 -0
+Position: 
+-4.35817 2 -9.22232
+Stick movement: 
+0 0 -0
+Position: 
+-4.20447 2 -9.29362
+Stick movement: 
+0 0 -0
+Position: 
+-4.05076 2 -9.36491
+Stick movement: 
+0 0 -0
+Position: 
+-3.89705 2 -9.43621
+Stick movement: 
+0 0 -0
+Position: 
+-3.74334 2 -9.5075
+Stick movement: 
+0 0 -0
+Position: 
+-3.12852 2 -9.79269
+Stick movement: 
+0 0 -0
+Position: 
+-2.8211 2 -9.93528
+Stick movement: 
+0 0 -0
+Position: 
+-2.51369 2 -10.0779
+Stick movement: 
+0 0 -0
+Position: 
+-1.89886 2 -10.3631
+Stick movement: 
+0 0 -0
+Position: 
+-1.74516 2 -10.4343
+Stick movement: 
+0 0 -0
+Position: 
+-1.59145 2 -10.5056
+Stick movement: 
+0 0 -0
+Position: 
+-1.59145 2 -10.5056
+Stick movement: 
+0 0 -0
+Position: 
+-1.43774 2 -10.5769
+Stick movement: 
+0 0 -0
+Position: 
+-1.28404 2 -10.6482
+Stick movement: 
+0 0 -0
+Position: 
+-0.822916 2 -10.8621
+Stick movement: 
+0 0 -0
+Position: 
+-0.515502 2 -11.0047
+Stick movement: 
+0 0 -0
+Position: 
+-0.361795 2 -11.076
+Stick movement: 
+0 0 -0
+Position: 
+-0.208088 2 -11.1473
+Stick movement: 
+0 0 -0
+Position: 
+0.253032 2 -11.3612
+Stick movement: 
+0 0 -0
+Position: 
+0.714153 2 -11.5751
+Stick movement: 
+0 0 -0
+Position: 
+0.714153 2 -11.5751
+Stick movement: 
+0 0 -0
+Position: 
+0.86786 2 -11.6464
+Stick movement: 
+0 0 -0
+Position: 
+1.17527 2 -11.789
+Stick movement: 
+0 0 -0
+Position: 
+1.48269 2 -11.9316
+Stick movement: 
+0 0 -0
+Position: 
+1.7901 2 -12.0742
+Stick movement: 
+0 0 -0
+Position: 
+1.94381 2 -12.1454
+Stick movement: 
+0 0 -0
+Position: 
+2.09751 2 -12.2167
+Stick movement: 
+0 0 -0
+Position: 
+2.25122 2 -12.288
+Stick movement: 
+0 0 -0
+Position: 
+2.55863 2 -12.4306
+Stick movement: 
+0 0 -0
+Position: 
+2.86605 2 -12.5732
+Stick movement: 
+0 0 -0
+Position: 
+3.17346 2 -12.7158
+Stick movement: 
+0 0 -0
+Position: 
+3.17346 2 -12.7158
+Stick movement: 
+0 0 -0
+Position: 
+3.63458 2 -12.9297
+Stick movement: 
+0 0 -0
+Position: 
+3.63458 2 -12.9297
+Stick movement: 
+0 0 -0
+Position: 
+3.942 2 -13.0723
+Stick movement: 
+0 0 -0
+Position: 
+4.24941 2 -13.2149
+Stick movement: 
+0 0 -0
+Position: 
+4.24941 2 -13.2149
+Stick movement: 
+0 0 -0
+Position: 
+4.40312 2 -13.2862
+Stick movement: 
+0 0 -0
+Position: 
+4.71053 2 -13.4288
+Stick movement: 
+0 0 -0
+Position: 
+4.86424 2 -13.5001
+Stick movement: 
+0 0 -0
+Position: 
+5.01794 2 -13.5714
+Stick movement: 
+0 0 -0
+Position: 
+5.32536 2 -13.714
+Stick movement: 
+0 0 -0
+Position: 
+5.63277 2 -13.8565
+Stick movement: 
+0 0 -0
+Position: 
+5.63277 2 -13.8565
+Stick movement: 
+0 0 -0
+Position: 
+5.78648 2 -13.9278
+Stick movement: 
+0 0 -0
+Position: 
+5.94019 2 -13.9991
+Stick movement: 
+0 0 -0
+Position: 
+6.09389 2 -14.0704
+Stick movement: 
+0 0 -0
+Position: 
+6.70872 2 -14.3556
+Stick movement: 
+0 0 -0
+Position: 
+6.86243 2 -14.4269
+Stick movement: 
+0 0 -0
+Position: 
+7.01614 2 -14.4982
+Stick movement: 
+0 0 -0
+Position: 
+7.16984 2 -14.5695
+Stick movement: 
+0 0 -0
+Position: 
+7.32355 2 -14.6408
+Stick movement: 
+0 0 -0
+Position: 
+7.32355 2 -14.6408
+Stick movement: 
+0 0 -0
+Position: 
+7.63096 2 -14.7834
+Stick movement: 
+0 0 -0
+Position: 
+8.09208 2 -14.9973
+Stick movement: 
+0 0 -0
+Position: 
+8.3995 2 -15.1399
+Stick movement: 
+0 0 -0
+Position: 
+8.5532 2 -15.2112
+Stick movement: 
+0 0 -0
+Position: 
+8.86062 2 -15.3538
+Stick movement: 
+0 0 -0
+Position: 
+9.01432 2 -15.425
+Stick movement: 
+0 0 -0
+Position: 
+9.32174 2 -15.5676
+Stick movement: 
+0 0 -0
+Position: 
+9.62915 2 -15.7102
+Stick movement: 
+0 0 -0
+Position: 
+9.93656 2 -15.8528
+Stick movement: 
+0 0 -0
+Position: 
+9.93656 2 -15.8528
+Stick movement: 
+0 0 -0
+Position: 
+10.0903 2 -15.9241
+Stick movement: 
+0 0 -0
+Position: 
+10.244 2 -15.9954
+Stick movement: 
+0 0 -0
+Position: 
+10.3977 2 -16.0667
+Stick movement: 
+0 0 -0
+Position: 
+10.5514 2 -16.138
+Stick movement: 
+0 0 -0
+Position: 
+11.0125 2 -16.3519
+Stick movement: 
+0 0 -0
+Position: 
+11.3199 2 -16.4945
+Stick movement: 
+0 0 -0
+Position: 
+11.3199 2 -16.4945
+Stick movement: 
+0 0 -0
+Position: 
+11.4736 2 -16.5658
+Stick movement: 
+0 0 -0
+Position: 
+11.6273 2 -16.6371
+Stick movement: 
+0 0 -0
+Position: 
+11.9347 2 -16.7797
+Stick movement: 
+0 0 -0
+Position: 
+12.5496 2 -17.0649
+Stick movement: 
+0 0 -0
+Position: 
+12.5496 2 -17.0649
+Stick movement: 
+0 0 -0
+Position: 
+12.7033 2 -17.1362
+Stick movement: 
+0 0 -0
+Position: 
+12.857 2 -17.2075
+Stick movement: 
+0 0 -0
+Position: 
+13.0107 2 -17.2788
+Stick movement: 
+0 0 -0
+Position: 
+13.4718 2 -17.4926
+Stick movement: 
+0 0 -0
+Position: 
+13.7792 2 -17.6352
+Stick movement: 
+0 0 -0
+Position: 
+13.9329 2 -17.7065
+Stick movement: 
+0 0 -0
+Position: 
+13.9329 2 -17.7065
+Stick movement: 
+0 0 -0
+Position: 
+14.0866 2 -17.7778
+Stick movement: 
+0 0 -0
+Position: 
+14.2403 2 -17.8491
+Stick movement: 
+0 0 -0
+Position: 
+14.7015 2 -18.063
+Stick movement: 
+0 0 -0
+Position: 
+15.0089 2 -18.2056
+Stick movement: 
+0 0 -0
+Position: 
+15.1626 2 -18.2769
+Stick movement: 
+0 0 -0
+Position: 
+15.3163 2 -18.3482
+Stick movement: 
+0 0 -0
+Position: 
+15.7774 2 -18.5621
+Stick movement: 
+0 0 -0
+Position: 
+16.2385 2 -18.776
+Stick movement: 
+0 0 -0
+Position: 
+16.3922 2 -18.8473
+Stick movement: 
+0 0 -0
+Position: 
+16.6997 2 -18.9899
+Stick movement: 
+0 0 -0
+Position: 
+17.0071 2 -19.1325
+Stick movement: 
+0 0 -0
+Position: 
+17.0071 2 -19.1325
+Stick movement: 
+0 0 -0
+Position: 
+17.4682 2 -19.3464
+Stick movement: 
+0 0 -0
+Position: 
+18.2367 2 -19.7028
+Stick movement: 
+0 0 -0
+Position: 
+18.3904 2 -19.7741
+Stick movement: 
+0 0 -0
+Position: 
+18.5441 2 -19.8454
+Stick movement: 
+0 0 -0
+Position: 
+18.6979 2 -19.9167
+Stick movement: 
+0 0 -0
+Position: 
+18.8516 2 -19.988
+Stick movement: 
+0 0 -0
+Position: 
+19.4664 2 -20.2732
+Stick movement: 
+0 0 -0
+Position: 
+19.9275 2 -20.4871
+Stick movement: 
+0 0 -0
+Position: 
+19.9275 2 -20.4871
+Stick movement: 
+0 0 -0
+Position: 
+20.0812 2 -20.5584
+Stick movement: 
+0 0 -0
+Position: 
+20.2349 2 -20.6297
+Stick movement: 
+0 0 -0
+Position: 
+20.8498 2 -20.9149
+Stick movement: 
+0 0 -0
+Position: 
+21.3109 2 -21.1288
+Stick movement: 
+0 0 -0
+Position: 
+21.3109 2 -21.1288
+Stick movement: 
+0 0 -0
+Position: 
+21.4646 2 -21.2001
+Stick movement: 
+0 0 -0
+Position: 
+21.6183 2 -21.2714
+Stick movement: 
+0 0 -0
+Position: 
+21.9257 2 -21.414
+Stick movement: 
+0 0 -0
+Position: 
+22.0794 2 -21.4853
+Stick movement: 
+0 0 -0
+Position: 
+22.848 2 -21.8417
+Stick movement: 
+0 0 -0
+Position: 
+22.848 2 -21.8417
+Stick movement: 
+0 0 -0
+Position: 
+23.0017 2 -21.913
+Stick movement: 
+0 0 -0
+Position: 
+23.1554 2 -21.9843
+Stick movement: 
+0 0 -0
+Position: 
+23.3091 2 -22.0556
+Stick movement: 
+0 0 -0
+Position: 
+23.6165 2 -22.1982
+Stick movement: 
+0 0 -0
+Position: 
+24.0776 2 -22.4121
+Stick movement: 
+0 0 -0
+Position: 
+24.2313 2 -22.4834
+Stick movement: 
+0 0 -0
+Position: 
+24.385 2 -22.5547
+Stick movement: 
+0 0 -0
+Position: 
+24.385 2 -22.5547
+Stick movement: 
+0 0 -0
+Position: 
+24.5387 2 -22.626
+Stick movement: 
+0 0 -0
+Position: 
+24.9999 2 -22.8399
+Stick movement: 
+0 0 -0
+Position: 
+25.461 2 -23.0538
+Stick movement: 
+0 0 -0
+Position: 
+25.6147 2 -23.1251
+Stick movement: 
+0 0 -0
+Position: 
+25.9221 2 -23.2677
+Stick movement: 
+0 0 -0
+Position: 
+26.0758 2 -23.339
+Stick movement: 
+0 0 -0
+Position: 
+26.3832 2 -23.4816
+Stick movement: 
+0 0 -0
+Position: 
+26.8444 2 -23.6955
+Stick movement: 
+0 0 -0
+Position: 
+26.8444 2 -23.6955
+Stick movement: 
+0 0 -0
+Position: 
+27.1518 2 -23.8381
+Stick movement: 
+0 0 -0
+Position: 
+27.1518 2 -23.8381
+Stick movement: 
+0 0 -0
+Position: 
+27.4592 2 -23.9806
+Stick movement: 
+0 0 -0
+Position: 
+27.4592 2 -23.9806
+Stick movement: 
+0 0 -0
+Position: 
+27.9203 2 -24.1945
+Stick movement: 
+0 0 -0
+Position: 
+28.2277 2 -24.3371
+Stick movement: 
+0 0 -0
+Position: 
+28.3814 2 -24.4084
+Stick movement: 
+0 0 -0
+Position: 
+28.6888 2 -24.551
+Stick movement: 
+0 0 -0
+Position: 
+28.8425 2 -24.6223
+Stick movement: 
+0 0 -0
+Position: 
+29.15 2 -24.7649
+Stick movement: 
+0 0 -0
+Position: 
+29.4574 2 -24.9075
+Stick movement: 
+0 0 -0
+Position: 
+29.6111 2 -24.9788
+Stick movement: 
+0 0 -0
