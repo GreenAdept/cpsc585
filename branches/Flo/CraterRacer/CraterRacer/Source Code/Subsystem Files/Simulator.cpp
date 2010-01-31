@@ -48,7 +48,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 	{
 		//Get the inputs associated with vehicle
 		//keyboard controls
-		//input = vehicles[i]->getInput();
+		input = vehicles[i]->getInput();
 
 		// XBox controls
 		p1_dir = vehicles[i]->getDir();
@@ -66,11 +66,11 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 
 		//Update the vehicle position in the game
 		vehicles[i]->update( Vec3(vec.x, 0, vec.z), m );
-
+		/*
 		debug.writeToFile( "Position: " );
 		debug.writeToFile(vec);
 		debug.writeToFile("Stick movement: ");
-		debug.writeToFile(p1_dir);
+		debug.writeToFile(p1_dir);*/
 	}
 }
 
@@ -206,9 +206,8 @@ void Simulator::processForceKeys() {
 	*/
 
 	// iterate through all the vehicles
-	/*
-	for( int v = 0; v < gVehicles.size(); v++ )
-	{
+	//for( int v = 0; v < gVehicles.size(); v++ )
+	//{
 		for( int i = 0; i < 4; i++ )
 		{
 			if(!input[i]) { continue; } 
@@ -217,29 +216,28 @@ void Simulator::processForceKeys() {
 			{
 				case LEFT: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[v], NxVec3(-1,0,0), gForceStrength );
+					gForceVec = applyForceToActor( gVehicles[0], NxVec3(-1,0,0), gForceStrength );
 					debug.writeToFile("left");
 					break; 
 				}
 				case RIGHT: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[v], NxVec3(0,0,1), gForceStrength ); 
+					gForceVec = applyForceToActor( gVehicles[0], NxVec3(0,0,1), gForceStrength ); 
 					break; 
 				}
 				case FORWARD: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[v], NxVec3(1,0,0), gForceStrength );
+					gForceVec = applyForceToActor( gVehicles[0], NxVec3(1,0,0), gForceStrength );
 					break; 
 				}
 				case BACKWARD: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[v], NxVec3(0,0,-1), gForceStrength ); 
+					gForceVec = applyForceToActor( gVehicles[0], NxVec3(0,0,-1), gForceStrength ); 
 					break; 
 				}
 			}
 		}
-	}
-	*/
+	//}
 
 	//xbox controllers
 	gForceVec = applyForceToActor(gVehicles[0], NxVec3(p1_dir.x, 0, p1_dir.z), gForceStrength);
