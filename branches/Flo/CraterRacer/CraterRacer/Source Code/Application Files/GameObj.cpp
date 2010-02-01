@@ -75,7 +75,21 @@ void GameObj::processInput( float fElapsedTime )
 {
 	m_Controller1->Update(fElapsedTime);
 	Vehicle* v = m_Vehicles[0];
-	v->setDir(Vec3(m_Controller1->LeftThumbstick.GetX(), 0, m_Controller1->LeftThumbstick.GetY()));
+	Vec3 drive(m_Controller1->LeftThumbstick.GetX(), 0, m_Controller1->LeftThumbstick.GetY());
+
+	if (m_Controller1->A.WasPressedOrHeld())
+	{
+		//accelerate
+		drive *= 3; //3 for the acceleration right now, need to CHANGE!
+	}
+	else if (m_Controller1->B.WasPressedOrHeld())
+	{
+		//if speed > 5km/h, decelerate
+		//else reverse -> while reversing, turning is backwards
+	}
+
+	v->setDir(drive);
+
 }
 
 

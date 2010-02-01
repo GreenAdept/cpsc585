@@ -29,6 +29,11 @@ public:
 
 	Vehicle( void ) { }
 
+	void update(Vec3 newPosition, Vec3 velocity, Matrix mat);
+
+	void setVelocity(Vec3 velocity);
+	Vec3 getVelocity();
+
 	virtual void setInput(Input::Arrow dir, bool isKeyDown) = 0;
 	virtual void setDir(Vec3 vec) = 0;
 	virtual bool* getInput() = 0;
@@ -37,6 +42,7 @@ public:
 
 protected:
 	VehicleAI mind;
+	Vec3 velocity;
 };
 
 #endif //VEHICLE_H

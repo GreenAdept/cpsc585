@@ -63,14 +63,20 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		gVehicles[i]->getGlobalPose().getColumnMajor44( mat );
 		Matrix m = Matrix( mat[0] );
 		D3DXMatrixTranslation( &m, vec.x, 0.0, vec.z );
+		
+		NxVec3 vlc = gVehicles[i]->getLinearVelocity();
 
 		//Update the vehicle position in the game
-		vehicles[i]->update( Vec3(vec.x, 0, vec.z), m );
+		vehicles[i]->update( Vec3(vec.x, 0, vec.z), Vec3(vlc.x, 0, vlc.z), m );
+
 		/*
 		debug.writeToFile( "Position: " );
 		debug.writeToFile(vec);
-		debug.writeToFile("Stick movement: ");
-		debug.writeToFile(p1_dir);*/
+		*/
+		/*
+		debug.writeToFile("Velocity: ");
+		debug.writeToFile(velocity);
+		*/
 	}
 }
 
