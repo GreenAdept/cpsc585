@@ -17,10 +17,15 @@ Makes all the directions false.
 */
 void Input::reset()
 {
-	inputs[Arrow::LEFT] = false;
-	inputs[Arrow::UP] = false;
-	inputs[Arrow::RIGHT] = false;
-	inputs[Arrow::DOWN] = false;
+	for (int i = 0; i < 4; i++)
+	{
+		inputs[i] = false;
+	}
+
+	for (int i = 0; i < 8; i++)
+	{
+		buttons[i] = false;
+	}
 
 	direction = Vec3(0.0, 0.0, 0.0);
 }

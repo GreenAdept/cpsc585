@@ -24,7 +24,7 @@ Vec3 boxPos;
 double boxSize;
 
 bool* input = new bool[4];
-Vec3 p1_dir(0.0, 0.0, 0.0);
+Vec3 vehicle_dir(0.0, 0.0, 0.0);
 
 //Debugging
 DebugWriter debug;
@@ -51,7 +51,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		input = vehicles[i]->getInput();
 
 		// XBox controls
-		p1_dir = vehicles[i]->getDir();
+		vehicle_dir = vehicles[i]->getDir();
 
 		//Add forces to the vehicle based on input
 		processForceKeys();
@@ -110,12 +110,10 @@ void Simulator::InitNx( void )
 	//Create the ground
 	groundPlane = createGroundPlane( );
 
-	input[0] = false;
-	input[1] = false;
-	input[2] = false;
-	input[3] = false;
+	for (int i = 0; i < 4; i++)
+		input[i] = false;
 
-	p1_dir = Vec3(0.0, 0.0, 0.0);
+	vehicle_dir = Vec3(0.0, 0.0, 0.0);
 }
 
 
@@ -246,7 +244,7 @@ void Simulator::processForceKeys() {
 	//}
 
 	//xbox controllers
-	gForceVec = applyForceToActor(gVehicles[0], NxVec3(p1_dir.x, 0, p1_dir.z), gForceStrength);
+	gForceVec = applyForceToActor(gVehicles[0], NxVec3(vehicle_dir.x, 0, vehicle_dir.z), gForceStrength);
 
 }
 
