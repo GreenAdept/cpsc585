@@ -84,7 +84,15 @@ void GameObj::processInput( float fElapsedTime )
 	}
 	else if (m_Controller1->B.WasPressedOrHeld())
 	{
-		//if speed > 5km/h, decelerate
+		Vec3 vlc = v->getVelocity();
+		double speed = sqrt(vlc.x * vlc.x + vlc.y * vlc.y + vlc.z * vlc.z);
+		//if speed > 0.1km/h, decelerate
+		//if ( speed > 0.1)
+		{
+			//give a force opposite current direction, add on joystick direction
+			Vec3 oppositeForce = (-1) * vlc; //the -1 needs to be CHANGED to a braking constant
+			drive = oppositeForce + drive * 0.2 * speed;
+		}
 		//else reverse -> while reversing, turning is backwards
 	}
 
