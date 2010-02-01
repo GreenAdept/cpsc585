@@ -5,6 +5,8 @@
 #ifndef INPUT_H
 #define INPUT_H
 
+#include "Constants.h"
+
 class Input
 {
 public:
@@ -13,11 +15,14 @@ public:
 
 	Input(void);
 	void setInput(Arrow dir, bool isKeyDown);
+	void setDir(Vec3 vec);
 	bool* getInput();
+	Vec3 getDir();
 	void reset();
 
 private:
 	bool inputs[4];
+	Vec3 direction;
 };
 
 #endif
