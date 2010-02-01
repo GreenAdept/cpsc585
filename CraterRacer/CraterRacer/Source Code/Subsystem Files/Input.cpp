@@ -21,6 +21,8 @@ void Input::reset()
 	inputs[Arrow::UP] = false;
 	inputs[Arrow::RIGHT] = false;
 	inputs[Arrow::DOWN] = false;
+
+	direction = Vec3(0.0, 0.0, 0.0);
 }
 
 /*
@@ -32,10 +34,20 @@ void Input::setInput(Input::Arrow dir, bool isKeyDown)
 	inputs[dir] = isKeyDown;
 }
 
+void Input::setDir(Vec3 vec)
+{
+	direction = vec;
+}
+
 /*
 Returns the directions array.
 */
 bool* Input::getInput()
 {
 	return inputs;
+}
+
+Vec3 Input::getDir()
+{
+	return direction;
 }

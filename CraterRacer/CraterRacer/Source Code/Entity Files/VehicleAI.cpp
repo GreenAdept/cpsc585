@@ -19,12 +19,22 @@ void VehicleAI::setInput(Input::Arrow dir, bool isKeyDown) {
 	input.setInput(dir, isKeyDown);
 }
 
+void VehicleAI::setDir(Vec3 vec)
+{
+	input.setDir(vec);
+}
+
 //--------------------------------------------------------------------------------------
 // Function: getInput
 // Delegates get input to input system.
 //--------------------------------------------------------------------------------------
 bool* VehicleAI::getInput() {
 	return input.getInput();
+}
+
+Vec3 VehicleAI::getDir()
+{
+	return input.getDir();
 }
 
 //--------------------------------------------------------------------------------------

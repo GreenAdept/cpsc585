@@ -11,6 +11,7 @@
 void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurface )
 {
 	m_Simulator = new Simulator();
+	m_Controller1 = new XBox360Controller(0); //player 1 controller
 
 	Vec3 pos( 0.0f, 0.0f, 0.0f );
 	Vec3 terrainPos( -100.0f, 0.0f, 0.0f );
@@ -70,8 +71,32 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 //--------------------------------------------------------------------------------------
 // Function: processInput
 //--------------------------------------------------------------------------------------
-void GameObj::processInput( )
+void GameObj::processInput( float fElapsedTime )
 {
+	m_Controller1->Update(fElapsedTime);
+	Vehicle* v = m_Vehicles[0];
+	Vec3 drive(m_Controller1->LeftThumbstick.GetX(), 0, m_Controller1->LeftThumbstick.GetY());
+
+	if (m_Controller1->A.WasPressedOrHeld())
+	{
+		//accelerate
+		drive *= 3; //3 for the acceleration right now, need to CHANGE!
+	}
+	else if (m_Controller1->B.WasPressedOrHeld())
+	{
+		Vec3 vlc = v->getVelocity();
+		double speed = sqrt(vlc.x * vlc.x + vlc.y * vlc.y + vlc.z * vlc.z);
+		//if speed > 0.1km/h, decelerate
+		//if ( speed > 0.1)
+		{
+			//give a force opposite current direction, add on joystick direction
+			Vec3 oppositeForce = (-1) * vlc; //the -1 needs to be CHANGED to a braking constant
+			drive = oppositeForce + drive * 0.2 * speed;
+		}
+		//else reverse -> while reversing, turning is backwards
+	}
+
+	v->setDir(drive);
 
 }
 

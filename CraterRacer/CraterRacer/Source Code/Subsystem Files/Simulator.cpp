@@ -24,6 +24,7 @@ Vec3 boxPos;
 double boxSize;
 
 bool* input = new bool[4];
+Vec3 p1_dir(0.0, 0.0, 0.0);
 
 //Debugging
 DebugWriter debug;
@@ -46,13 +47,14 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 	for( int i=0; i < gVehicles.size(); i++ )
 	{
 		//Get the inputs associated with vehicle
+		//keyboard controls
 		input = vehicles[i]->getInput();
+
+		// XBox controls
+		p1_dir = vehicles[i]->getDir();
 
 		//Add forces to the vehicle based on input
 		processForceKeys();
-
-		//Empty input to make it ready for next frame
-		vehicles[i]->resetInput();
 
 		//Get the new position of the vehicle in vector and matrix formats
 		NxVec3 vec	 = gVehicles[i]->getGlobalPosition();
@@ -61,12 +63,20 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		gVehicles[i]->getGlobalPose().getColumnMajor44( mat );
 		Matrix m = Matrix( mat[0] );
 		D3DXMatrixTranslation( &m, vec.x, 0.0, vec.z );
+		
+		NxVec3 vlc = gVehicles[i]->getLinearVelocity();
 
 		//Update the vehicle position in the game
-		vehicles[i]->update( Vec3(vec.x, 0, vec.z), m );
+		vehicles[i]->update( Vec3(vec.x, 0, vec.z), Vec3(vlc.x, 0, vlc.z), m );
 
-		/*debug.writeToFile( "Position: " );
-		debug.writeToFile(vec);*/
+		/*
+		debug.writeToFile( "Position: " );
+		debug.writeToFile(vec);
+		*/
+		/*
+		debug.writeToFile("Velocity: ");
+		debug.writeToFile(velocity);
+		*/
 	}
 }
 
@@ -104,6 +114,8 @@ void Simulator::InitNx( void )
 	input[1] = false;
 	input[2] = false;
 	input[3] = false;
+
+	p1_dir = Vec3(0.0, 0.0, 0.0);
 }
 
 
@@ -200,8 +212,8 @@ void Simulator::processForceKeys() {
 	*/
 
 	// iterate through all the vehicles
-	for( int v = 0; v < gVehicles.size(); v++ )
-	{
+	//for( int v = 0; v < gVehicles.size(); v++ )
+	//{
 		for( int i = 0; i < 4; i++ )
 		{
 			if(!input[i]) { continue; } 
@@ -210,29 +222,32 @@ void Simulator::processForceKeys() {
 			{
 				case LEFT: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[v], NxVec3(-1,0,0), gForceStrength );
+					gForceVec = applyForceToActor( gVehicles[0], NxVec3(-1,0,0), gForceStrength );
 					debug.writeToFile("left");
 					break; 
 				}
 				case RIGHT: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[v], NxVec3(0,0,1), gForceStrength ); 
+					gForceVec = applyForceToActor( gVehicles[0], NxVec3(0,0,1), gForceStrength ); 
 					break; 
 				}
 				case FORWARD: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[v], NxVec3(1,0,0), gForceStrength );
+					gForceVec = applyForceToActor( gVehicles[0], NxVec3(1,0,0), gForceStrength );
 					break; 
 				}
 				case BACKWARD: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[v], NxVec3(0,0,-1), gForceStrength ); 
+					gForceVec = applyForceToActor( gVehicles[0], NxVec3(0,0,-1), gForceStrength ); 
 					break; 
 				}
 			}
 		}
-	}
-	
+	//}
+
+	//xbox controllers
+	gForceVec = applyForceToActor(gVehicles[0], NxVec3(p1_dir.x, 0, p1_dir.z), gForceStrength);
+
 }
 
 NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength) {

@@ -20,6 +20,7 @@
 #include "GameCamera.h"
 #include "DebugWriter.h"
 #include "Terrain.h"
+#include "XBox360Controller.h"
 
 
 //-----------------------------------------------------------------
@@ -38,7 +39,7 @@ public:
 	GameObj( ) {}
 	~GameObj( );
 
-	void processInput	 (  );
+	void processInput	 ( float fElapsedTime );
 	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );
 	void simulate		 ( float fElapsedTime );
 	void render			 ( Device* device );
@@ -55,6 +56,7 @@ private:
 	Simulator*		 m_Simulator;
 	DebugWriter		 debug;
 	Terrain*		 m_Terrain;
+	XBox360Controller* m_Controller1; //first player controller will have id# 0
 };
 
 #endif GAME_OBJ_H 

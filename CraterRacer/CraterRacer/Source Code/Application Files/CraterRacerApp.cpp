@@ -4,8 +4,7 @@
 //--------------------------------------------------------------------------------------
 #include "CraterRacerApp.h"
 
-GameObj* g_pGame = NULL;	//global game used by the RacerApp class
- 
+GameObj* g_pGame = NULL;	//global game used by the RacerApp class 
 
 //--------------------------------------------------------------------------------------
 // Function:  OnUpdateGame
@@ -18,7 +17,7 @@ GameObj* g_pGame = NULL;	//global game used by the RacerApp class
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pUserContext  )
 {
-	g_pGame->processInput( );
+	g_pGame->processInput( fElapsedTime );
 	g_pGame->simulate( fElapsedTime );
 }
 
@@ -183,7 +182,7 @@ bool CALLBACK RacerApp::ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSetting
 //--------------------------------------------------------------------------------------
 RacerApp::RacerApp()
 {
-	g_pGame = new GameObj(); 
+	g_pGame = new GameObj();
 }
 
 
