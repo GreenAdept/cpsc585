@@ -9,6 +9,13 @@ void DebugWriter::writeToFile(string s) {
   myfile.close();
 }
 
+void DebugWriter::writeToFile(int s) {
+  ofstream myfile;
+  myfile.open ("debug.txt", ios::out | ios::app);
+  myfile << s << endl;
+  myfile.close();
+}
+
 void DebugWriter::writeToFile(NxVec3 vec) {
   ofstream myfile;
   myfile.open ("debug.txt", ios::out | ios::app);

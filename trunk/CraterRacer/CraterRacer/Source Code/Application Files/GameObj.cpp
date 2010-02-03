@@ -30,7 +30,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	m_Simulator->createVehicle( pos, pv->getBoundingBox() );
 
 	//m_Entities.clear();
-	m_Vehicles.push_back( pv );
+	m_Entities.addEntity (PLAYERS, pv);
 	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
 
 	//clear debug.txt
@@ -43,6 +43,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 //--------------------------------------------------------------------------------------
 void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 {
+	vector<Vehicle*> m_Vehicles = m_Entities.getVehicles();
 	Vehicle* v = m_Vehicles[0];
 	switch (virtualKeyCode)
 	{
@@ -73,6 +74,7 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 //--------------------------------------------------------------------------------------
 void GameObj::processInput( float fElapsedTime )
 {
+	vector<Vehicle*> m_Vehicles = m_Entities.getVehicles();
 	m_Controller1->Update(fElapsedTime);
 	Vehicle* v = m_Vehicles[0];
 	Vec3 drive(m_Controller1->LeftThumbstick.GetX(), 0, m_Controller1->LeftThumbstick.GetY());
@@ -107,13 +109,7 @@ void GameObj::processInput( float fElapsedTime )
 //--------------------------------------------------------------------------------------
 void GameObj::render( Device* device )
 {
-	vector<Renderable*> renderables( m_Vehicles.size() );
-	
-	// Render all the entities by retrieving their renderable components
-	for (unsigned int i = 0; i < m_Vehicles.size(); i++) {
-		renderables[i] = m_Vehicles[i]->getRenderable( );
-	}
-
+	vector<Renderable*> renderables = m_Entities.getRenderables();
 	renderables.push_back( m_Terrain->getRenderable() );
 
 	// pass the renderables off to the renderer to do all the work
@@ -127,7 +123,7 @@ void GameObj::render( Device* device )
 //--------------------------------------------------------------------------------------
 void GameObj::simulate( float fElapsedTime )
 {
-	m_Simulator->simulate( m_Vehicles, fElapsedTime );
+	m_Simulator->simulate( m_Entities.getVehicles(), fElapsedTime );
 	//debug.writeToFile("game obj");
 	//debug.writeToFile( m_Vehicles[0]->getPosition());
 }
@@ -140,6 +136,7 @@ void GameObj::simulate( float fElapsedTime )
 //--------------------------------------------------------------------------------------
 void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFACE_DESC* pBackSurface )
 {
+	vector<Vehicle*> m_Vehicles = m_Entities.getVehicles();
 	// when the device is destroyed, we want to release all of the memory attached to it
 	if( type == ON_DESTROY )
 	{
@@ -185,13 +182,6 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 //--------------------------------------------------------------------------------------
 GameObj::~GameObj( )
 {
-	for (unsigned int i = 0; i < m_Vehicles.size(); i++) 
-	{
-		// delete all entities to ensure no memory leaks occur
-		if( m_Vehicles[i] )
-			delete m_Vehicles[i];
-	}
-
 	if( m_Simulator )
 		delete m_Simulator;
 

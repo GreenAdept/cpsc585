@@ -1,5 +1,7 @@
 #include "AI.h"
 
-//We should probably either delete this file, or
-//merge it and the AI.h header file with concrete AI
-//class header and implementation files.
+
+float distSquared (Vec3 A, Vec3 B) {
+	Vec3 C = B-A;
+	return C.x*C.x + C.z*C.z;
+}

@@ -597,6 +597,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Source Code\Entity Files\EntityManager.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Source Code\Entity Files\Meteor.cpp"
 					>
 				</File>
@@ -638,6 +642,10 @@
 				</File>
 				<File
 					RelativePath=".\Source Code\Entity Files\Entity.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Source Code\Entity Files\EntityManager.h"
 					>
 				</File>
 				<File

@@ -15,6 +15,7 @@ class DebugWriter {
 public:
 	void open();
 	void writeToFile(string s);
+	void writeToFile(int i);
 	void writeToFile(NxVec3 vec);
 	void writeToFile(Vec3 vec);
 	void clearFile();
