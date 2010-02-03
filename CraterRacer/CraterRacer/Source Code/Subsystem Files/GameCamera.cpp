@@ -3,7 +3,7 @@
 
 
 GameCamera::GameCamera () {
-	offset = Vec3 (0.0f, 1.0f, -25.0f);
+	offset = Vec3 (0.0f, 5.0f, -25.0f);
 	setTarget (0);
 }
 

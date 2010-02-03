@@ -10,12 +10,11 @@
 #include "Resource.h"
 #include <iostream>
 #include <vector>
-#include "Vehicle.h"
-#include "PlayerVehicle.h"
+
+#include "EntityManager.h"
 #include "Renderer.h"
 #include "Renderable.h"
 #include "Simulator.h"
-#include "Prop.h"
 #include "Input.h"
 #include "GameCamera.h"
 #include "DebugWriter.h"
@@ -49,7 +48,8 @@ public:
 private:
 	//Date Members ---------------------------------------
 
-	vector<Vehicle*> m_Vehicles;		// list of all vehicles
+	EntityManager    m_Entities;
+	//vector<Vehicle*> m_Vehicles;		// list of all vehicles
 	Renderer*		 m_Renderer;		// rendering subsystem
 	Input			 m_InputManager;	// input management subsystem
 	GameCamera		 m_Camera;		// main camera to follow behind vehicle
