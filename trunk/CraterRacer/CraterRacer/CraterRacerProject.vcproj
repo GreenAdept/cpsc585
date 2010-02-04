@@ -617,6 +617,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Source Code\Entity Files\TriggerVolumeAI.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Source Code\Entity Files\Vehicle.cpp"
 					>
 				</File>
@@ -662,6 +666,10 @@
 				</File>
 				<File
 					RelativePath=".\Source Code\Entity Files\Terrain.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Source Code\Entity Files\TriggerVolumeAI.h"
 					>
 				</File>
 				<File

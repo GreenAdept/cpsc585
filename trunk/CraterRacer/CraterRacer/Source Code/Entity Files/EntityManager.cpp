@@ -1,42 +1,37 @@
 #include "EntityManager.h"
+using namespace std;
 
 /*
 struct EntityNode {
 	Entity* data;
 	EntityNode* next;
 
-	EntityNode () {
-		data = 0;
-		next = 0;
-	}
-	EntityNode (Entity* e) {
-		data = e;
-		next = 0;
-	}
+	EntityNode ()          : data(0), next(0) {}
+	EntityNode (Entity* e) : data(e), next(0) {}
 	~EntityNode () {
 		delete data;
 		delete next;
 	}
 
 	void add (Entity* e) {
-		if (next == 0)
-			next = new EntityNode (e);
-		else
-			next->add (e);
+		EntityNode *node = this;
+		while ((int)node->next != 0)
+			node = node->next;
+		node->next = new EntityNode (e);
+	}
+
+	Entity* get (int index) {
+		EntityNode *node = this;
+		while (index > 0)
+			node = node->next;
+		return node->data;
 	}
 };
-
 */
 
 
-using namespace std;
 
-EntityManager::EntityManager () {
-	/*
-	for (int i=0; i<NUM_LISTS; i++)
-		entities[i] = vector<Entity*> (10);
-	*/
-}
+
 EntityManager::~EntityManager () {
 	for (int i=0; i<NUM_LISTS; i++) {
 		int size = entities[i].size();

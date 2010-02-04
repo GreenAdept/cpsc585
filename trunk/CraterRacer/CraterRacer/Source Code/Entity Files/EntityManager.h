@@ -17,7 +17,7 @@ class EntityManager {
 	std::vector<Entity*> entities [NUM_LISTS];
 
 public:
-	EntityManager ();
+	EntityManager () {}
 	~EntityManager ();
 
 	std::vector<Vehicle*> getVehicles ();
