@@ -31,6 +31,7 @@ void Entity::initialize( Device* device, Vec3 pos, LPCWSTR filename )
 
 	m_pRenderable = new Renderable( tempRenderable );
 	m_vPosition = pos;
+	m_matWorld = m_pRenderable->m_matWorld;
 }
 
 
@@ -40,7 +41,7 @@ void Entity::initialize( Device* device, Vec3 pos, LPCWSTR filename )
 //--------------------------------------------------------------------------------------
 Renderable* Entity::getRenderable( )
 {
-	m_pRenderable->m_vPosition = m_vPosition;
+	//m_pRenderable->m_vPosition = m_vPosition;
 	return m_pRenderable->getRenderable( );
 }
 
@@ -59,15 +60,30 @@ BoundingBox Entity::getBoundingBox( )
 // Function:  update
 // Update the entity's new position in the game.
 //--------------------------------------------------------------------------------------
-void Entity::update( Vec3 newPosition, Matrix mat )
+void Entity::update( Vec3 newPosition, Matrix matWorldTransform )
 {
 	m_vPosition = newPosition;
 
-	m_pRenderable->m_matWorld = mat;
+	m_pRenderable->m_matWorld = matWorldTransform;
+	m_matWorld = matWorldTransform;
 }
 
 
-Vec3 Entity::getPosition() 
+//--------------------------------------------------------------------------------------
+// Function:  getPosition
+// Returns the vector position of the entity
+//--------------------------------------------------------------------------------------
+Vec3 Entity::getPosition( ) 
 {
 	return m_vPosition;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  getPositionMatrix
+// Returns the world transformation matrix for the entity
+//--------------------------------------------------------------------------------------
+Matrix Entity::getPositionMatrix( )
+{
+	return m_matWorld;
 }
