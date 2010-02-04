@@ -30,12 +30,20 @@ Vec3 p1_dir(0.0, 0.0, 0.0);
 DebugWriter debug;
 
 
+//--------------------------------------------------------------------------------------
+// Function:  Constructor
+// Initializes the simulator object
+//--------------------------------------------------------------------------------------
 Simulator::Simulator() 
 {
 	InitNx();
 }
 
 
+//--------------------------------------------------------------------------------------
+// Function:  simulate
+// Simulates the movement of entities based on the elapsed time
+//--------------------------------------------------------------------------------------
 void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime ) 
 {
 	NxF32 mat[4][4];
@@ -81,6 +89,10 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 }
 
 
+//--------------------------------------------------------------------------------------
+// Function:  InitNx
+// Initializes the PhysX engine as well as some other fundamental elements
+//--------------------------------------------------------------------------------------
 void Simulator::InitNx( void ) 
 {
 	 input = new bool[4];
@@ -121,6 +133,10 @@ void Simulator::InitNx( void )
 }
 
 
+//--------------------------------------------------------------------------------------
+// Function:  createGroundPlane
+// Creates a ground plane at (0, 0, 0) and normal (0, 1, 0)
+//--------------------------------------------------------------------------------------
 NxActor* Simulator::createGroundPlane() 
 {
 	NxPlaneShapeDesc planeDesc;
@@ -161,27 +177,39 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 	gVehicles.push_back( pActor );
 }
 
-
+//--------------------------------------------------------------------------------------
+// Function:  startPhysics
+// Called the first time PhysX simulates
+//--------------------------------------------------------------------------------------
 void Simulator::startPhysics() 
 {
 	gScene->simulate(deltaTime);
 	gScene->flushStream();
 }
 
-
+//--------------------------------------------------------------------------------------
+// Function:  getPhysicsResults
+// Processes inputs, and updates objects
+//--------------------------------------------------------------------------------------
 void Simulator::getPhysicsResults() 
 {
 	while (!gScene->fetchResults(NX_RIGID_BODY_FINISHED, true));
 	processInput();
 }
 
-
+//--------------------------------------------------------------------------------------
+// Function:  processInput
+// Processes all the inputs
+//--------------------------------------------------------------------------------------
 void Simulator::processInput()
 {
 	processForceKeys();
 }
 
-
+//--------------------------------------------------------------------------------------
+// Function:  processForceKeys
+// Processes all of the force inputs
+//--------------------------------------------------------------------------------------
 void Simulator::processForceKeys() {
 	// Process force keys
 
@@ -224,6 +252,10 @@ void Simulator::processForceKeys() {
 
 }
 
+//--------------------------------------------------------------------------------------
+// Function:  applyForceToActor
+// Applies the forces from input and PhysX to the entities and other objects.
+//--------------------------------------------------------------------------------------
 NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength) {
 	NxVec3 forceVec = forceStrength*forceDir*deltaTime;
 	actor->addForce(forceVec);
