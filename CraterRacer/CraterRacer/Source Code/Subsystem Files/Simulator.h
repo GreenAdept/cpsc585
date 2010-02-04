@@ -20,8 +20,9 @@
 #include "Vehicle.h"
 #include "DebugWriter.h"
 
-#include <iostream>
+#define MAX_KEYS 256
 
+#include <iostream>
 using namespace std;
 
 class Simulator 
@@ -45,9 +46,35 @@ private:
 	NxActor* createGroundPlane(void);
 	void startPhysics(void);
 	void getPhysicsResults(void);
-	void processInput(void);
 	void processForceKeys(void);
 	NxVec3 applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength);
+	
+	// Physics SDK 
+	NxPhysicsSDK*		m_PhysicsSDK;
+	NxScene*			m_Scene;
+	NxVec3				m_vDefaultGravity;
+
+	//Force 
+	NxVec3				m_vForceVec;
+	NxReal				m_rForceStrength;
+	bool				m_bForceMode;
+
+	//// Keyboard globals
+	//bool gKeys[MAX_KEYS];
+
+	//Time 
+	double				m_dDeltaTime;
+	bool*				m_bInputs;
+
+	//Actors
+	NxActor*			m_GroundPlane;
+	vector< NxActor* >	m_Vehicles;
+
+	Vec3				m_vP1Dir;
+
+	//Debugging
+	DebugWriter			m_Debugger;
+
 };
 
 #endif SIMULATOR_H

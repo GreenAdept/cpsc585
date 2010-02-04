@@ -34,7 +34,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	m_Simulator->createVehicle( pos, pv->getBoundingBox() );
 
 	//m_Entities.clear();
-	m_Entities.addEntity (PLAYERS, pv);
+	m_Entities.addEntity( PLAYERS, pv );
 	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
 
 	//clear debug.txt
@@ -205,5 +205,8 @@ GameObj::~GameObj( )
 		delete m_Simulator;
 
 	if( m_Terrain )
-			delete m_Terrain;
+		delete m_Terrain;
+
+	if( m_Controller1 )
+		delete m_Controller1;
 }
