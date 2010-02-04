@@ -1,34 +1,5 @@
 #include "Simulator.h"
 
-// Physics SDK globals
-NxPhysicsSDK*     gPhysicsSDK = NULL;
-NxScene*          gScene = NULL;
-NxVec3            gDefaultGravity(0,-9.8,0);
-
-//Force globals
-NxVec3 gForceVec(0, 0, 0);
-NxReal gForceStrength = 1000000;
-bool bForceMode = true;
-
-// Keyboard globals
-#define MAX_KEYS 256
-bool gKeys[MAX_KEYS];
-
-//Time global
-double deltaTime;
-
-//Actor globals
-NxActor* groundPlane = NULL;
-vector< NxActor* > gVehicles;
-Vec3 boxPos;
-double boxSize;
-
-bool* input;
-Vec3 p1_dir(0.0, 0.0, 0.0);
-
-//Debugging
-DebugWriter debug;
-
 
 //--------------------------------------------------------------------------------------
 // Function:  Constructor
@@ -36,6 +7,16 @@ DebugWriter debug;
 //--------------------------------------------------------------------------------------
 Simulator::Simulator() 
 {
+	//initialize all simulation data members
+	m_vForceVec			= NxVec3(0, 0, 0);
+	m_PhysicsSDK			= NULL;
+	m_Scene				= NULL;
+	m_rForceStrength	= 1000000;
+	m_bForceMode		= true;
+	m_vDefaultGravity	= NxVec3(0,-9.8,0);
+	m_GroundPlane		= NULL;
+	m_vP1Dir			= Vec3(0, 0, 0);
+
 	InitNx();
 }
 
@@ -47,32 +28,33 @@ Simulator::Simulator()
 void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime ) 
 {
 	NxF32 mat[4][4];
-	deltaTime = elapsedTime;
+	m_dDeltaTime = elapsedTime;
+
 	startPhysics();
 	getPhysicsResults();
 
 	//Update all the entity positions based on PhysX simulated actor positions
-	for( int i=0; i < gVehicles.size(); i++ )
+	for( int i=0; i < m_Vehicles.size(); i++ )
 	{
 		//Get the inputs associated with vehicle
 		//keyboard controls
-		input = vehicles[i]->getInput();
+		m_bInputs = vehicles[i]->getInput();
 
 		// XBox controls
-		p1_dir = vehicles[i]->getDir();
+		m_vP1Dir = vehicles[i]->getDir();
 
 		//Add forces to the vehicle based on input
 		processForceKeys();
 
 		//Get the new position of the vehicle in vector and matrix formats
-		NxVec3 vec	 = gVehicles[i]->getGlobalPosition();
+		NxVec3 vec	 = m_Vehicles[i]->getGlobalPosition();
 		float height = vehicles[i]->getBoundingBox().m_fHeight;
 
-		gVehicles[i]->getGlobalPose().getColumnMajor44( mat );
+		m_Vehicles[i]->getGlobalPose().getColumnMajor44( mat );
 		Matrix m = Matrix( mat[0] );
 		D3DXMatrixTranslation( &m, vec.x, 0.0, vec.z );
 		
-		NxVec3 vlc = gVehicles[i]->getLinearVelocity();
+		NxVec3 vlc = m_Vehicles[i]->getLinearVelocity();
 
 		//Update the vehicle position in the game
 		vehicles[i]->update( Vec3(vec.x, 0, vec.z), Vec3(vlc.x, 0, vlc.z), m );
@@ -95,41 +77,32 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 //--------------------------------------------------------------------------------------
 void Simulator::InitNx( void ) 
 {
-	 input = new bool[4];
-
 	//Create the Phyics SDK
-	gPhysicsSDK = NxCreatePhysicsSDK(NX_PHYSICS_SDK_VERSION);
-	if (!gPhysicsSDK) return;
+	m_PhysicsSDK = NxCreatePhysicsSDK( NX_PHYSICS_SDK_VERSION );
+	if( !m_PhysicsSDK ) return;
 
 	//Create the scene
 	NxSceneDesc sceneDesc;
-	sceneDesc.gravity = gDefaultGravity;
+	sceneDesc.gravity = m_vDefaultGravity;
 	sceneDesc.simType = NX_SIMULATION_SW;
-	gScene = gPhysicsSDK->createScene(sceneDesc);
+	m_Scene = m_PhysicsSDK->createScene( sceneDesc );
 
 	//Set the physics parameters
-	gPhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.01);
+	m_PhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.01);
 
 	//Set the debug visualization parameters
-	gPhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 1);
-	gPhysicsSDK->setParameter(NX_VISUALIZE_COLLISION_SHAPES, 1);
-	gPhysicsSDK->setParameter(NX_VISUALIZE_ACTOR_AXES, 1);
+	m_PhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 1);
+	m_PhysicsSDK->setParameter(NX_VISUALIZE_COLLISION_SHAPES, 1);
+	m_PhysicsSDK->setParameter(NX_VISUALIZE_ACTOR_AXES, 1);
 
 	//Create the default material
-	NxMaterial* defaultMaterial = gScene->getMaterialFromIndex(0);
+	NxMaterial* defaultMaterial = m_Scene->getMaterialFromIndex(0);
 	defaultMaterial->setRestitution(0.5);
 	defaultMaterial->setStaticFriction(0.0);
 	defaultMaterial->setDynamicFriction(0.0);
 
 	//Create the ground
-	groundPlane = createGroundPlane( );
-
-	input[0] = false;
-	input[1] = false;
-	input[2] = false;
-	input[3] = false;
-
-	p1_dir = Vec3(0.0, 0.0, 0.0);
+	m_GroundPlane = createGroundPlane( );
 }
 
 
@@ -144,7 +117,8 @@ NxActor* Simulator::createGroundPlane()
 	planeDesc.normal = NxVec3(0, 1, 0);
 	planeDesc.d = 0;
 	actorDesc.shapes.pushBack(&planeDesc);
-	return gScene->createActor(actorDesc);
+
+	return m_Scene->createActor( actorDesc );
 }
 
 
@@ -163,18 +137,18 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 	boxDesc.dimensions.set( b.m_fWidth, b.m_fHeight, b.m_fLength );
 	actorDesc.shapes.pushBack( &boxDesc );
 
-	//Initialize the vehicle
+	//Initialize the vehicle's parameters
 	actorDesc.body = &bodyDesc;
 	actorDesc.density = 10.0f;
 	actorDesc.globalPose.t = NxVec3( pos.x, pos.y + b.m_fHeight, pos.z );
 	assert( actorDesc.isValid() );
 
 	//Create the vehicle in the scene
-	NxActor* pActor = gScene->createActor(actorDesc);
+	NxActor* pActor = m_Scene->createActor( actorDesc );
 	assert( pActor );
 
 	//Add the vehicle to global list of all vehicles
-	gVehicles.push_back( pActor );
+	m_Vehicles.push_back( pActor );
 }
 
 //--------------------------------------------------------------------------------------
@@ -183,28 +157,19 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 //--------------------------------------------------------------------------------------
 void Simulator::startPhysics() 
 {
-	gScene->simulate(deltaTime);
-	gScene->flushStream();
+	m_Scene->simulate( m_dDeltaTime );
+	m_Scene->flushStream( );
 }
 
 //--------------------------------------------------------------------------------------
 // Function:  getPhysicsResults
-// Processes inputs, and updates objects
+// Updates objects
 //--------------------------------------------------------------------------------------
 void Simulator::getPhysicsResults() 
 {
-	while (!gScene->fetchResults(NX_RIGID_BODY_FINISHED, true));
-	processInput();
+	while (!m_Scene->fetchResults(NX_RIGID_BODY_FINISHED, true));
 }
 
-//--------------------------------------------------------------------------------------
-// Function:  processInput
-// Processes all the inputs
-//--------------------------------------------------------------------------------------
-void Simulator::processInput()
-{
-	processForceKeys();
-}
 
 //--------------------------------------------------------------------------------------
 // Function:  processForceKeys
@@ -218,29 +183,28 @@ void Simulator::processForceKeys() {
 	//{
 		for( int i = 0; i < 4; i++ )
 		{
-			if(!input[i]) { continue; } 
+			if( !m_bInputs[i] ) { continue; } 
 
-			switch (i)
+			switch( i )
 			{
 				case LEFT: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[0], NxVec3(-1,0,0), gForceStrength );
-					debug.writeToFile("left");
+					m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3(-1,0,0), m_rForceStrength );
 					break; 
 				}
 				case RIGHT: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[0], NxVec3(0,0,1), gForceStrength ); 
+					m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3(0,0,1), m_rForceStrength ); 
 					break; 
 				}
 				case FORWARD: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[0], NxVec3(1,0,0), gForceStrength );
+					m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3(1,0,0), m_rForceStrength );
 					break; 
 				}
 				case BACKWARD: 
 				{ 
-					gForceVec = applyForceToActor( gVehicles[0], NxVec3(0,0,-1), gForceStrength ); 
+					m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3(0,0,-1), m_rForceStrength ); 
 					break; 
 				}
 			}
@@ -248,7 +212,7 @@ void Simulator::processForceKeys() {
 	//}
 
 	//xbox controllers
-	gForceVec = applyForceToActor(gVehicles[0], NxVec3(p1_dir.x, 0, p1_dir.z), gForceStrength);
+	m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3( m_vP1Dir.x, 0, m_vP1Dir.z), m_rForceStrength);
 
 }
 
@@ -256,9 +220,10 @@ void Simulator::processForceKeys() {
 // Function:  applyForceToActor
 // Applies the forces from input and PhysX to the entities and other objects.
 //--------------------------------------------------------------------------------------
-NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength) {
-	NxVec3 forceVec = forceStrength*forceDir*deltaTime;
-	actor->addForce(forceVec);
+NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength) 
+{
+	NxVec3 forceVec = forceStrength * forceDir * m_dDeltaTime;
+	actor->addForce( forceVec );
 	return forceVec;
 }
 
@@ -271,23 +236,23 @@ NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, cons
 Simulator::~Simulator() 
 {
 	//release all actors
-	for( int i=0; i < gVehicles.size(); i++ )
+	for( int i=0; i < m_Vehicles.size(); i++ )
 	{
-		gScene->releaseActor( *gVehicles[i] );
-		gVehicles[i] = NULL;
+		m_Scene->releaseActor( *m_Vehicles[i] );
+		m_Vehicles[i] = NULL;
 	}
 	
 	//now release the scene and physics SDK
-	if(gPhysicsSDK != NULL)
+	if( m_PhysicsSDK != NULL )
 	{
-		if(gScene != NULL) gPhysicsSDK->releaseScene(*gScene);
-		gScene = NULL;
-		NxReleasePhysicsSDK(gPhysicsSDK);
-		gPhysicsSDK = NULL;
+		if( m_Scene != NULL)
+		{
+			m_PhysicsSDK->releaseScene(*m_Scene);
+			m_Scene = NULL;
+		}
+		NxReleasePhysicsSDK( m_PhysicsSDK );
+		m_PhysicsSDK = NULL;
 	}
-	
-//	if (input)
-	delete [] input;
 }
 
 
@@ -372,7 +337,7 @@ NxActor* Simulator::createMeshActor( Mesh* mesh, Vec3& pos )
 
 	//save this new mesh in our actor's shape description
 	MemoryReadBuffer readBuffer( buf.data );
-	convexShapeDesc.meshData = gPhysicsSDK->createConvexMesh( readBuffer );
+	convexShapeDesc.meshData = m_PhysicsSDK->createConvexMesh( readBuffer );
 
 	//initialize our actor and add the new PhysX mesh to it
 	NxActorDesc actorDesc;
@@ -385,7 +350,7 @@ NxActor* Simulator::createMeshActor( Mesh* mesh, Vec3& pos )
 	assert(actorDesc.isValid());
 
 	//create the actor and add it to the global scene
-	NxActor* pActor = gScene->createActor(actorDesc);
+	NxActor* pActor = m_Scene->createActor(actorDesc);
 	assert(pActor);
 	actorDesc.contactReportFlags = NX_NOTIFY_ALL;
 
