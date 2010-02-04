@@ -20,8 +20,10 @@
 #define OBJ_EFFECT		L"Source Code\\Effect Files\\Scene.fx"
 #define TERRAIN_FILE	L"Media\\Meshes\\Floor.x"
 
-enum ProcessType { ON_LOST, ON_RESET, ON_DESTROY };
-enum Directions { LEFT, RIGHT, FORWARD, BACKWARD }; 
+enum ProcessType		{ ON_LOST, ON_RESET, ON_DESTROY };
+enum Directions			{ LEFT, RIGHT, FORWARD, BACKWARD }; 
+enum GuiControls		{ GUI_BTN_SINGLE_PLAYER };
+enum ApplicationState	{ APP_STARTUP, APP_RENDER_GAME };
 
 
 //--------------------------------------------------------
@@ -42,6 +44,7 @@ typedef IDirect3DTexture9			Texture;
 typedef IDirect3DVertexDeclaration9 VDecl;
 typedef LPDIRECT3DINDEXBUFFER9		IndexBuffer;
 typedef D3DINDEXBUFFER_DESC			IBufferDesc;
+typedef CDXUTDialogResourceManager	ResourceManager;
 
 
 //--------------------------------------------------------

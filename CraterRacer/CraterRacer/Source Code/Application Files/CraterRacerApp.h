@@ -29,7 +29,7 @@ public:
 
 	static	LRESULT	CALLBACK MsgProc				( HWND, UINT, WPARAM, LPARAM, bool*, void * );
     static  void	CALLBACK OnKeyboard				( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserContext );
-	void			CALLBACK OnGUIEvent				( UINT nEvent, int nControlID, CDXUTControl* pControl, void* pUserContext );
+	static  void	CALLBACK OnGUIEvent				( UINT nEvent, int nControlID, CDXUTControl* pControl, void* pUserContext );
 
 
 	// DXUT Functions ---------------------------------------
@@ -37,7 +37,7 @@ public:
 	static HRESULT  CALLBACK OnResetDevice			( IDirect3DDevice9* pd3dDevice, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void *pUserContext  );
 	static void     CALLBACK OnLostDevice			( void *pUserContext );
 	static void		CALLBACK OnUpdateGame			( double fTime, float fElapsedTime, void *pUserContext );
-	static void		CALLBACK OnRender				( IDirect3DDevice9* pd3dDevice, double fTime, float fElapsedTime, void *pUserContext );
+	static void		CALLBACK OnRender				( Device* device, double dTime, float fElapsedTime, void *pUserContext );
 	static HRESULT	CALLBACK OnCreateDevice			( IDirect3DDevice9* pd3dDevice, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 	static void		CALLBACK OnDestroyDevice		( void* pUserContext );
 	static bool		CALLBACK ModifyDeviceSettings	( DXUTDeviceSettings* pDeviceSettings, void* pUserContext );
@@ -48,10 +48,13 @@ public:
 
 	// GUI Data Members ----------------------------------------
 
-	//CDXUTDialogResourceManager*	 m_dResourceManager;	// manager for shared resources of dialogs
-	//CDXUTTextHelper*				m_pTxtHelper;
-	//Dialog						m_dHUD;                 // dialog for standard game controls
-	//Dialog						m_dMenu;				// dialog for sample specific controls
+	static ResourceManager	m_ResourceManager;	// manager for shared resources of dialogs
+	static ApplicationState m_AppState;
+
+	//CDXUTTextHelper*		m_pTxtHelper;
+	//Dialog				m_dHUD;             // dialog for standard game controls
+	static Dialog			m_MenuScreen;		// dialog for sample specific controls
+	static Dialog			m_OnePlayerScreen;
 
 };
 
