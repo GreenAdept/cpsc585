@@ -2,6 +2,7 @@
 #define AI_H
 
 #include "Constants.h"
+class EntityManager;
 
 //---------------------------------------------
 // Class: AI
@@ -10,8 +11,14 @@
 //---------------------------------------------
 
 class AI {
+protected:
+	int state;
+
 public:
-	virtual void think () = 0;
+	enum {WAITING, STOPPED, MOVING, TRIGGERED};
+	int getState () { return state; }
+
+	virtual void think (EntityManager *em, int myList, int myIndex) = 0;
 };
 
 

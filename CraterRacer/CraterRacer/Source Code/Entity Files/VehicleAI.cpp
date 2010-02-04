@@ -57,7 +57,7 @@ void VehicleAI::setPosition (Vec3 pos) {
 // Function: think
 // A stub for the thinking section of the AI.
 //--------------------------------------------------------------------------------------
-void VehicleAI::think() {
+void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 
 }
 

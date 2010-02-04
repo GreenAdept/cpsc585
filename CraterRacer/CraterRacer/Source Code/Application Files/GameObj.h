@@ -38,6 +38,7 @@ public:
 	GameObj( ) {}
 	~GameObj( );
 
+	void think           ( void );
 	void processInput	 ( float fElapsedTime );
 	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );
 	void simulate		 ( float fElapsedTime );
@@ -48,8 +49,7 @@ public:
 private:
 	//Date Members ---------------------------------------
 
-	EntityManager    m_Entities;
-	//vector<Vehicle*> m_Vehicles;		// list of all vehicles
+	EntityManager    m_Entities;        // collection of all entities
 	Renderer*		 m_Renderer;		// rendering subsystem
 	Input			 m_InputManager;	// input management subsystem
 	GameCamera		 m_Camera;		// main camera to follow behind vehicle

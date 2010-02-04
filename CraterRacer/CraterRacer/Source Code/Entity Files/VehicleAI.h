@@ -11,7 +11,7 @@
 class VehicleAI : public AI {
 public:
 	VehicleAI();
-	void think();
+	void think (EntityManager *em, int myList, int myIndex);
 
 	void setInput (Input::Arrow dir, bool isKeyDown);
 	void setDir(Vec3 vec);

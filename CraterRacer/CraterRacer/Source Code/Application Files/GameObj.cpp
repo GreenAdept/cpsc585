@@ -22,6 +22,10 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	Vehicle *pv = new PlayerVehicle( );
 	pv->initialize( device, pos, OBJ_FILE );
 
+	//Meteor *m = new Meteor ();
+	//m->initialize ( device, Vec3 (-100.0f, 0.0f, 0.0f), OBJ_FILE );
+	//m_Entities.addEntity (METEORS, m);
+
 	//create the terrain
 	m_Terrain = new Terrain( );
 	m_Terrain->initialize( device, pos, TERRAIN_FILE );
@@ -65,6 +69,21 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 		break;
 	default:
 		break;
+	}
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: think
+//--------------------------------------------------------------------------------------
+void GameObj::think ()
+{
+	vector<Entity*> thinkers = m_Entities[METEORS];
+	for (int i=0; i<thinkers.size(); i++) {
+		AI* mind = thinkers[i]->getAI();
+		mind->think (&m_Entities, METEORS, i);
+		if (mind->getState() == AI::TRIGGERED)
+			debug.writeToFile ("Triggered.");
 	}
 }
 

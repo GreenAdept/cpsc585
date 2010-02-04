@@ -19,6 +19,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 {
 	g_pGame->processInput( fElapsedTime );
 	g_pGame->simulate( fElapsedTime );
+	g_pGame->think( );
 }
 
 

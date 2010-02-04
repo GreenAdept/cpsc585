@@ -3,11 +3,18 @@
 #define METEOR_H
 
 #include "Entity.h"
+#include "TriggerVolumeAI.h"
 
 class Meteor: public Entity {
-	public:
-		Meteor(void);
-		void setInput(Input::Arrow dir, bool isKeyDown);
-		bool* getInput();
+	AI* mind;
+
+public:
+	Meteor ();
+	~Meteor ();
+	void setInput (Input::Arrow dir, bool isKeyDown);
+	bool* getInput ();
+
+	AI* getAI () { return mind; }
 };
+
 #endif
