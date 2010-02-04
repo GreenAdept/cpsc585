@@ -6,6 +6,13 @@
 
 GameObj* g_pGame = NULL;	//global game used by the RacerApp class 
 
+//instatiating all the static member variables used by RacerApp
+ResourceManager	 RacerApp::m_ResourceManager;
+ApplicationState RacerApp::m_AppState;
+Dialog			 RacerApp::m_MenuScreen;
+Dialog			 RacerApp::m_OnePlayerScreen;
+
+
 //--------------------------------------------------------------------------------------
 // Function:  OnUpdateGame
 // This is the callback called by DXUT in the render loop.  It is called right before
@@ -31,7 +38,20 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 //--------------------------------------------------------------------------------------
 LRESULT CALLBACK RacerApp::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing, void* pUserContext )
 {
-	return 0;
+	//Let the resource manager handle it first
+	*pbNoFurtherProcessing = m_ResourceManager.MsgProc( hWnd, uMsg, wParam, lParam );
+	if( *pbNoFurtherProcessing )
+		return 0;
+
+	switch( m_AppState )
+	{
+		//If we are in startup, we want the menu screen to handle all messages
+		case APP_STARTUP:
+			*pbNoFurtherProcessing = m_MenuScreen.MsgProc( hWnd, uMsg, wParam, lParam );
+			if( *pbNoFurtherProcessing )
+				return 0;
+			break;
+	}
 }
 
 
@@ -41,7 +61,7 @@ LRESULT CALLBACK RacerApp::MsgProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM 
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserContext )
 {
-	if( g_pGame )
+	if( g_pGame && m_AppState != APP_STARTUP )
 	{
 		// online virtual key codes: http://msdn.microsoft.com/en-us/library/ms927178.aspx
 		switch( nChar ) 
@@ -65,7 +85,12 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* pControl, void* pUserContext )
 {
-
+	switch( nControlID )
+	{
+		case GUI_BTN_SINGLE_PLAYER:
+			m_AppState = APP_RENDER_GAME; 
+			break;
+	}
 }
 
 
@@ -76,10 +101,17 @@ void CALLBACK RacerApp::OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* p
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK RacerApp::OnResetDevice( IDirect3DDevice9* device, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
+	HRESULT hr;
+
+	V_RETURN( m_ResourceManager.OnD3D9ResetDevice() );
+
 	if( g_pGame )
 		g_pGame->processCallback( ON_RESET, device, pBackBufferSurfaceDesc );
-	
-	device->SetRenderState( D3DRS_FILLMODE, D3DFILL_SOLID );
+
+	//initialize the size and position of the startup menu based on size of device surface
+	m_MenuScreen.SetLocation( ( pBackBufferSurfaceDesc->Width - 300 ) / 2,
+                             ( pBackBufferSurfaceDesc->Height - 200 ) / 2 );
+    m_MenuScreen.SetSize	( 300, 200 );
 
 	return S_OK;
 }
@@ -92,6 +124,8 @@ HRESULT CALLBACK RacerApp::OnResetDevice( IDirect3DDevice9* device, const D3DSUR
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnLostDevice(void* pUserContext )
 {
+	m_ResourceManager.OnD3D9LostDevice();
+
 	if( g_pGame )
 		g_pGame->processCallback( ON_LOST );
 }
@@ -102,21 +136,30 @@ void CALLBACK RacerApp::OnLostDevice(void* pUserContext )
 // Function: OnRender
 // This callback function is called every frame to render the scene.  
 //--------------------------------------------------------------------------------------
-void CALLBACK RacerApp::OnRender( IDirect3DDevice9* pd3dDevice, double fTime, float fElapsedTime, void* pUserContext  )
+void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTime, void* pUserContext  )
 {
 	HRESULT hr;
 
-    // Clear the render target and the zbuffer 
-    V( pd3dDevice->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 150,0, 20, 30 ), 1.0f, 0 ) );
+	// Clear the render target and the zbuffer 
+	V( device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 255, 0, 0, 0 ), 1.0f, 0 ) );
 
-    // Render the scene
-    if( SUCCEEDED( pd3dDevice->BeginScene() ) )
-    {
-		//get the game to render all of its components
-		g_pGame->render( pd3dDevice );
-
-        V( pd3dDevice->EndScene() );
-    }
+	// Render the scene
+	if( SUCCEEDED( device->BeginScene() ) )
+	{
+		switch( m_AppState )
+		{
+			case APP_STARTUP:
+				//render the game menu
+				V( m_MenuScreen.OnRender( fElapsedTime ) );
+				break;
+			
+			case APP_RENDER_GAME:
+				//get the game to render all of its components
+				g_pGame->render( device );
+				break;
+		}
+	}
+	V( device->EndScene() );
 }
 
 
@@ -127,6 +170,10 @@ void CALLBACK RacerApp::OnRender( IDirect3DDevice9* pd3dDevice, double fTime, fl
 //--------------------------------------------------------------------------------------
 HRESULT CALLBACK RacerApp::OnCreateDevice( IDirect3DDevice9* pd3dDevice, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
+	HRESULT hr;
+
+	V_RETURN( m_ResourceManager.OnD3D9CreateDevice( pd3dDevice ) );
+	
 	g_pGame->initGame( pd3dDevice, pBackBufferSurfaceDesc );
 
 	return S_OK;
@@ -140,6 +187,8 @@ HRESULT CALLBACK RacerApp::OnCreateDevice( IDirect3DDevice9* pd3dDevice, const D
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnDestroyDevice( void* pUserContext )
 {
+	m_ResourceManager.OnD3D9DestroyDevice();
+
 	if( g_pGame )
 		g_pGame->processCallback( ON_DESTROY );
 }
@@ -184,6 +233,27 @@ bool CALLBACK RacerApp::ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSetting
 RacerApp::RacerApp()
 {
 	g_pGame = new GameObj();
+
+	m_AppState = APP_STARTUP;
+
+	//initialize the resource manager to keep track of all our screens and HUD
+	m_MenuScreen.Init( &m_ResourceManager );
+    m_OnePlayerScreen.Init( &m_ResourceManager );
+
+	//Set the font of the menu screen
+    m_MenuScreen.SetFont( 1, L"Arial", 24, FW_BOLD );
+    CDXUTElement* pElement = m_MenuScreen.GetDefaultElement( DXUT_CONTROL_STATIC, 0 );
+    if( pElement )
+    {
+        pElement->iFont = 1;
+        pElement->dwTextFormat = DT_CENTER | DT_BOTTOM;
+    }
+
+    m_MenuScreen.SetCallback( OnGUIEvent ); 
+
+	//Add buttons/text to the menu screen
+	m_MenuScreen.AddStatic( -1, L"Select your game mode:", 0, 10, 300, 22 );
+    m_MenuScreen.AddButton( GUI_BTN_SINGLE_PLAYER, L"Single Player", 90, 42, 125, 40 );
 }
 
 
