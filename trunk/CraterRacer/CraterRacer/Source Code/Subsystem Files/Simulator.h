@@ -14,8 +14,8 @@
 
 #include "NxPhysics.h"
 #include "NxCooking.h"
-#include "NxWheel.h"
-#include "NxWheelDesc.h"
+//#include "NxWheel.h"
+//#include "NxWheelDesc.h"
 #include "Stream.h"
 #include "Vehicle.h"
 #include "DebugWriter.h"
