@@ -31,15 +31,16 @@ public:
 	~Entity( );
 		
 	// Accessors
-	Renderable*		getRenderable	( );
-	BoundingBox		getBoundingBox	( );
-	Vec3			getPosition		( );
+	Renderable*		getRenderable	  ( );
+	BoundingBox		getBoundingBox	  ( );
+	Vec3			getPosition		  ( );
+	Matrix			getPositionMatrix ( );
 
-	void			initialize		( Device* device, Vec3 pos, LPCWSTR filename );
+	void			initialize		  ( Device* device, Vec3 pos, LPCWSTR filename );
 
-	virtual AI*		getAI			( ) { return 0; }
+	virtual AI*		getAI			  ( ) { return 0; }
 
-	void			update			( Vec3 newPostion, Matrix mat );
+	void			update			  ( Vec3 newPostion, Matrix mat );
 
 protected: 
 	
@@ -47,6 +48,7 @@ protected:
 
 	Renderable*		m_pRenderable;
 	Vec3			m_vPosition;
+	Matrix			m_matWorld;
 
 };
 

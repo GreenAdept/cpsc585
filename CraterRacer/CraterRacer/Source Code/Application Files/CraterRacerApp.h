@@ -9,7 +9,7 @@
 #include "Resource.h"
 #include "GameObj.h"
 
-#include "..\Utility Files\Constants.h"
+#include "Constants.h"
 
 //--------------------------------------------------------
 //		CLASS: RacerApp
@@ -27,9 +27,9 @@ public:
 
 	// WIN32 Functions ----------------------------------------
 
-	static	LRESULT	CALLBACK MsgProc			( HWND, UINT, WPARAM, LPARAM, bool*, void * );
-    static  void	CALLBACK OnKeyboard			( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserContext );
-	void			CALLBACK OnGUIEvent			( UINT nEvent, int nControlID, CDXUTControl* pControl, void* pUserContext );
+	static	LRESULT	CALLBACK MsgProc				( HWND, UINT, WPARAM, LPARAM, bool*, void * );
+    static  void	CALLBACK OnKeyboard				( UINT nChar, bool bKeyDown, bool bAltDown, void* pUserContext );
+	void			CALLBACK OnGUIEvent				( UINT nEvent, int nControlID, CDXUTControl* pControl, void* pUserContext );
 
 
 	// DXUT Functions ---------------------------------------
