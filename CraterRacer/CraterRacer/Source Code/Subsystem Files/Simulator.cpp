@@ -52,12 +52,12 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 
 		m_Vehicles[i]->getGlobalPose().getColumnMajor44( mat );
 		Matrix m = Matrix( mat[0] );
-		D3DXMatrixTranslation( &m, vec.x, 0.0, vec.z );
+		D3DXMatrixTranslation( &m, vec.x, vec.y-height, vec.z );
 		
 		NxVec3 vlc = m_Vehicles[i]->getLinearVelocity();
 
 		//Update the vehicle position in the game
-		vehicles[i]->update( Vec3(vec.x, 0, vec.z), Vec3(vlc.x, 0, vlc.z), m );
+		vehicles[i]->update( Vec3(vec.x, vec.y-height, vec.z), Vec3(vlc.x, 0, vlc.z), m );
 
 		/*
 		debug.writeToFile( "Position: " );

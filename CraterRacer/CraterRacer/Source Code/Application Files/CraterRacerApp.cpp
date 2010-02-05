@@ -24,9 +24,12 @@ Dialog			 RacerApp::m_OnePlayerScreen;
 //--------------------------------------------------------------------------------------
 void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pUserContext  )
 {
-	g_pGame->processInput( fElapsedTime );
-	g_pGame->simulate( fElapsedTime );
-	g_pGame->think( );
+	if( m_AppState != APP_STARTUP )
+	{
+		g_pGame->processInput( fElapsedTime );
+		g_pGame->simulate( fElapsedTime );
+		g_pGame->think( );
+	}
 }
 
 
