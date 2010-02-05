@@ -14,8 +14,6 @@
 
 #include "NxPhysics.h"
 #include "NxCooking.h"
-//#include "NxWheel.h"
-//#include "NxWheelDesc.h"
 #include "Stream.h"
 #include "Vehicle.h"
 #include "DebugWriter.h"
@@ -59,8 +57,10 @@ private:
 	NxReal				m_rForceStrength;
 	bool				m_bForceMode;
 
-	//// Keyboard globals
-	//bool gKeys[MAX_KEYS];
+	//Friction
+	NxReal				m_rRestituion;
+	NxReal				m_rStaticFriction;
+	NxReal				m_rDynamicFriction;
 
 	//Time 
 	double				m_dDeltaTime;

@@ -16,10 +16,46 @@ Simulator::Simulator()
 	m_vDefaultGravity	= NxVec3(0,-9.8,0);
 	m_GroundPlane		= NULL;
 	m_vP1Dir			= Vec3(0, 0, 0);
+	m_rRestitution		= NxReal(0.5);
+	m_rStaticFriction	= NxReal(1.0);
+	m_rDynamicFriction	= NxReal(0.3);
 
 	InitNx();
 }
 
+//--------------------------------------------------------------------------------------
+// Function:  InitNx
+// Initializes the PhysX engine as well as some other fundamental elements
+//--------------------------------------------------------------------------------------
+void Simulator::InitNx( void ) 
+{
+	//Create the Phyics SDK
+	m_PhysicsSDK = NxCreatePhysicsSDK( NX_PHYSICS_SDK_VERSION );
+	if( !m_PhysicsSDK ) return;
+
+	//Create the scene
+	NxSceneDesc sceneDesc;
+	sceneDesc.gravity = m_vDefaultGravity;
+	sceneDesc.simType = NX_SIMULATION_SW;
+	m_Scene = m_PhysicsSDK->createScene( sceneDesc );
+
+	//Set the physics parameters
+	m_PhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.01);
+
+	//Set the debug visualization parameters
+	m_PhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 1);
+	m_PhysicsSDK->setParameter(NX_VISUALIZE_COLLISION_SHAPES, 1);
+	m_PhysicsSDK->setParameter(NX_VISUALIZE_ACTOR_AXES, 1);
+
+	//Create the default material
+	NxMaterial* defaultMaterial = m_Scene->getMaterialFromIndex(0);
+	defaultMaterial->setRestitution(m_rRestitution);
+	defaultMaterial->setStaticFriction(m_rStaticFriction);
+	defaultMaterial->setDynamicFriction(m_rDynamicFriction);
+
+	//Create the ground
+	m_GroundPlane = createGroundPlane( );
+}
 
 //--------------------------------------------------------------------------------------
 // Function:  simulate
@@ -70,42 +106,6 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 	}
 }
 
-
-//--------------------------------------------------------------------------------------
-// Function:  InitNx
-// Initializes the PhysX engine as well as some other fundamental elements
-//--------------------------------------------------------------------------------------
-void Simulator::InitNx( void ) 
-{
-	//Create the Phyics SDK
-	m_PhysicsSDK = NxCreatePhysicsSDK( NX_PHYSICS_SDK_VERSION );
-	if( !m_PhysicsSDK ) return;
-
-	//Create the scene
-	NxSceneDesc sceneDesc;
-	sceneDesc.gravity = m_vDefaultGravity;
-	sceneDesc.simType = NX_SIMULATION_SW;
-	m_Scene = m_PhysicsSDK->createScene( sceneDesc );
-
-	//Set the physics parameters
-	m_PhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.01);
-
-	//Set the debug visualization parameters
-	m_PhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 1);
-	m_PhysicsSDK->setParameter(NX_VISUALIZE_COLLISION_SHAPES, 1);
-	m_PhysicsSDK->setParameter(NX_VISUALIZE_ACTOR_AXES, 1);
-
-	//Create the default material
-	NxMaterial* defaultMaterial = m_Scene->getMaterialFromIndex(0);
-	defaultMaterial->setRestitution(0.5);
-	defaultMaterial->setStaticFriction(1.0);
-	defaultMaterial->setDynamicFriction(0.3);
-
-	//Create the ground
-	m_GroundPlane = createGroundPlane( );
-}
-
-
 //--------------------------------------------------------------------------------------
 // Function:  createGroundPlane
 // Creates a ground plane at (0, 0, 0) and normal (0, 1, 0)
@@ -120,7 +120,6 @@ NxActor* Simulator::createGroundPlane()
 
 	return m_Scene->createActor( actorDesc );
 }
-
 
 //--------------------------------------------------------------------------------------
 // Function:  createVehicle
