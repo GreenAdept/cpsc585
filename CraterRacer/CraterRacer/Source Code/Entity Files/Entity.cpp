@@ -74,7 +74,7 @@ void Entity::update( Vec3 newPosition, Matrix matWorldTransform )
 // Function:  getPosition
 // Returns the vector position of the entity
 //--------------------------------------------------------------------------------------
-Vec3 Entity::getPosition( ) 
+Vec3& Entity::getPosition( ) 
 {
 	return m_vPosition;
 }

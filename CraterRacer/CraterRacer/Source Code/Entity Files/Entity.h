@@ -33,7 +33,7 @@ public:
 	// Accessors
 	Renderable*		getRenderable	  ( );
 	BoundingBox		getBoundingBox	  ( );
-	Vec3			getPosition		  ( );
+	Vec3&			getPosition		  ( );
 	Matrix			getPositionMatrix ( );
 
 	void			initialize		  ( Device* device, Vec3 pos, LPCWSTR filename );

@@ -1,11 +1,10 @@
 #include "TriggerVolumeAI.h"
+#include "EntityManager.h"
 
-
-TriggerCylinder::TriggerCylinder (float r) {
-	radius = r*r;
-}
 
 void TriggerCylinder::think (EntityManager *em, int myList, int myIndex) {
+	if (state == AI::STOPPED) return;
+
 	Vec3 player = em->getPosition (PLAYERS, 0);
 	Vec3 center = em->getPosition (myList, myIndex);
 	

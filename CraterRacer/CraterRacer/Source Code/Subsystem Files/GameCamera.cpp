@@ -1,6 +1,10 @@
 #include "GameCamera.h"
 
 
+//------------------------------------------------------
+// Constructor: GameCamera
+// Creates a new GameCamera.
+//------------------------------------------------------
 
 GameCamera::GameCamera () {
 	offset = Vec3 (0.0f, 5.0f, -25.0f);
@@ -21,13 +25,18 @@ void GameCamera::setTarget (Entity *e) {
 			buffer[index] = Vec3 (0.0f, 0.0f, 0.0f);
 	}
 	else {
-		Renderable *r = target->getRenderable();
+		Vec3 position = target->getPosition();
 		for (index=0; index<CAMERA_BUFFER_SIZE; index++)
-			buffer[index] = offset + r->m_vPosition;
+			buffer[index] = offset + position;
 	}
 
 	index = 0;
 }
+
+//------------------------------------------------------
+// Function: updateWindow
+// Updates the window parameters.
+//------------------------------------------------------
 
 void GameCamera::updateWindow (const D3DSURFACE_DESC* pSurface) {
 	float fAspectRatio = pSurface->Width / (float)pSurface->Height;
@@ -47,12 +56,12 @@ MCamera GameCamera::getCamera () {
 		camera.SetViewParams( &offset, buffer+index );
 	}
 	else {
-		Renderable *r = target->getRenderable();
+		Vec3 position = target->getPosition();
 
 		//Calculates and sets camera position
-		buffer[index] = offset + r->m_vPosition;
+		buffer[index] = offset + position;
 		index = (index+1) % CAMERA_BUFFER_SIZE;
-		camera.SetViewParams( buffer+index, &(r->m_vPosition) );
+		camera.SetViewParams( buffer+index, &position );
 	}
 	return camera;
 }
