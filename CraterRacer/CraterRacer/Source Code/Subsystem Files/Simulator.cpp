@@ -98,8 +98,8 @@ void Simulator::InitNx( void )
 	//Create the default material
 	NxMaterial* defaultMaterial = m_Scene->getMaterialFromIndex(0);
 	defaultMaterial->setRestitution(0.5);
-	defaultMaterial->setStaticFriction(0.0);
-	defaultMaterial->setDynamicFriction(0.0);
+	defaultMaterial->setStaticFriction(1.0);
+	defaultMaterial->setDynamicFriction(0.3);
 
 	//Create the ground
 	m_GroundPlane = createGroundPlane( );

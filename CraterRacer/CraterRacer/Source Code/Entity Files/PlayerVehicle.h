@@ -24,13 +24,15 @@ public:
 
 	PlayerVehicle( void ) { }
 
-	//void update( void );
+	void update( void );
 	void setInput(Input::Arrow dir, bool isKeyDown);
 	void setDir(Vec3 vec);
 	bool* getInput();
 	Vec3 getDir();
 	void resetInput();
 
+	void drive(Vec3 dir, bool accelerate, bool decelerate);
+	void drive(Input::Arrow dir, bool isKeyDown);
 };
 
 #endif //PLAYERVEHICLE_H

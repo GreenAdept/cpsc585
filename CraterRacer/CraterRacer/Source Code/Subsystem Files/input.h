@@ -6,6 +6,7 @@
 #define INPUT_H
 
 #include "Constants.h"
+//#include "DebugWriter.h"
 
 class Input
 {
@@ -20,9 +21,14 @@ public:
 	Vec3 getDir();
 	void reset();
 
+	void drive(Vec3 dir, bool accelerate, bool decelerate, Vec3 velocity);
+	void drive(Input::Arrow dir, bool isKeyDown);
+
 private:
 	bool inputs[4];
 	Vec3 direction;
+	bool reversing; //flag to show it is reversing
+	//DebugWriter writer;
 };
 
 #endif

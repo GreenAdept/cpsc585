@@ -20,7 +20,10 @@ public:
 	void resetInput();
 	void setPosition (Vec3 position);
 
-private:
+	void drive(Vec3 dir, bool accelerate, bool decelerate, Vec3 velocity);
+	void drive(Input::Arrow dir, bool isKeyDown);
+
+protected:
 	Input input;
 	Vec3 position;
 };

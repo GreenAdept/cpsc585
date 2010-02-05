@@ -61,3 +61,16 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 
 }
 
+//--------------------------------------------------------------------------------------
+// Function: drive
+// Delegates driving information to input.
+//--------------------------------------------------------------------------------------
+void VehicleAI::drive(Vec3 dir, bool accelerate, bool decelerate, Vec3 velocity)
+{
+	input.drive(dir, accelerate, decelerate, velocity);
+}
+
+void VehicleAI::drive(Input::Arrow dir, bool isKeyDown)
+{
+	input.drive(dir, isKeyDown);
+}

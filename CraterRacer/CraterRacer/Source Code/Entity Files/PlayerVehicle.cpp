@@ -42,3 +42,17 @@ void PlayerVehicle::resetInput()
 {
 	mind.resetInput();
 }
+
+//--------------------------------------------------------------------------------------
+// Function: drive
+// Delegates the information to the mind.
+//--------------------------------------------------------------------------------------
+void PlayerVehicle::drive(Vec3 dir,	bool accelerate, bool decelerate)
+{
+	mind.drive(dir, accelerate, decelerate, velocity);
+}
+
+void PlayerVehicle::drive(Input::Arrow dir, bool isKeyDown)
+{
+	mind.drive(dir, isKeyDown);
+}
