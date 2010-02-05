@@ -56,6 +56,8 @@ public:
 	virtual Vec3 getDir() = 0;
 	virtual void resetInput() = 0;
 
+	virtual void drive(Vec3 dir, bool accelerate, bool decelerate) = 0;
+
 protected:
 	VehicleAI mind;
 	Vec3 velocity; //m/s
