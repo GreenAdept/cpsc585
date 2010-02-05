@@ -116,9 +116,7 @@ void GameObj::processInput( float fElapsedTime )
 		}
 		//else reverse -> while reversing, turning is backwards
 	}
-
 	v->setDir(drive);
-
 }
 
 
