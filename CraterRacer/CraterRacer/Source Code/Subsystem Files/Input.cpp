@@ -97,6 +97,10 @@ void Input::drive(Vec3 dir, bool accelerate, bool decelerate, Vec3 velocity)
 
 void Input::drive(Input::Arrow dir, bool isKeyDown)
 {
+}
+/*
+void Input::drive(Input::Arrow dir, bool isKeyDown)
+{
 	if (isKeyDown)
 	{
 		switch(dir) {
@@ -117,3 +121,4 @@ void Input::drive(Input::Arrow dir, bool isKeyDown)
 		}
 	}
 }
+*/
