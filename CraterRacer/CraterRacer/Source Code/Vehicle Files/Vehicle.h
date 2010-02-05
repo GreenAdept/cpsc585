@@ -1,3 +1,17 @@
+/*The vehicle is described as follows:
+		
+			front
+		-------------
+wheel 1	|			| wheel 2
+		|			|
+		|			|
+		|			|
+		|			|
+wheel 3 |			| wheel 4
+		-------------
+			back
+*/
+
 #pragma once
 #ifndef VEHICLE_H
 #define VEHICLE_H
