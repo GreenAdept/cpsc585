@@ -16,7 +16,7 @@ Simulator::Simulator()
 	m_vDefaultGravity	= NxVec3(0,-9.8,0);
 	m_GroundPlane		= NULL;
 	m_vP1Dir			= Vec3(0, 0, 0);
-	m_rRestitution		= NxReal(0.5);
+	m_rRestitution		= NxReal(0.1);
 	m_rStaticFriction	= NxReal(1.0);
 	m_rDynamicFriction	= NxReal(0.3);
 
@@ -95,6 +95,17 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		//Update the vehicle position in the game
 		vehicles[i]->update( Vec3(vec.x, vec.y-height, vec.z), Vec3(vlc.x, 0, vlc.z), m );
 
+		//Ray casting
+		Vec3 pos = vehicles[i]->getPosition();
+		NxVec3 origin(pos.x, pos.y, pos.z);
+		NxVec3 direction(0, -1, 0);
+
+		NxRay ray(origin, direction);
+		NxRaycastHit hit;
+
+		m_Scene->raycastClosestShape(ray, NX_ALL_SHAPES, hit);
+		m_Debugger.writeToFile(hit.distance);
+	
 		/*
 		debug.writeToFile( "Position: " );
 		debug.writeToFile(vec);

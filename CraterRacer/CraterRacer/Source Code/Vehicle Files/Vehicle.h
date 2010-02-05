@@ -23,6 +23,7 @@ wheel 3 |			| wheel 4
 #include "Entity.h"
 #include "Input.h"
 #include "VehicleAI.h"
+#include "Wheel.h"
 
 using namespace std;
 
@@ -57,6 +58,8 @@ public:
 	virtual void resetInput() = 0;
 
 	virtual void drive(Vec3 dir, bool accelerate, bool decelerate) = 0;
+
+	Wheel m_Wheels[4];
 
 protected:
 	VehicleAI mind;
