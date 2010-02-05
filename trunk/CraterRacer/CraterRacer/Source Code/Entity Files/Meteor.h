@@ -11,10 +11,10 @@ class Meteor: public Entity {
 public:
 	Meteor ();
 	~Meteor ();
+
 	void setInput (Input::Arrow dir, bool isKeyDown);
 	bool* getInput ();
-
-	AI* getAI () { return mind; }
+	AI* getAI ();
 };
 
 #endif

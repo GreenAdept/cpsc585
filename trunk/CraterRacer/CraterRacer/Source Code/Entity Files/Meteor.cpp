@@ -5,7 +5,7 @@
 #include "Meteor.h"
 
 Meteor::Meteor() {
-	mind = new TriggerCylinder (5);
+	mind = new TriggerCylinder (10.0f);
 }
 
 Meteor::~Meteor () {
@@ -22,4 +22,10 @@ bool* Meteor::getInput ()
 {
 	bool input[] = { false, false, false, false };
 	return input;
+}
+
+AI* Meteor::getAI () {
+	if (mind->getState() == AI::TRIGGERED)
+		mind->setState (AI::STOPPED);
+	return mind;
 }

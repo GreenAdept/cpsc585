@@ -17,6 +17,7 @@ protected:
 public:
 	enum {WAITING, STOPPED, MOVING, TRIGGERED};
 	int getState () { return state; }
+	void setState (int stateNew) { state = stateNew; }
 
 	virtual void think (EntityManager *em, int myList, int myIndex) = 0;
 };

@@ -15,29 +15,23 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 
 	Vec3 pos( 0.0f, 10.0f, 0.0f );
 	Vec3 terrainPos( 0.0f, 0.0f, 0.0f );
+	
+	// Create entities
+	Vehicle *pv = m_Entities.makePlayer (device, pos, OBJ_FILE);
+	//Meteor *m = m_Entities.makeMeteor (device, Vec3 (-10.0f, 0.0f, 0.0f), OBJ_FILE);
 
-	//init camera to new device, with perspective view
-	m_Camera.updateWindow( pSurface );
-
-	Vehicle *pv = new PlayerVehicle( );
-	pv->initialize( device, pos, OBJ_FILE );
-
-	//Meteor *m = new Meteor ();
-	//m->initialize ( device, Vec3 (-100.0f, 0.0f, 0.0f), OBJ_FILE );
-	//m_Entities.addEntity (METEORS, m);
-
-	//create the terrain
+	// Create the terrain
 	m_Terrain = new Terrain( );
 	m_Terrain->initialize( device, terrainPos, TERRAIN_FILE );
 
-	//add our vehicle to the PhysX system
+	// Add our vehicle to the PhysX system
 	m_Simulator->createVehicle( pos, pv->getBoundingBox() );
 
-	//m_Entities.clear();
-	m_Entities.addEntity( PLAYERS, pv );
+	// Initialize camera and set it to follow the player
+	m_Camera.updateWindow( pSurface );
 	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
 
-	//clear debug.txt
+	// Clear debug.txt
 	debug.clearFile();
 }
 
@@ -101,11 +95,10 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 //--------------------------------------------------------------------------------------
 void GameObj::think ()
 {
-	vector<Entity*> thinkers = m_Entities[METEORS];
-	for (int i=0; i<thinkers.size(); i++) {
-		AI* mind = thinkers[i]->getAI();
-		mind->think (&m_Entities, METEORS, i);
-		if (mind->getState() == AI::TRIGGERED)
+	vector<AI*> minds = m_Entities.getAIs (METEORS);
+	for (int i=0; i<minds.size(); i++) {
+		minds[i]->think (&m_Entities, METEORS, i);
+		if (minds[i]->getState() == AI::TRIGGERED)
 			debug.writeToFile ("Triggered.");
 	}
 }
@@ -189,7 +182,8 @@ void GameObj::simulate( float fElapsedTime )
 //--------------------------------------------------------------------------------------
 void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFACE_DESC* pBackSurface )
 {
-	vector<Vehicle*> m_Vehicles = m_Entities.getVehicles();
+	vector<Entity*> m_Vehicles = m_Entities.getEntities();
+
 	// when the device is destroyed, we want to release all of the memory attached to it
 	if( type == ON_DESTROY )
 	{
