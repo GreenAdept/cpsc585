@@ -11,6 +11,7 @@ ResourceManager	 RacerApp::m_ResourceManager;
 ApplicationState RacerApp::m_AppState;
 Dialog			 RacerApp::m_MenuScreen;
 Dialog			 RacerApp::m_OnePlayerScreen;
+XBox360Controller* RacerApp::m_MenuController;
 
 
 //--------------------------------------------------------------------------------------
@@ -29,6 +30,17 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 		g_pGame->processInput( fElapsedTime );
 		g_pGame->simulate( fElapsedTime );
 		g_pGame->think( );
+	}
+	else
+	{
+		m_MenuController->Update(fElapsedTime);
+
+		//move menu up
+		//if( m_MenuController->LeftThumbstick.GetY() > 0.2 )
+		if( m_MenuController->A.WasPressed() )
+		{
+			m_AppState = APP_RENDER_GAME;
+		}
 	}
 }
 
@@ -236,7 +248,7 @@ bool CALLBACK RacerApp::ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSetting
 RacerApp::RacerApp()
 {
 	g_pGame = new GameObj();
-
+	m_MenuController = new XBox360Controller(1); 
 	m_AppState = APP_STARTUP;
 
 	//initialize the resource manager to keep track of all our screens and HUD
