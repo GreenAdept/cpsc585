@@ -50,7 +50,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;Source Code\Subsystem Files&quot;;&quot;Source Code\Utility Files&quot;;PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;&quot;Source Code\SubSystem Files&quot;;&quot;Source Code\Application Files&quot;;&quot;Source Code\Entity Files&quot;;&quot;Source Code\Resource Files&quot;;&quot;$(DXSDK_DIR)\Include&quot;;Headers"
+				AdditionalIncludeDirectories="&quot;Source Code\Vehicle Files&quot;;&quot;Source Code\Subsystem Files&quot;;&quot;Source Code\Utility Files&quot;;PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;&quot;Source Code\SubSystem Files&quot;;&quot;Source Code\Application Files&quot;;&quot;Source Code\Entity Files&quot;;&quot;Source Code\Resource Files&quot;;&quot;$(DXSDK_DIR)\Include&quot;;Headers"
 				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;PROFILE;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="0"
@@ -621,10 +621,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Vehicle.cpp"
-					>
-				</File>
-				<File
 					RelativePath=".\Source Code\Entity Files\VehicleAI.cpp"
 					>
 				</File>
@@ -670,10 +666,6 @@
 				</File>
 				<File
 					RelativePath=".\Source Code\Entity Files\TriggerVolumeAI.h"
-					>
-				</File>
-				<File
-					RelativePath=".\Source Code\Entity Files\Vehicle.h"
 					>
 				</File>
 				<File
@@ -787,6 +779,18 @@
 			>
 			<File
 				RelativePath=".\Source Code\Effect Files\Scene.fx"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Vehicle Files"
+			>
+			<File
+				RelativePath=".\Source Code\Vehicle Files\Vehicle.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source Code\Vehicle Files\Vehicle.h"
 				>
 			</File>
 		</Filter>
