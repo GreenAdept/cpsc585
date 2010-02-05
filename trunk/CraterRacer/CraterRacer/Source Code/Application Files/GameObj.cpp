@@ -13,8 +13,8 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	m_Simulator = new Simulator();
 	m_Controller1 = new XBox360Controller(0); //player 1 controller
 
-	Vec3 pos( 0.0f, 0.0f, 0.0f );
-	Vec3 terrainPos( -100.0f, 0.0f, 0.0f );
+	Vec3 pos( 0.0f, 10.0f, 0.0f );
+	Vec3 terrainPos( 0.0f, 0.0f, 0.0f );
 
 	//init camera to new device, with perspective view
 	m_Camera.updateWindow( pSurface );
@@ -28,7 +28,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 
 	//create the terrain
 	m_Terrain = new Terrain( );
-	m_Terrain->initialize( device, pos, TERRAIN_FILE );
+	m_Terrain->initialize( device, terrainPos, TERRAIN_FILE );
 
 	//add our vehicle to the PhysX system
 	m_Simulator->createVehicle( pos, pv->getBoundingBox() );
@@ -133,7 +133,6 @@ void GameObj::render( Device* device )
 
 	// pass the renderables off to the renderer to do all the work
 	m_Renderer->render( device, renderables, m_Camera.getCamera() );
-
 }
 
 
