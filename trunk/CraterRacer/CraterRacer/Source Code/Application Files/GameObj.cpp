@@ -53,19 +53,19 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 	{
 	case VK_LEFT:
 		//add left-ward force to player vehicle
-		v->setInput(Input::Arrow::LEFT, isKeyDown);
+		v->drive(Input::Arrow::LEFT, isKeyDown);
 		break;
 	case VK_UP:
 		//add upward force to player vehicle
-		v->setInput(Input::Arrow::UP, isKeyDown);
+		v->drive(Input::Arrow::UP, isKeyDown);
 		break;
 	case VK_RIGHT:
 		//add right-ward force to player vehicle
-		v->setInput(Input::Arrow::RIGHT, isKeyDown);
+		v->drive(Input::Arrow::RIGHT, isKeyDown);
 		break;
 	case VK_DOWN:
 		//add downward force to player vehicle
-		v->setInput(Input::Arrow::DOWN, isKeyDown);
+		v->drive(Input::Arrow::DOWN, isKeyDown);
 		break;
 	default:
 		break;
@@ -96,8 +96,8 @@ void GameObj::processInput( float fElapsedTime )
 	vector<Vehicle*> m_Vehicles = m_Entities.getVehicles();
 	m_Controller1->Update(fElapsedTime);
 	Vehicle* v = m_Vehicles[0];
-	Vec3 drive(m_Controller1->LeftThumbstick.GetX(), 0, m_Controller1->LeftThumbstick.GetY());
-
+	Vec3 dir(m_Controller1->LeftThumbstick.GetX(), 0, m_Controller1->LeftThumbstick.GetY());
+	/*
 	if (m_Controller1->A.WasPressedOrHeld())
 	{
 		//accelerate
@@ -117,6 +117,20 @@ void GameObj::processInput( float fElapsedTime )
 		//else reverse -> while reversing, turning is backwards
 	}
 	v->setDir(drive);
+	*/
+	
+	if (m_Controller1->A.WasPressedOrHeld())
+	{
+		v->drive(dir, true, false);
+	}
+	else if (m_Controller1->B.WasPressedOrHeld())
+	{
+		v->drive(dir, false, true);
+	}
+	else
+	{
+		v->drive(dir, false, false);
+	}
 }
 
 
