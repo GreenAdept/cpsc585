@@ -16,7 +16,7 @@ Simulator::Simulator()
 	m_vDefaultGravity	= NxVec3(0,-9.8,0);
 	m_GroundPlane		= NULL;
 	m_vP1Dir			= Vec3(0, 0, 0);
-	m_rRestitution		= NxReal(0.5);
+	m_rRestituion		= NxReal(0.5);
 	m_rStaticFriction	= NxReal(1.0);
 	m_rDynamicFriction	= NxReal(0.3);
 
@@ -49,7 +49,7 @@ void Simulator::InitNx( void )
 
 	//Create the default material
 	NxMaterial* defaultMaterial = m_Scene->getMaterialFromIndex(0);
-	defaultMaterial->setRestitution(m_rRestitution);
+	defaultMaterial->setRestitution(m_rRestituion);
 	defaultMaterial->setStaticFriction(m_rStaticFriction);
 	defaultMaterial->setDynamicFriction(m_rDynamicFriction);
 
