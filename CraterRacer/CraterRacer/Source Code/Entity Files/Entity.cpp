@@ -41,7 +41,8 @@ void Entity::initialize( Device* device, Vec3 pos, LPCWSTR filename )
 //--------------------------------------------------------------------------------------
 Renderable* Entity::getRenderable( )
 {
-	//m_pRenderable->m_vPosition = m_vPosition;
+	m_pRenderable->m_vPosition = m_vPosition;
+	m_matWorld = m_pRenderable->m_matWorld;
 	return m_pRenderable->getRenderable( );
 }
 
