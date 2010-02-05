@@ -58,7 +58,7 @@ private:
 	bool				m_bForceMode;
 
 	//Friction
-	NxReal				m_rRestituion;
+	NxReal				m_rRestitution;
 	NxReal				m_rStaticFriction;
 	NxReal				m_rDynamicFriction;
 

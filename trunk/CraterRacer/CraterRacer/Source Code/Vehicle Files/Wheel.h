@@ -2,6 +2,8 @@
 #ifndef WHEEL_H
 #define WHEEL_H
 
+#include "NxPhysics.h"
+
 //---------------------------------------------------------
 //		CLASS: Wheel
 //
@@ -12,12 +14,19 @@ class Wheel
 {
 
 public:
+	Wheel();
+	~Wheel();
 
-	// Public interface ------------------------------------
-
-	
 private:
-	
+	NxMaterial*	m_mMaterial;
+
+	//Friction
+	NxReal		m_rRestitution;
+	NxReal		m_rStaticFriction;
+	NxReal		m_rDynamicFriction;
+
+	float		m_fAngle; //degrees
+	float		m_fDiameter; //meters
 };
 
 #endif //WHEEL_H
