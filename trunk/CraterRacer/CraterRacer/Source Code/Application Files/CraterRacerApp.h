@@ -8,7 +8,7 @@
 
 #include "Resource.h"
 #include "GameObj.h"
-
+#include "XBox360Controller.h"
 #include "Constants.h"
 
 //--------------------------------------------------------
@@ -51,11 +51,10 @@ public:
 	static ResourceManager	m_ResourceManager;	// manager for shared resources of dialogs
 	static ApplicationState m_AppState;
 
-	//CDXUTTextHelper*		m_pTxtHelper;
-	//Dialog				m_dHUD;             // dialog for standard game controls
+	// dialog for standard game controls
 	static Dialog			m_MenuScreen;		// dialog for sample specific controls
 	static Dialog			m_OnePlayerScreen;
-
+	static XBox360Controller* m_MenuController;
 };
 
 extern GameObj *g_pGame; //Our global instantiation of the game which will be used by the RacerApp class

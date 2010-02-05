@@ -20,6 +20,7 @@ wheel 3 |			| wheel 4
 //		INCLUDES
 //--------------------------------------------------------
 
+#define NOMINMAX
 #include "Entity.h"
 #include "Input.h"
 #include "VehicleAI.h"

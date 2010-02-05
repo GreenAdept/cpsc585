@@ -6,6 +6,7 @@
 //--------------------------------------------------------------------------------------
 Wheel::Wheel() 
 {
+	//m_mMaterial = new NxMaterial();
 	m_rRestitution		= NxReal(0.5);
 	m_rStaticFriction	= NxReal(1.0);
 	m_rDynamicFriction	= NxReal(0.3);
@@ -13,9 +14,9 @@ Wheel::Wheel()
 	m_fAngle			= 0; //degrees
 	m_fDiameter			= 0.5; //meters
 
-	m_mMaterial->setDynamicFriction(m_rDynamicFriction);
+	/*m_mMaterial->setDynamicFriction(m_rDynamicFriction);
 	m_mMaterial->setStaticFriction(m_rStaticFriction);
-	m_mMaterial->setRestitution(m_rRestitution);
+	m_mMaterial->setRestitution(m_rRestitution);*/
 }
 
 //--------------------------------------------------------------------------------------
