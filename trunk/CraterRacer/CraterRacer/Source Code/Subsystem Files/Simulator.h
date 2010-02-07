@@ -10,6 +10,7 @@
 #define SIMULATOR_H
 
 #include <vector>
+#include <math.h>
 #include "Constants.h"
 
 #include "NxPhysics.h"
@@ -18,7 +19,7 @@
 #include "Vehicle.h"
 #include "DebugWriter.h"
 
-#define MAX_KEYS 256
+#define PI 3.14159265
 
 #include <iostream>
 using namespace std;
