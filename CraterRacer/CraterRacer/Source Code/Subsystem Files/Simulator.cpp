@@ -257,6 +257,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	// Process force keys
 	float length = vehicle->getBoundingBox().m_fLength;
 	float width = vehicle->getBoundingBox().m_fWidth;
+	float height = vehicle->getBoundingBox().m_fHeight;
+	float wheelDiameter = vehicle->m_Wheels[0].getDiameter();
 
 	NxVec3 wheel[4];
 	wheel[0] = NxVec3(width/2, 0, -length/2);
@@ -264,6 +266,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	wheel[2] = NxVec3(width/2, 0, length/2);
 	wheel[3] = NxVec3(-width/2, 0, length/2);
 
+	//INPUT
 	for( int i = 0; i < 4; i++ )
 	{
 		if( !m_bInputs[i] ) { continue; } 
@@ -299,27 +302,48 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		}
 	}
 
-	float vehicleHeight = vehicle->getBoundingBox().m_fHeight;
-
+	//SUSPENSION
 	for (int i = 0; i < 4 /*number of wheels*/; i++) {
-		float wheelDiameter = vehicle->m_Wheels[i].getDiameter();
-
 		//Ray casting
-		NxVec3 origin = actor->getGlobalPosition() + wheel[i] - NxVec3(0, vehicleHeight, 0);
+		NxVec3 origin = actor->getGlobalPosition() + wheel[i] - NxVec3(0, height, 0);
 		NxVec3 direction(0, -1, 0);
 
 		NxRay ray(origin, direction);
 		NxRaycastHit hit;
 
 		m_Scene->raycastClosestShape(ray, NX_ALL_SHAPES, hit);
-		m_Debugger.writeToFile(hit.distance);
+		//m_Debugger.writeToFile(hit.distance);
 
 		//apply forces due to suspension
 		if (hit.distance < wheelDiameter) {
 			actor->addLocalForceAtLocalPos(NxVec3(0, (0.5) * (m_rForceStrength/10) * (wheelDiameter - hit.distance) * (wheelDiameter - hit.distance), 0), wheel[3]);
 		}
 	}
-	m_Debugger.writeToFile("");
+
+	//STEERING
+	float angle = vehicle->getThumbstick()*45; //45 is maximum wheel angle
+	
+	//get the angle of the normal to the wheel direction
+	if (angle > 0) {
+		angle = angle + 90;
+	}
+	else {
+		angle = angle - 90;
+	}
+
+	//find the x and z components of the tire lateral
+	angle = 90 - angle;
+	float x = cos(angle*PI/180);
+	float z = sin(angle*PI/180);
+
+	NxVec3 tireLateral(x, 0, z);
+	NxVec3 velocity(actor->getLinearVelocity());
+
+	//project the tireLateral on the velocity of the car
+	NxVec3 steering = (velocity.dot(tireLateral) / tireLateral.dot(tireLateral)) * tireLateral;
+	actor->addLocalForceAtLocalPos(steering*100, wheel[0]);
+	actor->addLocalForceAtLocalPos(steering*100, wheel[1]);
+	
 
 	//xbox controllers
 	//m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3( m_vP1Dir.x, 0, m_vP1Dir.z), m_rForceStrength);
