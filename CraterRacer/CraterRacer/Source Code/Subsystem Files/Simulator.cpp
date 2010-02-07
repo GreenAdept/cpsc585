@@ -305,7 +305,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		float wheelDiameter = vehicle->m_Wheels[i].getDiameter();
 
 		//Ray casting
-		//NxVec3 origin = actor->getGlobalPosition;
 		NxVec3 origin = actor->getGlobalPosition() + wheel[i] - NxVec3(0, vehicleHeight, 0);
 		NxVec3 direction(0, -1, 0);
 
@@ -314,6 +313,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 
 		m_Scene->raycastClosestShape(ray, NX_ALL_SHAPES, hit);
 		m_Debugger.writeToFile(hit.distance);
+
+		//apply forces due to suspension
+		if (hit.distance < wheelDiameter) {
+			actor->addLocalForceAtLocalPos(NxVec3(0, (0.5) * (m_rForceStrength/10) * (wheelDiameter - hit.distance) * (wheelDiameter - hit.distance), 0), wheel[3]);
+		}
 	}
 	m_Debugger.writeToFile("");
 
