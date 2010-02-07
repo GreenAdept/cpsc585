@@ -10,6 +10,9 @@
 //--------------------------------------------------------------------------------------
 void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurface )
 {
+	// Clear debug.txt
+	debug.clearFile();
+
 	m_Simulator = new Simulator();
 	m_Controller1 = new XBox360Controller(0); //player 1 controller
 
@@ -30,9 +33,6 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	// Initialize camera and set it to follow the player
 	m_Camera.updateWindow( pSurface );
 	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
-
-	// Clear debug.txt
-	debug.clearFile();
 }
 
 
@@ -147,6 +147,35 @@ void GameObj::processInput( float fElapsedTime )
 	{
 		v->drive(dir, false, false);
 	}
+
+	//Setting the input from Xbox controller
+	
+	//using xbox controller
+	v->setController(true);
+
+	//accelerate
+	if (m_Controller1->A.WasPressedOrHeld())
+	{
+		v->setInput(Input::Arrow::UP, true);
+	}
+	else if (m_Controller1->A.WasReleased())
+	{
+		v->setInput(Input::Arrow::UP, false);
+	}
+
+	//decelerate
+	if (m_Controller1->B.WasPressedOrHeld())
+	{
+		v->setInput(Input::Arrow::DOWN, true);
+	}
+	else if (m_Controller1->B.WasReleased())
+	{
+		v->setInput(Input::Arrow::DOWN, false);
+	}
+
+	//turn
+	v->setThumbstick(m_Controller1->LeftThumbstick.GetX());
+	
 }
 
 

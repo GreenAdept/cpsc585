@@ -24,6 +24,25 @@ void VehicleAI::setDir(Vec3 vec)
 	input.setDir(vec);
 }
 
+void VehicleAI::setController(bool controller)
+{
+	input.setController(controller);
+}
+
+bool VehicleAI::getController()
+{
+	return input.getController();
+}
+
+void VehicleAI::setThumbstick(float x)
+{
+	input.setThumbstick(x);
+}
+
+float VehicleAI::getThumbstick() {
+	return input.getThumbstick();
+}
+
 //--------------------------------------------------------------------------------------
 // Function: getInput
 // Delegates get input to input system.

@@ -9,20 +9,27 @@ void DebugWriter::writeToFile(string s) {
   myfile.close();
 }
 
-void DebugWriter::writeToFile(double s) {
+void DebugWriter::writeToFile(double d) {
   ofstream myfile;
   myfile.open ("debug.txt", ios::out | ios::app);
-  myfile << s << endl;
+  myfile << d << endl;
   myfile.close();
 }
-/*
+
+void DebugWriter::writeToFile(float f) {
+  ofstream myfile;
+  myfile.open ("debug.txt", ios::out | ios::app);
+  myfile << f << endl;
+  myfile.close();
+}
+
 void DebugWriter::writeToFile(NxVec3 vec) {
   ofstream myfile;
   myfile.open ("debug.txt", ios::out | ios::app);
   myfile << vec.x << " " << vec.y << " " << vec.z << endl;
   myfile.close();
 }
-*/
+
 void DebugWriter::writeToFile(Vec3 vec) {
   ofstream myfile;
   myfile.open ("debug.txt", ios::out | ios::app);

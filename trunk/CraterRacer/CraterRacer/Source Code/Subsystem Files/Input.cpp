@@ -24,6 +24,8 @@ void Input::reset()
 	inputs[Arrow::DOWN] = false;
 
 	direction = Vec3(0.0, 0.0, 0.0);
+
+	xBoxController = false;
 }
 
 /*
@@ -51,6 +53,41 @@ bool* Input::getInput()
 Vec3 Input::getDir()
 {
 	return direction;
+}
+
+//--------------------------------------------------------------------------------------
+// Function: setController
+// Sets whether the input is keyboard or Xbox.
+//--------------------------------------------------------------------------------------
+void Input::setController(bool controller)
+{
+	xBoxController = controller;
+}
+
+//--------------------------------------------------------------------------------------
+// Function: getController
+// Gets whether the input is keyboard or Xbox.
+//--------------------------------------------------------------------------------------
+bool Input::getController()
+{
+	return xBoxController;
+}
+
+//--------------------------------------------------------------------------------------
+// Function: setThumbstick
+// Sets the x value of the left thumbstick.
+//--------------------------------------------------------------------------------------
+void Input::setThumbstick(float x)
+{
+	this->x = x;
+}
+
+//--------------------------------------------------------------------------------------
+// Function: setThumbstick
+// Gets the x value of the left thumbstick.
+//--------------------------------------------------------------------------------------
+float Input::getThumbstick() {
+	return x;
 }
 
 //--------------------------------------------------------------------------------------

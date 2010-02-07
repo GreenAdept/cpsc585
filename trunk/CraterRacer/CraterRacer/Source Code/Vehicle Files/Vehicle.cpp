@@ -29,3 +29,22 @@ int Vehicle::getMass()
 {
 	return mass;
 }
+
+void Vehicle::setController(bool controller)
+{
+	mind.setController(controller);
+}
+
+bool Vehicle::getController()
+{
+	return mind.getController();
+}
+
+void Vehicle::setThumbstick(float x)
+{
+	mind.setThumbstick(x);
+}
+
+float Vehicle::getThumbstick() {
+	return mind.getThumbstick();
+}
