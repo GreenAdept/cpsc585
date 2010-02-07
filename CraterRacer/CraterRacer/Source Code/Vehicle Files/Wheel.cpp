@@ -26,3 +26,13 @@ Wheel::~Wheel()
 {
 	//delete m_mMaterial; Doesn't work - someone know why?
 }
+
+float Wheel::getDiameter()
+{
+	return m_fDiameter;
+}
+
+float Wheel::getAngle()
+{
+	return m_fAngle;
+}

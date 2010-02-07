@@ -18,6 +18,9 @@ public:
 	Wheel();
 	~Wheel();
 
+	float getDiameter();
+	float getAngle();
+
 private:
 	NxMaterial*	m_mMaterial;
 

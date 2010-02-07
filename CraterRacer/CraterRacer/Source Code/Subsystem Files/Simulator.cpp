@@ -9,16 +9,18 @@ Simulator::Simulator()
 {
 	//initialize all simulation data members
 	m_vForceVec			= NxVec3(0, 0, 0);
-	m_PhysicsSDK			= NULL;
+	m_PhysicsSDK		= NULL;
 	m_Scene				= NULL;
 	m_rForceStrength	= 1000000;
 	m_bForceMode		= true;
 	m_vDefaultGravity	= NxVec3(0,-9.8,0);
 	m_GroundPlane		= NULL;
 	m_vP1Dir			= Vec3(0, 0, 0);
-	m_rRestitution		= NxReal(0.1);
-	m_rStaticFriction	= NxReal(1.0);
-	m_rDynamicFriction	= NxReal(0.3);
+	m_rRestitution		= NxReal(0.0);
+	m_rStaticFriction	= NxReal(0.0);
+	m_rDynamicFriction	= NxReal(0.0);
+
+	forward = false;
 
 	InitNx();
 }
@@ -76,11 +78,27 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		//keyboard controls
 		m_bInputs = vehicles[i]->getInput();
 
+
 		// XBox controls
-		m_vP1Dir = vehicles[i]->getDir();
+		//m_vP1Dir = vehicles[i]->getDir();
+
+		//using an XBox controller
+		if (vehicles[i]->getController()) {
+			processForceKeys(m_Vehicles[i], vehicles[i]);
+		}
+
+
+
 
 		//Add forces to the vehicle based on input
-		processForceKeys();
+		//processForceKeys();
+
+		/*if (forward) {
+			m_Debugger.writeToFile("here");
+			//m_Vehicles[i]->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), NxVec3(width/2, 0, 0));
+			//m_Vehicles[i]->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), NxVec3(-10, 0, 0));
+			forward = false;
+		}*/
 
 		//Get the new position of the vehicle in vector and matrix formats
 		NxVec3 vec	 = m_Vehicles[i]->getGlobalPosition();
@@ -94,18 +112,12 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 
 		//Update the vehicle position in the game
 		vehicles[i]->update( Vec3(vec.x, vec.y-height, vec.z), Vec3(vlc.x, 0, vlc.z), m );
-
-		//Ray casting
-		Vec3 pos = vehicles[i]->getPosition();
-		NxVec3 origin(pos.x, pos.y, pos.z);
-		NxVec3 direction(0, -1, 0);
-
-		NxRay ray(origin, direction);
-		NxRaycastHit hit;
-
-		m_Scene->raycastClosestShape(ray, NX_ALL_SHAPES, hit);
-		m_Debugger.writeToFile(hit.distance);
 	
+		//
+		//m_Debugger.writeToFile("global pos");
+		//m_Debugger.writeToFile(m_Vehicles[i]->getGlobalPosition());
+		//m_Debugger.writeToFile("orientation");
+		//m_Debugger.writeToFile(m_Vehicles[i]->g());
 		/*
 		debug.writeToFile( "Position: " );
 		debug.writeToFile(vec);
@@ -153,12 +165,23 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 	actorDesc.globalPose.t = NxVec3( pos.x, pos.y + b.m_fHeight, pos.z );
 	assert( actorDesc.isValid() );
 
+	//Initialize the wheels for the vehicle
+	m_Debugger.writeToFile(b.m_fHeight);
+
 	//Create the vehicle in the scene
 	NxActor* pActor = m_Scene->createActor( actorDesc );
 	assert( pActor );
 
 	//Add the vehicle to global list of all vehicles
 	m_Vehicles.push_back( pActor );
+
+	//Debugging
+	m_Debugger.writeToFile("width");
+	m_Debugger.writeToFile(b.m_fWidth);
+	m_Debugger.writeToFile("height");
+	m_Debugger.writeToFile(b.m_fHeight);
+	m_Debugger.writeToFile("length");
+	m_Debugger.writeToFile(b.m_fLength);
 }
 
 //--------------------------------------------------------------------------------------
@@ -191,7 +214,7 @@ void Simulator::processForceKeys() {
 	// iterate through all the vehicles
 	//for( int v = 0; v < gVehicles.size(); v++ )
 	//{
-		for( int i = 0; i < 4; i++ )
+		/*for( int i = 0; i < 4; i++ )
 		{
 			if( !m_bInputs[i] ) { continue; } 
 
@@ -205,6 +228,7 @@ void Simulator::processForceKeys() {
 				case RIGHT: 
 				{ 
 					m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3(0,0,1), m_rForceStrength ); 
+					forward = true;
 					break; 
 				}
 				case FORWARD: 
@@ -218,12 +242,83 @@ void Simulator::processForceKeys() {
 					break; 
 				}
 			}
-		}
+		}*/
 	//}
 
 	//xbox controllers
-	m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3( m_vP1Dir.x, 0, m_vP1Dir.z), m_rForceStrength);
+	//m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3( m_vP1Dir.x, 0, m_vP1Dir.z), m_rForceStrength);
+}
 
+//--------------------------------------------------------------------------------------
+// Function:  processForceKeys
+// Processes all of the force inputs
+//--------------------------------------------------------------------------------------
+void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
+	// Process force keys
+	float length = vehicle->getBoundingBox().m_fLength;
+	float width = vehicle->getBoundingBox().m_fWidth;
+
+	NxVec3 wheel[4];
+	wheel[0] = NxVec3(width/2, 0, -length/2);
+	wheel[1] = NxVec3(-width/2, 0, -length/2);
+	wheel[2] = NxVec3(width/2, 0, length/2);
+	wheel[3] = NxVec3(-width/2, 0, length/2);
+
+	for( int i = 0; i < 4; i++ )
+	{
+		if( !m_bInputs[i] ) { continue; } 
+
+		switch( i )
+		{
+			case LEFT: 
+			{ 
+				m_vForceVec = applyForceToActor( actor, NxVec3(-1,0,0), m_rForceStrength );
+				break; 
+			}
+			case FORWARD: 
+			{
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[2]);
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[3]);
+				//m_vForceVec = applyForceToActor( actor, NxVec3(0,0,1), m_rForceStrength );
+				break; 
+			}
+			case RIGHT: 
+			{
+				//vehicle->addLocalForceAtLocalPos(NxVec3(m_rForceStrength/10, 0, 0), NxVec3(0, 0, 10));
+				m_vForceVec = applyForceToActor( actor, NxVec3(1,0,0), m_rForceStrength );
+				break; 
+			}
+			case BACKWARD: 
+			{ 
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[0]);
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[1]);
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[2]);
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[3]);
+				break; 
+			}
+		}
+	}
+
+	float vehicleHeight = vehicle->getBoundingBox().m_fHeight;
+
+	for (int i = 0; i < 4 /*number of wheels*/; i++) {
+		float wheelDiameter = vehicle->m_Wheels[i].getDiameter();
+
+		//Ray casting
+		//NxVec3 origin = actor->getGlobalPosition;
+		NxVec3 origin = actor->getGlobalPosition() + wheel[i] - NxVec3(0, vehicleHeight, 0);
+		NxVec3 direction(0, -1, 0);
+
+		NxRay ray(origin, direction);
+		NxRaycastHit hit;
+
+		m_Scene->raycastClosestShape(ray, NX_ALL_SHAPES, hit);
+		m_Debugger.writeToFile(hit.distance);
+	}
+	m_Debugger.writeToFile("");
+
+	//xbox controllers
+	//m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3( m_vP1Dir.x, 0, m_vP1Dir.z), m_rForceStrength);
 }
 
 //--------------------------------------------------------------------------------------

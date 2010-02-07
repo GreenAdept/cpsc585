@@ -19,6 +19,10 @@ public:
 	void setDir(Vec3 vec);
 	bool* getInput();
 	Vec3 getDir();
+	void setController(bool controller);
+	bool getController();
+	void setThumbstick(float x);
+	float getThumbstick();
 	void reset();
 
 	void drive(Vec3 dir, bool accelerate, bool decelerate, Vec3 velocity);
@@ -28,7 +32,8 @@ private:
 	bool inputs[4];
 	Vec3 direction;
 	bool reversing; //flag to show it is reversing
-	//DebugWriter writer;
+	bool xBoxController;
+	float x;
 };
 
 #endif

@@ -21,7 +21,7 @@
 #define TERRAIN_FILE	L"Media\\Meshes\\Floor.x"
 
 enum ProcessType		{ ON_LOST, ON_RESET, ON_DESTROY };
-enum Directions			{ LEFT, RIGHT, FORWARD, BACKWARD }; 
+enum Directions			{ LEFT, FORWARD, RIGHT, BACKWARD }; 
 enum GuiControls		{ GUI_BTN_SINGLE_PLAYER };
 enum ApplicationState	{ APP_STARTUP, APP_RENDER_GAME };
 

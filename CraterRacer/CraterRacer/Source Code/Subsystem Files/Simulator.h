@@ -45,6 +45,7 @@ private:
 	void startPhysics(void);
 	void getPhysicsResults(void);
 	void processForceKeys(void);
+	void processForceKeys(NxActor* actor, Vehicle* vehicle);
 	NxVec3 applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength);
 	
 	// Physics SDK 
@@ -74,6 +75,7 @@ private:
 
 	//Debugging
 	DebugWriter			m_Debugger;
+	bool				forward;
 
 };
 

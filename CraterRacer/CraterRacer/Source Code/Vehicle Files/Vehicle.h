@@ -2,14 +2,26 @@
 		
 			front
 		-------------
-wheel 1	|			| wheel 2
+wheel 0	|			| wheel 1
 		|			|
 		|			|
 		|			|
 		|			|
-wheel 3 |			| wheel 4
+wheel 2 |			| wheel 3
 		-------------
 			back
+
+
+Wheel angle (degrees):
+- Angle is defined between -45 and 45 only.
+
+				0
+	          .    .
+	      .     :      .
+  -45  .        :         .  45
+	 .			:		    .
+    .           :            . 
+
 */
 
 #pragma once
@@ -51,12 +63,17 @@ public:
 	Vec3 getVelocity();
 	void setMass(int mass);
 	int getMass();
+	void setController(bool controller);
+	bool getController();
+	void setThumbstick(float x);
+	float getThumbstick();
 
 	virtual void setInput(Input::Arrow dir, bool isKeyDown) = 0;
 	virtual void setDir(Vec3 vec) = 0;
 	virtual bool* getInput() = 0;
 	virtual Vec3 getDir() = 0;
 	virtual void resetInput() = 0;
+
 
 	virtual void drive(Vec3 dir, bool accelerate, bool decelerate) = 0;
 

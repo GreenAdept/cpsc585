@@ -19,6 +19,10 @@ public:
 	Vec3 getDir();
 	void resetInput();
 	void setPosition (Vec3 position);
+	void setController(bool controller);
+	bool getController();
+	void setThumbstick(float x);
+	float getThumbstick();
 
 	void drive(Vec3 dir, bool accelerate, bool decelerate, Vec3 velocity);
 	void drive(Input::Arrow dir, bool isKeyDown);
