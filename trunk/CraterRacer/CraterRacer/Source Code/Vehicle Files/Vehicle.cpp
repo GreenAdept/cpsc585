@@ -4,47 +4,114 @@
   
 #include "Vehicle.h" 
 
-void Vehicle::update(Vec3 newPosition, Vec3 velocity, Matrix mat)
+
+//--------------------------------------------------------------------------------------
+// Function:  update
+//--------------------------------------------------------------------------------------
+void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat )
 {
 	setVelocity(velocity);
 	Entity::update(newPosition, mat);
 }
 
-void Vehicle::setVelocity(Vec3 velocity)
+
+//--------------------------------------------------------------------------------------
+// Function:  update
+//--------------------------------------------------------------------------------------
+void Vehicle::update( Vec3 newBodyPosition, Vec3 velocity, Matrix bodyMat, Matrix wheel0,
+					 Matrix wheel1, Matrix wheel2, Matrix wheel3 )
+{
+	setVelocity( velocity );
+	Entity::update( newBodyPosition, bodyMat );
+
+	m_Wheels[ WHEEL0 ].update( wheel0 );
+	m_Wheels[ WHEEL1 ].update( wheel1 );
+	m_Wheels[ WHEEL2 ].update( wheel2 );
+	m_Wheels[ WHEEL3 ].update( wheel3 );
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  initialize
+//--------------------------------------------------------------------------------------
+void Vehicle::initialize( Device* device, Vec3 pos, LPCWSTR filename )
+{
+	Entity::initialize( device, pos, filename );
+
+	m_Wheels[ WHEEL0 ].initialize( device, pos, WHEEL0_FILE );
+	m_Wheels[ WHEEL1 ].initialize( device, pos, WHEEL1_FILE );
+	m_Wheels[ WHEEL2 ].initialize( device, pos, WHEEL2_FILE );
+	m_Wheels[ WHEEL3 ].initialize( device, pos, WHEEL3_FILE );
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  setVelocity
+//--------------------------------------------------------------------------------------
+void Vehicle::setVelocity( Vec3 velocity )
 {
 	this->velocity = velocity;
 }
 
-Vec3 Vehicle::getVelocity()
+
+//--------------------------------------------------------------------------------------
+// Function:  getVelocity
+//--------------------------------------------------------------------------------------
+Vec3 Vehicle::getVelocity( )
 {
 	return velocity;
 }
 
-void Vehicle::setMass(int mass)
+
+//--------------------------------------------------------------------------------------
+// Function:  setMass
+//--------------------------------------------------------------------------------------
+void Vehicle::setMass( int mass )
 {
 	this->mass = mass;
 }
 
+
+//--------------------------------------------------------------------------------------
+// Function:  getMass
+//--------------------------------------------------------------------------------------
 int Vehicle::getMass()
 {
 	return mass;
 }
 
-void Vehicle::setController(bool controller)
+
+//--------------------------------------------------------------------------------------
+// Function:  setController
+//--------------------------------------------------------------------------------------
+void Vehicle::setController( bool controller )
 {
 	mind.setController(controller);
 }
 
-bool Vehicle::getController()
+
+//--------------------------------------------------------------------------------------
+// Function:  getController
+//--------------------------------------------------------------------------------------
+bool Vehicle::getController( )
 {
 	return mind.getController();
 }
 
-void Vehicle::setThumbstick(float x)
+
+//--------------------------------------------------------------------------------------
+// Function:  setThumbstick
+//--------------------------------------------------------------------------------------
+void Vehicle::setThumbstick( float x )
 {
 	mind.setThumbstick(x);
 }
 
-float Vehicle::getThumbstick() {
+
+//--------------------------------------------------------------------------------------
+// Function:  getThumbstick
+//--------------------------------------------------------------------------------------
+float Vehicle::getThumbstick()
+{
 	return mind.getThumbstick();
 }

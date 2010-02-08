@@ -36,11 +36,12 @@ public:
 	Vec3&			getPosition		  ( );
 	Matrix			getPositionMatrix ( );
 
-	void			initialize		  ( Device* device, Vec3 pos, LPCWSTR filename );
+	virtual void	initialize		  ( Device* device, Vec3 pos, LPCWSTR filename );
 
 	virtual AI*		getAI			  ( ) { return 0; }
 
 	void			update			  ( Vec3 newPostion, Matrix mat );
+	void			update			  ( Matrix matWorldTransform );
 
 protected: 
 	

@@ -4,6 +4,7 @@
 
 
 #include "NxPhysics.h"
+#include "Entity.h"
 
 //---------------------------------------------------------
 //		CLASS: Wheel
@@ -11,7 +12,7 @@
 //		Each vehicle has 4 wheels.
 //---------------------------------------------------------
 
-class Wheel 
+class Wheel: public Entity
 {
 
 public:
@@ -29,8 +30,8 @@ private:
 	NxReal		m_rStaticFriction;
 	NxReal		m_rDynamicFriction;
 
-	float		m_fAngle; //degrees
-	float		m_fDiameter; //meters
+	float		m_fAngle;		//degrees
+	float		m_fDiameter;	//meters
 };
 
 #endif //WHEEL_H
