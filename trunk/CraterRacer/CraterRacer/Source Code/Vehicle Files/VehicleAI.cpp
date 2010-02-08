@@ -51,6 +51,11 @@ bool* VehicleAI::getInput() {
 	return input.getInput();
 }
 
+bool* VehicleAI::getButtons()
+{
+	return input.getButtons();
+}
+
 Vec3 VehicleAI::getDir()
 {
 	return input.getDir();

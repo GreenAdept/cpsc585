@@ -29,6 +29,10 @@ bool* PlayerVehicle::getInput()
 	return mind.getInput();
 }
 
+bool* PlayerVehicle::getButtons()
+{
+	return mind.getButtons();
+}
 
 Vec3 PlayerVehicle::getDir()
 {

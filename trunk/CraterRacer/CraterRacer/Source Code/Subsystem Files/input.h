@@ -13,11 +13,13 @@ class Input
 public:
 	//enum class of directions
 	static enum Arrow { LEFT, UP, RIGHT, DOWN };
+	static enum Button { A_BUTTON, B_BUTTON, X_BUTTON, Y_BUTTON };
 
-	Input(void);
+	Input();
 	void setInput(Arrow dir, bool isKeyDown);
 	void setDir(Vec3 vec);
 	bool* getInput();
+	bool* getButtons();
 	Vec3 getDir();
 	void setController(bool controller);
 	bool getController();
@@ -30,6 +32,8 @@ public:
 
 private:
 	bool inputs[4];
+	bool buttons[4];
+
 	Vec3 direction;
 	bool reversing; //flag to show it is reversing
 	bool xBoxController;

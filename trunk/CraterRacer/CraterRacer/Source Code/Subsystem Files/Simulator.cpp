@@ -87,9 +87,6 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 			processForceKeys(m_Vehicles[i], vehicles[i]);
 		}
 
-
-
-
 		//Add forces to the vehicle based on input
 		//processForceKeys();
 
