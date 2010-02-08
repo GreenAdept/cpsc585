@@ -13,6 +13,13 @@ GameCamera::GameCamera () {
 }
 
 
+//------------------------------------------------------
+// Private Function: interpolate
+// Interpolates between the previous camera position
+// and the ideal camera position to return the new
+// camera position.
+//------------------------------------------------------
+
 Vec3 GameCamera::interpolate (float dist, Vec3 newEye) {
 	float w = dist / (distTotal+dist);
 	return eye*(1-w) + newEye*w;
@@ -34,9 +41,10 @@ void GameCamera::setTarget (Entity *e) {
 		eye = offset;
 	}
 	else {
-		Vec3 position = target->getPosition();
-		lookAt = position;
-		eye = offset + lookAt;
+		lookAt = target->getPosition();
+		Vec3 temp;
+		D3DXVec3TransformNormal (&temp, &offset, &target->getPositionMatrix());
+		eye = lookAt + temp;
 	}
 }
 
@@ -66,8 +74,11 @@ MCamera GameCamera::getCamera () {
 
 	Vec3 path = target->getPosition() - lookAt;
 	float dist = D3DXVec3Length (&path);
+
 	lookAt = target->getPosition();
-	Vec3 newEye = lookAt + offset;
+	Vec3 temp;
+	D3DXVec3TransformNormal (&temp, &offset, &target->getPositionMatrix());
+	Vec3 newEye = lookAt + temp;
 	
 	if (dist == 0.0f) {
 		if (index > 0) {
