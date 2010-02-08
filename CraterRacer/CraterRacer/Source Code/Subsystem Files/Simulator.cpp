@@ -42,7 +42,7 @@ void Simulator::InitNx( Mesh* terrainMesh )
 	m_Scene = m_PhysicsSDK->createScene( sceneDesc );
 
 	//Set the physics parameters
-	m_PhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.01);
+	m_PhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.25);
 
 	//Set the debug visualization parameters
 	m_PhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 1);
@@ -86,9 +86,12 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		//m_vP1Dir = vehicles[i]->getDir();
 
 		//using an XBox controller
-		if (vehicles[i]->getController()) {
+		//if (vehicles[i]->getController()) {
 			processForceKeys(m_Vehicles[i], vehicles[i]);
-		}
+			if (vehicles[i]->getController()) {
+			vehicles[i]->resetInput();
+			}
+		//}
 
 		//Add forces to the vehicle based on input
 		//processForceKeys();
@@ -307,14 +310,21 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	}
 	*/
 
+
+	m_Debugger.writeToFile("testtest--------------------------------------");
 	for( int i = 0; i < 4; i++ )
 	{
+		//m_Debugger.writeToFile(buttons[i]);
+		//m_Debugger.writeToFile("\n");
+		//m_Debugger.writeToFile("\n");
+
 		if( !buttons[i] ) { continue; } 
 
 		switch( i )
 		{
 			case 0: //A_BUTTON
 			{
+				m_Debugger.writeToFile("A");
 				//TODO: change tire orientation
 				float x_dir = vehicle->getThumbstick();
 				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
@@ -326,6 +336,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 			}
 			case 1: //B_BUTTON
 			{
+				m_Debugger.writeToFile("B");
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[0]);
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[1]);
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[2]);

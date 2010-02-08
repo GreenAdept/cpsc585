@@ -6,7 +6,7 @@
 #define INPUT_H
 
 #include "Constants.h"
-//#include "DebugWriter.h"
+#include "DebugWriter.h"
 
 class Input
 {
@@ -38,6 +38,7 @@ private:
 	bool reversing; //flag to show it is reversing
 	bool xBoxController;
 	float x;
+	DebugWriter m_Debugger;
 };
 
 #endif
