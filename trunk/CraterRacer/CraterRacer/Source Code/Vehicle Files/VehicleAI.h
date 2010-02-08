@@ -14,7 +14,6 @@ public:
 	void think (EntityManager *em, int myList, int myIndex);
 
 	void setInput (Input::Arrow dir, bool isKeyDown);
-	void setDir(Vec3 vec);
 	bool* getInput();
 	bool* getButtons();
 	Vec3 getDir();
@@ -25,8 +24,9 @@ public:
 	void setThumbstick(float x);
 	float getThumbstick();
 
-	void drive(Vec3 dir, bool accelerate, bool decelerate, Vec3 velocity);
-	void drive(Input::Arrow dir, bool isKeyDown);
+	void setDir(float x, Input::Button button);
+	void setDir(float x);
+	void setDir(Input::Arrow, bool isKeyDown);
 
 protected:
 	Input input;

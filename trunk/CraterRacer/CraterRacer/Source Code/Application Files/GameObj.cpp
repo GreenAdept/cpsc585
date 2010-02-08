@@ -115,7 +115,7 @@ void GameObj::processInput( float fElapsedTime )
 	vector<Vehicle*> m_Vehicles = m_Entities.getVehicles();
 	m_Controller1->Update(fElapsedTime);
 	Vehicle* v = m_Vehicles[0];
-	Vec3 dir(m_Controller1->LeftThumbstick.GetX(), 0, m_Controller1->LeftThumbstick.GetY());
+	//Vec3 dir(m_Controller1->LeftThumbstick.GetX(), 0, m_Controller1->LeftThumbstick.GetY());
 	/*
 	if (m_Controller1->A.WasPressedOrHeld())
 	{
@@ -140,22 +140,22 @@ void GameObj::processInput( float fElapsedTime )
 	
 	if (m_Controller1->A.WasPressedOrHeld())
 	{
-		v->drive(dir, true, false);
+		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::A_BUTTON);
 	}
 	else if (m_Controller1->B.WasPressedOrHeld())
 	{
-		v->drive(dir, false, true);
+		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::B_BUTTON);
 	}
 	else
 	{
-		v->drive(dir, false, false);
+		v->setDir(m_Controller1->LeftThumbstick.GetX());
 	}
 
 	//Setting the input from Xbox controller
 	
 	//using xbox controller
 	v->setController(true);
-
+/*
 	//accelerate
 	if (m_Controller1->A.WasPressedOrHeld())
 	{
@@ -178,7 +178,7 @@ void GameObj::processInput( float fElapsedTime )
 
 	//turn
 	v->setThumbstick(m_Controller1->LeftThumbstick.GetX());
-	
+*/	
 }
 
 

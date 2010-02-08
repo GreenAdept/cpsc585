@@ -17,7 +17,6 @@ public:
 
 	Input();
 	void setInput(Arrow dir, bool isKeyDown);
-	void setDir(Vec3 vec);
 	bool* getInput();
 	bool* getButtons();
 	Vec3 getDir();
@@ -27,8 +26,9 @@ public:
 	float getThumbstick();
 	void reset();
 
-	void drive(Vec3 dir, bool accelerate, bool decelerate, Vec3 velocity);
-	void drive(Input::Arrow dir, bool isKeyDown);
+	void setDir(float x, Input::Button button);
+	void setDir(float x);
+	void setDir(Input::Arrow, bool isKeyDown);
 
 private:
 	bool inputs[4];
