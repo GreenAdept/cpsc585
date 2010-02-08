@@ -1,6 +1,7 @@
 #include "GameCamera.h"
 
 
+
 //------------------------------------------------------
 // Constructor: GameCamera
 // Creates a new GameCamera.
@@ -12,6 +13,12 @@ GameCamera::GameCamera () {
 }
 
 
+Vec3 GameCamera::interpolate (float dist, Vec3 newEye) {
+	float w = dist / (distTotal+dist);
+	return eye*(1-w) + newEye*w;
+}
+
+
 //------------------------------------------------------
 // Function: setTarget
 // setTarget sets the entity that the camera will follow.
@@ -19,18 +26,18 @@ GameCamera::GameCamera () {
 
 void GameCamera::setTarget (Entity *e) {
 	target = e;
+	index = 0;
+	distTotal = 0.0f;
 
 	if (target==0) {
-		for (index=0; index<CAMERA_BUFFER_SIZE; index++)
-			buffer[index] = Vec3 (0.0f, 0.0f, 0.0f);
+		lookAt = Vec3 (0.0f, 0.0f, 0.0f);
+		eye = offset;
 	}
 	else {
 		Vec3 position = target->getPosition();
-		for (index=0; index<CAMERA_BUFFER_SIZE; index++)
-			buffer[index] = offset + position;
+		lookAt = position;
+		eye = offset + lookAt;
 	}
-
-	index = 0;
 }
 
 //------------------------------------------------------
@@ -52,16 +59,36 @@ void GameCamera::updateWindow (const D3DSURFACE_DESC* pSurface) {
 //------------------------------------------------------
 
 MCamera GameCamera::getCamera () {
-	if (target==0) {
-		camera.SetViewParams( &offset, buffer+index );
+	if (target == 0) {
+		camera.SetViewParams (&eye, &lookAt);
+		return camera;
+	}
+
+	Vec3 path = target->getPosition() - lookAt;
+	float dist = D3DXVec3Length (&path);
+	lookAt = target->getPosition();
+	Vec3 newEye = lookAt + offset;
+	
+	if (dist == 0.0f) {
+		if (index > 0) {
+			index--;
+			distTotal -= distBuffer[index];
+			eye = interpolate (dist, newEye);
+		}
+		camera.SetViewParams (&eye, &lookAt);
+		return camera;
+	}
+
+	if (index < FRAME_DELAY) {
+		distBuffer[index] = dist;
+		distTotal += dist;
+		index++;
+		camera.SetViewParams (&eye, &lookAt);
+		return camera;
 	}
 	else {
-		Vec3 position = target->getPosition();
-
-		//Calculates and sets camera position
-		buffer[index] = offset + position;
-		index = (index+1) % CAMERA_BUFFER_SIZE;
-		camera.SetViewParams( buffer+index, &position );
+		eye = interpolate (dist, newEye);
+		camera.SetViewParams (&eye, &lookAt);
+		return camera;
 	}
-	return camera;
 }

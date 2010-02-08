@@ -9,13 +9,13 @@
 #include "Constants.h"
 #include "Entity.h"
 
+
 //-------------------------------------------------
-// Parameter to control the size of the camera
-// position buffer. Larger values mean a more laggy
-// camera.
+// Parameter to control the amount of frame delay
+// in the camera.
 //-------------------------------------------------
 
-#define CAMERA_BUFFER_SIZE 8
+#define FRAME_DELAY 60
 
 
 //-------------------------------------------------
@@ -28,9 +28,13 @@ class GameCamera {
 	Entity *target;
 	MCamera camera;
 
-	int index;
 	Vec3 offset;
-	Vec3 buffer [CAMERA_BUFFER_SIZE];
+	Vec3 eye, lookAt;
+	Vec3 interpolate (float distance, Vec3 newEye);
+	
+	int index;
+	float distTotal;
+	float distBuffer [FRAME_DELAY];
 
 public:
 	GameCamera();
