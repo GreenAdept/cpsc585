@@ -22,14 +22,14 @@ Simulator::Simulator()
 
 	forward = false;
 
-	InitNx();
+	//InitNx();
 }
 
 //--------------------------------------------------------------------------------------
 // Function:  InitNx
 // Initializes the PhysX engine as well as some other fundamental elements
 //--------------------------------------------------------------------------------------
-void Simulator::InitNx( void ) 
+void Simulator::InitNx( Mesh* terrainMesh ) 
 {
 	//Create the Phyics SDK
 	m_PhysicsSDK = NxCreatePhysicsSDK( NX_PHYSICS_SDK_VERSION );
@@ -56,7 +56,10 @@ void Simulator::InitNx( void )
 	defaultMaterial->setDynamicFriction(m_rDynamicFriction);
 
 	//Create the ground
-	m_GroundPlane = createGroundPlane( );
+	//m_GroundPlane = createGroundPlane( );
+	addTerrainFromX( terrainMesh, NxVec3(0, 0, 0) );
+	
+	m_PhysicsSDK->getFoundationSDK().getRemoteDebugger()->connect ("localhost", 5425);
 }
 
 //--------------------------------------------------------------------------------------
@@ -101,14 +104,15 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		NxVec3 vec	 = m_Vehicles[i]->getGlobalPosition();
 		float height = vehicles[i]->getBoundingBox().m_fHeight;
 
-		m_Vehicles[i]->getGlobalPose().getColumnMajor44( mat );
-		Matrix m = Matrix( mat[0] );
-		D3DXMatrixTranslation( &m, vec.x, vec.y-height, vec.z );
+		Matrix m;// = Matrix( mat[0] );
+		m_Vehicles[i]->getGlobalPose().getColumnMajor44( m );
+		
+		//D3DXMatrixTranslation( &m, vec.x, vec.y-height, vec.z );
 		
 		NxVec3 vlc = m_Vehicles[i]->getLinearVelocity();
 
 		//Update the vehicle position in the game
-		vehicles[i]->update( Vec3(vec.x, vec.y-height, vec.z), Vec3(vlc.x, 0, vlc.z), m );
+		vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m );
 	
 		//
 		//m_Debugger.writeToFile("global pos");
@@ -159,7 +163,7 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 	//Initialize the vehicle's parameters
 	actorDesc.body = &bodyDesc;
 	actorDesc.density = 10.0f;
-	actorDesc.globalPose.t = NxVec3( pos.x, pos.y + b.m_fHeight, pos.z );
+	actorDesc.globalPose.t = NxVec3( pos.x, pos.y, pos.z );
 	assert( actorDesc.isValid() );
 
 	//Initialize the wheels for the vehicle
@@ -387,105 +391,81 @@ Simulator::~Simulator()
 
 
 //--------------------------------------------------------------------------------------
-// Function:  addActor
-// Creates an actor under PhysX simulation based on specified mesh and position.  The
-// actor is added to the the list of all scene objects.
+// Function:  addTerrainFromX
 //--------------------------------------------------------------------------------------
-void Simulator::addActor( Mesh* mesh, Vec3& pos )
+void Simulator::addTerrainFromX( Mesh* mesh, NxVec3 pos )
 {
-	//gActors.push_back( createMeshActor( mesh, pos ) );
-}
+	ID3DXMesh* Mesh = mesh->GetMesh();
+
+	typedef struct {
+		Vec3 VertexPos;
+		Vec3 Normal;
+		D3DXVECTOR2 TexCoord;
+	} Mesh_FVF;
+
+	//Used to copy indices
+	typedef struct {
+		short IBNumber[3];
+	} IndexBufferStruct;
 
 
+	int NumVerticies = Mesh->GetNumVertices();
+	int NumTriangles = Mesh->GetNumFaces();
+	DWORD FVFSize = D3DXGetFVFVertexSize(Mesh->GetFVF());
 
-//--------------------------------------------------------------------------------------
-// Function:  getVertsFromDXMesh
-// Creates a list of NxVec3 vertices from a mesh object.
-// This function is adapted from one off of gamedev.net at the following link.  This is just
-// temporary to get it working for milestone 1.
-// http://www.gamedev.net/community/forums/topic.asp?topic_id=534809&forum_id=10&gforum_id=0
-//--------------------------------------------------------------------------------------
-NxVec3* Simulator::getVertsFromDXMesh( Mesh* mesh )
-{
-	//initialize variables we need in this function
-	DWORD numVerts		= mesh->m_dwNumVertices;
-	DWORD numFaces		= mesh->m_dwNumFaces;
-	NxVec3* verts		= new NxVec3[ numVerts ]; //the vertices we will be returning
-	BYTE *ptr			= NULL;
-	BYTE *lpIB			= NULL;
-	LPD3DXMESH mesh_dx	= mesh->GetMesh(); 
-	DWORD fvf;
-	DWORD vertSize;
+	//Create pointer for vertices
+	NxVec3* verts = new NxVec3[NumVerticies];
 
-	//get the vertex format and its size
-	fvf = mesh_dx->GetFVF();
-	vertSize = D3DXGetFVFVertexSize(fvf);
-
-	//transfer vertex values from DXMesh into NX verts list
-	mesh_dx->LockVertexBuffer(0, (LPVOID*)&ptr);
-	for( DWORD i=0; i < numVerts; i++ )
+	char *DXMeshPtr;
+	Mesh->LockVertexBuffer( D3DLOCK_READONLY, (void**)&DXMeshPtr );
+	for(int i = 0; i < NumVerticies; i++)
 	{
-		NxVec3 *vPtr =( NxVec3* )ptr;
-		verts[i].x = vPtr->x;
-		verts[i].y = vPtr->y;
-		verts[i].z = vPtr->z;
-		ptr += vertSize;		
+		Mesh_FVF *DXMeshFVF = ( Mesh_FVF* )DXMeshPtr;
+		verts[i] = NxVec3( DXMeshFVF->VertexPos.x, DXMeshFVF->VertexPos.y, DXMeshFVF->VertexPos.z );
+		DXMeshPtr += FVFSize;
 	}
-	mesh_dx->UnlockVertexBuffer();
-	return verts;
-}
+	Mesh->UnlockVertexBuffer();
 
+	//Create pointer for indices
+	IndexBufferStruct *tris = new IndexBufferStruct[NumTriangles];
 
-//--------------------------------------------------------------------------------------
-// Function:  createMeshActor
-// Creates a PhysX actor given a mesh and position.  It returns the pointer to the new
-// actor.  This function was adapted from a couple examples off of gamedev.net.
-// http://www.gamedev.net/community/forums
-//--------------------------------------------------------------------------------------
-NxActor* Simulator::createMeshActor( Mesh* mesh, Vec3& pos )
-{
-	NxBodyDesc bodyDesc;
-	NxConvexMeshDesc temp_convexDesc;
+	IndexBufferStruct *DXMeshIBPtr;
+	Mesh->LockIndexBuffer(D3DLOCK_READONLY, (void**)&DXMeshIBPtr);
+	for(int NumInd = 0; NumInd < NumTriangles; NumInd++)
+	{
+		tris[NumInd].IBNumber[0] = DXMeshIBPtr[NumInd].IBNumber[0];
+		tris[NumInd].IBNumber[1] = DXMeshIBPtr[NumInd].IBNumber[1];
+		tris[NumInd].IBNumber[2] = DXMeshIBPtr[NumInd].IBNumber[2];
+	}
 
-	//set up the description of a convex mesh using data from our known Mesh
-	temp_convexDesc.numVertices		 = mesh->m_dwNumVertices;
-	temp_convexDesc.pointStrideBytes = sizeof( NxVec3 );
-	temp_convexDesc.points			 = getVertsFromDXMesh( mesh );
-	temp_convexDesc.flags 			 = NX_CF_COMPUTE_CONVEX;
-	bodyDesc.solverIterationCount	 = 3;
+	Mesh->UnlockIndexBuffer();
 
-	//set up the description of the actor's shape we will create
-	NxConvexShapeDesc convexShapeDesc;
-	convexShapeDesc.localPose.t		= NxVec3(0,0,0);
-	convexShapeDesc.mass			= 0;
-	convexShapeDesc.density			= .001;
+	// Build physical model in PhysX
+	NxTriangleMeshDesc TriMeshDesc;
+	TriMeshDesc.numVertices = NumVerticies;
+	TriMeshDesc.numTriangles = NumTriangles;
+	TriMeshDesc.pointStrideBytes = sizeof(NxVec3);
+	TriMeshDesc.triangleStrideBytes = 3*sizeof(NxU16);
+	TriMeshDesc.points = verts;
+	TriMeshDesc.triangles = tris;
+	TriMeshDesc.flags = NX_MF_16_BIT_INDICES;
 
-	//get PhysX to build it's own version of the mesh based on our temp description
 	NxInitCooking();
+	NxTriangleMeshShapeDesc ShapeDesc;
+
+	// Cooking from memory
 	MemoryWriteBuffer buf;
-	bool status = NxCookConvexMesh( temp_convexDesc, buf );
+	bool status = NxCookTriangleMesh( TriMeshDesc, buf );
+	ShapeDesc.meshData = m_PhysicsSDK->createTriangleMesh( MemoryReadBuffer(buf.data) );
 
-	//save this new mesh in our actor's shape description
-	MemoryReadBuffer readBuffer( buf.data );
-	convexShapeDesc.meshData = m_PhysicsSDK->createConvexMesh( readBuffer );
-
-	//initialize our actor and add the new PhysX mesh to it
+	// Create actor and add to scene
 	NxActorDesc actorDesc;
-	bodyDesc.linearVelocity = NxVec3(0.0);
-	actorDesc.shapes.pushBack( &convexShapeDesc );
-	actorDesc.body = &bodyDesc;
-	actorDesc.density = 10.0;
+	actorDesc.shapes.pushBack( &ShapeDesc );
+	actorDesc.globalPose.t = pos;
+	m_Terrain = this->m_Scene->createActor( actorDesc );
 
-	actorDesc.globalPose.t = NxVec3(pos.x, pos.y, pos.z);
-	assert(actorDesc.isValid());
-
-	//create the actor and add it to the global scene
-	NxActor* pActor = m_Scene->createActor(actorDesc);
-	assert(pActor);
-	actorDesc.contactReportFlags = NX_NOTIFY_ALL;
-
-	//clear up the temporary description
-	delete temp_convexDesc.points;
-
-	return pActor;
+	delete[] verts;
+	delete[] tris;
 }
+
+
