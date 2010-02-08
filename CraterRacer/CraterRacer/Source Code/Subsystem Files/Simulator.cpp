@@ -17,7 +17,7 @@ Simulator::Simulator()
 	m_GroundPlane		= NULL;
 	m_vP1Dir			= Vec3(0, 0, 0);
 	m_rRestitution		= NxReal(0.0);
-	m_rStaticFriction	= NxReal(0.0);
+	m_rStaticFriction	= NxReal(1.0);
 	m_rDynamicFriction	= NxReal(0.0);
 
 	forward = false;
@@ -317,6 +317,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 			{
 				//TODO: change tire orientation
 				float x_dir = vehicle->getThumbstick();
+				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 				
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[2]);
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[3]);
@@ -339,8 +340,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 			}
 		}
 	}
-
-	m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 
 	//SUSPENSION
 	for (int i = 0; i < 4 /*number of wheels*/; i++) {
