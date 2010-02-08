@@ -55,7 +55,7 @@ private:
 	GameCamera		 m_Camera;		// main camera to follow behind vehicle
 	Simulator*		 m_Simulator;
 	DebugWriter		 debug;
-	Terrain*		 m_Terrain;
+	//Terrain*		 m_Terrain;
 	XBox360Controller* m_Controller1; //first player controller will have id# 0
 };
 
