@@ -69,14 +69,14 @@ public:
 	float getThumbstick();
 
 	virtual void setInput(Input::Arrow dir, bool isKeyDown) = 0;
-	virtual void setDir(Vec3 vec) = 0;
 	virtual bool* getInput() = 0;
 	virtual bool* getButtons() = 0;
 	virtual Vec3 getDir() = 0;
 	virtual void resetInput() = 0;
 
-
-	virtual void drive(Vec3 dir, bool accelerate, bool decelerate) = 0;
+	virtual void setDir(float x, Input::Button button) = 0;
+	virtual void setDir(float x) = 0;
+	virtual void setDir(Input::Arrow dir, bool isKeyDown) = 0;
 
 	Wheel m_Wheels[4];
 

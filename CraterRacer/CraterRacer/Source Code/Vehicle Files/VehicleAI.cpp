@@ -19,11 +19,6 @@ void VehicleAI::setInput(Input::Arrow dir, bool isKeyDown) {
 	input.setInput(dir, isKeyDown);
 }
 
-void VehicleAI::setDir(Vec3 vec)
-{
-	input.setDir(vec);
-}
-
 void VehicleAI::setController(bool controller)
 {
 	input.setController(controller);
@@ -89,12 +84,17 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 // Function: drive
 // Delegates driving information to input.
 //--------------------------------------------------------------------------------------
-void VehicleAI::drive(Vec3 dir, bool accelerate, bool decelerate, Vec3 velocity)
+void VehicleAI::setDir(float x, Input::Button button)
 {
-	input.drive(dir, accelerate, decelerate, velocity);
+	input.setDir(x, button);
 }
 
-void VehicleAI::drive(Input::Arrow dir, bool isKeyDown)
+void VehicleAI::setDir(float x)
 {
-	input.drive(dir, isKeyDown);
+	input.setDir(x);
+}
+
+void VehicleAI::setDir(Input::Arrow dir, bool isKeyDown)
+{
+	input.setDir(dir, isKeyDown);
 }

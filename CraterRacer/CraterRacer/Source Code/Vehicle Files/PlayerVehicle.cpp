@@ -14,12 +14,6 @@ void PlayerVehicle::setInput(Input::Arrow dir, bool isKeyDown)
 	mind.setInput(dir, isKeyDown);
 }
 
-
-void PlayerVehicle::setDir(Vec3 vec)
-{
-	mind.setDir(vec);
-}
-
 //--------------------------------------------------------------------------------------
 // Function: getInput
 // Delegates getting the input to mind.
@@ -51,12 +45,17 @@ void PlayerVehicle::resetInput()
 // Function: drive
 // Delegates the information to the mind.
 //--------------------------------------------------------------------------------------
-void PlayerVehicle::drive(Vec3 dir,	bool accelerate, bool decelerate)
+void PlayerVehicle::setDir(float x, Input::Button button)
 {
-	mind.drive(dir, accelerate, decelerate, velocity);
+	mind.setDir(x, button);
 }
 
-void PlayerVehicle::drive(Input::Arrow dir, bool isKeyDown)
+void PlayerVehicle::setDir(float x)
 {
-	mind.drive(dir, isKeyDown);
+	mind.setDir(x);
+}
+
+void PlayerVehicle::setDir(Input::Arrow dir, bool isKeyDown)
+{
+	mind.setDir(dir, isKeyDown);
 }

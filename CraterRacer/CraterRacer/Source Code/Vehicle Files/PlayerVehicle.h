@@ -26,14 +26,14 @@ public:
 
 	void update( void );
 	void setInput(Input::Arrow dir, bool isKeyDown);
-	void setDir(Vec3 vec);
 	bool* getInput();
 	bool* getButtons();
 	Vec3 getDir();
 	void resetInput();
 
-	void drive(Vec3 dir, bool accelerate, bool decelerate);
-	void drive(Input::Arrow dir, bool isKeyDown);
+	void setDir(float x, Input::Button button);
+	void setDir(float x);
+	void setDir(Input::Arrow, bool isKeyDown);
 };
 
 #endif //PLAYERVEHICLE_H

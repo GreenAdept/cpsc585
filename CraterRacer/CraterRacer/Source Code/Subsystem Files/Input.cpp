@@ -36,12 +36,33 @@ when the player releases the key.
 void Input::setInput(Input::Arrow dir, bool isKeyDown)
 {
 	inputs[dir] = isKeyDown;
+
+	switch(dir) {
+		case (Arrow::LEFT):
+			{
+				setThumbstick(-1.0);
+				break;
+			}
+		case (Arrow::UP):
+			{
+				buttons[Button::A_BUTTON] = isKeyDown;
+				break;
+			}
+		case (Arrow::RIGHT):
+			{
+				setThumbstick(1.0);
+				break;
+			}
+		case (Arrow::DOWN):
+			{
+				buttons[Button::B_BUTTON] = isKeyDown;
+				break;
+			}
+		default:
+			break;
+	}
 }
 
-void Input::setDir(Vec3 vec)
-{
-	direction = vec;
-}
 
 /*
 Returns the directions array.
@@ -96,49 +117,25 @@ float Input::getThumbstick() {
 	return x;
 }
 
+//should be called only (from gameobj) when no buttons are pressed
+void Input::setDir(float x)
+{
+	setThumbstick(x);
+	for (int i = 0; i < 4; i++)
+		buttons[i] = false;
+}
+
 //--------------------------------------------------------------------------------------
 // Function: drive
 // Determines which direction to go in, and force if applicable.
 //--------------------------------------------------------------------------------------
-void Input::drive(Vec3 dir, bool accelerate, bool decelerate, Vec3 velocity)
+void Input::setDir(float x, Input::Button button)
 {
-	if (accelerate)
-	{
-		reversing = false;
-		dir.z = 1.0;
-		//if speed >= max_speed, maintain max_speed
-		direction = 10 * dir;
-	}
-	else if (decelerate)
-	{
-		//if speed > 0, slow down but go in user's direction
-		//else reverse, go in opposite direction
-		double speed = sqrt(velocity.x * velocity.x + velocity.y * velocity.y + velocity.z * velocity.z);
-
-		//writer.writeToFile(speed);	
-		if ((speed >= 0.01) && (!reversing))
-		{
-			dir.z = 0.5;
-			Vec3 oppositeForce = (-5) * velocity; //the -1 needs to be CHANGED to a braking constant
-			direction = oppositeForce + dir * 0.2 * speed;
-		}
-		else
-		{
-			reversing = true;
-			dir.z = 1.0;
-			direction = (-10) * dir; //say we can go backwards as fast as we can go forwards
-		}
-	}
-	else
-	{
-		//go in user's direction, and let friction slow it down
-		direction = dir;
-	}
-
-	//writer.writeToFile(direction);
+	buttons[button] = true;
+	setThumbstick(x);
 }
 
-void Input::drive(Input::Arrow dir, bool isKeyDown)
+void Input::setDir(Input::Arrow dir, bool isKeyDown)
 {
 }
 /*
