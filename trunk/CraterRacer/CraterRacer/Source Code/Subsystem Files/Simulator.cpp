@@ -362,8 +362,20 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	//STEERING
 	float angle = vehicle->getThumbstick()*45; //45 is maximum wheel angle
 	
-	//get the angle of the normal to the wheel direction
 	if (angle > 0) {
+		actor->addLocalForceAtLocalPos(NxVec3(-10000, 0, 0), wheel[0]);
+		actor->addLocalForceAtLocalPos(NxVec3(-10000, 0, 0), wheel[1]);
+	}
+
+	else if (angle < 0) {
+		actor->addLocalForceAtLocalPos(NxVec3(10000, 0, 0), wheel[0]);
+		actor->addLocalForceAtLocalPos(NxVec3(10000, 0, 0), wheel[1]);
+	}
+
+
+
+	//get the angle of the normal to the wheel direction
+	/*if (angle > 0) {
 		angle = angle + 90;
 	}
 	else {
@@ -380,11 +392,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 
 	//project the tireLateral on the velocity of the car
 	NxVec3 steering = (velocity.dot(tireLateral) / tireLateral.dot(tireLateral)) * tireLateral;
-	//actor->addLocalForceAtLocalPos(steering*10000, wheel[0]);
-	//actor->addLocalForceAtLocalPos(steering*10000, wheel[1]);
+	actor->addLocalForceAtLocalPos(NxVec3(-steering.x, 0, steering.z)*1000, wheel[0]);
+	actor->addLocalForceAtLocalPos(steering*1000, wheel[1]);*/
 
-	m_Debugger.writeToFile(steering*10000);
-	m_Debugger.writeToFile("");
+	//m_Debugger.writeToFile(steering*10000);
+	//m_Debugger.writeToFile("");
 	
 	//xbox controllers
 	//m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3( m_vP1Dir.x, 0, m_vP1Dir.z), m_rForceStrength);
