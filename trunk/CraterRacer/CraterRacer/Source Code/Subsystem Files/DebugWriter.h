@@ -20,6 +20,7 @@ public:
 	void writeToFile(float f);
 	void writeToFile(NxVec3 vec);
 	void writeToFile(Vec3 vec);
+	//void writeToFile(bool set);
 	void clearFile();
 	void close();
 };

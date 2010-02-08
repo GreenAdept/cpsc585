@@ -37,11 +37,24 @@ void DebugWriter::writeToFile(Vec3 vec) {
   myfile.close();
 }
 
+/*void DebugWriter::writeToFile(bool set) {
+  ofstream myfile;
+  myfile.open ("debug.txt", ios::out | ios::app);
+  if (set) {
+	myfile << "true" << endl;
+  }
+  else {
+		myfile << "false" << endl;
+  }
+  myfile.close();
+}*/
+
 void DebugWriter::clearFile() {
   ofstream myfile;
   myfile.open ("debug.txt", ios::out);
   myfile << "";
   myfile.close();
 }
+
 
 void DebugWriter::close() {}

@@ -112,6 +112,7 @@ void Input::setDir(float x, Input::Button button)
 
 void Input::setDir(Input::Arrow dir, bool isKeyDown)
 {
+	
 	switch(dir) {
 		case (Arrow::LEFT):
 			{
@@ -120,6 +121,11 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 			}
 		case (Arrow::UP):
 			{
+				m_Debugger.writeToFile("sjfd;lsajdf;lskjdfsjdfoiwjefo23jro26jt32jt092847ut09w8aug");
+				if (isKeyDown) {
+					m_Debugger.writeToFile("yes");
+				}
+				//m_Debugger.writeToFile(isKeyDown);
 				buttons[Button::A_BUTTON] = isKeyDown;
 				break;
 			}
