@@ -17,7 +17,7 @@ Simulator::Simulator()
 	m_GroundPlane		= NULL;
 	m_vP1Dir			= Vec3(0, 0, 0);
 	m_rRestitution		= NxReal(0.0);
-	m_rStaticFriction	= NxReal(1.0);
+	m_rStaticFriction	= NxReal(0.0);
 	m_rDynamicFriction	= NxReal(0.0);
 
 	forward = false;
