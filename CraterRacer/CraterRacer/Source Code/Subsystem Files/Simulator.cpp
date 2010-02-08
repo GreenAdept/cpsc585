@@ -315,6 +315,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		{
 			case 0: //A_BUTTON
 			{
+				//TODO: change tire orientation
+				float x_dir = vehicle->getThumbstick();
+				
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[2]);
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[3]);
 				//m_vForceVec = applyForceToActor( actor, NxVec3(0,0,1), m_rForceStrength );
@@ -337,8 +340,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		}
 	}
 
-	float x_dir = vehicle->getThumbstick();
-	//TODO: change tire orientation
 	m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 
 	//SUSPENSION
