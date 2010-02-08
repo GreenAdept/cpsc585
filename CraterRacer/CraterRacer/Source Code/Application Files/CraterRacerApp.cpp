@@ -277,6 +277,7 @@ RacerApp::~RacerApp()
 {
 	if( g_pGame )
 	{
+		g_pGame->processCallback( ON_LOST );
 		g_pGame->processCallback( ON_DESTROY ); //release the memory/objects used by the game
 		delete g_pGame;
 		g_pGame = NULL;

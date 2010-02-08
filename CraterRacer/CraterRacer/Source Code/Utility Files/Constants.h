@@ -17,6 +17,11 @@
 //--------------------------------------------------------
 
 #define OBJ_FILE		L"Media\\Meshes\\CarBox.x"
+#define CAR_BODY_FILE	L"Media\\Meshes\\CarBody.x"
+#define WHEEL0_FILE		L"Media\\Meshes\\Wheel0.x"
+#define WHEEL1_FILE		L"Media\\Meshes\\Wheel1.x"
+#define WHEEL2_FILE		L"Media\\Meshes\\Wheel2.x"
+#define WHEEL3_FILE		L"Media\\Meshes\\Wheel3.x"
 #define OBJ_EFFECT		L"Source Code\\Effect Files\\Scene.fx"
 #define TERRAIN_FILE	L"Media\\Meshes\\Floor.x"
 
@@ -24,6 +29,7 @@ enum ProcessType		{ ON_LOST, ON_RESET, ON_DESTROY };
 enum Directions			{ LEFT, FORWARD, RIGHT, BACKWARD }; 
 enum GuiControls		{ GUI_BTN_SINGLE_PLAYER };
 enum ApplicationState	{ APP_STARTUP, APP_RENDER_GAME };
+enum Wheels				{ WHEEL0, WHEEL1, WHEEL2, WHEEL3 };
 
 
 //--------------------------------------------------------

@@ -37,9 +37,19 @@ struct EntityNode {
 // Frees all the memory allocated to the entities being
 // tracked by the manager.
 //------------------------------------------------------
+EntityManager::~EntityManager () 
+{
+	//delete all the vehicles and their wheels
+	for( int i=PLAYERS; i<= COMPUTERS; i++ )
+	{
+		int size = entities[i].size();
+		for (int j=0; j<size; j++)
+			delete (Vehicle*)entities[i][j];
+	}
 
-EntityManager::~EntityManager () {
-	for (int i=0; i<NUM_LISTS; i++) {
+	//delete all other entities
+	for (int i=METEORS; i<NUM_LISTS; i++) 
+	{
 		int size = entities[i].size();
 		for (int j=0; j<size; j++)
 			delete entities[i][j];
@@ -93,13 +103,33 @@ vector<Vehicle*> EntityManager::getVehicles () {
 // tracked by the manager.
 //------------------------------------------------------
 
-vector<Renderable*> EntityManager::getRenderables () {
+vector< Renderable* > EntityManager::getRenderables( ) 
+{
 	int index = 0;
-	vector<Renderable*> result (getSize());
+	int numWheels = entities[ PLAYERS ].size() * 4 + entities[ COMPUTERS ].size() * 4;
+	vector<Renderable*> result( getSize() + numWheels );
 
-	for (int i=0; i<NUM_LISTS; i++) {
+	//Get vehicle renderables first because they have wheel renderables inside them
+	for( int i=PLAYERS; i <= COMPUTERS; i++ )
+	{
+		for( int v=0; v < entities[ i ].size(); v++ )
+		{
+			Vehicle* tempVehicle = ( Vehicle* )entities[ i ][ v ];
+
+			result[index++] = tempVehicle->getRenderable();
+			
+			//add the wheel renderables if we are looking at the
+			for( int w = WHEEL0; w <= WHEEL3; w++ )
+				result[index++] = tempVehicle->m_Wheels[ w ].getRenderable();
+		}
+	}
+
+	//Now add all the rest of the renderables
+	for (int i = METEORS; i < NUM_LISTS; i++) 
+	{
 		int s = entities[i].size();
-		for (int j=0; j<s; j++)
+
+		for( int j=0; j<s; j++ )
 			result[index++] = entities[i][j]->getRenderable();
 	}
 
@@ -154,19 +184,22 @@ void EntityManager::clear () {
 // Returns the number of entities being tracked by
 // the manager.
 //------------------------------------------------------
-
-int EntityManager::getSize () {
+int EntityManager::getSize () 
+{
 	int result = 0;
+
 	for (int i=0; i<NUM_LISTS; i++)
 		result += entities[i].size();
+
 	return result;
 }
 
 
 
-PlayerVehicle* EntityManager::makePlayer (Device* device, Vec3 pos, LPCWSTR filename) {
+PlayerVehicle* EntityManager::makePlayer (Device* device, Vec3 pos, LPCWSTR filename) 
+{
 	PlayerVehicle* pv = new PlayerVehicle();
-	pv->initialize (device, pos, filename);
+	pv->initialize( device, pos, filename );
 	entities[PLAYERS].push_back (pv);
 	return pv;
 }

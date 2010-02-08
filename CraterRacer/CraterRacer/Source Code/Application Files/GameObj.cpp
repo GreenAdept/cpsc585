@@ -17,15 +17,14 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	m_Controller1 = new XBox360Controller(0); //player 1 controller
 
 	Vec3 pos( 0.0f, 30.0f, 0.0f );
-	Vec3 terrainPos( 0.0f, 0.0f, 0.0f );
 	
 	// Create entities
-	Vehicle *pv = m_Entities.makePlayer (device, pos, OBJ_FILE);
+	Vehicle *pv = m_Entities.makePlayer( device, pos, CAR_BODY_FILE );
 	//Meteor *m = m_Entities.makeMeteor (device, Vec3 (-10.0f, 0.0f, 0.0f), OBJ_FILE);
 
 	// Create the terrain
 	m_Terrain = new Terrain( );
-	m_Terrain->initialize( device, terrainPos, TERRAIN_FILE );
+	m_Terrain->initialize( device, Vec3( 0.0f, 0.0f, 0.0f ), TERRAIN_FILE );
 
 	//initialize simulator with terrain
 	m_Simulator->InitNx( m_Terrain->getRenderable()->m_pMesh );
@@ -214,15 +213,17 @@ void GameObj::simulate( float fElapsedTime )
 //--------------------------------------------------------------------------------------
 void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFACE_DESC* pBackSurface )
 {
-	vector<Entity*> m_Vehicles = m_Entities.getEntities();
+	vector<Renderable*> m_Renderables = m_Entities.getRenderables();
 
 	// when the device is destroyed, we want to release all of the memory attached to it
 	if( type == ON_DESTROY )
 	{
 		// make sure the renderables are aware their device is being destroyed, so they
 		// can release the appropriate memory
-		for( unsigned int i = 0; i < m_Vehicles.size(); i++ ) 
-			 m_Vehicles[i]->getRenderable( )->releaseMemory( );
+		for( unsigned int i = 0; i < m_Renderables.size(); i++ ) 
+		{
+			 m_Renderables[i]->releaseMemory( );
+		}
 
 		if( m_Terrain )
 			m_Terrain->getRenderable( )->releaseMemory( );
@@ -232,8 +233,8 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 	else if( type == ON_LOST )
 	{
 		// make sure the renderables are aware their device is lost
-		for( unsigned int i = 0; i < m_Vehicles.size(); i++ ) 
-			 m_Vehicles[i]->getRenderable( )->lostDevice( );
+		for( unsigned int i = 0; i < m_Renderables.size(); i++ ) 
+			 m_Renderables[i]->lostDevice( );
 
 		if( m_Terrain )
 			m_Terrain->getRenderable( )->lostDevice( );
@@ -247,8 +248,8 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 		m_Camera.updateWindow (pBackSurface);
 
 		// let the renderables know their device was reset
-		for( unsigned int i = 0; i < m_Vehicles.size(); i++ ) 
-			 m_Vehicles[i]->getRenderable( )->resetDevice( device );
+		for( unsigned int i = 0; i < m_Renderables.size(); i++ ) 
+			 m_Renderables[i]->resetDevice( device );
 
 		if( m_Terrain )
 			m_Terrain->getRenderable( )->resetDevice( device );
