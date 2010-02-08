@@ -127,6 +127,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		debug.writeToFile("Velocity: ");
 		debug.writeToFile(velocity);
 		*/
+		//m_Debugger.writeToFile(m_Vehicles[i]->getAngularVelocity());
 	}
 }
 
@@ -342,10 +343,12 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 
 	//project the tireLateral on the velocity of the car
 	NxVec3 steering = (velocity.dot(tireLateral) / tireLateral.dot(tireLateral)) * tireLateral;
-	actor->addLocalForceAtLocalPos(steering*100, wheel[0]);
-	actor->addLocalForceAtLocalPos(steering*100, wheel[1]);
-	
+	//actor->addLocalForceAtLocalPos(steering*10000, wheel[0]);
+	//actor->addLocalForceAtLocalPos(steering*10000, wheel[1]);
 
+	m_Debugger.writeToFile(steering*10000);
+	m_Debugger.writeToFile("");
+	
 	//xbox controllers
 	//m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3( m_vP1Dir.x, 0, m_vP1Dir.z), m_rForceStrength);
 }
