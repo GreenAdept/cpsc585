@@ -16,7 +16,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	m_Simulator = new Simulator();
 	m_Controller1 = new XBox360Controller(0); //player 1 controller
 
-	Vec3 pos( 0.0f, 10.0f, 0.0f );
+	Vec3 pos( 0.0f, 30.0f, 0.0f );
 	Vec3 terrainPos( 0.0f, 0.0f, 0.0f );
 	
 	// Create entities
@@ -26,6 +26,9 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	// Create the terrain
 	m_Terrain = new Terrain( );
 	m_Terrain->initialize( device, terrainPos, TERRAIN_FILE );
+
+	//initialize simulator with terrain
+	m_Simulator->InitNx( m_Terrain->getRenderable()->m_pMesh );
 
 	// Add our vehicle to the PhysX system
 	m_Simulator->createVehicle( pos, pv->getBoundingBox() );

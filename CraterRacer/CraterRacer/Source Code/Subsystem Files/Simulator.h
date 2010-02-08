@@ -31,17 +31,16 @@ public:
 
 	Simulator();
 	~Simulator();
+	
+	void InitNx( Mesh* terrainMesh );
 
 	void simulate(vector<Vehicle*> entities, double elapsedTime);
-	void addActor( Mesh* mesh, Vec3& pos );
 	void createVehicle( Vec3 pos, BoundingBox b );
 
 private:
 
-	void InitNx();
+	void addTerrainFromX( Mesh* mesh, NxVec3 pos );
 
-	NxVec3* getVertsFromDXMesh( Mesh* mesh );
-	NxActor* createMeshActor( Mesh* mesh,  Vec3& pos );
 	NxActor* createGroundPlane(void);
 	void startPhysics(void);
 	void getPhysicsResults(void);
@@ -71,6 +70,7 @@ private:
 	//Actors
 	NxActor*			m_GroundPlane;
 	vector< NxActor* >	m_Vehicles;
+	NxActor*			m_Terrain;
 
 	Vec3				m_vP1Dir;
 
