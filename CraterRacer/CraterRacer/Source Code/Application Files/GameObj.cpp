@@ -23,11 +23,12 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	//Meteor *m = m_Entities.makeMeteor (device, Vec3 (-10.0f, 0.0f, 0.0f), OBJ_FILE);
 
 	// Create the terrain
-	m_Terrain = new Terrain( );
-	m_Terrain->initialize( device, Vec3( 0.0f, 0.0f, 0.0f ), TERRAIN_FILE );
+	//m_Terrain = new Terrain( );
+	//m_Terrain->initialize( device, Vec3( 0.0f, 0.0f, 0.0f ), TERRAIN_FILE );
+	m_Entities.makeTerrain( device, Vec3( 0.0f, 0.0f, 0.0f ), TERRAIN_FILE );
 
 	//initialize simulator with terrain
-	m_Simulator->InitNx( m_Terrain->getRenderable()->m_pMesh );
+	m_Simulator->InitNx( m_Entities.getTerrain()->getRenderable()->m_pMesh );
 
 	// Add our vehicle to the PhysX system
 	m_Simulator->createVehicle( pos, pv->getBoundingBox() );
@@ -188,7 +189,6 @@ void GameObj::processInput( float fElapsedTime )
 void GameObj::render( Device* device )
 {
 	vector<Renderable*> renderables = m_Entities.getRenderables();
-	renderables.push_back( m_Terrain->getRenderable() );
 
 	// pass the renderables off to the renderer to do all the work
 	m_Renderer->render( device, renderables, m_Camera.getCamera() );
@@ -220,13 +220,8 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 	{
 		// make sure the renderables are aware their device is being destroyed, so they
 		// can release the appropriate memory
-		for( unsigned int i = 0; i < m_Renderables.size(); i++ ) 
-		{
+		for( unsigned int i = 0; i < m_Renderables.size(); i++ )
 			 m_Renderables[i]->releaseMemory( );
-		}
-
-		if( m_Terrain )
-			m_Terrain->getRenderable( )->releaseMemory( );
 	}
 
 	// when the device is lost, we want to prepare some of objects for destruction or reset
@@ -235,9 +230,6 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 		// make sure the renderables are aware their device is lost
 		for( unsigned int i = 0; i < m_Renderables.size(); i++ ) 
 			 m_Renderables[i]->lostDevice( );
-
-		if( m_Terrain )
-			m_Terrain->getRenderable( )->lostDevice( );
 	}
 
 	// when the device is reset the dimensions might have changed, so we want to make sure
@@ -250,9 +242,6 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 		// let the renderables know their device was reset
 		for( unsigned int i = 0; i < m_Renderables.size(); i++ ) 
 			 m_Renderables[i]->resetDevice( device );
-
-		if( m_Terrain )
-			m_Terrain->getRenderable( )->resetDevice( device );
 	}
 }
 
@@ -264,9 +253,6 @@ GameObj::~GameObj( )
 {
 	if( m_Simulator )
 		delete m_Simulator;
-
-	if( m_Terrain )
-		delete m_Terrain;
 
 	if( m_Controller1 )
 		delete m_Controller1;

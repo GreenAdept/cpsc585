@@ -106,29 +106,25 @@ vector<Vehicle*> EntityManager::getVehicles () {
 vector< Renderable* > EntityManager::getRenderables( ) 
 {
 	int index = 0;
-	int numWheels = entities[ PLAYERS ].size() * 4 + entities[ COMPUTERS ].size() * 4;
-	vector<Renderable*> result( getSize() + numWheels );
+	int numWheels = entities[PLAYERS].size() * 4 + entities[COMPUTERS].size() * 4;
+	vector<Renderable*> result (getSize() + numWheels);
 
 	//Get vehicle renderables first because they have wheel renderables inside them
-	for( int i=PLAYERS; i <= COMPUTERS; i++ )
-	{
-		for( int v=0; v < entities[ i ].size(); v++ )
-		{
-			Vehicle* tempVehicle = ( Vehicle* )entities[ i ][ v ];
+	for (int i=PLAYERS; i <= COMPUTERS; i++) {
+		for (int v=0; v < entities[i].size(); v++) {
+			Vehicle* tempVehicle = (Vehicle*) entities[i][v];
 
 			result[index++] = tempVehicle->getRenderable();
 			
 			//add the wheel renderables if we are looking at the
-			for( int w = WHEEL0; w <= WHEEL3; w++ )
-				result[index++] = tempVehicle->m_Wheels[ w ].getRenderable();
+			for (int w = WHEEL0; w <= WHEEL3; w++)
+				result[index++] = tempVehicle->m_Wheels[w].getRenderable();
 		}
 	}
 
 	//Now add all the rest of the renderables
-	for (int i = METEORS; i < NUM_LISTS; i++) 
-	{
+	for (int i = METEORS; i < NUM_LISTS; i++) {
 		int s = entities[i].size();
-
 		for( int j=0; j<s; j++ )
 			result[index++] = entities[i][j]->getRenderable();
 	}
@@ -152,6 +148,16 @@ vector<AI*> EntityManager::getAIs (int list) {
 
 	return result;
 }
+
+//------------------------------------------------------
+// Function: getTerrain
+// Returns a pointer to the terrain entity.
+//------------------------------------------------------
+
+Terrain* EntityManager::getTerrain () {
+	return (Terrain*) entities[TERRAIN][0];
+}
+
 
 //------------------------------------------------------
 // Function: getPosition
@@ -184,8 +190,7 @@ void EntityManager::clear () {
 // Returns the number of entities being tracked by
 // the manager.
 //------------------------------------------------------
-int EntityManager::getSize () 
-{
+int EntityManager::getSize () {
 	int result = 0;
 
 	for (int i=0; i<NUM_LISTS; i++)
@@ -228,4 +233,12 @@ Prop* EntityManager::makeProp (Device* device, Vec3 pos, LPCWSTR filename) {
 	p->initialize (device, pos, filename);
 	entities[PROPS].push_back (p);
 	return p;
+}
+Terrain* EntityManager::makeTerrain (Device* device, Vec3 pos, LPCWSTR filename) {
+	Terrain* t = new Terrain();
+	t->initialize (device, pos, filename);
+
+	entities[TERRAIN] = vector<Entity*> (1);
+	entities[TERRAIN][0] = t;
+	return t;
 }
