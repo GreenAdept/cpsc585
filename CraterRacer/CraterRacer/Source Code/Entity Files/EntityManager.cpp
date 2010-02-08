@@ -62,7 +62,6 @@ EntityManager::~EntityManager ()
 // Returns an std::vector containing pointers to all
 // the entities being tracked by the manager.
 //------------------------------------------------------
-
 vector<Entity*> EntityManager::getEntities () {
 	int index = 0;
 	vector<Entity*> result (getSize());
@@ -75,6 +74,7 @@ vector<Entity*> EntityManager::getEntities () {
 
 	return result;
 }
+
 
 //------------------------------------------------------
 // Function: getVehicles

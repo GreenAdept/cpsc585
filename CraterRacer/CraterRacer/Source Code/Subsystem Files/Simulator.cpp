@@ -102,9 +102,9 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 
 		//Get the new position of the vehicle in vector and matrix formats
 		NxVec3 vec	 = m_Vehicles[i]->getGlobalPosition();
-		float height = vehicles[i]->getBoundingBox().m_fHeight;
+		//float height = vehicles[i]->getBoundingBox().m_fHeight;
 
-		Matrix m;// = Matrix( mat[0] );
+		Matrix m;
 		m_Vehicles[i]->getGlobalPose().getColumnMajor44( m );
 		
 		//D3DXMatrixTranslation( &m, vec.x, vec.y-height, vec.z );
@@ -402,33 +402,6 @@ NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, cons
 }
 
 
-//--------------------------------------------------------------------------------------
-// Function:  Destructor
-// Clears up all the memory used by PhysX by releasing all actors, the scene and the
-// Physics SDK.
-//--------------------------------------------------------------------------------------
-Simulator::~Simulator() 
-{
-	//release all actors
-	for( int i=0; i < m_Vehicles.size(); i++ )
-	{
-		m_Scene->releaseActor( *m_Vehicles[i] );
-		m_Vehicles[i] = NULL;
-	}
-	
-	//now release the scene and physics SDK
-	if( m_PhysicsSDK != NULL )
-	{
-		if( m_Scene != NULL)
-		{
-			m_PhysicsSDK->releaseScene(*m_Scene);
-			m_Scene = NULL;
-		}
-		NxReleasePhysicsSDK( m_PhysicsSDK );
-		m_PhysicsSDK = NULL;
-	}
-}
-
 
 //--------------------------------------------------------------------------------------
 // Function:  addTerrainFromX
@@ -498,14 +471,43 @@ void Simulator::addTerrainFromX( Mesh* mesh, NxVec3 pos )
 	bool status = NxCookTriangleMesh( TriMeshDesc, buf );
 	ShapeDesc.meshData = m_PhysicsSDK->createTriangleMesh( MemoryReadBuffer(buf.data) );
 
-	// Create actor and add to scene
+	// Create terrain and add to scene
 	NxActorDesc actorDesc;
 	actorDesc.shapes.pushBack( &ShapeDesc );
 	actorDesc.globalPose.t = pos;
-	m_Terrain = this->m_Scene->createActor( actorDesc );
+
+	m_Terrain = m_Scene->createActor( actorDesc );
 
 	delete[] verts;
 	delete[] tris;
 }
 
 
+//--------------------------------------------------------------------------------------
+// Function:  Destructor
+// Clears up all the memory used by PhysX by releasing all actors, the scene and the
+// Physics SDK.
+//--------------------------------------------------------------------------------------
+Simulator::~Simulator() 
+{
+	//release all actors
+	for( int i=0; i < m_Vehicles.size(); i++ )
+	{
+		m_Scene->releaseActor( *m_Vehicles[i] );
+		m_Vehicles[i] = NULL;
+	}
+	
+	m_Scene->releaseActor( *m_Terrain );
+
+	//now release the scene and physics SDK
+	if( m_PhysicsSDK != NULL )
+	{
+		if( m_Scene != NULL)
+		{
+			m_PhysicsSDK->releaseScene(*m_Scene);
+			m_Scene = NULL;
+		}
+		NxReleasePhysicsSDK( m_PhysicsSDK );
+		m_PhysicsSDK = NULL;
+	}
+}

@@ -282,4 +282,7 @@ RacerApp::~RacerApp()
 		delete g_pGame;
 		g_pGame = NULL;
 	}
+	if( m_MenuController )
+		delete m_MenuController;
+
 }
