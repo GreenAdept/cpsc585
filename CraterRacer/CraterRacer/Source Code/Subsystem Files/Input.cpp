@@ -36,31 +36,6 @@ when the player releases the key.
 void Input::setInput(Input::Arrow dir, bool isKeyDown)
 {
 	inputs[dir] = isKeyDown;
-
-	switch(dir) {
-		case (Arrow::LEFT):
-			{
-				setThumbstick(-1.0);
-				break;
-			}
-		case (Arrow::UP):
-			{
-				buttons[Button::A_BUTTON] = isKeyDown;
-				break;
-			}
-		case (Arrow::RIGHT):
-			{
-				setThumbstick(1.0);
-				break;
-			}
-		case (Arrow::DOWN):
-			{
-				buttons[Button::B_BUTTON] = isKeyDown;
-				break;
-			}
-		default:
-			break;
-	}
 }
 
 
@@ -137,6 +112,30 @@ void Input::setDir(float x, Input::Button button)
 
 void Input::setDir(Input::Arrow dir, bool isKeyDown)
 {
+	switch(dir) {
+		case (Arrow::LEFT):
+			{
+				setThumbstick(-1.0);
+				break;
+			}
+		case (Arrow::UP):
+			{
+				buttons[Button::A_BUTTON] = isKeyDown;
+				break;
+			}
+		case (Arrow::RIGHT):
+			{
+				setThumbstick(1.0);
+				break;
+			}
+		case (Arrow::DOWN):
+			{
+				buttons[Button::B_BUTTON] = isKeyDown;
+				break;
+			}
+		default:
+			break;
+	}
 }
 /*
 void Input::drive(Input::Arrow dir, bool isKeyDown)

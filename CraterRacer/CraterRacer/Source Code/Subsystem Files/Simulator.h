@@ -66,6 +66,7 @@ private:
 	//Time 
 	double				m_dDeltaTime;
 	bool*				m_bInputs;
+	bool*				m_bButtons;
 
 	//Actors
 	NxActor*			m_GroundPlane;

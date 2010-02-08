@@ -76,7 +76,7 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 		v->setInput(Input::Arrow::LEFT, isKeyDown);
 		break;
 	case VK_UP:
-		//add upward force to player vehicle
+		//add forward force to player vehicle
 		v->setInput(Input::Arrow::UP, isKeyDown);
 		break;
 	case VK_RIGHT:
@@ -84,7 +84,7 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 		v->setInput(Input::Arrow::RIGHT, isKeyDown);
 		break;
 	case VK_DOWN:
-		//add downward force to player vehicle
+		//add backward force to player vehicle
 		v->setInput(Input::Arrow::DOWN, isKeyDown);
 		break;
 	default:
