@@ -2,6 +2,13 @@
 #include "EntityManager.h"
 
 
+//------------------------------------------------------
+// Function: think
+// Unless its state is set to STOPPED, think() sets the
+// TriggerCylinder's state to TRIGGERED if the player
+// is in the cylinder; WAITING otherwise.
+//------------------------------------------------------
+
 void TriggerCylinder::think (EntityManager *em, int myList, int myIndex) {
 	if (state == AI::STOPPED) return;
 
