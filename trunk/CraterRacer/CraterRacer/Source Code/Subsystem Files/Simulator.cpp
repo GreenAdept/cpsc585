@@ -79,8 +79,8 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 	{
 		//Get the inputs associated with vehicle
 		//keyboard controls
-		m_bInputs = vehicles[i]->getInput();
-
+		//m_bInputs = vehicles[i]->getInput();
+		//m_bButtons = vehicles[i]->getButtons();
 
 		// XBox controls
 		//m_vP1Dir = vehicles[i]->getDir();
@@ -268,7 +268,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	wheel[2] = NxVec3(width/2, 0, length/2);
 	wheel[3] = NxVec3(-width/2, 0, length/2);
 
+	bool* buttons = vehicle->getButtons();
 	//INPUT
+	/*
 	for( int i = 0; i < 4; i++ )
 	{
 		if( !m_bInputs[i] ) { continue; } 
@@ -303,6 +305,41 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 			}
 		}
 	}
+	*/
+
+	for( int i = 0; i < 4; i++ )
+	{
+		if( !buttons[i] ) { continue; } 
+
+		switch( i )
+		{
+			case 0: //A_BUTTON
+			{
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[2]);
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[3]);
+				//m_vForceVec = applyForceToActor( actor, NxVec3(0,0,1), m_rForceStrength );
+				break; 
+			}
+			case 1: //B_BUTTON
+			{
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[0]);
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[1]);
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[2]);
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[3]);
+				break; 
+			}
+			case 2: //X_BUTTON
+			{
+			}
+			case 3: //Y_BUTTON
+			{	
+			}
+		}
+	}
+
+	float x_dir = vehicle->getThumbstick();
+	//TODO: change tire orientation
+	m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 
 	//SUSPENSION
 	for (int i = 0; i < 4 /*number of wheels*/; i++) {
