@@ -1,42 +1,13 @@
 #include "EntityManager.h"
 using namespace std;
 
-/*
-struct EntityNode {
-	Entity* data;
-	EntityNode* next;
-
-	EntityNode ()          : data(0), next(0) {}
-	EntityNode (Entity* e) : data(e), next(0) {}
-	~EntityNode () {
-		delete data;
-		delete next;
-	}
-
-	void add (Entity* e) {
-		EntityNode *node = this;
-		while ((int)node->next != 0)
-			node = node->next;
-		node->next = new EntityNode (e);
-	}
-
-	Entity* get (int index) {
-		EntityNode *node = this;
-		while (index > 0)
-			node = node->next;
-		return node->data;
-	}
-};
-*/
-
-
-
 
 //------------------------------------------------------
 // Destructor: EntityManager
 // Frees all the memory allocated to the entities being
 // tracked by the manager.
 //------------------------------------------------------
+
 EntityManager::~EntityManager () 
 {
 	//delete all the vehicles and their wheels
@@ -62,6 +33,7 @@ EntityManager::~EntityManager ()
 // Returns an std::vector containing pointers to all
 // the entities being tracked by the manager.
 //------------------------------------------------------
+
 vector<Entity*> EntityManager::getEntities () {
 	int index = 0;
 	vector<Entity*> result (getSize());
@@ -103,8 +75,7 @@ vector<Vehicle*> EntityManager::getVehicles () {
 // tracked by the manager.
 //------------------------------------------------------
 
-vector< Renderable* > EntityManager::getRenderables( ) 
-{
+vector< Renderable* > EntityManager::getRenderables( ) {
 	int index = 0;
 	int numWheels = entities[PLAYERS].size() * 4 + entities[COMPUTERS].size() * 4;
 	vector<Renderable*> result (getSize() + numWheels);
@@ -116,7 +87,7 @@ vector< Renderable* > EntityManager::getRenderables( )
 
 			result[index++] = tempVehicle->getRenderable();
 			
-			//add the wheel renderables if we are looking at the
+			//add the wheel renderables
 			for (int w = WHEEL0; w <= WHEEL3; w++)
 				result[index++] = tempVehicle->m_Wheels[w].getRenderable();
 		}
@@ -159,6 +130,7 @@ Terrain* EntityManager::getTerrain () {
 }
 
 
+
 //------------------------------------------------------
 // Function: getPosition
 // Returns the position of the entity in the specified
@@ -190,6 +162,7 @@ void EntityManager::clear () {
 // Returns the number of entities being tracked by
 // the manager.
 //------------------------------------------------------
+
 int EntityManager::getSize () {
 	int result = 0;
 
@@ -201,10 +174,16 @@ int EntityManager::getSize () {
 
 
 
-PlayerVehicle* EntityManager::makePlayer (Device* device, Vec3 pos, LPCWSTR filename) 
-{
+//------------------------------------------------------
+// make Functions
+// These functions create an entity of the desired type,
+// add it to the entity manager, and return a pointer
+// to it.
+//------------------------------------------------------
+
+PlayerVehicle* EntityManager::makePlayer (Device* device, Vec3 pos, LPCWSTR filename) {
 	PlayerVehicle* pv = new PlayerVehicle();
-	pv->initialize( device, pos, filename );
+	pv->initialize (device, pos, filename);
 	entities[PLAYERS].push_back (pv);
 	return pv;
 }

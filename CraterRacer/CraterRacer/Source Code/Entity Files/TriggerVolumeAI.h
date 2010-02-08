@@ -4,6 +4,12 @@
 #include "AI.h"
 
 
+//------------------------------------------------------
+// Class: TriggerCylinder
+// Represents a cylindrical trigger volume with infinite
+// height.
+//------------------------------------------------------
+
 class TriggerCylinder : public AI {
 	float radius;
 
