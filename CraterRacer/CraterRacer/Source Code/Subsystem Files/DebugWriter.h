@@ -6,8 +6,8 @@
 #include <fstream>
 #include <string>
 
-#define NOMINMAX
-#include "NxPhysics.h"
+//#define NOMINMAX
+//#include "NxPhysics.h"
 #include "Constants.h"
 
 using namespace std;
@@ -18,7 +18,7 @@ public:
 	void writeToFile(string s);
 	void writeToFile(double d);
 	void writeToFile(float f);
-	void writeToFile(NxVec3 vec);
+	//void writeToFile(NxVec3 vec);
 	void writeToFile(Vec3 vec);
 	//void writeToFile(bool set);
 	void clearFile();
