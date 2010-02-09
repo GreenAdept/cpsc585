@@ -19,6 +19,7 @@ public:
 	Wheel();
 	~Wheel();
 
+	void  initialize( Device* device, LPWSTR filename );
 	float getDiameter();
 	float getAngle();
 

@@ -56,11 +56,15 @@ HRESULT Renderable::computeMeshWorldMatrix( Vec3 startPos )
     LPVOID pVBData;
     if( SUCCEEDED( pVB->Lock( 0, 0, &pVBData, D3DLOCK_READONLY ) ) )
     {
-        D3DXVECTOR3 vCtr;
+        Vec3 vCtr;
 		float radius = 0;
         D3DXComputeBoundingBox( ( D3DXVECTOR3* )pVBData, m_pMesh->m_dwNumVertices,
                                    D3DXGetFVFVertexSize( m_pMesh->GetMesh()->GetFVF() ),
                                    &min, &max );
+
+		D3DXComputeBoundingSphere( ( D3DXVECTOR3* )pVBData, m_pMesh->m_dwNumVertices,
+                       D3DXGetFVFVertexSize( m_pMesh->GetMesh()->GetFVF() ),
+                       &vCtr, &radius );
 
 		//translate the object to the position we want it to be in
 		D3DXMatrixTranslation( &m_matWorld, startPos.x, startPos.y, startPos.z );
@@ -68,7 +72,9 @@ HRESULT Renderable::computeMeshWorldMatrix( Vec3 startPos )
 		//set the bounding box values for future reference
 		m_BoundingBox.m_fHeight = max.y - min.y;
 		m_BoundingBox.m_fWidth = max.x - min.x;
-		m_BoundingBox.m_fLength = max.z - min.z;		
+		m_BoundingBox.m_fLength = max.z - min.z;	
+		m_BoundingBox.m_fRadius = radius;
+		m_BoundingBox.m_fCenter = vCtr;
 
         pVB->Unlock();
     }
