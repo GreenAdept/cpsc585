@@ -8,10 +8,41 @@
 //--------------------------------------------------------------------------------------
 // Function:  update
 //--------------------------------------------------------------------------------------
-void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat )
+void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat, Vec3 lTop, Vec3 rTop, Vec3 lBottom, Vec3 rBottom )
 {
+	Matrix matWheelPos;
+	Matrix translationMat;
+	BoundingBox tempBB = getBoundingBox();
+
 	setVelocity(velocity);
 	Entity::update(newPosition, mat);
+
+	//update wheel positions based on the car position and wheel angle
+	//for( int w=WHEEL0; w <= WHEEL3; w++ )
+	//{
+	
+		//Set wheel0 position
+		matWheelPos = mat;
+		D3DXMatrixTranslation( &matWheelPos, lTop.x, lTop.y, lTop.z );
+		m_Wheels[ 0 ].update( matWheelPos ); 
+
+		matWheelPos = mat;
+		D3DXMatrixTranslation( &matWheelPos, rTop.x, rTop.y, rTop.z );
+		m_Wheels[ 1 ].update( matWheelPos );
+
+		matWheelPos = mat;
+		D3DXMatrixTranslation( &matWheelPos, lBottom.x, lBottom.y, lBottom.z );
+		m_Wheels[ 2 ].update( matWheelPos );
+
+		matWheelPos = mat;
+		D3DXMatrixTranslation( &matWheelPos, rBottom.x, rBottom.y, rBottom.z );
+		m_Wheels[ 3 ].update( matWheelPos );
+
+		//D3DXMatrixMultiply( &matWheelPos, &matWheelPos, &translationMat );
+		
+		
+	//}
+
 }
 
 
@@ -38,10 +69,10 @@ void Vehicle::initialize( Device* device, Vec3 pos, LPCWSTR filename )
 {
 	Entity::initialize( device, pos, filename );
 
-	m_Wheels[ WHEEL0 ].initialize( device, pos, WHEEL0_FILE );
-	m_Wheels[ WHEEL1 ].initialize( device, pos, WHEEL1_FILE );
-	m_Wheels[ WHEEL2 ].initialize( device, pos, WHEEL2_FILE );
-	m_Wheels[ WHEEL3 ].initialize( device, pos, WHEEL3_FILE );
+	m_Wheels[ WHEEL0 ].initialize( device, WHEEL0_FILE );
+	m_Wheels[ WHEEL1 ].initialize( device, WHEEL1_FILE );
+	m_Wheels[ WHEEL2 ].initialize( device, WHEEL2_FILE );
+	m_Wheels[ WHEEL3 ].initialize( device, WHEEL3_FILE );
 }
 
 

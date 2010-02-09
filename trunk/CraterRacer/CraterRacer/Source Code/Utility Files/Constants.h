@@ -62,6 +62,8 @@ struct BoundingBox
 	float m_fWidth;
 	float m_fHeight;
 	float m_fLength;
+	Vec3  m_fCenter;
+	float m_fRadius;
 };
 
 
