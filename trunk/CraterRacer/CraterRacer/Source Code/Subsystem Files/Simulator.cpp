@@ -13,7 +13,7 @@ Simulator::Simulator()
 	m_Scene				= NULL;
 	m_rForceStrength	= 1000000;
 	m_bForceMode		= true;
-	m_vDefaultGravity	= NxVec3(0,-9.8,0);
+	m_vDefaultGravity	= NxVec3(0,-20,0);
 	m_GroundPlane		= NULL;
 	m_vP1Dir			= Vec3(0, 0, 0);
 	m_rRestitution		= NxReal(0.0);
@@ -282,45 +282,15 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	wheel[2] = NxVec3(width/2, 0, length/2);
 	wheel[3] = NxVec3(-width/2, 0, length/2);
 
+	NxVec3 wheelForce[4];
+	wheelForce[0] = NxVec3(0, 0, 0);
+	wheelForce[1] = NxVec3(0, 0, 0);
+	wheelForce[2] = NxVec3(0, 0, 0);
+	wheelForce[3] = NxVec3(0, 0, 0);
+
 	bool* buttons = vehicle->getButtons();
+
 	//INPUT
-	/*
-	for( int i = 0; i < 4; i++ )
-	{
-		if( !m_bInputs[i] ) { continue; } 
-
-		switch( i )
-		{
-			case LEFT: 
-			{ 
-				m_vForceVec = applyForceToActor( actor, NxVec3(-1,0,0), m_rForceStrength );
-				break; 
-			}
-			case FORWARD: 
-			{
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[2]);
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[3]);
-				//m_vForceVec = applyForceToActor( actor, NxVec3(0,0,1), m_rForceStrength );
-				break; 
-			}
-			case RIGHT: 
-			{
-				//vehicle->addLocalForceAtLocalPos(NxVec3(m_rForceStrength/10, 0, 0), NxVec3(0, 0, 10));
-				m_vForceVec = applyForceToActor( actor, NxVec3(1,0,0), m_rForceStrength );
-				break; 
-			}
-			case BACKWARD: 
-			{ 
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[0]);
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[1]);
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[2]);
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[3]);
-				break; 
-			}
-		}
-	}
-	*/
-
 	for( int i = 0; i < 4; i++ )
 	{
 		if( !buttons[i] ) { continue; } 
@@ -333,17 +303,24 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 				float x_dir = vehicle->getThumbstick();
 				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 				
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[2]);
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[3]);
-				//m_vForceVec = applyForceToActor( actor, NxVec3(0,0,1), m_rForceStrength );
+				//actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[2]);
+				//actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[3]);
+
+				wheelForce[2] += NxVec3(0, 0, m_rForceStrength/10);
+				wheelForce[3] += NxVec3(0, 0, m_rForceStrength/10);
 				break; 
 			}
 			case 1: //B_BUTTON
 			{
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[0]);
+				/*actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[0]);
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[1]);
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[2]);
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[3]);
+				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[3]);*/
+
+				wheelForce[0] += NxVec3(0, 0, -m_rForceStrength/10);
+				wheelForce[1] += NxVec3(0, 0, -m_rForceStrength/10);
+				wheelForce[2] += NxVec3(0, 0, -m_rForceStrength/10);
+				wheelForce[3] += NxVec3(0, 0, -m_rForceStrength/10);
 				break; 
 			}
 			case 2: //X_BUTTON
@@ -355,10 +332,29 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		}
 	}
 
+	//STEERING
+	float angle = vehicle->getThumbstick()* 20; //45 is maximum wheel angle
+	
+	if (angle > 0) {
+		//actor->addLocalForceAtLocalPos(NxVec3(-10000, 0, 0), wheel[0]);
+		//actor->addLocalForceAtLocalPos(NxVec3(-10000, 0, 0), wheel[1]);
+
+		wheelForce[0] += NxVec3(-10000, 0, 0);
+		wheelForce[1] += NxVec3(-10000, 0, 0);
+	}
+
+	else if (angle < 0) {
+		//actor->addLocalForceAtLocalPos(NxVec3(10000, 0, 0), wheel[0]);
+		//actor->addLocalForceAtLocalPos(NxVec3(10000, 0, 0), wheel[1]);
+
+		wheelForce[0] += NxVec3(10000, 0, 0);
+		wheelForce[1] += NxVec3(10000, 0, 0);
+	}
+
 	//SUSPENSION
 	for (int i = 0; i < 4 /*number of wheels*/; i++) {
 		//Ray casting
-		NxVec3 origin = actor->getGlobalPosition() + wheel[i] - NxVec3(0, height, 0);
+		NxVec3 origin = actor->getGlobalPosition() + wheel[i];
 		NxVec3 direction(0, -1, 0);
 
 		NxRay ray(origin, direction);
@@ -368,25 +364,24 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		//m_Debugger.writeToFile(hit.distance);
 
 		//apply forces due to suspension
-		if (hit.distance < wheelDiameter) {
-			actor->addLocalForceAtLocalPos(NxVec3(0, 0.1, 0), wheel[i]); //(0.5) * (m_rForceStrength/10) * (wheelDiameter - hit.distance) * (wheelDiameter - hit.distance)
+		if (hit.distance < (wheelDiameter + height)) {
+			//actor->addLocalForceAtLocalPos(NxVec3(0, 0.1, 0), wheel[i]); //(0.5) * (m_rForceStrength/10) * (wheelDiameter - hit.distance) * (wheelDiameter - hit.distance)
+			
+			wheelForce[i] += NxVec3(0, (m_rForceStrength/100) * (wheelDiameter - hit.distance), 0);// * (wheelDiameter - hit.distance), 0);
+
+			actor->addLocalForceAtLocalPos(wheelForce[i], wheel[i]);
+
+			
+			//m_Debugger.writeToFile("here!!!!");
 		}
+		/*m_Debugger.writeToFile("hit distance");
+			m_Debugger.writeToFile(hit.distance);
+			m_Debugger.writeToFile("wheel diameter");
+			m_Debugger.writeToFile(wheelDiameter);
+			Vec3 test(wheelForce[i].x, wheelForce[i].y, wheelForce[i].z);
+			m_Debugger.writeToFile(test);
+		m_Debugger.writeToFile("");*/
 	}
-
-	//STEERING
-	float angle = vehicle->getThumbstick()* 20; //45 is maximum wheel angle
-	
-	if (angle > 0) {
-		actor->addLocalForceAtLocalPos(NxVec3(-10000, 0, 0), wheel[0]);
-		actor->addLocalForceAtLocalPos(NxVec3(-10000, 0, 0), wheel[1]);
-	}
-
-	else if (angle < 0) {
-		actor->addLocalForceAtLocalPos(NxVec3(10000, 0, 0), wheel[0]);
-		actor->addLocalForceAtLocalPos(NxVec3(10000, 0, 0), wheel[1]);
-	}
-
-
 
 	//get the angle of the normal to the wheel direction
 	/*if (angle > 0) {
