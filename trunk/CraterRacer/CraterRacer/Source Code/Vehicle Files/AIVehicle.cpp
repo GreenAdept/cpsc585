@@ -8,7 +8,5 @@
 
 AI* AIVehicle::getAI ( ) 
 {
-	mind.setPosition( m_vPosition );
-	//insert more data brokering here
 	return &mind;
 }

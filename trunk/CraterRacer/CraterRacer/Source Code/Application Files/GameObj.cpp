@@ -45,7 +45,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 {
 	vector<Vehicle*> m_Vehicles = m_Entities.getVehicles();
-	Vehicle* v = m_Vehicles[0];
+	Input* v = m_Vehicles[0]->getInputObj();
 
 	v->setController(false);
 
@@ -95,7 +95,7 @@ void GameObj::processInput( float fElapsedTime )
 {
 	vector<Vehicle*> m_Vehicles = m_Entities.getVehicles();
 	m_Controller1->Update(fElapsedTime);
-	Vehicle* v = m_Vehicles[0];
+	Input* v = m_Vehicles[0]->getInputObj();
 	//Vec3 dir(m_Controller1->LeftThumbstick.GetX(), 0, m_Controller1->LeftThumbstick.GetY());
 	/*
 	if (m_Controller1->A.WasPressedOrHeld())

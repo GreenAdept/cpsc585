@@ -23,8 +23,8 @@ public:
 
 	//Public interface -----------------------------------------
 
-	AIVehicle( void ){ }
-	AI* getAI(void);
+	AIVehicle ( void ){ }
+	AI* getAI (void);
 
 };
 #endif

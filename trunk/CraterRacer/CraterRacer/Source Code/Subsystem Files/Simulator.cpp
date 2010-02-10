@@ -272,7 +272,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		localWheelForce[i] = globalWheelForce[i] = NxVec3(0, 0, 0);
 	}
 
-	bool* buttons = vehicle->getButtons();
+	bool* buttons = vehicle->getInputObj()->getButtons();
 
 	//NxVec3 test = actor->getGlobalOrientation() * actor->getLinearVelocity();
 	//m_Debugger.writeToFile(Vec3(test.x, test.y, test.z));
@@ -287,7 +287,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 			case 0: //A_BUTTON - accelerate
 			{
 				//TODO: change tire orientation
-				float x_dir = vehicle->getThumbstick();
+				float x_dir = vehicle->getInputObj()->getThumbstick();
 				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 				
 				//actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[2]);
@@ -331,7 +331,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	}
 
 	//STEERING
-	float angle = vehicle->getThumbstick()* 35; //35 is maximum wheel angle
+	float angle = vehicle->getInputObj()->getThumbstick()* 35; //35 is maximum wheel angle
 
 	NxVec3 force(-50000*sin(angle*PI/180), 0, -100000*sin(angle*PI/180));
 	localWheelForce[0] += force;
