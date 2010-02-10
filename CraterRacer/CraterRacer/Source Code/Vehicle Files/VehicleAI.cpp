@@ -19,21 +19,37 @@ void VehicleAI::setInput(Input::Arrow dir, bool isKeyDown) {
 	input.setInput(dir, isKeyDown);
 }
 
+//--------------------------------------------------------------------------------------
+// Function: setController
+// Delegates setController to input system.
+//--------------------------------------------------------------------------------------
 void VehicleAI::setController(bool controller)
 {
 	input.setController(controller);
 }
 
+//--------------------------------------------------------------------------------------
+// Function:: getController
+// Delegates getController to input system.
+//--------------------------------------------------------------------------------------
 bool VehicleAI::getController()
 {
 	return input.getController();
 }
 
+//--------------------------------------------------------------------------------------
+// Function: setThumbstick
+// Delegates setThumbstick to input system.
+//--------------------------------------------------------------------------------------
 void VehicleAI::setThumbstick(float x)
 {
 	input.setThumbstick(x);
 }
 
+//--------------------------------------------------------------------------------------
+// Function: getThumbstick
+// Delegates getThumbstick to input system.
+//--------------------------------------------------------------------------------------
 float VehicleAI::getThumbstick() {
 	return input.getThumbstick();
 }
@@ -76,19 +92,27 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 }
 
 //--------------------------------------------------------------------------------------
-// Function: drive
-// Delegates driving information to input.
+// Function: setDir
+// Delegates setDir information to input. (XBox controller version)
 //--------------------------------------------------------------------------------------
 void VehicleAI::setDir(float x, Input::Button button)
 {
 	input.setDir(x, button);
 }
 
+//--------------------------------------------------------------------------------------
+// Function: setDir
+// Delegates setDir information to input. (XBox controller version)
+//--------------------------------------------------------------------------------------
 void VehicleAI::setDir(float x)
 {
 	input.setDir(x);
 }
 
+//--------------------------------------------------------------------------------------
+// Function: setDir
+// Delegates setDir information to input. (Keyboard version)
+//--------------------------------------------------------------------------------------
 void VehicleAI::setDir(Input::Arrow dir, bool isKeyDown)
 {
 	input.setDir(dir, isKeyDown);

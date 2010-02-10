@@ -66,15 +66,15 @@ private:
 
 	//Time 
 	double				m_dDeltaTime;
-	bool*				m_bInputs;
-	bool*				m_bButtons;
+	//bool*				m_bInputs;
+	//bool*				m_bButtons;
 
 	//Actors
 	NxActor*			m_GroundPlane;
 	vector< NxActor* >	m_Vehicles;
 	NxActor*			m_Terrain;
 
-	Vec3				m_vP1Dir;
+	//Vec3				m_vP1Dir;
 
 	//Debugging
 	DebugWriter			m_Debugger;
