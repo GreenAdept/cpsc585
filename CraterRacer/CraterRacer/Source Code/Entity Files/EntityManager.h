@@ -44,11 +44,11 @@ public:
 	std::vector<Vehicle*>    getVehicles ();
 	std::vector<Renderable*> getRenderables ();
 	std::vector<AI*>         getAIs (int list);
-	Input*                   getPlayerInputObj (int index);
-	Input*                   getComputerInputObj (int index);
 	Terrain*                 getTerrain ();
 	
-	Vec3 getPosition (int list, int index);
+	Vec3   getPosition         (int list, int index);
+	Input* getPlayerInputObj   (int index);
+	Input* getComputerInputObj (int index);
 
 	void addEntity (int list, Entity* e) { entities[list].push_back(e); }
 	PlayerVehicle* makePlayer   (Device* device, Vec3 pos, LPCWSTR filename);

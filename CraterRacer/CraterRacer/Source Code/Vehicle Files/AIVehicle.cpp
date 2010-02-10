@@ -5,8 +5,3 @@
 
 #include "AIVehicle.h"
 
-
-AI* AIVehicle::getAI ( ) 
-{
-	return &mind;
-}

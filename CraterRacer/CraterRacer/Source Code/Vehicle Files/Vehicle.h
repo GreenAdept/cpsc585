@@ -35,7 +35,6 @@ Wheel angle (degrees):
 #define NOMINMAX
 #include "Entity.h"
 #include "Input.h"
-#include "VehicleAI.h"
 #include "Wheel.h"
 
 using namespace std;
@@ -50,9 +49,7 @@ using namespace std;
 
 class Vehicle: public Entity 
 {
-
 public:
-
 	// Public interface ------------------------------------
 
 	Vehicle( void ) { }
@@ -73,9 +70,9 @@ public:
 	Wheel m_Wheels[4];
 
 protected:
-	VehicleAI mind;
-	Vec3 velocity;	//m/s
-	int mass;		//kg
+	Input input;
+	Vec3  velocity;	//m/s
+	int   mass;		//kg
 };
 
 #endif //VEHICLE_H

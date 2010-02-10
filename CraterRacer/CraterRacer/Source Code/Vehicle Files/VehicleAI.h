@@ -1,7 +1,8 @@
-#include "Input.h"
+#ifndef VEHICLE_AI_H
+#define VEHICLE_AI_H
+
 #include "AI.h"
 #include "Constants.h"
-#include "DebugWriter.h"
 
 //-----------------------------------------
 // Class: VehicleAI
@@ -13,9 +14,7 @@ class VehicleAI : public AI {
 public:
 	VehicleAI();
 	void think (EntityManager *em, int myList, int myIndex);
-	Input *getInputObj () { return &input; }
-
-protected:
-	Input input;
-	DebugWriter writer;
 };
+
+
+#endif

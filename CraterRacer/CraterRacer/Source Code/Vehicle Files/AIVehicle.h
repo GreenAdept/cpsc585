@@ -7,6 +7,7 @@
 //--------------------------------------------------------
 
 #include "Vehicle.h"
+#include "VehicleAI.h"
 
 
 //---------------------------------------------------------
@@ -16,15 +17,15 @@
 //		by our game algorithms.
 //---------------------------------------------------------
 
-class AIVehicle: public Vehicle 
-{
+class AIVehicle: public Vehicle {
 	VehicleAI mind;
-public:
 
+public:
 	//Public interface -----------------------------------------
 
-	AIVehicle ( void ){ }
-	AI* getAI (void);
-
+	AIVehicle () { }
+	AI* getAI () { return &mind; }
 };
+
+
 #endif

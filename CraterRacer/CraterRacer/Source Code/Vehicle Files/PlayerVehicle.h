@@ -7,7 +7,6 @@
 //--------------------------------------------------------
 
 #include "Vehicle.h"
-#include "DebugWriter.h"
 
 //---------------------------------------------------------
 //		CLASS: PlayerVehicle
@@ -24,11 +23,7 @@ public:
 	//Public interface ------------------------------------
 
 	PlayerVehicle( void ) { }
-
 	void update( void );
-
-protected:
-	DebugWriter writer;
 };
 
 #endif //PLAYERVEHICLE_H
