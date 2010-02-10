@@ -46,6 +46,7 @@ private:
 	void getPhysicsResults(void);
 	void processForceKeys(void);
 	void processForceKeys(NxActor* actor, Vehicle* vehicle);
+	NxVec3 normalize(NxVec3 vec);
 	NxVec3 applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength);
 	
 	// Physics SDK 

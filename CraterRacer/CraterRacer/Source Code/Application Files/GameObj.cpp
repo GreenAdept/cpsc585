@@ -147,6 +147,14 @@ void GameObj::processInput( float fElapsedTime )
 	{
 		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::B_BUTTON);
 	}
+	else if (m_Controller1->Y.WasPressedOrHeld())
+	{
+		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::Y_BUTTON);
+	}
+	else if (m_Controller1->X.WasPressedOrHeld())
+	{
+		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::X_BUTTON);
+	}
 	else
 	{
 		v->setDir(m_Controller1->LeftThumbstick.GetX());

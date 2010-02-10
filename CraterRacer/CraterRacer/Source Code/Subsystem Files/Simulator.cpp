@@ -275,6 +275,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	float height = vehicle->getBoundingBox().m_fHeight;
 	float wheelDiameter = vehicle->m_Wheels[0].getDiameter();
 	float wheelRadius = wheelDiameter / 2.0;
+	bool freeze = false;
 
 	NxVec3 wheel[4];
 	wheel[0] = NxVec3(width/2, 0, -length/2);
@@ -297,7 +298,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 
 		switch( i )
 		{
-			case 0: //A_BUTTON
+			case 0: //A_BUTTON - accelerate
 			{
 				//TODO: change tire orientation
 				float x_dir = vehicle->getThumbstick();
@@ -310,24 +311,40 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 				wheelForce[3] += NxVec3(0, 0, m_rForceStrength/10);
 				break; 
 			}
-			case 1: //B_BUTTON
+			case 1: //B_BUTTON - brake
 			{
 				/*actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[0]);
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[1]);
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[2]);
 				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[3]);*/
+				
+				NxVec3 velocity = normalize(actor->getLinearVelocity());
 
-				wheelForce[0] += NxVec3(0, 0, -m_rForceStrength/10);
+				/*if (velocity.magnitude() < 1.5) {
+					freeze = true;
+				}*/
+				//else {
+					wheelForce[0] += (velocity * (-m_rForceStrength/10));
+					wheelForce[1] += (velocity * (-m_rForceStrength/10));
+					wheelForce[2] += (velocity * (-m_rForceStrength/10));
+					wheelForce[3] += (velocity * (-m_rForceStrength/10));
+				//}
+
+				//m_Debugger.writeToFile(velocity.magnitude());
+
+				/*wheelForce[0] += NxVec3(0, 0, -m_rForceStrength/10);
 				wheelForce[1] += NxVec3(0, 0, -m_rForceStrength/10);
 				wheelForce[2] += NxVec3(0, 0, -m_rForceStrength/10);
-				wheelForce[3] += NxVec3(0, 0, -m_rForceStrength/10);
+				wheelForce[3] += NxVec3(0, 0, -m_rForceStrength/10);*/
 				break; 
 			}
-			case 2: //X_BUTTON
+			case 2: //X_BUTTON - stop all motion
 			{
+				freeze = true;
 			}
-			case 3: //Y_BUTTON
-			{	
+			case 3: //Y_BUTTON - emergency brake
+			{
+				
 			}
 		}
 	}
@@ -383,6 +400,12 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		m_Debugger.writeToFile("");*/
 	}
 
+	if (freeze) {
+		//actor->setAngularVelocity(0);
+		//actor->setLinearVelocity(0);
+		freeze = false;
+	}
+
 	//get the angle of the normal to the wheel direction
 	/*if (angle > 0) {
 		angle = angle + 90;
@@ -409,6 +432,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	
 	//xbox controllers
 	//m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3( m_vP1Dir.x, 0, m_vP1Dir.z), m_rForceStrength);
+}
+
+NxVec3 Simulator::normalize(NxVec3 vec) {
+	NxReal mag = vec.magnitude();
+	return NxVec3(vec.x/mag, vec.y/mag, vec.z/mag);
 }
 
 //--------------------------------------------------------------------------------------
