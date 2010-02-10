@@ -69,6 +69,8 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 		break;
 	}
 	*/
+	v->setController(false);
+
 	switch (virtualKeyCode)
 	{
 	case VK_LEFT:
@@ -162,8 +164,11 @@ void GameObj::processInput( float fElapsedTime )
 
 	//Setting the input from Xbox controller
 	
-	//using xbox controller
-	v->setController(true);
+	if (m_Controller1->IsConnected())
+	{
+		//using xbox controller
+		v->setController(true);
+	}
 /*
 	//accelerate
 	if (m_Controller1->A.WasPressedOrHeld())
