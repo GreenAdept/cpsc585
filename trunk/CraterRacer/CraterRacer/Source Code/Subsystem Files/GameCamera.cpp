@@ -21,7 +21,7 @@ GameCamera::GameCamera () {
 //------------------------------------------------------
 
 Vec3 GameCamera::interpolate (float dist, Vec3 newEye) {
-	float w = (dist+0.0001f) / (distTotal+dist+0.0001f);
+	float w = dist / (dist+5.0f);
 	return eye*(1-w) + newEye*w;
 }
 
@@ -33,8 +33,6 @@ Vec3 GameCamera::interpolate (float dist, Vec3 newEye) {
 
 void GameCamera::setTarget (Entity *e) {
 	target = e;
-	index = 0;
-	distTotal = 0.0f;
 
 	if (target==0) {
 		lookAt = Vec3 (0.0f, 0.0f, 0.0f);
@@ -79,29 +77,8 @@ MCamera GameCamera::getCamera () {
 	Vec3 temp;
 	D3DXVec3TransformNormal (&temp, &offset, &target->getPositionMatrix());
 	Vec3 newEye = lookAt + temp;
-	
-	if (dist <= 0.0001f) {
-		if (index > 0) {
-			index--;
-			distTotal -= distBuffer[index];
-			eye = interpolate (distBuffer[index], newEye);
-		}
-		else
-			distTotal = 0.0f;
-		camera.SetViewParams (&eye, &lookAt);
-		return camera;
-	}
 
-	if (index < FRAME_DELAY) {
-		distBuffer[index] = dist;
-		distTotal += dist;
-		index++;
-		camera.SetViewParams (&eye, &lookAt);
-		return camera;
-	}
-	else {
-		eye = interpolate (dist, newEye);
-		camera.SetViewParams (&eye, &lookAt);
-		return camera;
-	}
+	eye = interpolate (dist, newEye);
+	camera.SetViewParams (&eye, &lookAt);
+	return camera;
 }
