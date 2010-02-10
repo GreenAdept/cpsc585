@@ -11,14 +11,6 @@
 
 
 //-------------------------------------------------
-// Parameter to control the amount of frame delay
-// in the camera.
-//-------------------------------------------------
-
-#define FRAME_DELAY 30
-
-
-//-------------------------------------------------
 // Class: GameCamera
 
 // Implementation of a laggy game camera.
@@ -31,10 +23,6 @@ class GameCamera {
 	Vec3 offset;
 	Vec3 eye, lookAt;
 	Vec3 interpolate (float distance, Vec3 newEye);
-	
-	int index;
-	float distTotal;
-	float distBuffer [FRAME_DELAY];
 
 public:
 	GameCamera();
