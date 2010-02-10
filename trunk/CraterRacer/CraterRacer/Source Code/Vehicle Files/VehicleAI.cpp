@@ -2,6 +2,7 @@
  The Vehicle's AI class.
 */
 #include "VehicleAI.h"
+#include "EntityManager.h"
 
 //--------------------------------------------------------------------------------------
 // Constructor:

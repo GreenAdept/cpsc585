@@ -120,16 +120,6 @@ vector<AI*> EntityManager::getAIs (int list) {
 	return result;
 }
 
-Input* EntityManager::getPlayerInputObj (int index) {
-	Vehicle* v = (Vehicle*) entities[PLAYERS][index];
-	return v->getInputObj ();
-}
-
-Input* EntityManager::getComputerInputObj (int index) {
-	Vehicle* v = (Vehicle*) entities[COMPUTERS][index];
-	return v->getInputObj ();
-}
-
 //------------------------------------------------------
 // Function: getTerrain
 // Returns a pointer to the terrain entity.
@@ -149,6 +139,16 @@ Terrain* EntityManager::getTerrain () {
 
 Vec3 EntityManager::getPosition (int list, int index) {
 	return entities[list][index]->getPosition();
+}
+
+Input* EntityManager::getPlayerInputObj (int index) {
+	Vehicle* v = (Vehicle*) entities[PLAYERS][index];
+	return v->getInputObj ();
+}
+
+Input* EntityManager::getComputerInputObj (int index) {
+	Vehicle* v = (Vehicle*) entities[COMPUTERS][index];
+	return v->getInputObj ();
 }
 
 //------------------------------------------------------

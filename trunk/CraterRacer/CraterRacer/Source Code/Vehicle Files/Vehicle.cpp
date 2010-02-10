@@ -94,7 +94,11 @@ int Vehicle::getMass()
 }
 
 
+//--------------------------------------------------------------------------------------
+// Function:  getInputObj
+// Returns a pointer to the input object for this vehicle.
+//--------------------------------------------------------------------------------------
 Input* Vehicle::getInputObj ()
 {
-	return mind.getInputObj();
+	return &input;
 }
