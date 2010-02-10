@@ -94,37 +94,7 @@ int Vehicle::getMass()
 }
 
 
-//--------------------------------------------------------------------------------------
-// Function:  setController
-//--------------------------------------------------------------------------------------
-void Vehicle::setController( bool controller )
+Input* Vehicle::getInputObj ()
 {
-	mind.setController(controller);
-}
-
-
-//--------------------------------------------------------------------------------------
-// Function:  getController
-//--------------------------------------------------------------------------------------
-bool Vehicle::getController( )
-{
-	return mind.getController();
-}
-
-
-//--------------------------------------------------------------------------------------
-// Function:  setThumbstick
-//--------------------------------------------------------------------------------------
-void Vehicle::setThumbstick( float x )
-{
-	mind.setThumbstick(x);
-}
-
-
-//--------------------------------------------------------------------------------------
-// Function:  getThumbstick
-//--------------------------------------------------------------------------------------
-float Vehicle::getThumbstick()
-{
-	return mind.getThumbstick();
+	return mind.getInputObj();
 }
