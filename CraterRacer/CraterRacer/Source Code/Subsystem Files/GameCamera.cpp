@@ -21,7 +21,7 @@ GameCamera::GameCamera () {
 //------------------------------------------------------
 
 Vec3 GameCamera::interpolate (float dist, Vec3 newEye) {
-	float w = dist / (distTotal+dist);
+	float w = (dist+0.0001f) / (distTotal+dist+0.0001f);
 	return eye*(1-w) + newEye*w;
 }
 
@@ -80,12 +80,14 @@ MCamera GameCamera::getCamera () {
 	D3DXVec3TransformNormal (&temp, &offset, &target->getPositionMatrix());
 	Vec3 newEye = lookAt + temp;
 	
-	if (dist == 0.0f) {
+	if (dist <= 0.0001f) {
 		if (index > 0) {
 			index--;
 			distTotal -= distBuffer[index];
-			eye = interpolate (dist, newEye);
+			eye = interpolate (distBuffer[index], newEye);
 		}
+		else
+			distTotal = 0.0f;
 		camera.SetViewParams (&eye, &lookAt);
 		return camera;
 	}
