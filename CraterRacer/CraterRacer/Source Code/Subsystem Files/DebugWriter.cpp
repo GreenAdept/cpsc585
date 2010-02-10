@@ -56,5 +56,4 @@ void DebugWriter::clearFile() {
   myfile.close();
 }
 
-
 void DebugWriter::close() {}

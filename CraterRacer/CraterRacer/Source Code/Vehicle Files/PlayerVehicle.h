@@ -7,6 +7,7 @@
 //--------------------------------------------------------
 
 #include "Vehicle.h"
+#include "DebugWriter.h"
 
 //---------------------------------------------------------
 //		CLASS: PlayerVehicle
@@ -34,6 +35,9 @@ public:
 	void setDir(float x, Input::Button button);
 	void setDir(float x);
 	void setDir(Input::Arrow, bool isKeyDown);
+
+protected:
+	DebugWriter writer;
 };
 
 #endif //PLAYERVEHICLE_H
