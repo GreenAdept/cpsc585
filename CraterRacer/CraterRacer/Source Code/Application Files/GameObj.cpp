@@ -20,6 +20,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	
 	// Create entities
 	Vehicle *pv = m_Entities.makePlayer( device, pos, CAR_BODY_FILE );
+	Vehicle *av = m_Entities.makeComputer( device, Vec3 (-10.0f, 30.0f, 0.0f), CAR_BODY_FILE );
 	//Meteor *m = m_Entities.makeMeteor (device, Vec3 (-10.0f, 0.0f, 0.0f), OBJ_FILE);
 
 	// Create the terrain
@@ -32,6 +33,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 
 	// Add our vehicle to the PhysX system
 	m_Simulator->createVehicle( pos, pv->getBoundingBox() );
+	m_Simulator->createVehicle( av->getPosition(), pv->getBoundingBox() );
 
 	// Initialize camera and set it to follow the player
 	m_Camera.updateWindow( pSurface );
@@ -78,7 +80,13 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 //--------------------------------------------------------------------------------------
 void GameObj::think ()
 {
-	vector<AI*> minds = m_Entities.getAIs (METEORS);
+	vector<AI*> minds;
+
+	minds = m_Entities.getAIs (COMPUTERS);
+	for (int i=0; i<minds.size(); i++)
+		minds[i]->think (&m_Entities, COMPUTERS, i);
+
+	minds = m_Entities.getAIs (METEORS);
 	for (int i=0; i<minds.size(); i++) {
 		minds[i]->think (&m_Entities, METEORS, i);
 		if (minds[i]->getState() == AI::TRIGGERED)

@@ -12,7 +12,8 @@
 
 class VehicleAI : public AI {
 public:
-	VehicleAI();
+	VehicleAI () {}
+
 	void think (EntityManager *em, int myList, int myIndex);
 };
 
