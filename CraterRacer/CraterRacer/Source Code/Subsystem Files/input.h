@@ -13,7 +13,7 @@ class Input
 public:
 	//enum class of directions
 	static enum Arrow { LEFT, UP, RIGHT, DOWN };
-	static enum Button { A_BUTTON, B_BUTTON, X_BUTTON, Y_BUTTON };
+	static enum Button { A_BUTTON, B_BUTTON, X_BUTTON, Y_BUTTON, LT_BUTTON, RT_BUTTON };
 
 	Input();
 	void setInput(Arrow dir, bool isKeyDown);
@@ -30,8 +30,8 @@ public:
 	void setDir(Input::Arrow, bool isKeyDown);
 
 private:
-	bool inputs[4];
-	bool buttons[4];
+	bool inputs[6];
+	bool buttons[6];
 
 	bool xBoxController;
 	float x;
