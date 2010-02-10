@@ -5,394 +5,1137 @@ height
 2
 length
 6
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-buttons in input.getButtons
-false
-true
-false
-false
-buttons in input.getButtons
-false
-true
-false
-false
-buttons in input.getButtons
-false
-true
-false
-false
-buttons in input.getButtons
-false
-true
-false
-false
-buttons in input.getButtons
-false
-true
-false
-false
-buttons in input.getButtons
-false
-true
-false
-false
-buttons in input.getButtons
-false
-true
-false
-false
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-buttons in input.getButtons
-false
-true
-false
-false
-Pressing B
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
-buttons in input.getButtons
-false
-false
-false
-false
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+-1
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+0
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1
+thumbstick gotten in sim
+1

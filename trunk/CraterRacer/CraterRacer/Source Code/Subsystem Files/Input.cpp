@@ -50,16 +50,20 @@ bool* Input::getInput()
 bool* Input::getButtons()
 {
 	//debug: not ok here
-	m_Debugger.writeToFile("buttons in input.getButtons");
-	buttons[Button::A_BUTTON] = inputs[Arrow::UP];
-	buttons[Button::B_BUTTON] = inputs[Arrow::DOWN];
+	//m_Debugger.writeToFile("buttons in input.getButtons");
 
+	if (!xBoxController)
+	{
+		buttons[Button::A_BUTTON] = inputs[Arrow::UP];
+		buttons[Button::B_BUTTON] = inputs[Arrow::DOWN];
+	}
+/*
 	for (int i = 0; i < 4; i++)
 		if (buttons[i])
 			m_Debugger.writeToFile("true");
 		else
 			m_Debugger.writeToFile("false");
-	
+*/	
 	return buttons;
 }
 
@@ -100,19 +104,15 @@ void Input::setThumbstick(float x)
 // Gets the x value of the left thumbstick.
 //--------------------------------------------------------------------------------------
 float Input::getThumbstick() {
-	m_Debugger.writeToFile("getting thumbstick");
-	m_Debugger.writeToFile(x);
-	if (!xBoxController)
+	if (!xBoxController) {
 		if (inputs[Arrow::LEFT])
-		{
-			m_Debugger.writeToFile("sending -1");
 			return -1.0;
-		}
 		else if (inputs[Arrow::RIGHT])
 			return 1.0;
 		else
 			return 0;
-		
+	}
+	//else return the controller value
 	return x;
 }
 
@@ -141,11 +141,6 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 		case (Arrow::LEFT):
 			{
 				setThumbstick(-1.0);
-				m_Debugger.writeToFile("set thumbstick to -1");
-
-				//if (inputs[Arrow::LEFT]) m_Debugger.writeToFile("inputs[left] = true");
-				//else m_Debugger.writeToFile("inputs[left] = false");
-
 				break;
 			}
 		case (Arrow::UP):
@@ -156,7 +151,6 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 		case (Arrow::RIGHT):
 			{
 				setThumbstick(1.0);
-				//inputs[Arrow::RIGHT] = isKeyDown;
 				break;
 			}
 		case (Arrow::DOWN):
@@ -167,12 +161,4 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 		default:
 			break;
 	}
-/*	//debug: this looks ok
-	m_Debugger.writeToFile("buttons in input.setDir");
-	for (int i = 0; i < 4; i++)
-		if (buttons[i])
-			m_Debugger.writeToFile("true");
-		else
-			m_Debugger.writeToFile("false");
-*/
 }
