@@ -100,32 +100,15 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 			forward = false;
 		}*/
 
-		//Get the new position of the vehicle in vector and matrix formats
-		NxVec3 vec	 = m_Vehicles[i]->getGlobalPosition();
-		//float height = vehicles[i]->getBoundingBox().m_fHeight;
-
-		Matrix m, newMat;
-		NxMat34 mat;
+		//Get the new position of the vehicle in vector and matrix format
+		Matrix m;
+		NxVec3 vec = m_Vehicles[i]->getGlobalPosition();
 		m_Vehicles[i]->getGlobalPose().getColumnMajor44( m );
-		mat = m_Vehicles[i]->getGlobalPose();
-
-		BoundingBox BB = vehicles[i]->getBoundingBox();
-		NxVec3 leftTop( -BB.m_fWidth/2, -BB.m_fHeight, BB.m_fLength/2 );
-		NxVec3 rightTop( BB.m_fWidth/2, -BB.m_fHeight, BB.m_fLength/2 );
-		NxVec3 leftBottom( -BB.m_fWidth/2, -BB.m_fHeight, -BB.m_fLength/2 );
-		NxVec3 rightBottom( BB.m_fWidth/2, -BB.m_fHeight, -BB.m_fLength/2 );
-
-		leftTop =  mat * leftTop;
-		rightTop =  mat * rightTop;
-		leftBottom =  mat * leftBottom;
-		rightBottom =  mat * rightBottom;
-
-		//D3DXMatrixTranslation( &m, vec.x, vec.y-height, vec.z );
 		
 		NxVec3 vlc = m_Vehicles[i]->getLinearVelocity();
 
 		//Update the vehicle position in the game
-		vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m, Vec3( &leftTop.x ), Vec3( &rightTop.x ), Vec3( &leftBottom.x ), Vec3( &rightBottom.x ) );
+		vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m );
 	
 		//
 		//m_Debugger.writeToFile("global pos");
