@@ -29,7 +29,6 @@ public:
 	void setInput(Input::Arrow dir, bool isKeyDown);
 	bool* getInput();
 	bool* getButtons();
-	Vec3 getDir();
 	void resetInput();
 
 	void setDir(float x, Input::Button button);

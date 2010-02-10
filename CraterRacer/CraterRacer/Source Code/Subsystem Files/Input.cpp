@@ -1,21 +1,22 @@
-/*
-The input system.
-*/
+//--------------------------------------------------------------------------------------
+// The input system.
+//--------------------------------------------------------------------------------------
 
 #include "Input.h"
 
-/*
-The constructor for Input. Just sets all the values to false.
-*/
+//--------------------------------------------------------------------------------------
+// Constructor: Input
+// The constructor for Input. Just sets all the values to false.
+//--------------------------------------------------------------------------------------
 Input::Input() 
 {
 	reset();
-	reversing = false;
 }
 
-/*
-Makes all the directions false.
-*/
+//--------------------------------------------------------------------------------------
+// Function: reset
+// Resets the inputs, buttons, and xBoxController to false
+//--------------------------------------------------------------------------------------
 void Input::reset()
 {
 	for (int i = 0; i < 4; i++)
@@ -24,52 +25,42 @@ void Input::reset()
 		buttons[i] = false;
 	}
 
-	direction = Vec3(0.0, 0.0, 0.0);
-
 	xBoxController = false;
 }
 
-/*
-Set the direction to true if the key is currently down, and false 
-when the player releases the key.
-*/
+//--------------------------------------------------------------------------------------
+// Function: setInput
+// Set the direction to true if the key is currently down, and false 
+// when the player releases the key.
+//--------------------------------------------------------------------------------------
 void Input::setInput(Input::Arrow dir, bool isKeyDown)
 {
 	inputs[dir] = isKeyDown;
 }
 
-
-/*
-Returns the directions array.
-*/
+//--------------------------------------------------------------------------------------
+// Function: getInput
+// Returns the inputs array.
+//--------------------------------------------------------------------------------------
 bool* Input::getInput()
 {
 	return inputs;
 }
 
+//--------------------------------------------------------------------------------------
+// Function: getButtons
+// Returns the buttons array. If using the keyboard, buttons[A_BUTTON] and
+// buttons[B_BUTTON] have to be set manually from inputs due to an unknown bug.
+//--------------------------------------------------------------------------------------
 bool* Input::getButtons()
 {
-	//debug: not ok here
-	//m_Debugger.writeToFile("buttons in input.getButtons");
-
 	if (!xBoxController)
 	{
 		buttons[Button::A_BUTTON] = inputs[Arrow::UP];
 		buttons[Button::B_BUTTON] = inputs[Arrow::DOWN];
 	}
-/*
-	for (int i = 0; i < 4; i++)
-		if (buttons[i])
-			m_Debugger.writeToFile("true");
-		else
-			m_Debugger.writeToFile("false");
-*/	
-	return buttons;
-}
 
-Vec3 Input::getDir()
-{
-	return direction;
+	return buttons;
 }
 
 //--------------------------------------------------------------------------------------
@@ -101,7 +92,9 @@ void Input::setThumbstick(float x)
 
 //--------------------------------------------------------------------------------------
 // Function: setThumbstick
-// Gets the x value of the left thumbstick.
+// Gets the x value of the left thumbstick. If using the keyboard, then return -1 if 
+// the left key is pressed, 1 if the right key is pressed, or 0 if neither are pressed.
+// This is done to avoid an unknown bug.
 //--------------------------------------------------------------------------------------
 float Input::getThumbstick() {
 	if (!xBoxController) {
@@ -116,7 +109,11 @@ float Input::getThumbstick() {
 	return x;
 }
 
-//should be called only (from gameobj) when no buttons are pressed
+//--------------------------------------------------------------------------------------
+// Function: setDir
+// Called from GameObj.processInput when no buttons are pushed, so we only look at
+// the left stick. Sets all the buttons to false.
+//--------------------------------------------------------------------------------------
 void Input::setDir(float x)
 {
 	setThumbstick(x);
@@ -126,7 +123,8 @@ void Input::setDir(float x)
 
 //--------------------------------------------------------------------------------------
 // Function: setDir
-// Determines which direction to go in, and force if applicable.
+// Called when an xBox button is pushed, sets the corresponding button to true, and
+// updates the thumbstick.
 //--------------------------------------------------------------------------------------
 void Input::setDir(float x, Input::Button button)
 {
@@ -134,13 +132,19 @@ void Input::setDir(float x, Input::Button button)
 	setThumbstick(x);
 }
 
+//--------------------------------------------------------------------------------------
+// Function: setDir
+// Called when pressing an arrow key on the keyboard. Sets the corresponding input
+// button to isKeyDown, then updates as necessary depending on the arrow pressed.
+//--------------------------------------------------------------------------------------
 void Input::setDir(Input::Arrow dir, bool isKeyDown)
 {
 	setInput(dir, isKeyDown);
+
 	switch(dir) {
 		case (Arrow::LEFT):
 			{
-				setThumbstick(-1.0);
+				//setThumbstick(-1.0);
 				break;
 			}
 		case (Arrow::UP):
@@ -150,7 +154,7 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 			}
 		case (Arrow::RIGHT):
 			{
-				setThumbstick(1.0);
+				//setThumbstick(1.0);
 				break;
 			}
 		case (Arrow::DOWN):

@@ -48,21 +48,7 @@ bool* VehicleAI::getInput() {
 
 bool* VehicleAI::getButtons()
 {
-	/*
-	bool* buttons = input.getButtons();
-	writer.writeToFile("buttons in vehicle ai");
-	for (int i = 0; i < 4; i++)
-		if (buttons[i])
-			writer.writeToFile("true");
-		else
-			writer.writeToFile("false");
-	*/
 	return input.getButtons();
-}
-
-Vec3 VehicleAI::getDir()
-{
-	return input.getDir();
 }
 
 //--------------------------------------------------------------------------------------

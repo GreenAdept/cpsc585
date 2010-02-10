@@ -77,7 +77,6 @@ public:
 	virtual void  setInput	 (Input::Arrow dir, bool isKeyDown) = 0;
 	virtual bool* getInput	 ( ) = 0;
 	virtual bool* getButtons ( ) = 0;
-	virtual Vec3  getDir	 ( ) = 0;
 	virtual void  resetInput ( ) = 0;
 
 	virtual void  setDir	 (float x, Input::Button button) = 0;
