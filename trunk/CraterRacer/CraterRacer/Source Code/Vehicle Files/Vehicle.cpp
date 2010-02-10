@@ -10,9 +10,12 @@
 //--------------------------------------------------------------------------------------
 void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat )
 {
-	Matrix matWheelPos;
 	Matrix translationMat;
 	BoundingBox tempBB = getBoundingBox();
+
+	D3DXMatrixIdentity( &translationMat );
+	D3DXMatrixTranslation( &translationMat, 0, -tempBB.m_fHeight, 0 );
+	D3DXMatrixMultiply( &mat, &mat, &translationMat );
 
 	setVelocity(velocity);
 	Entity::update(newPosition, mat);
