@@ -28,6 +28,7 @@ EntityManager::~EntityManager ()
 }
 
 
+
 //------------------------------------------------------
 // Function: getEntities
 // Returns an std::vector containing pointers to all
@@ -46,7 +47,6 @@ vector<Entity*> EntityManager::getEntities () {
 
 	return result;
 }
-
 
 //------------------------------------------------------
 // Function: getVehicles
@@ -120,6 +120,16 @@ vector<AI*> EntityManager::getAIs (int list) {
 	return result;
 }
 
+Input* EntityManager::getPlayerInputObj (int index) {
+	Vehicle* v = (Vehicle*) entities[PLAYERS][index];
+	return v->getInputObj ();
+}
+
+Input* EntityManager::getComputerInputObj (int index) {
+	Vehicle* v = (Vehicle*) entities[COMPUTERS][index];
+	return v->getInputObj ();
+}
+
 //------------------------------------------------------
 // Function: getTerrain
 // Returns a pointer to the terrain entity.
@@ -187,14 +197,12 @@ PlayerVehicle* EntityManager::makePlayer (Device* device, Vec3 pos, LPCWSTR file
 	entities[PLAYERS].push_back (pv);
 	return pv;
 }
-/*
 AIVehicle* EntityManager::makeComputer (Device* device, Vec3 pos, LPCWSTR filename) {
 	AIVehicle* av = new AIVehicle();
 	av->initialize (device, pos, filename);
 	entities[COMPUTERS].push_back (av);
 	return av;
 }
-*/
 Meteor* EntityManager::makeMeteor (Device* device, Vec3 pos, LPCWSTR filename) {
 	Meteor* m = new Meteor();
 	m->initialize (device, pos, filename);
