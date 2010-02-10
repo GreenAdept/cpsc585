@@ -19,7 +19,7 @@ Input::Input()
 //--------------------------------------------------------------------------------------
 void Input::reset()
 {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		inputs[i] = false;
 		buttons[i] = false;
@@ -117,7 +117,7 @@ float Input::getThumbstick() {
 void Input::setDir(float x)
 {
 	setThumbstick(x);
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < 6; i++)
 		buttons[i] = false;
 }
 

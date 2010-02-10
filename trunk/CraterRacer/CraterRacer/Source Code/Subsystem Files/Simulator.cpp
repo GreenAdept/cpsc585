@@ -278,7 +278,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	//m_Debugger.writeToFile(Vec3(test.x, test.y, test.z));
 
 	//INPUT
-	for( int i = 0; i < 4; i++ )
+	for( int i = 0; i < 6; i++ )
 	{
 		if( !buttons[i] ) { continue; } 
 
@@ -326,6 +326,21 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 			case 3: //Y_BUTTON - emergency brake
 			{
 				
+			}
+			case 4: //LT_BUTTON - emergency brake
+			{
+				actor->setLinearVelocity(NxVec3(0, 0, 0));
+				actor->setAngularVelocity(NxVec3(0, 0, 0));
+				break;
+			}
+			case 5: //RT_BUTTON - emergency brake
+			{
+				NxMat33 reset(NxVec3(1, 0, 0), NxVec3(0, 1, 0), NxVec3(0, 0, 1));
+				actor->setLinearVelocity(NxVec3(0, 0, 0));
+				actor->setAngularVelocity(NxVec3(0, 0, 0));
+				actor->setGlobalOrientation(reset);
+				actor->setGlobalPosition(NxVec3(0, 20, 120));
+				break;
 			}
 		}
 	}
