@@ -23,6 +23,10 @@ bool* PlayerVehicle::getInput()
 	return mind.getInput();
 }
 
+//--------------------------------------------------------------------------------------
+// Function: getButtons
+// Delegates getButtons to mind.
+//--------------------------------------------------------------------------------------
 bool* PlayerVehicle::getButtons()
 {
 	return mind.getButtons();
@@ -38,19 +42,27 @@ void PlayerVehicle::resetInput()
 }
 
 //--------------------------------------------------------------------------------------
-// Function: drive
-// Delegates the information to the mind.
+// Function: setDir
+// Delegates the information to the mind. (XBox version)
 //--------------------------------------------------------------------------------------
 void PlayerVehicle::setDir(float x, Input::Button button)
 {
 	mind.setDir(x, button);
 }
 
+//--------------------------------------------------------------------------------------
+// Function: setDir
+// Delegates the information to the mind. (XBox version)
+//--------------------------------------------------------------------------------------
 void PlayerVehicle::setDir(float x)
 {
 	mind.setDir(x);
 }
 
+//--------------------------------------------------------------------------------------
+// Function: setDir
+// Delegates the information to the mind. (Keyboard version)
+//--------------------------------------------------------------------------------------
 void PlayerVehicle::setDir(Input::Arrow dir, bool isKeyDown)
 {
 	mind.setDir(dir, isKeyDown);

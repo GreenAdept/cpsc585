@@ -15,7 +15,7 @@ Simulator::Simulator()
 	m_bForceMode		= true;
 	m_vDefaultGravity	= NxVec3(0,-20,0);
 	m_GroundPlane		= NULL;
-	m_vP1Dir			= Vec3(0, 0, 0);
+	//m_vP1Dir			= Vec3(0, 0, 0);
 	m_rRestitution		= NxReal(0.0);
 	m_rStaticFriction	= NxReal(0.1);
 	m_rDynamicFriction	= NxReal(0.3);

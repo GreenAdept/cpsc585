@@ -46,29 +46,7 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 {
 	vector<Vehicle*> m_Vehicles = m_Entities.getVehicles();
 	Vehicle* v = m_Vehicles[0];
-	/*
-	switch (virtualKeyCode)
-	{
-	case VK_LEFT:
-		//add left-ward force to player vehicle
-		v->drive(Input::Arrow::LEFT, isKeyDown);
-		break;
-	case VK_UP:
-		//add upward force to player vehicle
-		v->drive(Input::Arrow::UP, isKeyDown);
-		break;
-	case VK_RIGHT:
-		//add right-ward force to player vehicle
-		v->drive(Input::Arrow::RIGHT, isKeyDown);
-		break;
-	case VK_DOWN:
-		//add downward force to player vehicle
-		v->drive(Input::Arrow::DOWN, isKeyDown);
-		break;
-	default:
-		break;
-	}
-	*/
+
 	v->setController(false);
 
 	switch (virtualKeyCode)
