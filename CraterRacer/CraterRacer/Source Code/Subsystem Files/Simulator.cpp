@@ -314,48 +314,31 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 				localWheelForce[3] += NxVec3(0, 0, m_rForceStrength/10);
 				break; 
 			}
-			case 1: //B_BUTTON - brake
+			case 1: //B_BUTTON - brake / reverse
 			{
-				/*actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[0]);
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[1]);
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[2]);
-				actor->addLocalForceAtLocalPos(NxVec3(0, 0, -m_rForceStrength/10), wheel[3]);*/
-				
-				//NxVec3 velocity = normalize(NxVec3(actor->getGlobalOrientation() * actor->getLinearVelocity()));
+				NxVec3 velocity = actor->getLinearVelocity();
 
-				NxVec3 velocity = normalize(actor->getLinearVelocity());
+				//brake
+				if (velocity.magnitude() > 1) {
+					velocity = normalize(velocity);
 
-				globalWheelForce[0] += (velocity * (-m_rForceStrength/10));
-				globalWheelForce[1] += (velocity * (-m_rForceStrength/10));
-				globalWheelForce[2] += (velocity * (-m_rForceStrength/10));
-				globalWheelForce[3] += (velocity * (-m_rForceStrength/10));
-
-				/*actor->addForceAtLocalPos(velocity * (-m_rForceStrength/10), wheel[0]);
-				actor->addForceAtLocalPos(velocity * (-m_rForceStrength/10), wheel[1]);
-				actor->addForceAtLocalPos(velocity * (-m_rForceStrength/10), wheel[2]);
-				actor->addForceAtLocalPos(velocity * (-m_rForceStrength/10), wheel[3]);*/
-
-				/*if (velocity.magnitude() < 1.5) {
-					freeze = true;
+					globalWheelForce[0] += (velocity * (-m_rForceStrength/10));
+					globalWheelForce[1] += (velocity * (-m_rForceStrength/10));
+					globalWheelForce[2] += (velocity * (-m_rForceStrength/10));
+					globalWheelForce[3] += (velocity * (-m_rForceStrength/10));
+				}
+				//reverse
+				/*else {
+					localWheelForce[2] += NxVec3(0, 0, -m_rForceStrength/10);
+					localWheelForce[3] += NxVec3(0, 0, -m_rForceStrength/10);
 				}*/
-				//else {
-					/*localWheelForce[0] += (velocity * (-m_rForceStrength/10));
-					localWheelForce[1] += (velocity * (-m_rForceStrength/10));
-					localWheelForce[2] += (velocity * (-m_rForceStrength/10));
-					localWheelForce[3] += (velocity * (-m_rForceStrength/10));*/
-				//}
-
-				//m_Debugger.writeToFile(velocity.magnitude());
-
-				/*localWheelForce[0] += NxVec3(0, 0, -m_rForceStrength/10);
-				localWheelForce[1] += NxVec3(0, 0, -m_rForceStrength/10);
-				localWheelForce[2] += NxVec3(0, 0, -m_rForceStrength/10);
-				localWheelForce[3] += NxVec3(0, 0, -m_rForceStrength/10);*/
 				break; 
 			}
-			case 2: //X_BUTTON - stop all motion
+			case 2: //X_BUTTON - reverse
 			{
-				freeze = true;
+				localWheelForce[2] += NxVec3(0, 0, -m_rForceStrength/10);
+				localWheelForce[3] += NxVec3(0, 0, -m_rForceStrength/10);
+				break;
 			}
 			case 3: //Y_BUTTON - emergency brake
 			{
@@ -375,7 +358,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		//actor->addLocalForceAtLocalPos(NxVec3(-10000, 0, 0), wheel[0]);
 		//actor->addLocalForceAtLocalPos(NxVec3(-10000, 0, 0), wheel[1]);
 
-		NxVec3 force(-100000*sin(angle*PI/180), 0, -100000*sin(angle*PI/180));
+		NxVec3 force(-100000*sin(angle*PI/180), 0, 0);//-100000*sin(angle*PI/180));
 		localWheelForce[0] += force;
 		localWheelForce[1] += force;
 
@@ -390,10 +373,31 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		//localWheelForce[0] += NxVec3(10000, 0, 0);
 		//localWheelForce[1] += NxVec3(10000, 0, 0);
 
-		NxVec3 force(-100000*sin(angle*PI/180), 0, 100000*sin(angle*PI/180));
+		NxVec3 force(-100000*sin(angle*PI/180), 0, 0);//100000*sin(angle*PI/180));
 		localWheelForce[0] += force;
 		localWheelForce[1] += force;
 	}
+
+	//get the angle of the normal to the wheel direction
+	/*if (angle > 0) {
+		angle = angle + 90;
+	}
+	else {
+		angle = angle - 90;
+	}
+
+	//find the x and z components of the tire lateral
+	angle = 90 - angle;
+	float x = cos(angle*PI/180);
+	float z = sin(angle*PI/180);
+
+	NxVec3 tireLateral(x, 0, z);
+	NxVec3 velocity = NxVec3(actor->getGlobalOrientation() * actor->getLinearVelocity());
+
+	//project the tireLateral on the velocity of the car
+	NxVec3 steering = (velocity.dot(tireLateral) / tireLateral.dot(tireLateral)) * tireLateral;
+	actor->addLocalForceAtLocalPos(NxVec3(steering.x, 0, steering.z)*1000, wheel[0]);
+	actor->addLocalForceAtLocalPos(steering*1000, wheel[1]);*/
 
 	//SUSPENSION
 	for (int i = 0; i < 4 /*number of wheels*/; i++) {
@@ -411,7 +415,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		if (hit.distance < (wheelDiameter + height)) {
 			//actor->addLocalForceAtLocalPos(NxVec3(0, 0.1, 0), wheel[i]); //(0.5) * (m_rForceStrength/10) * (wheelDiameter - hit.distance) * (wheelDiameter - hit.distance)
 			
-			localWheelForce[i] += NxVec3(0, (m_rForceStrength/100) * (wheelDiameter - hit.distance), 0);// * (wheelDiameter - hit.distance), 0);
+			localWheelForce[i] += NxVec3(0, (m_rForceStrength/5000000) * (wheelDiameter - hit.distance) * (wheelDiameter - hit.distance), 0);
 
 			actor->addLocalForceAtLocalPos(localWheelForce[i], wheel[i]);
 			actor->addForceAtLocalPos(globalWheelForce[i], wheel[i]);
@@ -432,27 +436,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		//actor->setLinearVelocity(0);
 		freeze = false;
 	}
-
-	//get the angle of the normal to the wheel direction
-	/*if (angle > 0) {
-		angle = angle + 90;
-	}
-	else {
-		angle = angle - 90;
-	}
-
-	//find the x and z components of the tire lateral
-	angle = 90 - angle;
-	float x = cos(angle*PI/180);
-	float z = sin(angle*PI/180);
-
-	NxVec3 tireLateral(x, 0, z);
-	NxVec3 velocity(actor->getLinearVelocity());
-
-	//project the tireLateral on the velocity of the car
-	NxVec3 steering = (velocity.dot(tireLateral) / tireLateral.dot(tireLateral)) * tireLateral;
-	actor->addLocalForceAtLocalPos(NxVec3(-steering.x, 0, steering.z)*1000, wheel[0]);
-	actor->addLocalForceAtLocalPos(steering*1000, wheel[1]);*/
 
 	//m_Debugger.writeToFile(steering*10000);
 	//m_Debugger.writeToFile("");
