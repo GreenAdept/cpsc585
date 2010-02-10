@@ -8,7 +8,7 @@
 //--------------------------------------------------------------------------------------
 // Function:  update
 //--------------------------------------------------------------------------------------
-void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat, Vec3 lTop, Vec3 rTop, Vec3 lBottom, Vec3 rBottom )
+void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat )
 {
 	Matrix matWheelPos;
 	Matrix translationMat;
@@ -17,31 +17,10 @@ void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat, Vec3 lTop, Ve
 	setVelocity(velocity);
 	Entity::update(newPosition, mat);
 
-	//update wheel positions based on the car position and wheel angle
-	//for( int w=WHEEL0; w <= WHEEL3; w++ )
-	//{
-	
-		//Set wheel0 position
-		matWheelPos = mat;
-		D3DXMatrixTranslation( &matWheelPos, lTop.x, lTop.y, lTop.z );
-		m_Wheels[ 0 ].update( matWheelPos ); 
-
-		matWheelPos = mat;
-		D3DXMatrixTranslation( &matWheelPos, rTop.x, rTop.y, rTop.z );
-		m_Wheels[ 1 ].update( matWheelPos );
-
-		matWheelPos = mat;
-		D3DXMatrixTranslation( &matWheelPos, lBottom.x, lBottom.y, lBottom.z );
-		m_Wheels[ 2 ].update( matWheelPos );
-
-		matWheelPos = mat;
-		D3DXMatrixTranslation( &matWheelPos, rBottom.x, rBottom.y, rBottom.z );
-		m_Wheels[ 3 ].update( matWheelPos );
-
-		//D3DXMatrixMultiply( &matWheelPos, &matWheelPos, &translationMat );
-		
-		
-	//}
+	m_Wheels[ 0 ].update( mat ); 
+	m_Wheels[ 1 ].update( mat ); 
+	m_Wheels[ 2 ].update( mat ); 
+	m_Wheels[ 3 ].update( mat ); 
 
 }
 
