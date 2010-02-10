@@ -49,6 +49,18 @@ bool* Input::getInput()
 
 bool* Input::getButtons()
 {
+	//debug: not ok here
+	m_Debugger.writeToFile("buttons in input.getButtons");
+	
+	buttons[Button::A_BUTTON] = inputs[Arrow::UP];
+	buttons[Button::B_BUTTON] = inputs[Arrow::DOWN];
+
+	for (int i = 0; i < 4; i++)
+		if (buttons[i])
+			m_Debugger.writeToFile("true");
+		else
+			m_Debugger.writeToFile("false");
+
 	return buttons;
 }
 
@@ -101,7 +113,7 @@ void Input::setDir(float x)
 }
 
 //--------------------------------------------------------------------------------------
-// Function: drive
+// Function: setDir
 // Determines which direction to go in, and force if applicable.
 //--------------------------------------------------------------------------------------
 void Input::setDir(float x, Input::Button button)
@@ -121,12 +133,11 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 			}
 		case (Arrow::UP):
 			{
-				m_Debugger.writeToFile("sjfd;lsajdf;lskjdfsjdfoiwjefo23jro26jt32jt092847ut09w8aug");
-				if (isKeyDown) {
-					m_Debugger.writeToFile("yes");
-				}
-				//m_Debugger.writeToFile(isKeyDown);
 				buttons[Button::A_BUTTON] = isKeyDown;
+				inputs[Arrow::UP] = isKeyDown;
+				//debug: this works
+				if (buttons[Button::A_BUTTON])
+					m_Debugger.writeToFile("A_True");
 				break;
 			}
 		case (Arrow::RIGHT):
@@ -136,34 +147,20 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 			}
 		case (Arrow::DOWN):
 			{
+				m_Debugger.writeToFile("Pressing B");
 				buttons[Button::B_BUTTON] = isKeyDown;
+				inputs[Arrow::DOWN] = isKeyDown;
 				break;
 			}
 		default:
 			break;
 	}
-}
-/*
-void Input::drive(Input::Arrow dir, bool isKeyDown)
-{
-	if (isKeyDown)
-	{
-		switch(dir) {
-			case (Arrow::UP):
-				{
-					reversing = false;
-				}
-			case (Arrow::LEFT):
-				{
-
-				}
-			case (Arrow::RIGHT):
-				{
-				}
-			case (Arrow::DOWN):
-			default:
-				break;
-		}
-	}
-}
+/*	//debug: this looks ok
+	m_Debugger.writeToFile("buttons in input.setDir");
+	for (int i = 0; i < 4; i++)
+		if (buttons[i])
+			m_Debugger.writeToFile("true");
+		else
+			m_Debugger.writeToFile("false");
 */
+}

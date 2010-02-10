@@ -1,6 +1,7 @@
 #include "Input.h"
 #include "AI.h"
 #include "Constants.h"
+#include "DebugWriter.h"
 
 //-----------------------------------------
 // Class: VehicleAI
@@ -31,4 +32,5 @@ public:
 protected:
 	Input input;
 	Vec3 position;
+	DebugWriter writer;
 };

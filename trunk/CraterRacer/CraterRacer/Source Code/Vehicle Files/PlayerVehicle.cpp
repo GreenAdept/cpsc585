@@ -25,6 +25,15 @@ bool* PlayerVehicle::getInput()
 
 bool* PlayerVehicle::getButtons()
 {
+	/*
+	bool* buttons = mind.getButtons();
+	writer.writeToFile("buttons in player vehicle");
+	for (int i = 0; i < 4; i++)
+		if (buttons[i])
+			writer.writeToFile("true");
+		else
+			writer.writeToFile("false");
+			*/
 	return mind.getButtons();
 }
 

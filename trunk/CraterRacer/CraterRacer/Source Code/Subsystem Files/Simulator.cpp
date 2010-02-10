@@ -293,7 +293,14 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 
 	//NxVec3 test = actor->getGlobalOrientation() * actor->getLinearVelocity();
 	//m_Debugger.writeToFile(Vec3(test.x, test.y, test.z));
-
+/*
+	m_Debugger.writeToFile("buttons");
+	for (int i = 0; i < 4; i++)
+		if (buttons[i])
+			m_Debugger.writeToFile("true");
+		else
+			m_Debugger.writeToFile("false");
+*/
 	//INPUT
 	for( int i = 0; i < 4; i++ )
 	{
