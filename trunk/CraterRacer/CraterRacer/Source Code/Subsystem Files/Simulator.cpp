@@ -312,6 +312,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 			{
 				//TODO: change tire orientation
 				float x_dir = vehicle->getThumbstick();
+				m_Debugger.writeToFile("thumbstick gotten in sim");
+				m_Debugger.writeToFile(x_dir);
 				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 				
 				//actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[2]);

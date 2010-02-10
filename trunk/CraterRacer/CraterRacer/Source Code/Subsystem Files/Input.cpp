@@ -51,7 +51,6 @@ bool* Input::getButtons()
 {
 	//debug: not ok here
 	m_Debugger.writeToFile("buttons in input.getButtons");
-	
 	buttons[Button::A_BUTTON] = inputs[Arrow::UP];
 	buttons[Button::B_BUTTON] = inputs[Arrow::DOWN];
 
@@ -60,7 +59,7 @@ bool* Input::getButtons()
 			m_Debugger.writeToFile("true");
 		else
 			m_Debugger.writeToFile("false");
-
+	
 	return buttons;
 }
 
@@ -101,6 +100,19 @@ void Input::setThumbstick(float x)
 // Gets the x value of the left thumbstick.
 //--------------------------------------------------------------------------------------
 float Input::getThumbstick() {
+	m_Debugger.writeToFile("getting thumbstick");
+	m_Debugger.writeToFile(x);
+	if (!xBoxController)
+		if (inputs[Arrow::LEFT])
+		{
+			m_Debugger.writeToFile("sending -1");
+			return -1.0;
+		}
+		else if (inputs[Arrow::RIGHT])
+			return 1.0;
+		else
+			return 0;
+		
 	return x;
 }
 
@@ -124,32 +136,32 @@ void Input::setDir(float x, Input::Button button)
 
 void Input::setDir(Input::Arrow dir, bool isKeyDown)
 {
-	
+	setInput(dir, isKeyDown);
 	switch(dir) {
 		case (Arrow::LEFT):
 			{
 				setThumbstick(-1.0);
+				m_Debugger.writeToFile("set thumbstick to -1");
+
+				//if (inputs[Arrow::LEFT]) m_Debugger.writeToFile("inputs[left] = true");
+				//else m_Debugger.writeToFile("inputs[left] = false");
+
 				break;
 			}
 		case (Arrow::UP):
 			{
 				buttons[Button::A_BUTTON] = isKeyDown;
-				inputs[Arrow::UP] = isKeyDown;
-				//debug: this works
-				if (buttons[Button::A_BUTTON])
-					m_Debugger.writeToFile("A_True");
 				break;
 			}
 		case (Arrow::RIGHT):
 			{
 				setThumbstick(1.0);
+				//inputs[Arrow::RIGHT] = isKeyDown;
 				break;
 			}
 		case (Arrow::DOWN):
 			{
-				m_Debugger.writeToFile("Pressing B");
 				buttons[Button::B_BUTTON] = isKeyDown;
-				inputs[Arrow::DOWN] = isKeyDown;
 				break;
 			}
 		default:
