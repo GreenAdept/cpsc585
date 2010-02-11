@@ -89,7 +89,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		//using an XBox controller
 		//if (vehicles[i]->getController()) {
 			processForceKeys(m_Vehicles[i], vehicles[i]);
-			vehicles[i]->getInputObj()->reset();
+			//vehicles[i]->getInputObj()->reset(); <-- resetting breaks keyboard controls!
 	//	}
 
 		//Add forces to the vehicle based on input
