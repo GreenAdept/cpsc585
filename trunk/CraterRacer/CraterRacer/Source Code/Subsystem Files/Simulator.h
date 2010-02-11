@@ -19,7 +19,9 @@
 #include "Vehicle.h"
 #include "DebugWriter.h"
 
-#define PI 3.14159265
+#define PI					3.14159265
+#define CAR_GROUND_DISTANCE 1.25
+#define MAX_WHEEL_ANGLE		35
 
 #include <iostream>
 using namespace std;
@@ -41,13 +43,10 @@ private:
 
 	void addTerrainFromX( Mesh* mesh, NxVec3 pos );
 
-	NxActor* createGroundPlane(void);
 	void startPhysics(void);
 	void getPhysicsResults(void);
-	void processForceKeys(void);
 	void processForceKeys(NxActor* actor, Vehicle* vehicle);
 	NxVec3 normalize(NxVec3 vec);
-	NxVec3 applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength);
 	void setForceVec(Vec3 vec);
 	void setForceStr(double str);
 	void setForceMode(bool mode);
@@ -73,6 +72,13 @@ private:
 	NxReal				m_rStaticFriction;
 	NxReal				m_rDynamicFriction;
 	NxReal				m_rMaxAngularVelocity;
+	NxReal				m_rVehicleMass;
+	NxReal				m_rSpringK;
+	NxReal				m_rSpringC;
+	NxReal				m_rMaxWheelDisplacement;
+	NxReal				m_rMaxWheelAngle;
+	NxReal				m_rWheelRestLength;
+	NxReal				m_rMinWheelDisplacement;
 
 	//Time 
 	double				m_dDeltaTime;
@@ -85,7 +91,6 @@ private:
 	NxActor*			m_Terrain;
 
 	//Debugging
-	double				m_rMaxWheelAngle;
 	DebugWriter			m_Debugger;
 	bool				forward;
 

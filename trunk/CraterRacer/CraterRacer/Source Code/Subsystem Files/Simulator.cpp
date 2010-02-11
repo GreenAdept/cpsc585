@@ -11,20 +11,22 @@ Simulator::Simulator()
 	m_vForceVec				= NxVec3(0, 0, 0);
 	m_PhysicsSDK			= NULL;
 	m_Scene					= NULL;
-	m_rForceStrength		= 1000000;
+	m_rForceStrength		= 10.0;
 	m_bForceMode			= true;
-	m_vDefaultGravity		= NxVec3(0,-20,0);
-	m_GroundPlane			= NULL;
-	//m_vP1Dir				= Vec3(0, 0, 0);
+	m_vDefaultGravity		= NxVec3(0,-10,0);
 	m_rRestitution			= NxReal(0.0);
-	m_rStaticFriction		= NxReal(0.1);
-	m_rDynamicFriction		= NxReal(0.3);
+	m_rStaticFriction		= NxReal(0.4);
+	m_rDynamicFriction		= NxReal(0.4);
 	m_rMaxAngularVelocity	= NxReal(2);
+	m_rVehicleMass			= 10.0;
+	m_rWheelRestLength		= 1.5;
+	m_rSpringK				= ( -10 * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
+	m_rSpringC				= 2 * sqrt( m_rSpringK * m_rVehicleMass );
+	m_rMaxWheelDisplacement = 1.75;
 	m_rMaxWheelAngle		= 35.0;
+	m_rMinWheelDisplacement = 1.25;
 
 	forward = false;
-
-	//InitNx();
 }
 
 //--------------------------------------------------------------------------------------
@@ -44,12 +46,14 @@ void Simulator::InitNx( Mesh* terrainMesh )
 	m_Scene = m_PhysicsSDK->createScene( sceneDesc );
 
 	//Set the physics parameters
-	m_PhysicsSDK->setParameter(NX_SKIN_WIDTH, 0.1);
+	m_PhysicsSDK->setParameter( NX_SKIN_WIDTH, 0.025f );
 
 	//Set the debug visualization parameters
-	m_PhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 1);
-	m_PhysicsSDK->setParameter(NX_VISUALIZE_COLLISION_SHAPES, 1);
-	m_PhysicsSDK->setParameter(NX_VISUALIZE_ACTOR_AXES, 1);
+	m_PhysicsSDK->setParameter(NX_VISUALIZATION_SCALE, 1.0);
+	m_PhysicsSDK->setParameter(NX_VISUALIZE_COLLISION_SHAPES, 1.0f);
+	m_PhysicsSDK->setParameter(NX_VISUALIZE_COLLISION_AXES, 1.0f);
+	m_PhysicsSDK->setParameter(NX_VISUALIZE_CONTACT_POINT, 1.0f);
+	m_PhysicsSDK->setParameter(NX_VISUALIZE_CONTACT_NORMAL, 1.0f);
 
 	//Create the default material
 	NxMaterial* defaultMaterial = m_Scene->getMaterialFromIndex(0);
@@ -58,7 +62,6 @@ void Simulator::InitNx( Mesh* terrainMesh )
 	defaultMaterial->setDynamicFriction(m_rDynamicFriction);
 
 	//Create the ground
-	//m_GroundPlane = createGroundPlane( );
 	addTerrainFromX( terrainMesh, NxVec3(0, 0, 0) );
 	
 	m_PhysicsSDK->getFoundationSDK().getRemoteDebugger()->connect ("localhost", 5425);
@@ -70,7 +73,6 @@ void Simulator::InitNx( Mesh* terrainMesh )
 //--------------------------------------------------------------------------------------
 void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime ) 
 {
-	NxF32 mat[4][4];
 	m_dDeltaTime = elapsedTime;
 
 	startPhysics();
@@ -79,29 +81,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 	//Update all the entity positions based on PhysX simulated actor positions
 	for( int i=0; i < m_Vehicles.size(); i++ )
 	{
-		//Get the inputs associated with vehicle
-		//keyboard controls
-		//m_bInputs = vehicles[i]->getInput();
-		//m_bButtons = vehicles[i]->getButtons();
-
-		// XBox controls
-		//m_vP1Dir = vehicles[i]->getDir();
-
-		//using an XBox controller
-		//if (vehicles[i]->getController()) {
-			processForceKeys(m_Vehicles[i], vehicles[i]);
-			//vehicles[i]->getInputObj()->reset(); <-- resetting breaks keyboard controls!
-	//	}
-
-		//Add forces to the vehicle based on input
-		//processForceKeys();
-
-		/*if (forward) {
-			m_Debugger.writeToFile("here");
-			//m_Vehicles[i]->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), NxVec3(width/2, 0, 0));
-			//m_Vehicles[i]->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), NxVec3(-10, 0, 0));
-			forward = false;
-		}*/
+		processForceKeys(m_Vehicles[i], vehicles[i]);
 
 		//Get the new position of the vehicle in vector and matrix format
 		Matrix m;
@@ -112,37 +92,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 
 		//Update the vehicle position in the game
 		vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m );
-	
-		//
-		//m_Debugger.writeToFile("global pos");
-		//m_Debugger.writeToFile(m_Vehicles[i]->getGlobalPosition());
-		//m_Debugger.writeToFile("orientation");
-		//m_Debugger.writeToFile(m_Vehicles[i]->g());
-		/*
-		debug.writeToFile( "Position: " );
-		debug.writeToFile(vec);
-		*/
-		/*
-		debug.writeToFile("Velocity: ");
-		debug.writeToFile(velocity);
-		*/
-		//m_Debugger.writeToFile(m_Vehicles[i]->getAngularVelocity());
 	}
-}
-
-//--------------------------------------------------------------------------------------
-// Function:  createGroundPlane
-// Creates a ground plane at (0, 0, 0) and normal (0, 1, 0)
-//--------------------------------------------------------------------------------------
-NxActor* Simulator::createGroundPlane() 
-{
-	NxPlaneShapeDesc planeDesc;
-	NxActorDesc actorDesc;
-	planeDesc.normal = NxVec3(0, 1, 0);
-	planeDesc.d = 0;
-	actorDesc.shapes.pushBack(&planeDesc);
-
-	return m_Scene->createActor( actorDesc );
 }
 
 //--------------------------------------------------------------------------------------
@@ -154,6 +104,7 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 	//Add a single shape actor to the scene
 	NxActorDesc actorDesc;
 	NxBodyDesc bodyDesc;
+	bodyDesc.mass = m_rVehicleMass;
 
 	//Create a box with the supplied bounding box dimensions
 	NxBoxShapeDesc boxDesc;
@@ -162,12 +113,9 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 
 	//Initialize the vehicle's parameters
 	actorDesc.body = &bodyDesc;
-	actorDesc.density = 15.0f;
+	//actorDesc.density = m_rVehicleMass / (b.m_fLength * b.m_fHeight * b.m_fWidth);
 	actorDesc.globalPose.t = NxVec3( pos.x, pos.y, pos.z );
 	assert( actorDesc.isValid() );
-
-	//Initialize the wheels for the vehicle
-	m_Debugger.writeToFile(b.m_fHeight);
 
 	//Create the vehicle in the scene
 	NxActor* pActor = m_Scene->createActor( actorDesc );
@@ -176,14 +124,6 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 
 	//Add the vehicle to global list of all vehicles
 	m_Vehicles.push_back( pActor );
-
-	//Debugging
-	m_Debugger.writeToFile("width");
-	m_Debugger.writeToFile(b.m_fWidth);
-	m_Debugger.writeToFile("height");
-	m_Debugger.writeToFile(b.m_fHeight);
-	m_Debugger.writeToFile("length");
-	m_Debugger.writeToFile(b.m_fLength);
 }
 
 //--------------------------------------------------------------------------------------
@@ -210,76 +150,15 @@ void Simulator::getPhysicsResults()
 // Function:  processForceKeys
 // Processes all of the force inputs
 //--------------------------------------------------------------------------------------
-void Simulator::processForceKeys() {
-	// Process force keys
-
-	// iterate through all the vehicles
-	//for( int v = 0; v < gVehicles.size(); v++ )
-	//{
-		/*for( int i = 0; i < 4; i++ )
-		{
-			if( !m_bInputs[i] ) { continue; } 
-
-			switch( i )
-			{
-				case LEFT: 
-				{ 
-					m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3(-1,0,0), m_rForceStrength );
-					break; 
-				}
-				case RIGHT: 
-				{ 
-					m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3(0,0,1), m_rForceStrength ); 
-					forward = true;
-					break; 
-				}
-				case FORWARD: 
-				{ 
-					m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3(1,0,0), m_rForceStrength );
-					break; 
-				}
-				case BACKWARD: 
-				{ 
-					m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3(0,0,-1), m_rForceStrength ); 
-					break; 
-				}
-			}
-		}*/
-	//}
-
-	//xbox controllers
-	//m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3( m_vP1Dir.x, 0, m_vP1Dir.z), m_rForceStrength);
-}
-
-//--------------------------------------------------------------------------------------
-// Function:  processForceKeys
-// Processes all of the force inputs
-//--------------------------------------------------------------------------------------
-void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
-	// Process force keys
-	float length = vehicle->getBoundingBox().m_fLength;
-	float width = vehicle->getBoundingBox().m_fWidth;
-	float height = vehicle->getBoundingBox().m_fHeight;
-	float wheelDiameter = vehicle->m_Wheels[0].getDiameter();
-	float wheelRadius = wheelDiameter / 2.0;
-	bool freeze = false;
-
-	NxVec3 wheel[4];
-	wheel[0] = NxVec3(width/2, 0, -length/2);
-	wheel[1] = NxVec3(-width/2, 0, -length/2);
-	wheel[2] = NxVec3(width/2, 0, length/2);
-	wheel[3] = NxVec3(-width/2, 0, length/2);
-
+void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) 
+{
 	NxVec3 localWheelForce[4];
 	NxVec3 globalWheelForce[4];
-	for (int i = 0; i < 4; i++) {
+
+	for (int i = 0; i < 4; i++) 
 		localWheelForce[i] = globalWheelForce[i] = NxVec3(0, 0, 0);
-	}
-
+	
 	bool* buttons = vehicle->getInputObj()->getButtons();
-
-	//NxVec3 test = actor->getGlobalOrientation() * actor->getLinearVelocity();
-	//m_Debugger.writeToFile(Vec3(test.x, test.y, test.z));
 
 	//INPUT
 	for( int i = 0; i < 6; i++ )
@@ -293,12 +172,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 				//TODO: change tire orientation
 				float x_dir = vehicle->getInputObj()->getThumbstick();
 				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
-				
-				//actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[2]);
-				//actor->addLocalForceAtLocalPos(NxVec3(0, 0, m_rForceStrength/10), wheel[3]);
 
-				localWheelForce[2] += NxVec3(0, 0, m_rForceStrength/10);
-				localWheelForce[3] += NxVec3(0, 0, m_rForceStrength/10);
+				localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rVehicleMass );
+				localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rVehicleMass );
 				break; 
 			}
 			case 1: //B_BUTTON - brake / reverse
@@ -306,25 +182,21 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 				NxVec3 velocity = actor->getLinearVelocity();
 
 				//brake
-				if (velocity.magnitude() > 1) {
+				if (velocity.magnitude() > 1) 
+				{
 					velocity = normalize(velocity);
-
-					globalWheelForce[0] += (velocity * (-m_rForceStrength/10));
-					globalWheelForce[1] += (velocity * (-m_rForceStrength/10));
-					globalWheelForce[2] += (velocity * (-m_rForceStrength/10));
-					globalWheelForce[3] += (velocity * (-m_rForceStrength/10));
+				
+					globalWheelForce[0] += (velocity * ( -m_rVehicleMass * m_rVehicleMass ));
+					globalWheelForce[1] += (velocity * ( -m_rVehicleMass * m_rVehicleMass ));
+					globalWheelForce[2] += (velocity * ( -m_rVehicleMass * m_rVehicleMass ));
+					globalWheelForce[3] += (velocity * ( -m_rVehicleMass * m_rVehicleMass ));
 				}
-				//reverse
-				/*else {
-					localWheelForce[2] += NxVec3(0, 0, -m_rForceStrength/10);
-					localWheelForce[3] += NxVec3(0, 0, -m_rForceStrength/10);
-				}*/
 				break; 
 			}
 			case 2: //X_BUTTON - reverse
 			{
-				localWheelForce[2] += NxVec3(0, 0, -m_rForceStrength/10);
-				localWheelForce[3] += NxVec3(0, 0, -m_rForceStrength/10);
+				localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rVehicleMass );
+				localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rVehicleMass );
 				break;
 			}
 			case 3: //Y_BUTTON - emergency brake
@@ -343,14 +215,15 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 				actor->setLinearVelocity(NxVec3(0, 0, 0));
 				actor->setAngularVelocity(NxVec3(0, 0, 0));
 				actor->setGlobalOrientation(reset);
-				actor->setGlobalPosition(NxVec3(0, 20, 120));
+				actor->setGlobalPosition(NxVec3(0, 30, 120));
 				break;
 			}
 		}
 	}
+	vehicle->getInputObj()->reset();
 
 	//STEERING
-	float angle = vehicle->getInputObj()->getThumbstick()* m_rMaxWheelAngle; //35 is maximum wheel angle
+	float angle = vehicle->getInputObj()->getThumbstick()* 35; //35 is maximum wheel angle
 
 	/*NxVec3 force(-50000*sin(angle*PI/180), 0, -100000*sin(angle*PI/180));
 	localWheelForce[0] += force;
@@ -395,9 +268,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 
 	NxVec3 tireLateral(x, 0, 0);
 
-	if (vehicle->getInputObj()->getThumbstick() != 0) {
-		localWheelForce[2] += (tireLateral * (m_rForceStrength/33) * sqrt(actor->getLinearVelocity().magnitude()));
-		localWheelForce[3] += (tireLateral * (m_rForceStrength/33) * sqrt(actor->getLinearVelocity().magnitude()));
+	if (vehicle->getInputObj()->getThumbstick() != 0) 
+	{
+		localWheelForce[2] += (tireLateral * (m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
+		localWheelForce[3] += (tireLateral * (m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
 
 		//globalWheelForce[0] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
 		//globalWheelForce[1] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
@@ -409,65 +283,65 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	actor->addLocalForceAtLocalPos(NxVec3(steering.x, 0, steering.z)*5000, wheel[0]);
 	actor->addLocalForceAtLocalPos(NxVec3(steering.x, 0, steering.z)*5000, wheel[1]);*/
 
-	//SUSPENSION
-	for (int i = 0; i < 4 /*number of wheels*/; i++) {
-		//Ray casting
-		NxVec3 origin = actor->getGlobalPosition() + wheel[i];
-		NxVec3 direction(0, -1, 0);
+	Wheel*	w; 
+	NxVec3	wheelPos,
+			upVec;
+	float	displacement,
+			susForce;
+    NxMat34 mat = actor->getGlobalPose();
+	NxMat33 orient = actor->getGlobalOrientation();
+	BoundingBox BB = vehicle->getBoundingBox();
 
-		NxRay ray(origin, direction);
+	//SUSPENSION
+	for (int i = 0; i < 4 /*number of wheels*/; i++) 
+	{
+		w = &vehicle->m_Wheels[ i ];
+		
+		//Ray casting
+		wheelPos = mat * w->getChassisPt();
+		upVec = normalize( orient * NxVec3( 0, 1, 0 ));
+		
+		w->setSuspensionAxis( orient * NxVec3(0,-1,0) );
+
+		NxRay ray( wheelPos, -upVec );
 		NxRaycastHit hit;
 
-		m_Scene->raycastClosestShape(ray, NX_ALL_SHAPES, hit);
-		//m_Debugger.writeToFile(hit.distance);
+		m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
 
 		//apply forces due to suspension
-		if (hit.distance < (wheelDiameter + height)) {
-			//actor->addLocalForceAtLocalPos(NxVec3(0, 0.1, 0), wheel[i]); //(0.5) * (m_rForceStrength/10) * (wheelDiameter - hit.distance) * (wheelDiameter - hit.distance)
+		if( hit.distance < ( m_rMaxWheelDisplacement + BB.m_fHeight )) 
+		{
+			//the car is about to bottom out
+			if( hit.distance <= BB.m_fHeight + m_rMinWheelDisplacement )
+			{
+				w->setDisplacement( 0 );
+			}
+			else //the car is between the max length and its min length somewhere
+			{
+				w->setDisplacement( hit.distance - BB.m_fHeight - m_rMinWheelDisplacement );
+			}
+				
+			susForce = m_rSpringK * (hit.distance - BB.m_fHeight - m_rWheelRestLength);
 			
-			localWheelForce[i] += NxVec3(0, (m_rForceStrength/5000000) * (wheelDiameter - hit.distance) * (wheelDiameter - hit.distance), 0);
+			//dampforce = c * speedOfDisplacement
+			localWheelForce[i] += NxVec3(0, susForce, 0);
 
-			actor->addLocalForceAtLocalPos(localWheelForce[i], wheel[i]);
-			actor->addForceAtLocalPos(globalWheelForce[i], wheel[i]);
-			
-			//m_Debugger.writeToFile("here!!!!");
+			actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
+			actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
 		}
-		/*m_Debugger.writeToFile("hit distance");
-			m_Debugger.writeToFile(hit.distance);
-			m_Debugger.writeToFile("wheel diameter");
-			m_Debugger.writeToFile(wheelDiameter);
-			Vec3 test(localWheelForce[i].x, localWheelForce[i].y, localWheelForce[i].z);
-			m_Debugger.writeToFile(test);
-		m_Debugger.writeToFile("");*/
-	}
+		else
+		{
+			w->setDisplacement( m_rMaxWheelDisplacement - m_rMinWheelDisplacement );
+		}
 
-	if (freeze) {
-		//actor->setAngularVelocity(0);
-		//actor->setLinearVelocity(0);
-		freeze = false;
+		
 	}
-	//m_Debugger.writeToFile("");
-	
-	//xbox controllers
-	//m_vForceVec = applyForceToActor( m_Vehicles[0], NxVec3( m_vP1Dir.x, 0, m_vP1Dir.z), m_rForceStrength);
 }
 
 NxVec3 Simulator::normalize(NxVec3 vec) {
 	NxReal mag = vec.magnitude();
 	return NxVec3(vec.x/mag, vec.y/mag, vec.z/mag);
 }
-
-//--------------------------------------------------------------------------------------
-// Function:  applyForceToActor
-// Applies the forces from input and PhysX to the entities and other objects.
-//--------------------------------------------------------------------------------------
-NxVec3 Simulator::applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength) 
-{
-	NxVec3 forceVec = forceStrength * forceDir * m_dDeltaTime;
-	actor->addForce( forceVec );
-	return forceVec;
-}
-
 
 
 //--------------------------------------------------------------------------------------
@@ -577,49 +451,4 @@ Simulator::~Simulator()
 		NxReleasePhysicsSDK( m_PhysicsSDK );
 		m_PhysicsSDK = NULL;
 	}
-}
-
-void Simulator::setForceVec(Vec3 vec)
-{
-	m_vForceVec = NxVec3(vec.x, vec.y, vec.z);
-}
-
-void Simulator::setForceStr(double str)
-{
-	m_rForceStrength = NxReal(str);
-}
-
-void Simulator::setForceMode(bool mode)
-{
-	m_bForceMode = mode;
-}
-
-void Simulator::setGravity(Vec3 gravity)
-{
-	m_vDefaultGravity = NxVec3(gravity.x, gravity.y, gravity.z);
-}
-
-void Simulator::setRestitution(double res)
-{
-	m_rRestitution = NxReal(res);
-}
-
-void Simulator::setSFriction(double friction)
-{
-	m_rStaticFriction = NxReal(friction);
-}
-
-void Simulator::setDFriction(double friction)
-{
-	m_rDynamicFriction = NxReal(friction);
-}
-
-void Simulator::setMaxAngularVelocity(double maxAngle)
-{
-	m_rMaxAngularVelocity = NxReal(maxAngle);
-}
-
-void Simulator::setMaxWheelAngle(double maxAngle)
-{
-	m_rMaxWheelAngle = maxAngle;
 }
