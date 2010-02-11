@@ -23,12 +23,28 @@ Wheel::Wheel()
 //--------------------------------------------------------------------------------------
 // Function:  initialize
 //--------------------------------------------------------------------------------------
-void Wheel::initialize( Device* device, LPWSTR filename )
+void Wheel::initialize( Device* device, LPWSTR filename, Vec3 pt )
 {
 	Entity::initialize( device, Vec3(0,0,0), filename );
 	
 	Renderable* tempRenderable = this->getRenderable();
 	m_fDiameter = 2 * tempRenderable->getBoundingBox().m_fRadius;
+	m_fDisplacement = 0.0;
+	setChassisPt( pt );
+}
+
+
+void Wheel::update( Matrix mat )
+{
+	Matrix m;
+	Matrix translate;
+	Vec3 sus = getSuspensionAxis() * m_fDisplacement;
+
+	D3DXMatrixIdentity( &translate );
+	D3DXMatrixTranslation( &translate, sus.x, sus.y, sus.z );
+	D3DXMatrixMultiply( &m, &mat, &translate );
+
+	Entity::update( m );
 }
 
 
@@ -48,4 +64,39 @@ float Wheel::getDiameter()
 float Wheel::getAngle()
 {
 	return m_fAngle;
+}
+
+float Wheel::getDisplacement()
+{
+	return m_fDisplacement;
+}
+
+void Wheel::setDisplacement( float displacement )
+{
+	m_fDisplacement = displacement;
+}
+
+NxVec3 Wheel::getChassisPt()
+{
+	return m_vChassisPt;
+}
+
+void Wheel::setChassisPt( Vec3 pt )
+{
+	m_vChassisPt = NxVec3( pt.x, pt.y, pt.z );
+}
+
+float Wheel::getWheelWidth( )
+{
+	return getBoundingBox().m_fWidth;
+}
+
+Vec3 Wheel::getSuspensionAxis()
+{
+	return Vec3(m_vSuspensionAxis.x, m_vSuspensionAxis.y, m_vSuspensionAxis.z );
+}
+
+void Wheel::setSuspensionAxis( NxVec3 sus )
+{
+	m_vSuspensionAxis = sus;
 }
