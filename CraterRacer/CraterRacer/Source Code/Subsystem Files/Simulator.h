@@ -48,6 +48,15 @@ private:
 	void processForceKeys(NxActor* actor, Vehicle* vehicle);
 	NxVec3 normalize(NxVec3 vec);
 	NxVec3 applyForceToActor(NxActor* actor, const NxVec3& forceDir, const NxReal forceStrength);
+	void setForceVec(Vec3 vec);
+	void setForceStr(double str);
+	void setForceMode(bool mode);
+	void setGravity(Vec3 gravity);
+	void setRestitution(double res);
+	void setSFriction(double friction);
+	void setDFriction(double friction);
+	void setMaxAngularVelocity(double maxAngle);
+	void setMaxWheelAngle(double maxAngle);
 	
 	// Physics SDK 
 	NxPhysicsSDK*		m_PhysicsSDK;
@@ -76,6 +85,7 @@ private:
 	NxActor*			m_Terrain;
 
 	//Debugging
+	double				m_rMaxWheelAngle;
 	DebugWriter			m_Debugger;
 	bool				forward;
 
