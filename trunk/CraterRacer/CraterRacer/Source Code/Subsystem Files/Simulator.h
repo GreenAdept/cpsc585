@@ -36,6 +36,9 @@ public:
 	
 	void InitNx( Mesh* terrainMesh );
 
+	bool pause( bool );
+	bool isPaused( );
+
 	void simulate(vector<Vehicle*> entities, double elapsedTime);
 	void createVehicle( Vec3 pos, BoundingBox b );
 	void setForceVec(Vec3 vec);
@@ -63,6 +66,7 @@ private:
 	NxPhysicsSDK*		m_PhysicsSDK;
 	NxScene*			m_Scene;
 	NxVec3				m_vDefaultGravity;
+	bool				m_bPaused;
 
 	//Force 
 	NxVec3				m_vForceVec;

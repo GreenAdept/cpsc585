@@ -24,8 +24,6 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	//Meteor *m = m_Entities.makeMeteor (device, Vec3 (-10.0f, 0.0f, 0.0f), OBJ_FILE);
 
 	// Create the terrain
-	//m_Terrain = new Terrain( );
-	//m_Terrain->initialize( device, Vec3( 0.0f, 0.0f, 0.0f ), TERRAIN_FILE );
 	m_Entities.makeTerrain( device, Vec3( 0.0f, 0.0f, 0.0f ), TERRAIN_FILE );
 
 	//initialize simulator with terrain
@@ -38,6 +36,17 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	// Initialize camera and set it to follow the player
 	m_Camera.updateWindow( pSurface );
 	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  pause
+// pause=true to try to pause simulation
+// Returns true if the game pause was toggled
+//--------------------------------------------------------------------------------------
+bool GameObj::pauseGame( bool pause )
+{
+	return m_Simulator->pause( pause );
 }
 
 
@@ -170,7 +179,8 @@ void GameObj::processInput( float fElapsedTime )
 	}
 	if (m_Controller1->Y.WasPressedOrHeld())
 	{
-		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::Y_BUTTON);
+		pauseGame( true );
+		//v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::Y_BUTTON);
 	}
 	if (m_Controller1->X.WasPressedOrHeld())
 	{
@@ -183,6 +193,10 @@ void GameObj::processInput( float fElapsedTime )
 	if (m_Controller1->LeftTrigger.WasPressedOrHeld())
 	{
 		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::LT_BUTTON);
+	}
+	if (m_Controller1->Start.WasPressedOrHeld())
+	{
+		pauseGame( true );
 	}
 	/*else
 	{
@@ -246,6 +260,11 @@ void GameObj::simulate( float fElapsedTime )
 	//debug.writeToFile( m_Vehicles[0]->getPosition());
 }
 
+
+bool GameObj::isPaused( )
+{
+	return m_Simulator->isPaused();
+}
 
 //--------------------------------------------------------------------------------------
 // Function: processCallback
