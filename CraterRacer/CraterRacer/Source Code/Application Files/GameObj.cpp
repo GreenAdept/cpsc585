@@ -78,11 +78,22 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 	case 76: //L is pressed -> load file
 		if (isKeyDown)
 		{
-			bool ok = loader.loadVars();
-			if (ok)
+			if (loader.loadVars())
 			{
+				//m_Simulator->printVariables();
 				debug.writeToFile("loaded variables");
-				//debug.writeToFile(loader.maxWheelAngle);
+
+				m_Simulator->setForceVec(loader.forceVec);
+				m_Simulator->setForceStr(loader.forceStrength);
+				m_Simulator->setForceMode(loader.forceMode);
+				m_Simulator->setGravity(loader.gravity);
+				m_Simulator->setRestitution(loader.restitution);
+				m_Simulator->setSFriction(loader.sFriction);
+				m_Simulator->setDFriction(loader.dFriction);
+				m_Simulator->setMaxAngularVelocity(loader.maxAngularVelocity);
+				m_Simulator->setMaxWheelAngle(loader.maxWheelAngle);
+
+				//m_Simulator->printVariables();
 			}
 			else
 				debug.writeToFile("did not load");

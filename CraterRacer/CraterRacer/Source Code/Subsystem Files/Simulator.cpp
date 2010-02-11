@@ -452,3 +452,65 @@ Simulator::~Simulator()
 		m_PhysicsSDK = NULL;
 	}
 }
+
+void Simulator::setForceVec(Vec3 vec)
+{
+	m_vForceVec = NxVec3(vec.x, vec.y, vec.z);
+}
+
+void Simulator::setForceStr(double str)
+{
+	m_rForceStrength = NxReal(str);
+}
+
+void Simulator::setForceMode(bool mode)
+{
+	m_bForceMode = mode;
+}
+
+void Simulator::setGravity(Vec3 gravity)
+{
+	m_vDefaultGravity = NxVec3(gravity.x, gravity.y, gravity.z);
+}
+
+void Simulator::setRestitution(double res)
+{
+	m_rRestitution = NxReal(res);
+}
+
+void Simulator::setSFriction(double friction)
+{
+	m_rStaticFriction = NxReal(friction);
+}
+
+void Simulator::setDFriction(double friction)
+{
+	m_rDynamicFriction = NxReal(friction);
+}
+
+void Simulator::setMaxAngularVelocity(double maxAngle)
+{
+	m_rMaxAngularVelocity = NxReal(maxAngle);
+}
+
+void Simulator::setMaxWheelAngle(double maxAngle)
+{
+	m_rMaxWheelAngle = maxAngle;
+}
+
+void Simulator::printVariables()
+{
+	m_Debugger.writeToFile("variables");
+	m_Debugger.writeToFile(Vec3(m_vForceVec.x,m_vForceVec.y,m_vForceVec.z));
+	m_Debugger.writeToFile((double)m_rForceStrength);
+	if (m_bForceMode)
+		m_Debugger.writeToFile("true");
+	else
+		m_Debugger.writeToFile("false");
+	m_Debugger.writeToFile(Vec3(m_vDefaultGravity.x, m_vDefaultGravity.y, m_vDefaultGravity.z));
+	m_Debugger.writeToFile((double)m_rRestitution);
+	m_Debugger.writeToFile((double)m_rStaticFriction);
+	m_Debugger.writeToFile((double)m_rDynamicFriction);
+	m_Debugger.writeToFile((double)m_rMaxAngularVelocity);
+	m_Debugger.writeToFile(m_rMaxWheelAngle);
+}
