@@ -38,15 +38,6 @@ public:
 
 	void simulate(vector<Vehicle*> entities, double elapsedTime);
 	void createVehicle( Vec3 pos, BoundingBox b );
-
-private:
-
-	void addTerrainFromX( Mesh* mesh, NxVec3 pos );
-
-	void startPhysics(void);
-	void getPhysicsResults(void);
-	void processForceKeys(NxActor* actor, Vehicle* vehicle);
-	NxVec3 normalize(NxVec3 vec);
 	void setForceVec(Vec3 vec);
 	void setForceStr(double str);
 	void setForceMode(bool mode);
@@ -56,6 +47,17 @@ private:
 	void setDFriction(double friction);
 	void setMaxAngularVelocity(double maxAngle);
 	void setMaxWheelAngle(double maxAngle);
+
+	void printVariables();
+
+private:
+
+	void addTerrainFromX( Mesh* mesh, NxVec3 pos );
+
+	void startPhysics(void);
+	void getPhysicsResults(void);
+	void processForceKeys(NxActor* actor, Vehicle* vehicle);
+	NxVec3 normalize(NxVec3 vec);
 	
 	// Physics SDK 
 	NxPhysicsSDK*		m_PhysicsSDK;
