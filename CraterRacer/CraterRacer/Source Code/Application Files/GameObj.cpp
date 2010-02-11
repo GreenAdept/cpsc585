@@ -143,30 +143,30 @@ void GameObj::processInput( float fElapsedTime )
 	{
 		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::A_BUTTON);
 	}
-	else if (m_Controller1->B.WasPressedOrHeld())
+	if (m_Controller1->B.WasPressedOrHeld())
 	{
 		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::B_BUTTON);
 	}
-	else if (m_Controller1->Y.WasPressedOrHeld())
+	if (m_Controller1->Y.WasPressedOrHeld())
 	{
 		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::Y_BUTTON);
 	}
-	else if (m_Controller1->X.WasPressedOrHeld())
+	if (m_Controller1->X.WasPressedOrHeld())
 	{
 		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::X_BUTTON);
 	}
-	else if (m_Controller1->RightTrigger.WasPressedOrHeld())
+	if (m_Controller1->RightTrigger.WasPressedOrHeld())
 	{
 		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::RT_BUTTON);
 	}
-	else if (m_Controller1->LeftTrigger.WasPressedOrHeld())
+	if (m_Controller1->LeftTrigger.WasPressedOrHeld())
 	{
 		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::LT_BUTTON);
 	}
-	else
+	/*else
 	{
 		v->setDir(m_Controller1->LeftThumbstick.GetX());
-	}
+	}*/
 
 	//Setting the input from Xbox controller
 	
