@@ -20,6 +20,7 @@ Simulator::Simulator()
 	m_rStaticFriction		= NxReal(0.1);
 	m_rDynamicFriction		= NxReal(0.3);
 	m_rMaxAngularVelocity	= NxReal(2);
+	m_rMaxWheelAngle		= 35.0;
 
 	forward = false;
 
@@ -349,7 +350,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 	}
 
 	//STEERING
-	float angle = vehicle->getInputObj()->getThumbstick()* 35; //35 is maximum wheel angle
+	float angle = vehicle->getInputObj()->getThumbstick()* m_rMaxWheelAngle; //35 is maximum wheel angle
 
 	/*NxVec3 force(-50000*sin(angle*PI/180), 0, -100000*sin(angle*PI/180));
 	localWheelForce[0] += force;
@@ -576,4 +577,49 @@ Simulator::~Simulator()
 		NxReleasePhysicsSDK( m_PhysicsSDK );
 		m_PhysicsSDK = NULL;
 	}
+}
+
+void Simulator::setForceVec(Vec3 vec)
+{
+	m_vForceVec = NxVec3(vec.x, vec.y, vec.z);
+}
+
+void Simulator::setForceStr(double str)
+{
+	m_rForceStrength = NxReal(str);
+}
+
+void Simulator::setForceMode(bool mode)
+{
+	m_bForceMode = mode;
+}
+
+void Simulator::setGravity(Vec3 gravity)
+{
+	m_vDefaultGravity = NxVec3(gravity.x, gravity.y, gravity.z);
+}
+
+void Simulator::setRestitution(double res)
+{
+	m_rRestitution = NxReal(res);
+}
+
+void Simulator::setSFriction(double friction)
+{
+	m_rStaticFriction = NxReal(friction);
+}
+
+void Simulator::setDFriction(double friction)
+{
+	m_rDynamicFriction = NxReal(friction);
+}
+
+void Simulator::setMaxAngularVelocity(double maxAngle)
+{
+	m_rMaxAngularVelocity = NxReal(maxAngle);
+}
+
+void Simulator::setMaxWheelAngle(double maxAngle)
+{
+	m_rMaxWheelAngle = maxAngle;
 }

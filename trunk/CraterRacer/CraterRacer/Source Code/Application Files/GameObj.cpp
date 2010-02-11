@@ -76,14 +76,24 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 		v->setKey(Input::Key::S_KEY, isKeyDown);
 		break;
 	case 76: //L is pressed -> load file
-		v->setKey(Input::Key::L_KEY, isKeyDown);
-		break;
+		if (isKeyDown)
+		{
+			bool ok = loader.loadVars();
+			if (ok)
+			{
+				debug.writeToFile("loaded variables");
+				//debug.writeToFile(loader.maxWheelAngle);
+			}
+			else
+				debug.writeToFile("did not load");
+			break;
+		}
 	case 82: //R is pressed -> reset parameters
 		v->setKey(Input::Key::R_KEY, isKeyDown);
 		break;
 	default:
-		double key = (double)virtualKeyCode;
-		debug.writeToFile(key);
+		//double key = (double)virtualKeyCode;
+		//debug.writeToFile(key);
 		break;
 	}
 }

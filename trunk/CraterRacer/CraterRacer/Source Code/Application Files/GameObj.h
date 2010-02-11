@@ -20,6 +20,7 @@
 #include "DebugWriter.h"
 #include "Terrain.h"
 #include "XBox360Controller.h"
+#include "VarLoader.h"
 
 
 //-----------------------------------------------------------------
@@ -55,6 +56,7 @@ private:
 	GameCamera		 m_Camera;		// main camera to follow behind vehicle
 	Simulator*		 m_Simulator;
 	DebugWriter		 debug;
+	VarLoader		 loader;
 	//Terrain*		 m_Terrain;
 	XBox360Controller* m_Controller1; //first player controller will have id# 0
 };

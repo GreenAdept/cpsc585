@@ -749,6 +749,18 @@
 				RelativePath=".\Source Code\Utility Files\Stream.h"
 				>
 			</File>
+			<File
+				RelativePath=".\variables.txt"
+				>
+			</File>
+			<File
+				RelativePath=".\Source Code\Utility Files\VarLoader.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source Code\Utility Files\VarLoader.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Effect Files"

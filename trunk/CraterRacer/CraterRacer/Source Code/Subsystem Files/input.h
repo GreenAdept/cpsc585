@@ -13,7 +13,7 @@ class Input
 public:
 	//enum class of directions
 	static enum Arrow { LEFT, UP, RIGHT, DOWN };
-	static enum Key { D_KEY, L_KEY, R_KEY, S_KEY };
+	static enum Key { D_KEY, R_KEY, S_KEY };
 	static enum Button { A_BUTTON, B_BUTTON, X_BUTTON, Y_BUTTON, LT_BUTTON, RT_BUTTON };
 
 	Input();
