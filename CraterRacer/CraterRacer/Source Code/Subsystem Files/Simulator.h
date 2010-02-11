@@ -63,6 +63,7 @@ private:
 	NxReal				m_rRestitution;
 	NxReal				m_rStaticFriction;
 	NxReal				m_rDynamicFriction;
+	NxReal				m_rMaxAngularVelocity;
 
 	//Time 
 	double				m_dDeltaTime;
@@ -73,8 +74,6 @@ private:
 	NxActor*			m_GroundPlane;
 	vector< NxActor* >	m_Vehicles;
 	NxActor*			m_Terrain;
-
-	//Vec3				m_vP1Dir;
 
 	//Debugging
 	DebugWriter			m_Debugger;

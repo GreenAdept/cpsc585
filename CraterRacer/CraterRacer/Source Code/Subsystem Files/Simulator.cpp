@@ -8,17 +8,18 @@
 Simulator::Simulator() 
 {
 	//initialize all simulation data members
-	m_vForceVec			= NxVec3(0, 0, 0);
-	m_PhysicsSDK		= NULL;
-	m_Scene				= NULL;
-	m_rForceStrength	= 1000000;
-	m_bForceMode		= true;
-	m_vDefaultGravity	= NxVec3(0,-20,0);
-	m_GroundPlane		= NULL;
-	//m_vP1Dir			= Vec3(0, 0, 0);
-	m_rRestitution		= NxReal(0.0);
-	m_rStaticFriction	= NxReal(0.1);
-	m_rDynamicFriction	= NxReal(0.3);
+	m_vForceVec				= NxVec3(0, 0, 0);
+	m_PhysicsSDK			= NULL;
+	m_Scene					= NULL;
+	m_rForceStrength		= 1000000;
+	m_bForceMode			= true;
+	m_vDefaultGravity		= NxVec3(0,-20,0);
+	m_GroundPlane			= NULL;
+	//m_vP1Dir				= Vec3(0, 0, 0);
+	m_rRestitution			= NxReal(0.0);
+	m_rStaticFriction		= NxReal(0.1);
+	m_rDynamicFriction		= NxReal(0.3);
+	m_rMaxAngularVelocity	= NxReal(2);
 
 	forward = false;
 
@@ -169,6 +170,7 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 
 	//Create the vehicle in the scene
 	NxActor* pActor = m_Scene->createActor( actorDesc );
+	pActor->setMaxAngularVelocity(m_rMaxAngularVelocity);
 	assert( pActor );
 
 	//Add the vehicle to global list of all vehicles
@@ -443,8 +445,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) {
 		//actor->setLinearVelocity(0);
 		freeze = false;
 	}
-
-	//m_Debugger.writeToFile(steering*10000);
 	//m_Debugger.writeToFile("");
 	
 	//xbox controllers
