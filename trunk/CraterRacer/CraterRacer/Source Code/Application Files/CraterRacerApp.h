@@ -10,6 +10,7 @@
 #include "GameObj.h"
 #include "XBox360Controller.h"
 #include "Constants.h"
+#include "Sound.h"
 
 //--------------------------------------------------------
 //		CLASS: RacerApp

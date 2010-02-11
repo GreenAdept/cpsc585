@@ -30,6 +30,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 		g_pGame->processInput( fElapsedTime );
 		g_pGame->simulate( fElapsedTime );
 		g_pGame->think( );
+		UpdateAudio();
 	}
 	else
 	{
@@ -249,12 +250,17 @@ RacerApp::RacerApp()
 {
 	g_pGame = new GameObj();
 	m_MenuController = new XBox360Controller(1); 
+
 	m_AppState = APP_STARTUP;
 
+	// Set up the audio
+	HRESULT hr = PrepareXACT();
+	
 	//initialize the resource manager to keep track of all our screens and HUD
 	m_MenuScreen.Init( &m_ResourceManager );
     m_OnePlayerScreen.Init( &m_ResourceManager );
 
+	//g_audioState.pSoundBank->Play(g_audioState.iApplicationStart, 0, 0, NULL);
 	//Set the font of the menu screen
     m_MenuScreen.SetFont( 1, L"Arial", 24, FW_BOLD );
     CDXUTElement* pElement = m_MenuScreen.GetDefaultElement( DXUT_CONTROL_STATIC, 0 );
@@ -265,10 +271,11 @@ RacerApp::RacerApp()
     }
 
     m_MenuScreen.SetCallback( OnGUIEvent ); 
-
+	
 	//Add buttons/text to the menu screen
 	m_MenuScreen.AddStatic( -1, L"Select your game mode:", 0, 10, 300, 22 );
     m_MenuScreen.AddButton( GUI_BTN_SINGLE_PLAYER, L"Single Player", 90, 42, 125, 40 );
+	g_audioState.pSoundBank->Play(g_audioState.iApplicationStart, 0, 0, NULL);
 }
 
 

@@ -40,8 +40,9 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 
     // Start the render loop
     DXUTMainLoop();
-
+	
 	delete pApp;
+	CleanupXACT();
 
     return DXUTGetExitCode();	
 }
