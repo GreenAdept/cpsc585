@@ -22,6 +22,7 @@ void Input::reset()
 	for (int i = 0; i < 6; i++)
 	{
 		inputs[i] = false;
+		keys[i] = false;
 		buttons[i] = false;
 	}
 
@@ -58,6 +59,8 @@ bool* Input::getButtons()
 	{
 		buttons[Button::A_BUTTON] = inputs[Arrow::UP];
 		buttons[Button::B_BUTTON] = inputs[Arrow::DOWN];
+		buttons[Button::LT_BUTTON] = keys[Key::S_KEY];
+		buttons[Button::RT_BUTTON] = keys[Key::D_KEY];
 	}
 
 	return buttons;
@@ -134,8 +137,8 @@ void Input::setDir(float x, Input::Button button)
 
 //--------------------------------------------------------------------------------------
 // Function: setDir
-// Called when pressing an arrow key on the keyboard. Sets the corresponding input
-// button to isKeyDown, then updates as necessary depending on the arrow pressed.
+// Called when pressing an Arrow key on the keyboard. Sets the corresponding input
+// button to isKeyDown, then updates as necessary depending on the Key pressed.
 //--------------------------------------------------------------------------------------
 void Input::setDir(Input::Arrow dir, bool isKeyDown)
 {
@@ -165,4 +168,9 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 		default:
 			break;
 	}
+}
+
+void Input::setKey(Input::Key key, bool isKeyDown)
+{
+	keys[key] = isKeyDown;
 }

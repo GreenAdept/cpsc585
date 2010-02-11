@@ -69,7 +69,21 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 		//add backward force to player vehicle
 		v->setDir(Input::Arrow::DOWN, isKeyDown);
 		break;
+	case 68: //D is pressed -> drop car
+		v->setKey(Input::Key::D_KEY, isKeyDown);
+		break;
+	case 83: //S is pressed -> stop vehicle
+		v->setKey(Input::Key::S_KEY, isKeyDown);
+		break;
+	case 76: //L is pressed -> load file
+		v->setKey(Input::Key::L_KEY, isKeyDown);
+		break;
+	case 82: //R is pressed -> reset parameters
+		v->setKey(Input::Key::R_KEY, isKeyDown);
+		break;
 	default:
+		double key = (double)virtualKeyCode;
+		debug.writeToFile(key);
 		break;
 	}
 }
