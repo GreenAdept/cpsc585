@@ -16,21 +16,22 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 
 	RacerApp* pApp = new RacerApp(); //The application managing the game and gui
 
+	//turn off cursor
+	ShowCursor( false );
+
     // Set the callback functions
 	DXUTSetCallbackD3D9DeviceCreated( RacerApp::OnCreateDevice );
 	DXUTSetCallbackD3D9DeviceDestroyed( RacerApp::OnDestroyDevice );
-	DXUTSetCallbackMsgProc( RacerApp::MsgProc );
     DXUTSetCallbackD3D9DeviceReset( RacerApp::OnResetDevice );
     DXUTSetCallbackD3D9DeviceLost( RacerApp::OnLostDevice );
 	DXUTSetCallbackD3D9FrameRender( RacerApp::OnRender );
 	DXUTSetCallbackFrameMove( RacerApp::OnUpdateGame );
 	DXUTSetCallbackKeyboard( RacerApp::OnKeyboard );
-	DXUTSetCallbackDeviceChanging( RacerApp::ModifyDeviceSettings );
 	DXUTSetCallbackD3D9DeviceAcceptable( RacerApp::IsD3D9DeviceAcceptable );
 
     // Initialize DXUT and create the desired Win32 window and Direct3D device for the application
     DXUTInit( true, true );						
-    DXUTSetHotkeyHandling( true, true, true );  // handle the default hotkeys 
+    DXUTSetHotkeyHandling( false, true, false );  // handle the default hotkeys 
 												// ALT+ENTER -> full screen toggle
 												// ESC -> exit application
 												// PAUSE or BREAK -> pause time

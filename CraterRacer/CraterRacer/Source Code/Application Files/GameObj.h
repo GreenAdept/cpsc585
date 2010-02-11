@@ -40,6 +40,8 @@ public:
 	~GameObj( );
 
 	void think           ( void );
+	bool pauseGame		 ( bool );
+	bool isPaused		 ( );
 	void processInput	 ( float fElapsedTime );
 	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );
 	void simulate		 ( float fElapsedTime );
@@ -50,15 +52,14 @@ public:
 private:
 	//Date Members ---------------------------------------
 
-	EntityManager    m_Entities;        // collection of all entities
-	Renderer*		 m_Renderer;		// rendering subsystem
-	Input			 m_InputManager;	// input management subsystem
-	GameCamera		 m_Camera;		// main camera to follow behind vehicle
-	Simulator*		 m_Simulator;
-	DebugWriter		 debug;
-	VarLoader		 loader;
-	//Terrain*		 m_Terrain;
-	XBox360Controller* m_Controller1; //first player controller will have id# 0
+	EntityManager		m_Entities;		// collection of all entities
+	Renderer*			m_Renderer;		// rendering subsystem
+	Input				m_InputManager;	// input management subsystem
+	GameCamera			m_Camera;		// main camera to follow behind vehicle
+	Simulator*			m_Simulator;
+	DebugWriter			debug;
+	VarLoader			loader;
+	XBox360Controller*	m_Controller1;	//first player controller will have id# 0
 };
 
 #endif GAME_OBJ_H 

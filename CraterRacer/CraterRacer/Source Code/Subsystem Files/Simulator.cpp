@@ -25,6 +25,7 @@ Simulator::Simulator()
 	m_rMaxWheelDisplacement = 1.75;
 	m_rMaxWheelAngle		= 35.0;
 	m_rMinWheelDisplacement = 1.25;
+	m_bPaused				= false;
 
 	forward = false;
 }
@@ -67,12 +68,39 @@ void Simulator::InitNx( Mesh* terrainMesh )
 	m_PhysicsSDK->getFoundationSDK().getRemoteDebugger()->connect ("localhost", 5425);
 }
 
+
+//--------------------------------------------------------------------------------------
+// Function:  pause
+// pause=true simulation is paused
+//--------------------------------------------------------------------------------------
+bool Simulator::pause( bool pause )
+{
+	if( pause == m_bPaused )
+		return false;
+	m_bPaused = pause;
+	return true;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  pause
+// pause=true simulation is paused
+//--------------------------------------------------------------------------------------
+bool Simulator::isPaused( )
+{
+	return m_bPaused;
+}
+
+
 //--------------------------------------------------------------------------------------
 // Function:  simulate
 // Simulates the movement of entities based on the elapsed time
 //--------------------------------------------------------------------------------------
 void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime ) 
 {
+	if( m_bPaused )
+		return;
+
 	m_dDeltaTime = elapsedTime;
 
 	startPhysics();
@@ -104,6 +132,7 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 	//Add a single shape actor to the scene
 	NxActorDesc actorDesc;
 	NxBodyDesc bodyDesc;
+	bodyDesc.angularDamping	= 0.5f;
 	bodyDesc.mass = m_rVehicleMass;
 
 	//Create a box with the supplied bounding box dimensions
@@ -220,7 +249,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			}
 		}
 	}
-	vehicle->getInputObj()->reset();
 
 	//STEERING
 	float angle = vehicle->getInputObj()->getThumbstick()* 35; //35 is maximum wheel angle
@@ -282,6 +310,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	NxVec3 steering = (velocity.dot(tireLateral) / tireLateral.dot(tireLateral)) * tireLateral;
 	actor->addLocalForceAtLocalPos(NxVec3(steering.x, 0, steering.z)*5000, wheel[0]);
 	actor->addLocalForceAtLocalPos(NxVec3(steering.x, 0, steering.z)*5000, wheel[1]);*/
+
+	vehicle->getInputObj()->reset();
 
 	Wheel*	w; 
 	NxVec3	wheelPos,

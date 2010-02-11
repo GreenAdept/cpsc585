@@ -27,8 +27,8 @@
 
 enum ProcessType		{ ON_LOST, ON_RESET, ON_DESTROY };
 enum Directions			{ LEFT, FORWARD, RIGHT, BACKWARD }; 
-enum GuiControls		{ GUI_BTN_SINGLE_PLAYER };
-enum ApplicationState	{ APP_STARTUP, APP_RENDER_GAME };
+enum GuiControls		{ GUI_BTN_SINGLE_PLAYER, GUI_BTN_EXIT, GUI_BTN_UNPAUSE, GUI_BTN_EXIT2 };
+enum ApplicationState	{ APP_STARTUP, APP_RENDER_GAME, APP_PAUSED };
 enum Wheels				{ WHEEL0, WHEEL1, WHEEL2, WHEEL3 };
 
 
