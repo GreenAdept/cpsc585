@@ -104,6 +104,7 @@ void CALLBACK RacerApp::OnGUIEvent( UINT nEvent, int nControlID, CDXUTControl* p
 	switch( nControlID )
 	{
 		case GUI_BTN_SINGLE_PLAYER:
+			g_audioState.pSoundBank->Play(g_audioState.iApplicationStart, 0, 0, NULL);
 			m_AppState = APP_RENDER_GAME; 
 			break;
 	}
@@ -275,7 +276,6 @@ RacerApp::RacerApp()
 	//Add buttons/text to the menu screen
 	m_MenuScreen.AddStatic( -1, L"Select your game mode:", 0, 10, 300, 22 );
     m_MenuScreen.AddButton( GUI_BTN_SINGLE_PLAYER, L"Single Player", 90, 42, 125, 40 );
-	g_audioState.pSoundBank->Play(g_audioState.iApplicationStart, 0, 0, NULL);
 }
 
 
