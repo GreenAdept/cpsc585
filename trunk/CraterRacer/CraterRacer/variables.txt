@@ -1,7 +1,7 @@
 0,0,0		//m_vForceVec -> x,y,z
-1.5			//m_rForceStrength -> double
+50			//m_rForceStrength -> double
 1			//m_bForceMode -> 1=true, 0=false
-0,-20,0		//m_vDefaultGravity -> x,y,z
+0,-10,0		//m_vDefaultGravity -> x,y,z
 0.0			//m_rRestitution -> double
 0.10		//m_rStaticFriction -> double
 0.30		//m_rDynamicFriction -> double
