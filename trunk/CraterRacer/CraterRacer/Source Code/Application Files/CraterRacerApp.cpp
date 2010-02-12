@@ -175,7 +175,8 @@ void RacerApp::processMenuSelection( )
 		{
 			//start the game
 			case GUI_BTN_SINGLE_PLAYER:
-				g_audioState.pSoundBank->Play(g_audioState.iApplicationStart, 0, 0, NULL);
+				if( g_audioState.pSoundBank )
+					g_audioState.pSoundBank->Play(g_audioState.iApplicationStart, 0, 0, NULL);
 				m_AppState = APP_RENDER_GAME; 
 				break;
 			//start game again

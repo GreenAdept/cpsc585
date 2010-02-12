@@ -46,7 +46,7 @@ HRESULT PrepareXACT()
     if( FAILED( hr ) )
         return hr;
 
-    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, L"CraterRacer\\CraterRacer\\Media\\Audio\\MenuBG.xwb" ) ) )
+    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, MENU_BG_FILE ) ) )
         return hr;
 
     // Create an "in memory" XACT wave bank file using memory mapped file IO
@@ -78,7 +78,7 @@ HRESULT PrepareXACT()
 
     // Read and register the sound bank file with XACT.  Do not use memory mapped file IO because the 
     // memory needs to be read/write and the working set of sound banks are small.
-    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, L"CraterRacer\\CraterRacer\\Media\\Audio\\SoundBank.xsb" ) ) )
+    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, SOUNDBANK_FILE ) ) )
         return hr;
     hr = E_FAIL; // assume failure
     hFile = CreateFile( str, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL );

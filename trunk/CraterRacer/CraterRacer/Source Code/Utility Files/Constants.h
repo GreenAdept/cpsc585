@@ -24,6 +24,8 @@
 #define WHEEL3_FILE		L"Media\\Meshes\\Wheel3.x"
 #define OBJ_EFFECT		L"Source Code\\Effect Files\\Scene.fx"
 #define TERRAIN_FILE	L"Media\\Meshes\\Floor.x"
+#define SOUNDBANK_FILE	L"Media\\Audio\\SoundBank.xsb"
+#define MENU_BG_FILE	L"Media\\Audio\\MenuBG.xwb"
 
 enum ProcessType		{ ON_LOST, ON_RESET, ON_DESTROY };
 enum Directions			{ LEFT, FORWARD, RIGHT, BACKWARD }; 
