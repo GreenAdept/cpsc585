@@ -19,11 +19,11 @@ Simulator::Simulator()
 	m_rDynamicFriction		= NxReal(0.4);
 	m_rMaxAngularVelocity	= NxReal(2);
 	m_rVehicleMass			= 10.0;
-	m_rWheelRestLength		= 0.3;
+	m_rWheelRestLength		= 0.5;
 	m_rMinWheelDisplacement = 1.25;
 	m_rSpringK				= ( 10 * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
 	m_rSpringC				= 2 * sqrt( m_rSpringK * m_rVehicleMass );
-	m_rMaxWheelDisplacement = 0.5;
+	m_rMaxWheelDisplacement = 1.0;
 	m_rMaxWheelAngle		= 35.0;
 	m_bPaused				= false;
 	m_rSpringScale			= 1.0;
@@ -139,7 +139,7 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 
 	//Create a box with the supplied bounding box dimensions
 	NxBoxShapeDesc boxDesc;
-	boxDesc.mass = 10.0f;
+	//boxDesc.mass = 10.0f;
 	boxDesc.dimensions.set( b.m_fWidth, b.m_fHeight, b.m_fLength );
 	actorDesc.shapes.pushBack( &boxDesc );
 
@@ -352,47 +352,47 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	for (int i = 0; i < 4 /*number of wheels*/; i++) 
 	{
 		w = &vehicle->m_Wheels[ i ];
-		//wheelRadius = w->getBoundingBox().m_fRadius;
+		wheelRadius = w->getBoundingBox().m_fRadius;
 
-		////Ray casting
-		//wheelPos = mat * (w->getChassisPt());//+NxVec3(0,-BB.m_fHeight,0));
-		//upVec = normalize( orient * NxVec3( 0, 1, 0 ));
+		//Ray casting
+		wheelPos = mat * (w->getChassisPt()+NxVec3(0,-BB.m_fHeight,0));
+		upVec = normalize( orient * NxVec3( 0, 1, 0 ));
 
-		//susAxis = normalize( orient * NxVec3(0,-1,0) );
-		//w->setSuspensionAxis( susAxis );
+		susAxis = normalize( orient * NxVec3(0,-1,0) );
+		w->setSuspensionAxis( susAxis );
 
-		//NxRay ray( wheelPos, susAxis );
-		//NxRaycastHit hit;
+		NxRay ray( wheelPos, susAxis );
+		NxRaycastHit hit;
 
-		//m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
+		m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
 
-		////apply forces due to suspension
-		//if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 
-		//{
-		//	//the car is about to bottom out
-		//	if( hit.distance <= wheelRadius )
-		//		w->setDisplacement( 0 );
+		//apply forces due to suspension
+		if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 
+		{
+			////the car is about to bottom out
+			//if( hit.distance <= wheelRadius )
+			//	w->setDisplacement( 0 );
 
-		//	else //the car is between the max length and its min length somewhere
-		//		w->setDisplacement( hit.distance - wheelRadius );
-		//		
-		//	susForce =  m_rSpringScale * m_rSpringK * ( hit.distance - wheelRadius - m_rWheelRestLength );
+			//else //the car is between the max length and its min length somewhere
+			w->setDisplacement( hit.distance - wheelRadius );
+				
+			susForce =  -1*m_rSpringScale * m_rSpringK * ( hit.distance - wheelRadius - m_rWheelRestLength );
 
-		//	NxVec3 ptVelocity = actor->getLocalPointVelocity( w->getChassisPt() );
-		//	
-		//	damperForce = m_rSpringC * m_rDamperScale * ptVelocity.dot( susAxis ) * -1;
-		//	
-		//	//localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
+			NxVec3 ptVelocity = actor->getLocalPointVelocity( w->getChassisPt() );
+			
+			damperForce = m_rSpringC * m_rDamperScale * ptVelocity.dot( susAxis );
+			
+			localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
 
-		//	actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
-		//	actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
-		//}
-		//else
-		//{
-		//	//w->setDisplacement( m_rMaxWheelDisplacement );
-		//}
-		actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
-		actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
+			actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
+			actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
+		}
+		else
+		{
+			w->setDisplacement( m_rMaxWheelDisplacement );
+		}
+		/*actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
+		actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );*/
 	}
 	
 }
