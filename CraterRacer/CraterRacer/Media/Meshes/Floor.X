@@ -94,14 +94,14 @@ template MeshTextureCoords {
 }
 
 
-Material PDX03_-_Default {
- 1.000000;1.000000;1.000000;1.000000;;
+Material PDX07_-_Default {
+ 0.588235;0.588235;0.588235;1.000000;;
  3.200000;
  0.000000;0.000000;0.000000;;
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "dirt.bmp";
+  "rock_02.bmp";
  }
 }
 
@@ -6222,7 +6222,7 @@ Frame floor {
    0,
    0,
    0;
-   { PDX03_-_Default }
+   { PDX07_-_Default }
   }
 
   MeshTextureCoords  {

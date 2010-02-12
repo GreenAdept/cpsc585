@@ -5,14 +5,14 @@ bool VarLoader::loadVars()
 	file.open("variables.txt");
 	if (!file.is_open()) return false;
 
-	//read in the 9 variables from the file
-	string strings[9];
-	for (int i = 0; i < 9; i++)
+	//read in the 11 variables from the file
+	string strings[11];
+	for (int i = 0; i < 11; i++)
 	{
 		if (!file.eof())
 			getline(file, strings[i]);
 		else
-			return false; //there aren't 9 lines in the file
+			return false; //there aren't 11 lines in the file
 	}
 
 	parse(strings);
@@ -22,20 +22,35 @@ bool VarLoader::loadVars()
 
 void VarLoader::parse(string strings[])
 {
-	forceVec = parseVec(strings[0]);
-	forceStrength = atof(strings[1].c_str());
-	
-	if (strings[2].compare("true") == 0)
-		forceMode = true;
-	else
-		forceMode = false;
+	forceVec			= parseVec(strings[0]);
+	forceStrength		= getDouble( strings[1] );
+	forceMode			= getBool(strings[2]);
+	gravity				= parseVec(strings[3]);
+	restitution			= getDouble(strings[4]);
+	sFriction			= getDouble(strings[5]);
+	dFriction			= getDouble(strings[6]);
+	maxAngularVelocity	= getDouble(strings[7]);
+	maxWheelAngle		= getDouble(strings[8]);
+	springScale			= getDouble(strings[9]);
+	damperScale			= getDouble(strings[10]);
+}
 
-	gravity = parseVec(strings[3]);
-	restitution = atof(strings[4].c_str());
-	sFriction = atof(strings[5].c_str());
-	dFriction = atof(strings[6].c_str());
-	maxAngularVelocity = atof(strings[7].c_str());
-	maxWheelAngle = atof(strings[8].c_str());
+double VarLoader::getDouble( string s )
+{
+	stringstream ss (stringstream::in | stringstream::out);
+	double temp;
+	ss << s;
+	ss >> temp;
+	return temp;
+}
+
+bool VarLoader::getBool( string s )
+{
+	stringstream ss (stringstream::in | stringstream::out);
+	bool temp;
+	ss << s;
+	ss >> temp;
+	return temp;
 }
 
 Vec3 VarLoader::parseVec(string s)

@@ -101,6 +101,8 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 				m_Simulator->setDFriction(loader.dFriction);
 				m_Simulator->setMaxAngularVelocity(loader.maxAngularVelocity);
 				m_Simulator->setMaxWheelAngle(loader.maxWheelAngle);
+				m_Simulator->setSpringScale(loader.springScale);
+				m_Simulator->setDamperScale(loader.damperScale);
 
 				//m_Simulator->printVariables();
 			}
@@ -146,28 +148,6 @@ void GameObj::processInput( float fElapsedTime )
 {
 	m_Controller1->Update(fElapsedTime);
 	Input* v = m_Entities.getPlayerInputObj (0);
-	//Vec3 dir(m_Controller1->LeftThumbstick.GetX(), 0, m_Controller1->LeftThumbstick.GetY());
-	/*
-	if (m_Controller1->A.WasPressedOrHeld())
-	{
-		//accelerate
-		drive *= 3; //3 for the acceleration right now, need to CHANGE!
-	}
-	else if (m_Controller1->B.WasPressedOrHeld())
-	{
-		Vec3 vlc = v->getVelocity();
-		double speed = sqrt(vlc.x * vlc.x + vlc.y * vlc.y + vlc.z * vlc.z);
-		//if speed > 0.1km/h, decelerate
-		//if ( speed > 0.1)
-		{
-			//give a force opposite current direction, add on joystick direction
-			Vec3 oppositeForce = (-1) * vlc; //the -1 needs to be CHANGED to a braking constant
-			drive = oppositeForce + drive * 0.2 * speed;
-		}
-		//else reverse -> while reversing, turning is backwards
-	}
-	v->setDir(drive);
-	*/
 	
 	if (m_Controller1->A.WasPressedOrHeld())
 	{
@@ -198,42 +178,13 @@ void GameObj::processInput( float fElapsedTime )
 	{
 		pauseGame( true );
 	}
-	/*else
-	{
-		v->setDir(m_Controller1->LeftThumbstick.GetX());
-	}*/
 
 	//Setting the input from Xbox controller
-	
-	if (m_Controller1->IsConnected())
+	if( m_Controller1->IsConnected() )
 	{
 		//using xbox controller
 		v->setController(true);
 	}
-/*
-	//accelerate
-	if (m_Controller1->A.WasPressedOrHeld())
-	{
-		v->setInput(Input::Arrow::UP, true);
-	}
-	else if (m_Controller1->A.WasReleased())
-	{
-		v->setInput(Input::Arrow::UP, false);
-	}
-
-	//decelerate
-	if (m_Controller1->B.WasPressedOrHeld())
-	{
-		v->setInput(Input::Arrow::DOWN, true);
-	}
-	else if (m_Controller1->B.WasReleased())
-	{
-		v->setInput(Input::Arrow::DOWN, false);
-	}
-
-	//turn
-	v->setThumbstick(m_Controller1->LeftThumbstick.GetX());
-*/	
 }
 
 

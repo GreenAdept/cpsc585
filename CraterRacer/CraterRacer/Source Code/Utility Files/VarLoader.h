@@ -12,6 +12,8 @@
  * #7 m_rDynamicFriction -> double
  * #8 m_rMaxAngularVelocity -> double
  * #9 m_rMaxWheelAngle -> double
+ * #10 m_rSpringScale -> double
+ * #11 m_rDamperScale -> double
  *
  * When running the game, hit 'L' to load the variables from
  * variables.txt.
@@ -21,6 +23,7 @@
 #include <fstream>
 #include <string>
 #include <stdio.h>
+#include <sstream>
 #include "Constants.h"
 
 using namespace std;
@@ -31,6 +34,8 @@ public:
 
 	void parse(string strings[]);
 	Vec3 parseVec(string s);
+	double getDouble( string s );
+	bool getBool( string s );
 
 	// constants to read in
 	// public because it'll just be easier to get to
@@ -43,6 +48,8 @@ public:
 	double dFriction;
 	double maxAngularVelocity;
 	double maxWheelAngle;
+	double springScale;
+	double damperScale;
 	
 private:
 	ifstream file;
