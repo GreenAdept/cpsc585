@@ -11,7 +11,7 @@ Simulator::Simulator()
 	m_vForceVec				= NxVec3(0, 0, 0);
 	m_PhysicsSDK			= NULL;
 	m_Scene					= NULL;
-	m_rForceStrength		= 1.5;
+	m_rForceStrength		= 5;
 	m_bForceMode			= true;
 	m_vDefaultGravity		= NxVec3(0,-10,0);
 	m_rRestitution			= NxReal(0.0);
@@ -19,13 +19,15 @@ Simulator::Simulator()
 	m_rDynamicFriction		= NxReal(0.4);
 	m_rMaxAngularVelocity	= NxReal(2);
 	m_rVehicleMass			= 10.0;
-	m_rWheelRestLength		= 1.5;
-	m_rSpringK				= ( m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
-	m_rSpringC				= 2 * sqrt( m_rSpringK * m_rVehicleMass );
-	m_rMaxWheelDisplacement = 1.75;
-	m_rMaxWheelAngle		= 35.0;
+	m_rWheelRestLength		= 0.3;
 	m_rMinWheelDisplacement = 1.25;
+	m_rSpringK				= ( 10 * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
+	m_rSpringC				= 2 * sqrt( m_rSpringK * m_rVehicleMass );
+	m_rMaxWheelDisplacement = 0.5;
+	m_rMaxWheelAngle		= 35.0;
 	m_bPaused				= false;
+	m_rSpringScale			= 1.0;
+	m_rDamperScale			= 1.0;
 
 	forward = false;
 }
@@ -137,6 +139,7 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 
 	//Create a box with the supplied bounding box dimensions
 	NxBoxShapeDesc boxDesc;
+	boxDesc.mass = 10.0f;
 	boxDesc.dimensions.set( b.m_fWidth, b.m_fHeight, b.m_fLength );
 	actorDesc.shapes.pushBack( &boxDesc );
 
@@ -201,11 +204,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			case 0: //A_BUTTON - accelerate
 			{
 				//TODO: change tire orientation
-				//float x_dir = vehicle->getInputObj()->getThumbstick();
+				float x_dir = vehicle->getInputObj()->getThumbstick();
 				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 
 				localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
-				localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength);
+				localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
 				break; 
 			}
 			case 1: //B_BUTTON - brake / reverse
@@ -253,8 +256,33 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	}
 
 	//STEERING
-	float angle = vehicle->getInputObj()->getThumbstick()* m_rMaxWheelAngle; //35 is maximum wheel angle
+	float angle = vehicle->getInputObj()->getThumbstick() * m_rMaxWheelAngle; //maximum wheel angle
 
+	Wheel*	w; 
+	NxVec3	wheelPos,
+			upVec,
+			wheelForward,
+			carForward,
+			susAxis;
+	float	displacement,
+			susForce;
+    NxMat34 mat = actor->getGlobalPose();
+	NxMat33 orient = actor->getGlobalOrientation();
+	BoundingBox BB = vehicle->getBoundingBox();
+
+	//for (int i = WHEEL0; i < WHEEL2 /*front wheels*/; i++) 
+	//{
+	//	w = &vehicle->m_Wheels[ i ];
+	//	
+	//	wheelPos = mat * w->getChassisPt();
+	//	upVec = normalize( orient * NxVec3( 0, 1, 0 ));
+	//	
+	//	susAxis = normalize( orient * NxVec3(0,-1,0) );
+	//	w->setSuspensionAxis( susAxis );
+
+	//	wheelForward = 
+	//	
+	//}
 	/*NxVec3 force(-50000*sin(angle*PI/180), 0, -100000*sin(angle*PI/180));
 	localWheelForce[0] += force;
 	localWheelForce[1] += force;
@@ -300,8 +328,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 
 	if (vehicle->getInputObj()->getThumbstick() != 0) 
 	{
-		localWheelForce[2] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
-		localWheelForce[3] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
+		localWheelForce[0] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
+		localWheelForce[1] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
 
 		//globalWheelForce[0] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
 		//globalWheelForce[1] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
@@ -315,59 +343,60 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 
 	vehicle->getInputObj()->reset();
 
-	Wheel*	w; 
-	NxVec3	wheelPos,
-			upVec;
-	float	displacement,
-			susForce;
-    NxMat34 mat = actor->getGlobalPose();
-	NxMat33 orient = actor->getGlobalOrientation();
-	BoundingBox BB = vehicle->getBoundingBox();
+
+	float damperForce,
+			wheelRadius;
+
 
 	//SUSPENSION
 	for (int i = 0; i < 4 /*number of wheels*/; i++) 
 	{
 		w = &vehicle->m_Wheels[ i ];
-		
-		//Ray casting
-		wheelPos = mat * w->getChassisPt();
-		upVec = normalize( orient * NxVec3( 0, 1, 0 ));
-		
-		w->setSuspensionAxis( orient * NxVec3(0,-1,0) );
+		//wheelRadius = w->getBoundingBox().m_fRadius;
 
-		NxRay ray( wheelPos, -upVec );
-		NxRaycastHit hit;
+		////Ray casting
+		//wheelPos = mat * (w->getChassisPt());//+NxVec3(0,-BB.m_fHeight,0));
+		//upVec = normalize( orient * NxVec3( 0, 1, 0 ));
 
-		m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
+		//susAxis = normalize( orient * NxVec3(0,-1,0) );
+		//w->setSuspensionAxis( susAxis );
 
-		//apply forces due to suspension
-		if( hit.distance < ( m_rMaxWheelDisplacement + BB.m_fHeight )) 
-		{
-			//the car is about to bottom out
-			if( hit.distance <= BB.m_fHeight + m_rMinWheelDisplacement )
-			{
-				w->setDisplacement( 0 );
-			}
-			else //the car is between the max length and its min length somewhere
-			{
-				w->setDisplacement( hit.distance - BB.m_fHeight - m_rMinWheelDisplacement );
-			}
-				
-			susForce = m_rSpringK * (hit.distance - BB.m_fHeight - m_rWheelRestLength);
-			
-			//dampforce = c * speedOfDisplacement
-			localWheelForce[i] += NxVec3(0, susForce, 0);
+		//NxRay ray( wheelPos, susAxis );
+		//NxRaycastHit hit;
 
-			actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
-			actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
-		}
-		else
-		{
-			w->setDisplacement( m_rMaxWheelDisplacement - m_rMinWheelDisplacement );
-		}
+		//m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
+		//
+		//NxVec3 vel = actor->getLinearVelocity();
 
-		
+		////apply forces due to suspension
+		//if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 
+		//{
+		//	//the car is about to bottom out
+		//	if( hit.distance <= wheelRadius )
+		//		w->setDisplacement( 0 );
+
+		//	else //the car is between the max length and its min length somewhere
+		//		w->setDisplacement( hit.distance - wheelRadius );
+		//		
+		//	susForce =  m_rSpringScale * m_rSpringK * ( hit.distance - wheelRadius - m_rWheelRestLength );
+
+		//	NxVec3 ptVelocity = actor->getLocalPointVelocity( w->getChassisPt() );
+		//	
+		//	damperForce = m_rSpringC * m_rDamperScale * ptVelocity.dot( susAxis ) * -1;
+		//	
+		//	//localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
+
+		//	actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
+		//	actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
+		//}
+		//else
+		//{
+		//	//w->setDisplacement( m_rMaxWheelDisplacement );
+		//}
+		actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
+		actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
 	}
+	
 }
 
 NxVec3 Simulator::normalize(NxVec3 vec) {
@@ -530,6 +559,16 @@ void Simulator::setMaxAngularVelocity(double maxAngle)
 void Simulator::setMaxWheelAngle(double maxAngle)
 {
 	m_rMaxWheelAngle = maxAngle;
+}
+
+void Simulator::setSpringScale( double springScale )
+{
+	m_rSpringScale = springScale;
+}
+
+void Simulator::setDamperScale( double damperScale )
+{
+	m_rDamperScale = damperScale;
 }
 
 void Simulator::printVariables()

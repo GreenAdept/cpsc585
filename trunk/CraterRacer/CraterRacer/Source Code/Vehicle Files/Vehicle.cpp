@@ -52,13 +52,14 @@ void Vehicle::initialize( Device* device, Vec3 pos, LPCWSTR filename )
 	Entity::initialize( device, pos, filename );
 
 	BoundingBox BB = this->getBoundingBox();
-	float width = BB.m_fWidth/2;
+	float width = BB.m_fWidth;
 	float radius = BB.m_fRadius;
+	float height = BB.m_fHeight;
 
-	m_Wheels[ WHEEL0 ].initialize( device, WHEEL0_FILE, Vec3(width, 0, BB.m_fLength/2) );
-	m_Wheels[ WHEEL1 ].initialize( device, WHEEL1_FILE, Vec3(-width, 0, BB.m_fLength/2) );
-	m_Wheels[ WHEEL2 ].initialize( device, WHEEL2_FILE, Vec3(width, 0, BB.m_fLength/2) );
-	m_Wheels[ WHEEL3 ].initialize( device, WHEEL3_FILE, Vec3(-width, 0, BB.m_fLength/2) );
+	m_Wheels[ WHEEL0 ].initialize( device, WHEEL0_FILE, Vec3(0, 0, BB.m_fLength) );
+	m_Wheels[ WHEEL1 ].initialize( device, WHEEL1_FILE, Vec3(width, 0, BB.m_fLength) );
+	m_Wheels[ WHEEL2 ].initialize( device, WHEEL2_FILE, Vec3(0, 0, -BB.m_fLength) );
+	m_Wheels[ WHEEL3 ].initialize( device, WHEEL3_FILE, Vec3(width, 0, -BB.m_fLength) );
 }
 
 
