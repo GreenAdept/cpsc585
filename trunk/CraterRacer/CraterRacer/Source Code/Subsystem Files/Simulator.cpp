@@ -365,8 +365,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 		//NxRaycastHit hit;
 
 		//m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
-		//
-		//NxVec3 vel = actor->getLinearVelocity();
 
 		////apply forces due to suspension
 		//if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 

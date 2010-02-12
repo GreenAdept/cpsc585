@@ -73,9 +73,7 @@ float Wheel::getDisplacement()
 
 void Wheel::setDisplacement( float displacement )
 {
-	m_fDisplacement = displacement;// - 1.25;
-	/*if( m_fDisplacement < 0 )
-		m_fDisplacement = 0;*/
+	m_fDisplacement = displacement;
 }
 
 NxVec3 Wheel::getChassisPt()
