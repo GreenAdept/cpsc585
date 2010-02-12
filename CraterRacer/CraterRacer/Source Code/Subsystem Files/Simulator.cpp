@@ -11,7 +11,7 @@ Simulator::Simulator()
 	m_vForceVec				= NxVec3(0, 0, 0);
 	m_PhysicsSDK			= NULL;
 	m_Scene					= NULL;
-	m_rForceStrength		= 10.0;
+	m_rForceStrength		= 1.0;
 	m_bForceMode			= true;
 	m_vDefaultGravity		= NxVec3(0,-10,0);
 	m_rRestitution			= NxReal(0.0);
@@ -155,6 +155,7 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 	m_Vehicles.push_back( pActor );
 }
 
+
 //--------------------------------------------------------------------------------------
 // Function:  startPhysics
 // Called the first time PhysX simulates
@@ -164,6 +165,7 @@ void Simulator::startPhysics()
 	m_Scene->simulate( m_dDeltaTime );
 	m_Scene->flushStream( );
 }
+
 
 //--------------------------------------------------------------------------------------
 // Function:  getPhysicsResults
@@ -483,10 +485,12 @@ Simulator::~Simulator()
 	}
 }
 
+
 void Simulator::setForceVec(Vec3 vec)
 {
 	m_vForceVec = NxVec3(vec.x, vec.y, vec.z);
 }
+
 
 void Simulator::setForceStr(double str)
 {

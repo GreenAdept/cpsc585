@@ -1,10 +1,3 @@
-// ===============================================================================
-//						  NVIDIA PHYSX SDK TRAINING PROGRAMS
-//						     LESSON 101 : PRIMARY SHAPE
-//
-//						    Written by QA BJ, 6-2-2008
-// ===============================================================================
-
 #pragma once
 #ifndef SIMULATOR_H
 #define SIMULATOR_H

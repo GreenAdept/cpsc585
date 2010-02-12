@@ -8,6 +8,7 @@
 #pragma warning( disable : 4996 ) // disable deprecated warning 
 #include <strsafe.h>
 #pragma warning( default : 4996 )
+#include "Constants.h"
 
 //-----------------------------------------------------------------------------
 // Forward declaration
