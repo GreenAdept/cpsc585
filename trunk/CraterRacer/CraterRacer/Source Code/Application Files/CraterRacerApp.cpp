@@ -246,7 +246,7 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 	HRESULT hr;
 
 	// Clear the render target and the zbuffer 
-	V( device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 255, 0, 0, 100 ), 1.0f, 0 ) );
+	V( device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 255, 0, 0, 0 ), 1.0f, 0 ) );
 
 	// Render the scene
 	if( SUCCEEDED( device->BeginScene() ) )
