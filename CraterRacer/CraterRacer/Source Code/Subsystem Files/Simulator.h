@@ -47,6 +47,7 @@ public:
 	void setDamperScale(double scale);
 
 	void printVariables();
+	void setSuspensionFlag(bool flag);
 
 private:
 
@@ -96,6 +97,7 @@ private:
 	//Debugging
 	DebugWriter			m_Debugger;
 	bool				forward;
+	bool				m_bSuspension;
 
 };
 
