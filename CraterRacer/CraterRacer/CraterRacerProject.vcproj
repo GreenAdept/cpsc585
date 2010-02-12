@@ -37,7 +37,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="&quot;C:\Program Files (x86)\Microsoft DirectX SDK (August 2009)\Utilities\bin\x86\xactbld3.exe&quot; /win32 &quot;$(ProjectDir)Media\Audio\BGMusic.xap&quot;&#x0D;&#x0A;"
+				CommandLine="&quot;$(DXSDK_DIR)\Utilities\bin\x86\xactbld3.exe&quot; /win32 &quot;$(ProjectDir)Media\Audio\BGMusic.xap&quot;"
 				AdditionalDependencies="BGMusic.xap"
 				Outputs="BGMusicWaveBank.xwb;BGMusicSoundBank.xsb;BGMusic.xgs"
 			/>

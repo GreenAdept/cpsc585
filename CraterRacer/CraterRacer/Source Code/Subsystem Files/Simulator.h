@@ -43,6 +43,8 @@ public:
 	void setDFriction(double friction);
 	void setMaxAngularVelocity(double maxAngle);
 	void setMaxWheelAngle(double maxAngle);
+	void setSpringScale(double scale);
+	void setDamperScale(double scale);
 
 	void printVariables();
 
@@ -78,6 +80,8 @@ private:
 	NxReal				m_rMaxWheelAngle;
 	NxReal				m_rWheelRestLength;
 	NxReal				m_rMinWheelDisplacement;
+	NxReal				m_rDamperScale;
+	NxReal				m_rSpringScale;
 
 	//Time 
 	double				m_dDeltaTime;
