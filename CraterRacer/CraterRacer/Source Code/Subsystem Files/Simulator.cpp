@@ -20,7 +20,7 @@ Simulator::Simulator()
 	m_rMaxAngularVelocity	= NxReal(2);
 	m_rVehicleMass			= 10.0;
 	m_rWheelRestLength		= 1.5;
-	m_rSpringK				= ( -10 * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
+	m_rSpringK				= ( m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
 	m_rSpringC				= 2 * sqrt( m_rSpringK * m_rVehicleMass );
 	m_rMaxWheelDisplacement = 1.75;
 	m_rMaxWheelAngle		= 35.0;
@@ -201,7 +201,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			case 0: //A_BUTTON - accelerate
 			{
 				//TODO: change tire orientation
-				float x_dir = vehicle->getInputObj()->getThumbstick();
+				//float x_dir = vehicle->getInputObj()->getThumbstick();
 				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 
 				localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
@@ -253,7 +253,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	}
 
 	//STEERING
-	float angle = vehicle->getInputObj()->getThumbstick()* 35; //35 is maximum wheel angle
+	float angle = vehicle->getInputObj()->getThumbstick()* m_rMaxWheelAngle; //35 is maximum wheel angle
 
 	/*NxVec3 force(-50000*sin(angle*PI/180), 0, -100000*sin(angle*PI/180));
 	localWheelForce[0] += force;
