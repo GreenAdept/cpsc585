@@ -110,9 +110,9 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 				debug.writeToFile("did not load");
 			break;
 		}
-	case 82: //R is pressed -> reset parameters
-		v->setKey(Input::Key::R_KEY, isKeyDown);
-		break;
+	//case 82: //R is pressed -> reset parameters
+	//	v->setKey(Input::Key::R_KEY, isKeyDown);
+	//	break;
 	default:
 		//double key = (double)virtualKeyCode;
 		//debug.writeToFile(key);
@@ -146,42 +146,41 @@ void GameObj::think ()
 //--------------------------------------------------------------------------------------
 void GameObj::processInput( float fElapsedTime )
 {
-	m_Controller1->Update(fElapsedTime);
-	Input* v = m_Entities.getPlayerInputObj (0);
-	
-	if (m_Controller1->A.WasPressedOrHeld())
-	{
-		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::A_BUTTON);
-	}
-	if (m_Controller1->B.WasPressedOrHeld())
-	{
-		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::B_BUTTON);
-	}
-	if (m_Controller1->Y.WasPressedOrHeld())
-	{
-		pauseGame( true );
-		//v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::Y_BUTTON);
-	}
-	if (m_Controller1->X.WasPressedOrHeld())
-	{
-		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::X_BUTTON);
-	}
-	if (m_Controller1->RightTrigger.WasPressedOrHeld())
-	{
-		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::RT_BUTTON);
-	}
-	if (m_Controller1->LeftTrigger.WasPressedOrHeld())
-	{
-		v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::LT_BUTTON);
-	}
-	if (m_Controller1->Start.WasPressedOrHeld())
-	{
-		pauseGame( true );
-	}
-
-	//Setting the input from Xbox controller
 	if( m_Controller1->IsConnected() )
 	{
+		m_Controller1->Update(fElapsedTime);
+		Input* v = m_Entities.getPlayerInputObj (0);
+		
+		if (m_Controller1->A.WasPressedOrHeld())
+		{
+			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::A_BUTTON);
+		}
+		if (m_Controller1->B.WasPressedOrHeld())
+		{
+			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::B_BUTTON);
+		}
+		if (m_Controller1->Y.WasPressedOrHeld())
+		{
+			pauseGame( true );
+			//v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::Y_BUTTON);
+		}
+		if (m_Controller1->X.WasPressedOrHeld())
+		{
+			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::X_BUTTON);
+		}
+		if (m_Controller1->RightTrigger.WasPressedOrHeld())
+		{
+			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::RT_BUTTON);
+		}
+		if (m_Controller1->LeftTrigger.WasPressedOrHeld())
+		{
+			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::LT_BUTTON);
+		}
+		if (m_Controller1->Start.WasPressedOrHeld())
+		{
+			pauseGame( true );
+		}
+
 		//using xbox controller
 		v->setController(true);
 	}
