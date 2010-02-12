@@ -46,7 +46,7 @@ HRESULT PrepareXACT()
     if( FAILED( hr ) )
         return hr;
 
-    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, MENU_BG_FILE ) ) )
+    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, BG_MUSIC_WAVEBANK_FILE ) ) )
         return hr;
 
     // Create an "in memory" XACT wave bank file using memory mapped file IO
@@ -78,7 +78,7 @@ HRESULT PrepareXACT()
 
     // Read and register the sound bank file with XACT.  Do not use memory mapped file IO because the 
     // memory needs to be read/write and the working set of sound banks are small.
-    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, SOUNDBANK_FILE ) ) )
+    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, BG_MUSIC_SOUNDBANK_FILE ) ) )
         return hr;
     hr = E_FAIL; // assume failure
     hFile = CreateFile( str, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL );
@@ -107,7 +107,7 @@ HRESULT PrepareXACT()
     //
     // Note that if the cue does not exist in the sound bank, the index will be XACTINDEX_INVALID
     // however this is ok especially during development.  The Play or Prepare call will just fail.
-    g_audioState.iApplicationStart = g_audioState.pSoundBank->GetCueIndex( "ApplicationStart" );
+	g_audioState.iGameStart = g_audioState.pSoundBank->GetCueIndex( "GameStart" );
 
     return S_OK;
 }
@@ -122,7 +122,9 @@ void UpdateAudio()
     // streaming will suffer and resources will not be managed promptly.  On the other hand 
     // if you call it too frequently, it will negatively affect performance. Calling it once 
     // per frame is usually a good balance.
-	
+	if( g_audioState.pSoundBank )
+					g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
+
     if( g_audioState.pEngine )
         g_audioState.pEngine->DoWork();
 }

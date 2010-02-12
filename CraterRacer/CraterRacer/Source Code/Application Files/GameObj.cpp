@@ -101,8 +101,8 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 				m_Simulator->setDFriction(loader.dFriction);
 				m_Simulator->setMaxAngularVelocity(loader.maxAngularVelocity);
 				m_Simulator->setMaxWheelAngle(loader.maxWheelAngle);
-				m_Simulator->setSpringScale(loader.springScale);
-				m_Simulator->setDamperScale(loader.damperScale);
+				//m_Simulator->setSpringScale(loader.springScale);
+				//m_Simulator->setDamperScale(loader.damperScale);
 
 				//m_Simulator->printVariables();
 			}
