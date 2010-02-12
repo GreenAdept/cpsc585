@@ -11,7 +11,7 @@ Simulator::Simulator()
 	m_vForceVec				= NxVec3(0, 0, 0);
 	m_PhysicsSDK			= NULL;
 	m_Scene					= NULL;
-	m_rForceStrength		= 1.0;
+	m_rForceStrength		= 1.5;
 	m_bForceMode			= true;
 	m_vDefaultGravity		= NxVec3(0,-10,0);
 	m_rRestitution			= NxReal(0.0);
@@ -204,8 +204,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				float x_dir = vehicle->getInputObj()->getThumbstick();
 				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 
-				localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rVehicleMass );
-				localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rVehicleMass );
+				localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
+				localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength);
 				break; 
 			}
 			case 1: //B_BUTTON - brake / reverse
@@ -217,17 +217,17 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				{
 					velocity = normalize(velocity);
 				
-					globalWheelForce[0] += (velocity * ( -m_rVehicleMass * m_rVehicleMass ));
-					globalWheelForce[1] += (velocity * ( -m_rVehicleMass * m_rVehicleMass ));
-					globalWheelForce[2] += (velocity * ( -m_rVehicleMass * m_rVehicleMass ));
-					globalWheelForce[3] += (velocity * ( -m_rVehicleMass * m_rVehicleMass ));
+					globalWheelForce[0] += (velocity * ( -m_rVehicleMass * m_rForceStrength ));
+					globalWheelForce[1] += (velocity * ( -m_rVehicleMass * m_rForceStrength ));
+					globalWheelForce[2] += (velocity * ( -m_rVehicleMass * m_rForceStrength ));
+					globalWheelForce[3] += (velocity * ( -m_rVehicleMass * m_rForceStrength ));
 				}
 				break; 
 			}
 			case 2: //X_BUTTON - reverse
 			{
-				localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rVehicleMass );
-				localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rVehicleMass );
+				localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength );
+				localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength );
 				break;
 			}
 			case 3: //Y_BUTTON - emergency brake
@@ -300,8 +300,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 
 	if (vehicle->getInputObj()->getThumbstick() != 0) 
 	{
-		localWheelForce[2] += (tireLateral * (m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
-		localWheelForce[3] += (tireLateral * (m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
+		localWheelForce[2] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
+		localWheelForce[3] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
 
 		//globalWheelForce[0] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
 		//globalWheelForce[1] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
