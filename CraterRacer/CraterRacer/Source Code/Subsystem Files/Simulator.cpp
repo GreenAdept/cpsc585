@@ -71,29 +71,24 @@ void Simulator::InitNx( Mesh* terrainMesh )
 	m_PhysicsSDK->getFoundationSDK().getRemoteDebugger()->connect ("localhost", 5425);
 }
 
-
 //--------------------------------------------------------------------------------------
-// Function:  pause
-// pause=true simulation is paused
+// Function:  startPhysics
+// Called the first time PhysX simulates
 //--------------------------------------------------------------------------------------
-bool Simulator::pause( bool pause )
+void Simulator::startPhysics() 
 {
-	if( pause == m_bPaused )
-		return false;
-	m_bPaused = pause;
-	return true;
+	m_Scene->simulate( m_dDeltaTime );
+	m_Scene->flushStream( );
 }
 
-
 //--------------------------------------------------------------------------------------
-// Function:  pause
-// pause=true simulation is paused
+// Function:  getPhysicsResults
+// Updates objects
 //--------------------------------------------------------------------------------------
-bool Simulator::isPaused( )
+void Simulator::getPhysicsResults() 
 {
-	return m_bPaused;
+	while (!m_Scene->fetchResults(NX_RIGID_BODY_FINISHED, true));
 }
-
 
 //--------------------------------------------------------------------------------------
 // Function:  simulate
@@ -125,61 +120,6 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m );
 	}
 }
-
-//--------------------------------------------------------------------------------------
-// Function:  createVehicle
-// Creates a box character in the PhysX scene representing a vehicle.
-//--------------------------------------------------------------------------------------
-void Simulator::createVehicle( Vec3 pos, BoundingBox b ) 
-{
-	//Add a single shape actor to the scene
-	NxActorDesc actorDesc;
-	NxBodyDesc bodyDesc;
-	bodyDesc.angularDamping	= 0.5f;
-	bodyDesc.mass = m_rVehicleMass;
-
-	//Create a box with the supplied bounding box dimensions
-	NxBoxShapeDesc boxDesc;
-	//boxDesc.mass = 10.0f;
-	boxDesc.dimensions.set( b.m_fWidth, b.m_fHeight, b.m_fLength );
-	actorDesc.shapes.pushBack( &boxDesc );
-
-	//Initialize the vehicle's parameters
-	actorDesc.body = &bodyDesc;
-	//actorDesc.density = m_rVehicleMass / (b.m_fLength * b.m_fHeight * b.m_fWidth);
-	actorDesc.globalPose.t = NxVec3( pos.x, pos.y, pos.z );
-	assert( actorDesc.isValid() );
-
-	//Create the vehicle in the scene
-	NxActor* pActor = m_Scene->createActor( actorDesc );
-	pActor->setMaxAngularVelocity(m_rMaxAngularVelocity);
-	assert( pActor );
-
-	//Add the vehicle to global list of all vehicles
-	m_Vehicles.push_back( pActor );
-}
-
-
-//--------------------------------------------------------------------------------------
-// Function:  startPhysics
-// Called the first time PhysX simulates
-//--------------------------------------------------------------------------------------
-void Simulator::startPhysics() 
-{
-	m_Scene->simulate( m_dDeltaTime );
-	m_Scene->flushStream( );
-}
-
-
-//--------------------------------------------------------------------------------------
-// Function:  getPhysicsResults
-// Updates objects
-//--------------------------------------------------------------------------------------
-void Simulator::getPhysicsResults() 
-{
-	while (!m_Scene->fetchResults(NX_RIGID_BODY_FINISHED, true));
-}
-
 
 //--------------------------------------------------------------------------------------
 // Function:  processForceKeys
@@ -399,16 +339,116 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	}
 }
 
-NxVec3 Simulator::normalize(NxVec3 vec) {
+//--------------------------------------------------------------------------------------
+// Function:  pause
+// pause=true simulation is paused
+//--------------------------------------------------------------------------------------
+bool Simulator::pause( bool pause )
+{
+	if( pause == m_bPaused )
+		return false;
+	m_bPaused = pause;
+	return true;
+}
+
+//--------------------------------------------------------------------------------------
+// Function:  pause
+// pause=true simulation is paused
+//--------------------------------------------------------------------------------------
+bool Simulator::isPaused( )
+{
+	return m_bPaused;
+}
+
+//--------------------------------------------------------------------------------------
+// Function:  normalize
+//--------------------------------------------------------------------------------------
+NxVec3 Simulator::normalize(NxVec3 vec) 
+{
 	NxReal mag = vec.magnitude();
 	return NxVec3(vec.x/mag, vec.y/mag, vec.z/mag);
 }
 
+//--------------------------------------------------------------------------------------
+// Function:  createVehicle
+// Creates a vehicle based on a mesh
+//--------------------------------------------------------------------------------------
+void Simulator::createVehicle( Mesh* mesh, Vec3 pos ) 
+{
+	NxTriangleMeshShapeDesc ShapeDesc = this->createTriMeshShape( mesh );
+	NxBodyDesc bodyDesc;
+	bodyDesc.angularDamping	= 0.5f;
+	bodyDesc.mass = m_rVehicleMass;
+
+	// Create terrain and add to scene
+	NxActorDesc actorDesc;
+
+	//Initialize the vehicle's parameters
+	actorDesc.body = &bodyDesc;	
+	actorDesc.shapes.pushBack( &ShapeDesc );
+	actorDesc.globalPose.t = NxVec3(pos.x, pos.y, pos.z);
+
+	//Create the vehicle in the scene
+	NxActor* pActor = m_Scene->createActor( actorDesc );
+	pActor->setMaxAngularVelocity(m_rMaxAngularVelocity);
+	assert( pActor );
+
+	//Add the vehicle to global list of all vehicles
+	m_Vehicles.push_back( pActor );
+}
 
 //--------------------------------------------------------------------------------------
 // Function:  addTerrainFromX
 //--------------------------------------------------------------------------------------
 void Simulator::addTerrainFromX( Mesh* mesh, NxVec3 pos )
+{
+	NxTriangleMeshShapeDesc ShapeDesc = this->createTriMeshShape( mesh );
+
+	// Create terrain and add to scene
+	NxActorDesc actorDesc;
+	actorDesc.shapes.pushBack( &ShapeDesc );
+	actorDesc.globalPose.t = pos;
+
+	m_Terrain = m_Scene->createActor( actorDesc );
+}
+
+//--------------------------------------------------------------------------------------
+// Function:  createVehicle
+// Creates a box character in the PhysX scene representing a vehicle.
+//--------------------------------------------------------------------------------------
+void Simulator::createVehicle( Vec3 pos, BoundingBox b ) 
+{
+	//Add a single shape actor to the scene
+	NxActorDesc actorDesc;
+	NxBodyDesc bodyDesc;
+	bodyDesc.angularDamping	= 0.5f;
+	bodyDesc.mass = m_rVehicleMass;
+
+	//Create a box with the supplied bounding box dimensions
+	NxBoxShapeDesc boxDesc;
+	//boxDesc.mass = 10.0f;
+	boxDesc.dimensions.set( b.m_fWidth, b.m_fHeight, b.m_fLength );
+	actorDesc.shapes.pushBack( &boxDesc );
+
+	//Initialize the vehicle's parameters
+	actorDesc.body = &bodyDesc;
+	//actorDesc.density = m_rVehicleMass / (b.m_fLength * b.m_fHeight * b.m_fWidth);
+	actorDesc.globalPose.t = NxVec3( pos.x, pos.y, pos.z );
+	assert( actorDesc.isValid() );
+
+	//Create the vehicle in the scene
+	NxActor* pActor = m_Scene->createActor( actorDesc );
+	pActor->setMaxAngularVelocity(m_rMaxAngularVelocity);
+	assert( pActor );
+
+	//Add the vehicle to global list of all vehicles
+	m_Vehicles.push_back( pActor );
+}
+
+//--------------------------------------------------------------------------------------
+// Function:  createTriMeshShape
+//--------------------------------------------------------------------------------------
+NxTriangleMeshShapeDesc Simulator::createTriMeshShape( Mesh* mesh )
 {
 	ID3DXMesh* Mesh = mesh->GetMesh();
 
@@ -422,7 +462,6 @@ void Simulator::addTerrainFromX( Mesh* mesh, NxVec3 pos )
 	typedef struct {
 		short IBNumber[3];
 	} IndexBufferStruct;
-
 
 	int NumVerticies = Mesh->GetNumVertices();
 	int NumTriangles = Mesh->GetNumFaces();
@@ -452,7 +491,6 @@ void Simulator::addTerrainFromX( Mesh* mesh, NxVec3 pos )
 		tris[NumInd].IBNumber[1] = DXMeshIBPtr[NumInd].IBNumber[1];
 		tris[NumInd].IBNumber[2] = DXMeshIBPtr[NumInd].IBNumber[2];
 	}
-
 	Mesh->UnlockIndexBuffer();
 
 	// Build physical model in PhysX
@@ -473,17 +511,11 @@ void Simulator::addTerrainFromX( Mesh* mesh, NxVec3 pos )
 	bool status = NxCookTriangleMesh( TriMeshDesc, buf );
 	ShapeDesc.meshData = m_PhysicsSDK->createTriangleMesh( MemoryReadBuffer(buf.data) );
 
-	// Create terrain and add to scene
-	NxActorDesc actorDesc;
-	actorDesc.shapes.pushBack( &ShapeDesc );
-	actorDesc.globalPose.t = pos;
-
-	m_Terrain = m_Scene->createActor( actorDesc );
-
 	delete[] verts;
 	delete[] tris;
-}
 
+	return ShapeDesc;
+}
 
 //--------------------------------------------------------------------------------------
 // Function:  Destructor

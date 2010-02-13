@@ -34,6 +34,10 @@ public:
 
 	void simulate(vector<Vehicle*> entities, double elapsedTime);
 	void createVehicle( Vec3 pos, BoundingBox b );
+	void createVehicle( Mesh* mesh, Vec3 pos );
+
+	NxTriangleMeshShapeDesc createTriMeshShape( Mesh* mesh );
+
 	void setForceVec(Vec3 vec);
 	void setForceStr(double str);
 	void setForceMode(bool mode);

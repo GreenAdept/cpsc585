@@ -30,8 +30,8 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	m_Simulator->InitNx( m_Entities.getTerrain()->getRenderable()->m_pMesh );
 
 	// Add our vehicle to the PhysX system
-	m_Simulator->createVehicle( pos, pv->getBoundingBox() );
-	m_Simulator->createVehicle( av->getPosition(), pv->getBoundingBox() );
+	m_Simulator->createVehicle( pv->getRenderable()->m_pMesh, pos );
+	m_Simulator->createVehicle( pv->getRenderable()->m_pMesh, av->getPosition() );
 
 	// Initialize camera and set it to follow the player
 	m_Camera.updateWindow( pSurface );
@@ -161,8 +161,7 @@ void GameObj::processInput( float fElapsedTime )
 		}
 		if (m_Controller1->Y.WasPressedOrHeld())
 		{
-			pauseGame( true );
-			//v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::Y_BUTTON);
+			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::Y_BUTTON);
 		}
 		if (m_Controller1->X.WasPressedOrHeld())
 		{
