@@ -13,8 +13,6 @@
 #include "DebugWriter.h"
 
 #define PI					3.14159265
-#define CAR_GROUND_DISTANCE 1.25
-#define MAX_WHEEL_ANGLE		35
 
 #include <iostream>
 using namespace std;

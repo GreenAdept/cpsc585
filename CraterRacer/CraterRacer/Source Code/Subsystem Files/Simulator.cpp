@@ -150,10 +150,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 		{
 			case 0: //A_BUTTON - accelerate
 			{
-				//TODO: change tire orientation
-				//float x_dir = vehicle->getInputObj()->getThumbstick();
-				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
-
 				localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
 				localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
 				break; 
@@ -217,34 +213,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	NxMat33 orient = actor->getGlobalOrientation();
 	BoundingBox BB = vehicle->getBoundingBox();
 
-	/*NxVec3 force(-50000*sin(angle*PI/180), 0, -100000*sin(angle*PI/180));
-	localWheelForce[0] += force;
-	localWheelForce[1] += force;
-	
-	if (angle > 0) {
-		//actor->addLocalForceAtLocalPos(NxVec3(-10000, 0, 0), wheel[0]);
-		//actor->addLocalForceAtLocalPos(NxVec3(-10000, 0, 0), wheel[1]);
-
-		NxVec3 force(-100000*sin(angle*PI/180), 0, 0);//-100000*sin(angle*PI/180));
-		localWheelForce[0] += force;
-		localWheelForce[1] += force;
-
-		//localWheelForce[0] += NxVec3(-10000*, 0, 0);
-		//localWheelForce[1] += NxVec3(-10000, 0, 0);
-	}
-
-	else if (angle < 0) {
-		//actor->addLocalForceAtLocalPos(NxVec3(10000, 0, 0), wheel[0]);
-		//actor->addLocalForceAtLocalPos(NxVec3(10000, 0, 0), wheel[1]);
-
-		//localWheelForce[0] += NxVec3(10000, 0, 0);
-		//localWheelForce[1] += NxVec3(10000, 0, 0);
-
-		NxVec3 force(-100000*sin(angle*PI/180), 0, 0);//100000*sin(angle*PI/180));
-		localWheelForce[0] += force;
-		localWheelForce[1] += force;
-	}*/
-
 	//get the angle of the normal to the wheel direction
 	if (angle > 0) {
 		angle = angle + 90;
@@ -257,34 +225,25 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	angle = 90 - angle;
 	float x = cos(angle*PI/180);
 	float z = sin(angle*PI/180);
-
 	NxVec3 tireLateral(x, 0, 0);
 
 	if (vehicle->getInputObj()->getThumbstick() != 0) 
 	{
-		//localWheelForce[0] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
-		//localWheelForce[1] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
+		localWheelForce[0] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
+		localWheelForce[1] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
 
 		//globalWheelForce[0] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
 		//globalWheelForce[1] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
 	}
-	/*NxVec3 velocity = NxVec3(actor->getGlobalOrientation() * actor->getLinearVelocity());
-
-	//project the tireLateral on the velocity of the car
-	NxVec3 steering = (velocity.dot(tireLateral) / tireLateral.dot(tireLateral)) * tireLateral;
-	actor->addLocalForceAtLocalPos(NxVec3(steering.x, 0, steering.z)*5000, wheel[0]);
-	actor->addLocalForceAtLocalPos(NxVec3(steering.x, 0, steering.z)*5000, wheel[1]);*/
 
 	vehicle->getInputObj()->reset();
 
 
 	float damperForce,
-			wheelRadius;
+		  wheelRadius;
 
 	vehicle->m_Wheels[0].setAngle(angle);
 	vehicle->m_Wheels[1].setAngle(angle);
-	vehicle->m_Wheels[2].setAngle(0);
-	vehicle->m_Wheels[3].setAngle(0);
 
 	if (m_bSuspension)
 	{
@@ -294,19 +253,18 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			w = &vehicle->m_Wheels[ i ];
 			wheelRadius = w->getBoundingBox().m_fRadius/2;
 
-			//Ray casting
+			//Calculate world wheel position, used for raycast
 			wheelPos = mat * w->getChassisPt();
-			upVec = normalize( orient * NxVec3( 0, 1, 0 ));
 
+			//Calculate vehicle up vector
+			upVec = normalize( orient * NxVec3( 0, 1, 0 ));
 			susAxis = normalize( orient * NxVec3(0,-1,0) );
 			w->setSuspensionAxis( susAxis );
 
+			//Raycast to ground to find distance
 			NxRay ray( wheelPos, susAxis );
 			NxRaycastHit hit;
-
 			m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
-
-			//m_Wheels[i]->setGlobalPosition( wheelPos );
 
 			//NEW STEERING
 			NxMat33 localOrientation;
@@ -319,48 +277,37 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			applied = -applied*100;
 			applied = NxVec3(applied.x, applied.y, applied.z);
 			
-	
 			localWheelForce[i] += applied;
 
 			m_Debugger.writeToFile(Vec3(applied.x, applied.y, applied.z));
 			m_Debugger.writeToFile(applied.magnitude());
 			//END NEW STEERING
 			
-			//apply forces due to suspension
+			//apply forces to wheel if it is on the ground
 			if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 
 			{
-				////the car is about to bottom out
-				//if( hit.distance <= wheelRadius )
-				//	w->setDisplacement( 0 );
-
-				//else //the car is between the max length and its min length somewhere
+				//set the translation distance for the renderer
 				w->setDisplacement( hit.distance - wheelRadius*2 );
-					
+				
+				//calculate the spring force
 				susForce = -1 * m_rSpringScale * m_rSpringK * ( hit.distance - wheelRadius - m_rWheelRestLength );
 
+				//calculate the damping force
 				NxVec3 ptVelocity = actor->getLocalPointVelocity( w->getChassisPt() );
-				
 				damperForce = m_rSpringC * m_rDamperScale * ptVelocity.dot( susAxis );
 				
+				//add suspension force to current wheel
 				localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
 
-				//clamp magnitude of each force to be between 50 and 500, EXPERIMENTAL
-				/*if (localWheelForce[i].magnitude() > 50 ) {
-					NxVec3 maxForce = normalize(localWheelForce[i]) * 500;
-
-					if (localWheelForce[i].magnitude() > maxForce.magnitude())
-						localWheelForce[i] = maxForce;*/
-
-					actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
-					actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
-				//}
+				//apply all accumulated forces to current wheel
+				actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
+				actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
 			}
 			else
 			{
+				//set maximum translation for renderer
 				w->setDisplacement( m_rMaxWheelDisplacement );
 			}
-			/*actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
-			actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );*/
 		}
 	}
 }
