@@ -26,8 +26,8 @@ Simulator::Simulator()
 	m_rMaxWheelDisplacement = 0.5;
 	m_rMaxWheelAngle		= 35.0;
 	m_bPaused				= false;
-	m_rSpringScale			= 1.0;
-	m_rDamperScale			= 1.0;
+	m_rSpringScale			= 20.0;
+	m_rDamperScale			= 0.6;
 
 	forward = false;
 	m_bSuspension = true;
@@ -117,7 +117,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		float height = vehicles[i]->getBoundingBox().m_fHeight;
 		Matrix mat;
 		D3DXMatrixIdentity( &mat );
-		D3DXMatrixTranslation( &mat, 0, height, 0 );
+		D3DXMatrixTranslation( &mat, 0, height/2, 0 );
 		D3DXMatrixMultiply( &m, &m, &mat );
 
 		NxVec3 vlc = m_Vehicles[i]->getLinearVelocity();
@@ -311,7 +311,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				//	w->setDisplacement( 0 );
 
 				//else //the car is between the max length and its min length somewhere
-				w->setDisplacement( hit.distance - wheelRadius );
+				w->setDisplacement( hit.distance - wheelRadius*2 );
 					
 				susForce = -1 * m_rSpringScale * m_rSpringK * ( hit.distance - wheelRadius - m_rWheelRestLength );
 
@@ -322,15 +322,15 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
 
 				//clamp magnitude of each force to be between 50 and 500, EXPERIMENTAL
-				if (localWheelForce[i].magnitude() > 50 ) {
+				/*if (localWheelForce[i].magnitude() > 50 ) {
 					NxVec3 maxForce = normalize(localWheelForce[i]) * 500;
 
 					if (localWheelForce[i].magnitude() > maxForce.magnitude())
-						localWheelForce[i] = maxForce;
+						localWheelForce[i] = maxForce;*/
 
 					actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
 					actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
-				}
+				//}
 			}
 			else
 			{
