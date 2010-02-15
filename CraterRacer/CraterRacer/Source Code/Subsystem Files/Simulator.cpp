@@ -18,7 +18,7 @@ Simulator::Simulator()
 	m_rStaticFriction		= NxReal(0.4);
 	m_rDynamicFriction		= NxReal(0.4);
 	m_rMaxAngularVelocity	= NxReal(2);
-	m_rVehicleMass			= 200.0;
+	m_rVehicleMass			= 10.0;
 	m_rWheelRestLength		= 0.3;
 	m_rMinWheelDisplacement = 1.25;
 	m_rSpringK				= ( -m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
