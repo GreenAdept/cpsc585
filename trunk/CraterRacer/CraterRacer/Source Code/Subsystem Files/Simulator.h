@@ -88,6 +88,7 @@ private:
 	NxReal				m_rMinWheelDisplacement;
 	NxReal				m_rDamperScale;
 	NxReal				m_rSpringScale;
+	NxReal				m_rSteeringPower;
 
 	//Time 
 	double				m_dDeltaTime;
