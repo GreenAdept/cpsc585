@@ -7,5 +7,5 @@
 0.10		//m_rDynamicFriction -> double
 2.0		//m_rMaxAngularVelocity -> double
 35.0		//m_rMaxWheelAngle -> double
-175.0		//m_rSpringScale -> double
-0.5		//m_rDamperScale -> double
+25.0		//m_rSpringScale -> double
+3.5		//m_rDamperScale -> double
