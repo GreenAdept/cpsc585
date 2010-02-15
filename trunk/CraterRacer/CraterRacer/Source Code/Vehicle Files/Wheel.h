@@ -19,25 +19,25 @@ public:
 	Wheel();
 	~Wheel();
 
-	void  initialize( Device* device, LPWSTR filename, Vec3 pt );
-	void   update( Matrix mat );
+	void	initialize( Device* device, LPWSTR filename, Vec3 pt );
+	void	update( Matrix mat );
 
-	float getDiameter( );
-	float getAngle();
-	void  setAngle(float angle);
-	float getDisplacement( );
-	void  setDisplacement( float );
+	float	getDiameter		 ( );
+	float	getWheelWidth	 ( );
 
-	NxVec3 getChassisPt( );
-	void   setChassisPt( Vec3 pt );
+	void	setAngle		 ( float angle );
+	float	getAngle		 ( );
 
-	float  getWheelWidth( );
-	Vec3   getSuspensionAxis( );
-	void   setSuspensionAxis( NxVec3 sus );
-	void setWheelLateral(NxVec3 lateral);
-	NxVec3 getWheelLateral();
+	float	getDisplacement	 ( );
+	void	setDisplacement	 ( float );
 
+	NxVec3	getChassisPt	 ( );
+	void	setChassisPt	 ( Vec3 pt );
 
+	Vec3	getSuspensionAxis( );
+	void	setSuspensionAxis( NxVec3 sus );
+	void	setWheelLateral	 ( NxVec3 lateral);
+	NxVec3	getWheelLateral	 ( );
 
 private:
 	NxMaterial*	m_mMaterial;
