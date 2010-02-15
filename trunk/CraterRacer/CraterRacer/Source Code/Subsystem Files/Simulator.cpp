@@ -281,6 +281,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	float damperForce,
 			wheelRadius;
 
+	vehicle->m_Wheels[0].setAngle(angle);
+	vehicle->m_Wheels[1].setAngle(angle);
+	vehicle->m_Wheels[2].setAngle(0);
+	vehicle->m_Wheels[3].setAngle(0);
+
 	if (m_bSuspension)
 	{
 		//SUSPENSION
@@ -302,6 +307,24 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
 
 			//m_Wheels[i]->setGlobalPosition( wheelPos );
+
+			//NEW STEERING
+			NxMat33 localOrientation;
+			actor->getGlobalOrientation().getInverse(localOrientation);
+			NxVec3 velocity = localOrientation * actor->getLocalPointVelocity(w->getChassisPt());
+
+			NxVec3 normal = rotate(w->getWheelLateral(), w->getAngle());
+
+			NxVec3 applied = (velocity.dot(normal) / normal.dot(normal))*normal;
+			applied = -applied*200;
+			
+			//if (applied.magnitude() > 1000) {
+				localWheelForce[i] += applied;
+			//}
+
+			m_Debugger.writeToFile(Vec3(applied.x, applied.y, applied.z));
+			m_Debugger.writeToFile(applied.magnitude());
+			//END NEW STEERING
 			
 			//apply forces due to suspension
 			if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 
@@ -370,6 +393,19 @@ NxVec3 Simulator::normalize(NxVec3 vec)
 {
 	NxReal mag = vec.magnitude();
 	return NxVec3(vec.x/mag, vec.y/mag, vec.z/mag);
+}
+
+//--------------------------------------------------------------------------------------
+// Function:  rotate
+//--------------------------------------------------------------------------------------
+NxVec3 Simulator::rotate(NxVec3 lateral, float angle) {
+	float radians = angle*PI/180;
+
+	float z = lateral.x * sin(radians) + lateral.z * cos(radians);
+	float x = lateral.x * cos(radians) - lateral.z * sin(radians);
+
+	//return NxVec3(lateral.x * cos(radians) - lateral.z * sin(radians), 0, lateral.x * sin(radians) + lateral.z * cos(radians));
+	return NxVec3(x, 0, z);
 }
 
 //--------------------------------------------------------------------------------------

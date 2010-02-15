@@ -24,6 +24,7 @@ public:
 
 	float getDiameter( );
 	float getAngle();
+	void  setAngle(float angle);
 	float getDisplacement( );
 	void  setDisplacement( float );
 
@@ -33,6 +34,8 @@ public:
 	float  getWheelWidth( );
 	Vec3   getSuspensionAxis( );
 	void   setSuspensionAxis( NxVec3 sus );
+	void setWheelLateral(NxVec3 lateral);
+	NxVec3 getWheelLateral();
 
 
 
@@ -49,6 +52,7 @@ private:
 	float		m_fDisplacement;	//meters
 	NxVec3		m_vChassisPt;
 	NxVec3	    m_vSuspensionAxis;
+	NxVec3		m_vWheelLateral;
 
 };
 
