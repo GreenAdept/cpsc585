@@ -28,6 +28,7 @@ Simulator::Simulator()
 	m_bPaused				= false;
 	m_rSpringScale			= 20.0;
 	m_rDamperScale			= 0.6;
+	m_rSteeringPower		= 5;
 
 	forward = false;
 	m_bSuspension = true;
@@ -223,15 +224,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 
 	//find the x and z components of the tire lateral
 	angle = 90 - angle;
-	float x = cos(angle*PI/180);
-	float z = sin(angle*PI/180);
-	NxVec3 tireLateral(x, 0, 0);
-
-	if (vehicle->getInputObj()->getThumbstick() != 0) 
-	{
-		localWheelForce[0] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
-		localWheelForce[1] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
-	}
 
 	float damperForce,
 		  wheelRadius;
@@ -268,13 +260,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			NxVec3 normal = rotate(w->getWheelLateral(), w->getAngle());
 
 			NxVec3 applied = (velocity.dot(normal) / normal.dot(normal))*normal;
-			applied = -applied*100;
-			applied = NxVec3(applied.x, applied.y, applied.z);
+			applied = -applied*m_rSteeringPower;
 			
 			localWheelForce[i] += applied;
-
-			m_Debugger.writeToFile(Vec3(applied.x, applied.y, applied.z));
-			m_Debugger.writeToFile(applied.magnitude());
 			//END NEW STEERING
 			
 			//apply forces to wheel if it is on the ground
