@@ -198,9 +198,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 		}
 	}
 
-	//STEERING
-	float angle = vehicle->getInputObj()->getThumbstick() * m_rMaxWheelAngle; //maximum wheel angle
-
 	Wheel*	w; 
 	NxVec3	wheelPos,
 			upVec,
@@ -212,6 +209,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
     NxMat34 mat = actor->getGlobalPose();
 	NxMat33 orient = actor->getGlobalOrientation();
 	BoundingBox BB = vehicle->getBoundingBox();
+
+	//STEERING
+	float angle = vehicle->getInputObj()->getThumbstick() * m_rMaxWheelAngle; //maximum wheel angle
 
 	//get the angle of the normal to the wheel direction
 	if (angle > 0) {
@@ -231,13 +231,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	{
 		localWheelForce[0] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
 		localWheelForce[1] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
-
-		//globalWheelForce[0] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
-		//globalWheelForce[1] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
 	}
-
-	vehicle->getInputObj()->reset();
-
 
 	float damperForce,
 		  wheelRadius;
