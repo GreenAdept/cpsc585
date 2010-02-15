@@ -321,8 +321,16 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				
 				localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
 
-				actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
-				actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
+				//clamp magnitude of each force to be between 50 and 500, EXPERIMENTAL
+				if (localWheelForce[i].magnitude() > 50 ) {
+					NxVec3 maxForce = normalize(localWheelForce[i]) * 500;
+
+					if (localWheelForce[i].magnitude() > maxForce.magnitude())
+						localWheelForce[i] = maxForce;
+
+					actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
+					actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
+				}
 			}
 			else
 			{
