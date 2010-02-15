@@ -99,25 +99,40 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 	if( m_bPaused )
 		return;
 
-	m_dDeltaTime = elapsedTime;
-
-	startPhysics();
-	getPhysicsResults();
-
-	//Update all the entity positions based on PhysX simulated actor positions
-	for( int i=0; i < m_Vehicles.size(); i++ )
+	//m_Debugger.writeToFile("elapsed time");
+	//m_Debugger.writeToFile(elapsedTime);
+	//if the elapsed time is greater than 0.02, then divide it into substeps
+	//so that the forces don't add up as much
+	int timeStep = 1;
+	if (elapsedTime > 0.02)
 	{
-		processForceKeys(m_Vehicles[i], vehicles[i]);
+		timeStep = (int) (elapsedTime/0.02) + 1;
+		m_dDeltaTime = elapsedTime/timeStep;
+	}
+	else
+		m_dDeltaTime = elapsedTime;
 
-		//Get the new position of the vehicle in vector and matrix format
-		Matrix m;
-		NxVec3 vec = m_Vehicles[i]->getGlobalPosition();
-		m_Vehicles[i]->getGlobalPose().getColumnMajor44( m );
-		
-		NxVec3 vlc = m_Vehicles[i]->getLinearVelocity();
+	//for each time step, simulate
+	for (int j = 0; j < timeStep; j++)
+	{
+		startPhysics();
+		getPhysicsResults();
 
-		//Update the vehicle position in the game
-		vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m );
+		//Update all the entity positions based on PhysX simulated actor positions
+		for( int i=0; i < m_Vehicles.size(); i++ )
+		{
+			processForceKeys(m_Vehicles[i], vehicles[i]);
+
+			//Get the new position of the vehicle in vector and matrix format
+			Matrix m;
+			NxVec3 vec = m_Vehicles[i]->getGlobalPosition();
+			m_Vehicles[i]->getGlobalPose().getColumnMajor44( m );
+			
+			NxVec3 vlc = m_Vehicles[i]->getLinearVelocity();
+
+			//Update the vehicle position in the game
+			vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m );
+		}
 	}
 }
 
@@ -148,8 +163,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				//float x_dir = vehicle->getInputObj()->getThumbstick();
 				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 
-				localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
-				localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
+				localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength ) * 10; // times 10 to make it go faster
+				localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength ) * 10;
 				break; 
 			}
 			case 1: //B_BUTTON - brake / reverse
@@ -325,9 +340,17 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				damperForce = m_rSpringC * m_rDamperScale * ptVelocity.dot( susAxis );
 				
 				localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
+				
+				//clamp magnitude of each force to be between 50 and 500, EXPERIMENTAL
+				if (localWheelForce[i].magnitude() > 50 ) {
+					NxVec3 maxForce = normalize(localWheelForce[i]) * 500;
 
-				actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
-				actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
+					if (localWheelForce[i].magnitude() > maxForce.magnitude())
+						localWheelForce[i] = maxForce;
+
+					actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
+					actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
+				}
 			}
 			else
 			{
