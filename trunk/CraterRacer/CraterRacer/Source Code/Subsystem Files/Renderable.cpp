@@ -73,7 +73,7 @@ HRESULT Renderable::computeMeshWorldMatrix( Vec3 startPos )
 		m_BoundingBox.m_fHeight = max.y - min.y;
 		m_BoundingBox.m_fWidth = max.x - min.x;
 		m_BoundingBox.m_fLength = max.z - min.z;	
-		m_BoundingBox.m_fRadius = radius;
+		m_BoundingBox.m_fRadius = 1.0;
 		m_BoundingBox.m_fCenter = vCtr;
 
         pVB->Unlock();
