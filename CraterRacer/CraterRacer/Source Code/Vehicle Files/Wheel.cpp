@@ -66,6 +66,10 @@ float Wheel::getAngle()
 	return m_fAngle;
 }
 
+void Wheel::setAngle(float angle) {
+	m_fAngle = angle;
+}
+
 float Wheel::getDisplacement()
 {
 	return m_fDisplacement;
@@ -99,4 +103,12 @@ Vec3 Wheel::getSuspensionAxis()
 void Wheel::setSuspensionAxis( NxVec3 sus )
 {
 	m_vSuspensionAxis = sus;
+}
+
+void Wheel::setWheelLateral(NxVec3 lateral) {
+	m_vWheelLateral = lateral;
+}
+
+NxVec3 Wheel::getWheelLateral() {
+	return m_vWheelLateral;
 }

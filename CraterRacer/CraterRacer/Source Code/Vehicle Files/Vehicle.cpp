@@ -25,6 +25,11 @@ void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat )
 	m_Wheels[ 2 ].update( mat ); 
 	m_Wheels[ 3 ].update( mat ); 
 
+	m_Wheels[WHEEL0].setWheelLateral(NxVec3(1, 0, 0));
+	m_Wheels[WHEEL1].setWheelLateral(NxVec3(-1, 0, 0));
+	m_Wheels[WHEEL2].setWheelLateral(NxVec3(1, 0, 0));
+	m_Wheels[WHEEL3].setWheelLateral(NxVec3(-1, 0, 0));
+
 }
 
 

@@ -63,6 +63,7 @@ private:
 	void getPhysicsResults(void);
 	void processForceKeys(NxActor* actor, Vehicle* vehicle);
 	NxVec3 normalize(NxVec3 vec);
+	NxVec3 rotate(NxVec3 lateral, float angle);
 	
 	// Physics SDK 
 	NxPhysicsSDK*		m_PhysicsSDK;
