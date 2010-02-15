@@ -292,6 +292,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			}
 		}
 	}
+
+	vehicle->getInputObj()->reset();
 }
 
 //--------------------------------------------------------------------------------------
