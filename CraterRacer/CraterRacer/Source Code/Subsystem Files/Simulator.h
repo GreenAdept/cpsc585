@@ -13,6 +13,7 @@
 #include "DebugWriter.h"
 
 #define PI					3.14159265
+#define MAX_VELOCITY		55.0
 
 #include <iostream>
 using namespace std;
