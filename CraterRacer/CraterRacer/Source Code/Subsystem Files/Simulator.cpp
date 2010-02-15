@@ -19,11 +19,11 @@ Simulator::Simulator()
 	m_rDynamicFriction		= NxReal(0.4);
 	m_rMaxAngularVelocity	= NxReal(2);
 	m_rVehicleMass			= 10.0;
-	m_rWheelRestLength		= 0.5;
+	m_rWheelRestLength		= 0.3;
 	m_rMinWheelDisplacement = 1.25;
 	m_rSpringK				= ( -m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
 	m_rSpringC				= 2 * sqrt( m_rSpringK * m_rVehicleMass );
-	m_rMaxWheelDisplacement = 1.0;
+	m_rMaxWheelDisplacement = 0.5;
 	m_rMaxWheelAngle		= 35.0;
 	m_bPaused				= false;
 	m_rSpringScale			= 1.0;
@@ -99,40 +99,31 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 	if( m_bPaused )
 		return;
 
-	//m_Debugger.writeToFile("elapsed time");
-	//m_Debugger.writeToFile(elapsedTime);
-	//if the elapsed time is greater than 0.02, then divide it into substeps
-	//so that the forces don't add up as much
-	int timeStep = 1;
-	if (elapsedTime > 0.02)
+	m_dDeltaTime = elapsedTime;
+
+	startPhysics();
+	getPhysicsResults();
+
+	//Update all the entity positions based on PhysX simulated actor positions
+	for( int i=0; i < m_Vehicles.size(); i++ )
 	{
-		timeStep = (int) (elapsedTime/0.02) + 1;
-		m_dDeltaTime = elapsedTime/timeStep;
-	}
-	else
-		m_dDeltaTime = elapsedTime;
+		processForceKeys(m_Vehicles[i], vehicles[i]);
 
-	//for each time step, simulate
-	for (int j = 0; j < timeStep; j++)
-	{
-		startPhysics();
-		getPhysicsResults();
+		//Get the new position of the vehicle in vector and matrix format
+		Matrix m;
+		NxVec3 vec = m_Vehicles[i]->getGlobalPosition();
+		m_Vehicles[i]->getGlobalPose().getColumnMajor44( m );
 
-		//Update all the entity positions based on PhysX simulated actor positions
-		for( int i=0; i < m_Vehicles.size(); i++ )
-		{
-			processForceKeys(m_Vehicles[i], vehicles[i]);
+		float height = vehicles[i]->getBoundingBox().m_fHeight;
+		Matrix mat;
+		D3DXMatrixIdentity( &mat );
+		D3DXMatrixTranslation( &mat, 0, height, 0 );
+		D3DXMatrixMultiply( &m, &m, &mat );
 
-			//Get the new position of the vehicle in vector and matrix format
-			Matrix m;
-			NxVec3 vec = m_Vehicles[i]->getGlobalPosition();
-			m_Vehicles[i]->getGlobalPose().getColumnMajor44( m );
-			
-			NxVec3 vlc = m_Vehicles[i]->getLinearVelocity();
+		NxVec3 vlc = m_Vehicles[i]->getLinearVelocity();
 
-			//Update the vehicle position in the game
-			vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m );
-		}
+		//Update the vehicle position in the game
+		vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m );
 	}
 }
 
@@ -163,8 +154,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				//float x_dir = vehicle->getInputObj()->getThumbstick();
 				//m_vForceVec = applyForceToActor( actor, NxVec3(x_dir,0,0), m_rForceStrength ); //temporarily
 
-				localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength ) * 10; // times 10 to make it go faster
-				localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength ) * 10;
+				localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
+				localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
 				break; 
 			}
 			case 1: //B_BUTTON - brake / reverse
@@ -226,19 +217,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	NxMat33 orient = actor->getGlobalOrientation();
 	BoundingBox BB = vehicle->getBoundingBox();
 
-	//for (int i = WHEEL0; i < WHEEL2 /*front wheels*/; i++) 
-	//{
-	//	w = &vehicle->m_Wheels[ i ];
-	//	
-	//	wheelPos = mat * w->getChassisPt();
-	//	upVec = normalize( orient * NxVec3( 0, 1, 0 ));
-	//	
-	//	susAxis = normalize( orient * NxVec3(0,-1,0) );
-	//	w->setSuspensionAxis( susAxis );
-
-	//	wheelForward = 
-	//	
-	//}
 	/*NxVec3 force(-50000*sin(angle*PI/180), 0, -100000*sin(angle*PI/180));
 	localWheelForce[0] += force;
 	localWheelForce[1] += force;
@@ -309,10 +287,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 		for (int i = 0; i < 4 /*number of wheels*/; i++) 
 		{
 			w = &vehicle->m_Wheels[ i ];
-			wheelRadius = w->getBoundingBox().m_fRadius;
+			wheelRadius = w->getBoundingBox().m_fRadius/2;
 
 			//Ray casting
-			wheelPos = mat * (w->getChassisPt()+NxVec3(0,-BB.m_fHeight,0));
+			wheelPos = mat * w->getChassisPt();
 			upVec = normalize( orient * NxVec3( 0, 1, 0 ));
 
 			susAxis = normalize( orient * NxVec3(0,-1,0) );
@@ -323,6 +301,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 
 			m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
 
+			//m_Wheels[i]->setGlobalPosition( wheelPos );
+			
 			//apply forces due to suspension
 			if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 
 			{
@@ -333,24 +313,16 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				//else //the car is between the max length and its min length somewhere
 				w->setDisplacement( hit.distance - wheelRadius );
 					
-				susForce =  -1*m_rSpringScale * m_rSpringK * ( hit.distance - wheelRadius - m_rWheelRestLength );
+				susForce = -1 * m_rSpringScale * m_rSpringK * ( hit.distance - wheelRadius - m_rWheelRestLength );
 
 				NxVec3 ptVelocity = actor->getLocalPointVelocity( w->getChassisPt() );
 				
 				damperForce = m_rSpringC * m_rDamperScale * ptVelocity.dot( susAxis );
 				
 				localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
-				
-				//clamp magnitude of each force to be between 50 and 500, EXPERIMENTAL
-				if (localWheelForce[i].magnitude() > 50 ) {
-					NxVec3 maxForce = normalize(localWheelForce[i]) * 500;
 
-					if (localWheelForce[i].magnitude() > maxForce.magnitude())
-						localWheelForce[i] = maxForce;
-
-					actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
-					actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
-				}
+				actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
+				actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
 			}
 			else
 			{
@@ -396,7 +368,7 @@ NxVec3 Simulator::normalize(NxVec3 vec)
 // Function:  createVehicle
 // Creates a vehicle based on a mesh
 //--------------------------------------------------------------------------------------
-void Simulator::createVehicle( Mesh* mesh, Vec3 pos ) 
+void Simulator::createVehicle( Mesh* mesh, Vec3 pos, BoundingBox b ) 
 {
 	NxTriangleMeshShapeDesc ShapeDesc = this->createTriMeshShape( mesh );
 	NxBodyDesc bodyDesc;
@@ -406,18 +378,49 @@ void Simulator::createVehicle( Mesh* mesh, Vec3 pos )
 	// Create terrain and add to scene
 	NxActorDesc actorDesc;
 
+	NxBoxShapeDesc boxDesc;
+	boxDesc.dimensions.set( b.m_fWidth/2, b.m_fHeight/2, b.m_fLength/2 );
+	actorDesc.shapes.pushBack( &boxDesc );
+
 	//Initialize the vehicle's parameters
 	actorDesc.body = &bodyDesc;	
-	actorDesc.shapes.pushBack( &ShapeDesc );
+	//actorDesc.shapes.pushBack( &ShapeDesc );
 	actorDesc.globalPose.t = NxVec3(pos.x, pos.y, pos.z);
 
 	//Create the vehicle in the scene
 	NxActor* pActor = m_Scene->createActor( actorDesc );
 	pActor->setMaxAngularVelocity(m_rMaxAngularVelocity);
+	pActor->setCMassOffsetGlobalPosition( NxVec3(pos.x, pos.y-b.m_fHeight/2, pos.z) );
 	assert( pActor );
 
 	//Add the vehicle to global list of all vehicles
 	m_Vehicles.push_back( pActor );
+
+	//Now for testing, make placeholders for wheel chassis points
+	/*m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );
+	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );
+	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );
+	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );*/
+}
+
+NxActor* Simulator::createLittleBox( NxVec3 pos )
+{
+	// Create terrain and add to scene
+	NxActorDesc actorDesc;
+
+	//Create a small box 
+	NxBoxShapeDesc boxDesc;
+	boxDesc.dimensions.set( 0.1, 0.1, 0.1 );
+	actorDesc.shapes.pushBack( &boxDesc );
+
+	//Initialize the vehicle's parameters
+	actorDesc.globalPose.t = pos;
+	assert( actorDesc.isValid() );
+
+	//Create the vehicle in the scene
+	NxActor* pActor = m_Scene->createActor( actorDesc );
+	assert( pActor );
+	return pActor;
 }
 
 //--------------------------------------------------------------------------------------

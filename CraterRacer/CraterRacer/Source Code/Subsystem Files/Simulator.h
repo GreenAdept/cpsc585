@@ -34,7 +34,7 @@ public:
 
 	void simulate(vector<Vehicle*> entities, double elapsedTime);
 	void createVehicle( Vec3 pos, BoundingBox b );
-	void createVehicle( Mesh* mesh, Vec3 pos );
+	void createVehicle( Mesh* mesh, Vec3 pos, BoundingBox b  );
 
 	NxTriangleMeshShapeDesc createTriMeshShape( Mesh* mesh );
 
@@ -56,6 +56,8 @@ public:
 private:
 
 	void addTerrainFromX( Mesh* mesh, NxVec3 pos );
+
+	NxActor* createLittleBox( NxVec3 pos );
 
 	void startPhysics(void);
 	void getPhysicsResults(void);
@@ -96,6 +98,7 @@ private:
 	//Actors
 	NxActor*			m_GroundPlane;
 	vector< NxActor* >	m_Vehicles;
+	vector< NxActor* >  m_Wheels;
 	NxActor*			m_Terrain;
 
 	//Debugging

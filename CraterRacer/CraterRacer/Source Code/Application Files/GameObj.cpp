@@ -20,7 +20,7 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	
 	// Create entities
 	Vehicle *pv = m_Entities.makePlayer( device, pos, CAR_BODY_FILE );
-	Vehicle *av = m_Entities.makeComputer( device, Vec3 (-10.0f, 30.0f, 0.0f), CAR_BODY_FILE );
+	//Vehicle *av = m_Entities.makeComputer( device, Vec3 (-10.0f, 30.0f, 0.0f), CAR_BODY_FILE );
 	//Meteor *m = m_Entities.makeMeteor (device, Vec3 (-10.0f, 0.0f, 0.0f), OBJ_FILE);
 
 	// Create the terrain
@@ -30,8 +30,8 @@ void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurfac
 	m_Simulator->InitNx( m_Entities.getTerrain()->getRenderable()->m_pMesh );
 
 	// Add our vehicle to the PhysX system
-	m_Simulator->createVehicle( pv->getRenderable()->m_pMesh, pos );
-	m_Simulator->createVehicle( pv->getRenderable()->m_pMesh, av->getPosition() );
+	m_Simulator->createVehicle( pv->getRenderable()->m_pMesh, pos, pv->getBoundingBox() );
+	//m_Simulator->createVehicle( pv->getRenderable()->m_pMesh, av->getPosition() );
 
 	// Initialize camera and set it to follow the player
 	m_Camera.updateWindow( pSurface );
