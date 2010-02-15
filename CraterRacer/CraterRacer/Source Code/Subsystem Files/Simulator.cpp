@@ -316,12 +316,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			NxVec3 normal = rotate(w->getWheelLateral(), w->getAngle());
 
 			NxVec3 applied = (velocity.dot(normal) / normal.dot(normal))*normal;
-			applied = -applied*200;
-			applied = NxVec3(applied.x, applied.y, applied.z/2.5);
+			applied = -applied*100;
+			applied = NxVec3(applied.x, applied.y, applied.z);
 			
-			//if (applied.magnitude() > 1000) {
-				localWheelForce[i] += applied;
-			//}
+	
+			localWheelForce[i] += applied;
 
 			m_Debugger.writeToFile(Vec3(applied.x, applied.y, applied.z));
 			m_Debugger.writeToFile(applied.magnitude());
