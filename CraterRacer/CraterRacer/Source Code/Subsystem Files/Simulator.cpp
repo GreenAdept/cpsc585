@@ -262,8 +262,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 
 	if (vehicle->getInputObj()->getThumbstick() != 0) 
 	{
-		localWheelForce[0] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
-		localWheelForce[1] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
+		//localWheelForce[0] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
+		//localWheelForce[1] += (tireLateral * (m_rVehicleMass * m_rForceStrength) * sqrt(actor->getLinearVelocity().magnitude()));
 
 		//globalWheelForce[0] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
 		//globalWheelForce[1] += (-actor->getLinearVelocity() * (m_rForceStrength/2500) * sqrt(actor->getLinearVelocity().magnitude()));
@@ -317,6 +317,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 
 			NxVec3 applied = (velocity.dot(normal) / normal.dot(normal))*normal;
 			applied = -applied*200;
+			applied = NxVec3(applied.x, applied.y, applied.z/2.5);
 			
 			//if (applied.magnitude() > 1000) {
 				localWheelForce[i] += applied;
