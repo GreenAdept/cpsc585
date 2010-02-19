@@ -7,10 +7,15 @@
 //--------------------------------------------------------
 
 #include "Resource.h"
-#include "GameObj.h"
-#include "XBox360Controller.h"
 #include "Constants.h"
-#include "Sound.h"
+#include "SceneLoader.h"
+
+#define ONE_PLAYER_SCENE_FILE	"Source_Code\\Scene_Files\\OnePlayer.SCENE"
+#define TWO_PLAYER_SCENE_FILE	"Source_Code\\Scene_Files\\TwoPlayer.SCENE"
+#define TIME_TRIAL_SCENE_FILE	"Source_Code\\Scene_Files\\TimeTrial.SCENE"
+#define INIT_SCENE_FILE			"Source_Code\\Scene_Files\\Initialize.SCENE"
+#define BG_WAVEBANK_FILE		L"Media\\Audio\\Win\\BGMusicWaveBank.xwb"
+#define BG_SOUNDBANK_FILE		L"Media\\Audio\\Win\\BGMusicSoundBank.xsb"
 
 //--------------------------------------------------------
 //		CLASS: RacerApp
@@ -60,6 +65,7 @@ public:
 	static Dialog				m_PauseScreen;		//
 
 	static XBox360Controller*	m_MenuController;
+	static SceneLoader*			m_SceneLoader;		// used to load the game
 };
 
 extern GameObj *g_pGame; //Our global instantiation of the game which will be used by the RacerApp class

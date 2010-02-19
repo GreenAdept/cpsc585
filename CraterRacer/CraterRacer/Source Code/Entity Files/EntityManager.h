@@ -51,12 +51,12 @@ public:
 	Input* getComputerInputObj (int index);
 
 	void addEntity (int list, Entity* e) { entities[list].push_back(e); }
-	PlayerVehicle* makePlayer   (Device* device, Vec3 pos, LPCWSTR filename);
-	AIVehicle*     makeComputer (Device* device, Vec3 pos, LPCWSTR filename);
-	Meteor*        makeMeteor   (Device* device, Vec3 pos, LPCWSTR filename);
-	Crater*        makeCrater   (Device* device, Vec3 pos, LPCWSTR filename);
-	Prop*          makeProp     (Device* device, Vec3 pos, LPCWSTR filename);
-	Terrain*       makeTerrain  (Device* device, Vec3 pos, LPCWSTR filename);
+	PlayerVehicle* makePlayer   (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
+	AIVehicle*     makeComputer (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
+	Meteor*        makeMeteor   (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
+	Crater*        makeCrater   (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
+	Prop*          makeProp     (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
+	Terrain*       makeTerrain  (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename );
 
 	std::vector<Entity*> & operator[] (int i) { return entities[i]; }
 	void clear ();

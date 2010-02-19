@@ -23,15 +23,16 @@
 #define WHEEL2_FILE		L"Media\\Meshes\\Wheel2.x"
 #define WHEEL3_FILE		L"Media\\Meshes\\Wheel3.x"
 #define OBJ_EFFECT		L"Source Code\\Effect Files\\Scene.fx"
-#define TERRAIN_FILE	L"Media\\Meshes\\Floor.x"
-#define BG_MUSIC_SOUNDBANK_FILE	L"Media\\Audio\\Win\\BGMusicSoundBank.xsb"
-#define BG_MUSIC_WAVEBANK_FILE	L"Media\\Audio\\Win\\BGMusicWaveBank.xwb"
+#define TERRAIN_FILE	L"Media\\Meshes\\Track.x"
+#define TERRAIN_EFFECT_FILE		L"Source Code\\Effect Files\\Terrain.fx"
+
 
 enum ProcessType		{ ON_LOST, ON_RESET, ON_DESTROY };
 enum Directions			{ LEFT, FORWARD, RIGHT, BACKWARD }; 
 enum GuiControls		{ GUI_BTN_SINGLE_PLAYER, GUI_BTN_EXIT, GUI_BTN_UNPAUSE, GUI_BTN_EXIT2 };
 enum ApplicationState	{ APP_STARTUP, APP_RENDER_GAME, APP_PAUSED };
 enum Wheels				{ WHEEL0, WHEEL1, WHEEL2, WHEEL3 };
+enum GameType			{ ONE_PLAYER, MULTI_PLAYER, TIME_TRIAL };
 
 
 //--------------------------------------------------------

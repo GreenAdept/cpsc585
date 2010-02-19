@@ -36,7 +36,7 @@ public:
 	Vec3&			getPosition		  ( );
 	Matrix			getPositionMatrix ( );
 
-	virtual void	initialize		  ( Device* device, Vec3 pos, LPCWSTR filename );
+	virtual void	initialize		  ( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename );
 
 	virtual AI*		getAI			  ( ) { return 0; }
 

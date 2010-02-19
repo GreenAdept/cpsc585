@@ -348,7 +348,7 @@ NxVec3 Simulator::rotate(NxVec3 lateral, float angle) {
 //--------------------------------------------------------------------------------------
 void Simulator::createVehicle( Mesh* mesh, Vec3 pos, BoundingBox b ) 
 {
-	NxTriangleMeshShapeDesc ShapeDesc = this->createTriMeshShape( mesh );
+	//NxTriangleMeshShapeDesc ShapeDesc = this->createTriMeshShape( mesh );
 	NxBodyDesc bodyDesc;
 	bodyDesc.angularDamping	= 0.5f;
 	bodyDesc.mass = m_rVehicleMass;

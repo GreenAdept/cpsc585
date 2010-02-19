@@ -23,7 +23,7 @@ void Renderer::renderFloor( )
 // are passed to this function and contain all the rendering-specific information needed
 // by the renderer.  The latest camera is also required.
 //--------------------------------------------------------------------------------------
-void Renderer::render( Device* device, vector<Renderable*> renderables, MCamera& g_Camera ) 
+void Renderer::render( Device* device, vector<Renderable*> renderables, vector<GameCamera*> cameras ) 
 {
 	HRESULT		hr;	
 	Matrix		mWorld,		
@@ -35,10 +35,9 @@ void Renderer::render( Device* device, vector<Renderable*> renderables, MCamera&
 	Mesh		*dxMesh;	//the DXUT wrapper version of the mesh with helpful functions
 	Renderable	*tempR;		//pointer to current renderable
 	Effect		*pEffect;	//the effect currently being used
-
+	MCamera		camera = cameras[0]->getCamera();
 
 	// sort renderables here...perhaps by type and then take out the hidden objects
-
 
 	// now go through and render each object via its renderable
 	for( unsigned int i = 0; i < renderables.size(); i++ )
@@ -51,9 +50,9 @@ void Renderer::render( Device* device, vector<Renderable*> renderables, MCamera&
 		mMeshWorld = tempR->m_matWorld;
    
 		// get the projection & view matrix from the camera class
-		mWorld = *g_Camera.GetWorldMatrix();
-		mProj = *g_Camera.GetProjMatrix();
-		mView = *g_Camera.GetViewMatrix();
+		mWorld = *camera.GetWorldMatrix();
+		mProj = *camera.GetProjMatrix();
+		mView = *camera.GetViewMatrix();
 
 		// create the world view projection matrix
 		mWorldViewProjection = mMeshWorld * mWorld * mView * mProj;
@@ -78,9 +77,7 @@ void Renderer::render( Device* device, vector<Renderable*> renderables, MCamera&
 			for( UINT i = 0; i < dxMesh->m_dwNumMaterials; i++ )
 			{
 				V( pEffect->SetVector( "g_vDiffuse", ( Vec4* )&dxMesh->m_pMaterials[i].Diffuse ) );
-
 				V( pEffect->SetTexture( "g_txScene", dxMesh->m_pTextures[i] ) );
-
 				V( pEffect->CommitChanges() );
 
 				tempMesh->DrawSubset( i );

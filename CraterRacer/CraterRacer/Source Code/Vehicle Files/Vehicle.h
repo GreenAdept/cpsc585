@@ -7,7 +7,7 @@ wheel 0	|			| wheel 1
 		|			|
 		|			|
 		|			|
-wheel 2 |			| wheel 3
+wheel 3 |			| wheel 2
 		-------------
 			back
 
@@ -56,7 +56,7 @@ public:
 
 	void update			( Vec3 newPosition, Vec3 velocity, Matrix matBody );
 	void update			( Vec3 pos, Vec3 vel, Matrix body, Matrix w0, Matrix w1, Matrix w2, Matrix w3 );
-	void initialize		( Device* device, Vec3 pos, LPCWSTR filename );
+	void initialize		( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename );
 
 	// Setter's
 	void  setMass		( int mass );

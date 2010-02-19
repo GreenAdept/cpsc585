@@ -7,7 +7,7 @@
 //		INCLUDES
 //--------------------------------------------------------
 
-#include "..\Utility Files\Constants.h" //typedefs and constants used in this class
+#include "Constants.h" //typedefs and constants used in this class
 
 
 //--------------------------------------------------------
@@ -45,6 +45,7 @@ public:
 	Vec3			 m_vPosition;
 	Mesh*			 m_pMesh;
 	LPCWSTR			 m_Filename;
+	LPCWSTR			 m_EffectFilename;
 	
 	Effect*			 m_pEffect;
 	Matrix			 m_matWorld;

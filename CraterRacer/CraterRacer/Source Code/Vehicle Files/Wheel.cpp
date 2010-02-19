@@ -6,26 +6,20 @@
 //--------------------------------------------------------------------------------------
 Wheel::Wheel() 
 {
-	//m_mMaterial = new NxMaterial();
 	m_rRestitution		= NxReal(0.5);
 	m_rStaticFriction	= NxReal(1.0);
 	m_rDynamicFriction	= NxReal(0.3);
 
 	m_fAngle			= 0; //degrees
-	//m_fDiameter			= 0.5; //meters
-
-	/*m_mMaterial->setDynamicFriction(m_rDynamicFriction);
-	m_mMaterial->setStaticFriction(m_rStaticFriction);
-	m_mMaterial->setRestitution(m_rRestitution);*/
 }
 
 
 //--------------------------------------------------------------------------------------
 // Function:  initialize
 //--------------------------------------------------------------------------------------
-void Wheel::initialize( Device* device, LPWSTR filename, Vec3 pt )
+void Wheel::initialize( Device* device, LPCWSTR filename, Vec3 pt, LPCWSTR effectFilename )
 {
-	Entity::initialize( device, Vec3(0,0,0), filename );
+	Entity::initialize( device, Vec3(0,0,0), filename, effectFilename );
 	
 	Renderable* tempRenderable = this->getRenderable();
 	m_fDiameter = 2 * tempRenderable->getBoundingBox().m_fRadius;
@@ -34,6 +28,9 @@ void Wheel::initialize( Device* device, LPWSTR filename, Vec3 pt )
 }
 
 
+//--------------------------------------------------------------------------------------
+// Function:  initialize
+//--------------------------------------------------------------------------------------
 void Wheel::update( Matrix mat )
 {
 	Matrix m;

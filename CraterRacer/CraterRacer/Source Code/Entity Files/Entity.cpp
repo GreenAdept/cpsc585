@@ -18,16 +18,15 @@ Entity::~Entity( )
 
 //--------------------------------------------------------------------------------------
 // Function:  initialize
-// Temporarily initialize an object this way, but will eventually be reading this
-// from file and initializing the entities from a data file.
 //--------------------------------------------------------------------------------------
-void Entity::initialize( Device* device, Vec3 pos, LPCWSTR filename )
+void Entity::initialize( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename )
 {
 	Renderable tempRenderable;
 	tempRenderable.m_bCanBeRendered = true;
 	tempRenderable.m_Filename = filename;
 	tempRenderable.m_pDevice = device;
 	tempRenderable.m_vPosition = pos;
+	tempRenderable.m_EffectFilename = effectFilename;
 
 	m_pRenderable = new Renderable( tempRenderable );
 	m_vPosition = pos;

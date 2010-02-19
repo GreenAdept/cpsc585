@@ -19,7 +19,7 @@ public:
 	Wheel();
 	~Wheel();
 
-	void	initialize( Device* device, LPWSTR filename, Vec3 pt );
+	void	initialize( Device* device, LPCWSTR filename, Vec3 pt, LPCWSTR effectFilename );
 	void	update( Matrix mat );
 
 	float	getDiameter		 ( );
