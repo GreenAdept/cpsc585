@@ -34,37 +34,21 @@ void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat )
 
 
 //--------------------------------------------------------------------------------------
-// Function:  update
-//--------------------------------------------------------------------------------------
-void Vehicle::update( Vec3 newBodyPosition, Vec3 velocity, Matrix bodyMat, Matrix wheel0,
-					 Matrix wheel1, Matrix wheel2, Matrix wheel3 )
-{
-	setVelocity( velocity );
-	Entity::update( newBodyPosition, bodyMat );
-
-	m_Wheels[ WHEEL0 ].update( wheel0 );
-	m_Wheels[ WHEEL1 ].update( wheel1 );
-	m_Wheels[ WHEEL2 ].update( wheel2 );
-	m_Wheels[ WHEEL3 ].update( wheel3 );
-}
-
-
-//--------------------------------------------------------------------------------------
 // Function:  initialize
 //--------------------------------------------------------------------------------------
-void Vehicle::initialize( Device* device, Vec3 pos, LPCWSTR filename )
+void Vehicle::initialize( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename )
 {
-	Entity::initialize( device, pos, filename );
+	Entity::initialize( device, pos, filename, effectFilename );
 
 	BoundingBox BB = this->getBoundingBox();
 	float width = BB.m_fWidth/2;
 	float length = BB.m_fLength/2;
 	float height = -BB.m_fHeight/2;
 
-	m_Wheels[ WHEEL0 ].initialize( device, WHEEL0_FILE, Vec3(-width, height, length) );
-	m_Wheels[ WHEEL1 ].initialize( device, WHEEL1_FILE, Vec3(width, height, length) );
-	m_Wheels[ WHEEL2 ].initialize( device, WHEEL2_FILE, Vec3(-width, height, -length) );
-	m_Wheels[ WHEEL3 ].initialize( device, WHEEL3_FILE, Vec3(width, height, -length) );
+	m_Wheels[ WHEEL0 ].initialize( device, WHEEL0_FILE, Vec3(-width, height, length), effectFilename);
+	m_Wheels[ WHEEL1 ].initialize( device, WHEEL1_FILE, Vec3(width, height, length), effectFilename );
+	m_Wheels[ WHEEL2 ].initialize( device, WHEEL2_FILE, Vec3(-width, height, -length), effectFilename );
+	m_Wheels[ WHEEL3 ].initialize( device, WHEEL3_FILE, Vec3(width, height, -length), effectFilename );
 }
 
 

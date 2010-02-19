@@ -15,6 +15,7 @@ Dialog					RacerApp::m_PauseScreen;
 XBox360Controller*		RacerApp::m_MenuController;
 vector<CDXUTButton*>	RacerApp::buttons;
 UINT					RacerApp::m_uiCurrentButton;
+SceneLoader*			RacerApp::m_SceneLoader;
 
 
 //--------------------------------------------------------------------------------------
@@ -31,7 +32,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 	bool doControllerProcessing = false;
 
 	//The game is active, so go into game loop processing
-	if( m_AppState ==  APP_RENDER_GAME )
+	if( g_pGame && m_AppState ==  APP_RENDER_GAME )
 	{
 		g_pGame->processInput( fElapsedTime );
 
@@ -52,7 +53,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 		m_MenuController->Update(fElapsedTime);
 		doControllerProcessing = true;
 	}
-	else
+	else if( g_pGame )
 		doControllerProcessing = true;
 	
 	if( doControllerProcessing )
@@ -96,7 +97,7 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 				break;
 		}
 	}
-	else if( g_pGame ) //The menu is active, so we want check for button selection
+	else //The menu is active, so we want check for button selection
 	{ 
 		switch( nChar )
 		{
@@ -129,7 +130,7 @@ void RacerApp::moveMenuUp( )
 		//send message to newly selected button to go to mouse-over state (so it will render differently)
 		buttons[ m_uiCurrentButton ]->OnMouseEnter();
 	}
-	if( m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_UNPAUSE )
+	else if( g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_UNPAUSE )
 	{
 		//send message to current button to go back to normal state
 		buttons[ m_uiCurrentButton ]->OnMouseLeave();
@@ -154,7 +155,7 @@ void RacerApp::moveMenuDown( )
 		//tell the new button to go in mouse-over state (so it will render differently)
 		buttons[ m_uiCurrentButton ]->OnMouseEnter();
 	}
-	if( m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_EXIT2 )
+	else if( g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_EXIT2 )
 	{
 		//send message to current button to go back to normal state
 		buttons[ m_uiCurrentButton ]->OnMouseLeave();
@@ -177,6 +178,9 @@ void RacerApp::processMenuSelection( )
 			case GUI_BTN_SINGLE_PLAYER:
 				if( g_audioState.pSoundBank )
 					g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
+
+				g_pGame = m_SceneLoader->startGame( ONE_PLAYER_SCENE_FILE ); //load one player game
+
 				m_AppState = APP_RENDER_GAME; 
 				break;
 			//start game again
@@ -262,8 +266,9 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 			case APP_RENDER_GAME:
 			case APP_PAUSED:
 
-				//get the game to render all of its components
-				g_pGame->render( device );
+				if( g_pGame )
+					//get the game to render all of its components
+					g_pGame->render( device );
 
 				if( m_AppState == APP_PAUSED )
 					m_PauseScreen.OnRender( fElapsedTime );
@@ -279,14 +284,14 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 // This function is called when a device is created.  We are using this function
 // as the place to initialize the game (by initializing its components with the device)
 //--------------------------------------------------------------------------------------
-HRESULT CALLBACK RacerApp::OnCreateDevice( IDirect3DDevice9* pd3dDevice, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
+HRESULT CALLBACK RacerApp::OnCreateDevice( Device* device, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext )
 {
 	HRESULT hr;
 
 	//initialize the resource manager for our HUD, Pause Screen and Menu Screen.
-	V_RETURN( m_ResourceManager.OnD3D9CreateDevice( pd3dDevice ) );
-	
-	g_pGame->initGame( pd3dDevice, pBackBufferSurfaceDesc );
+	V_RETURN( m_ResourceManager.OnD3D9CreateDevice( device ) );
+
+	m_SceneLoader->initScene( device, pBackBufferSurfaceDesc, INIT_SCENE_FILE );
 
 	return S_OK;
 }
@@ -333,13 +338,14 @@ bool CALLBACK RacerApp::IsD3D9DeviceAcceptable( D3DCAPS9* pCaps, D3DFORMAT Adapt
 RacerApp::RacerApp()
 {
 	m_MenuController = new XBox360Controller(0);
-	g_pGame = new GameObj();
- 
+	m_SceneLoader = new SceneLoader( );
+
+	g_pGame = NULL;
 	m_AppState = APP_STARTUP;
 
 	// Set up the audio
-	HRESULT hr = PrepareXACT();
-	
+	HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, BG_SOUNDBANK_FILE );
+
 	//initialize the resource manager to keep track of all our screens and HUD
 	m_MenuScreen.Init( &m_ResourceManager );
     m_OnePlayerScreen.Init( &m_ResourceManager );
@@ -354,14 +360,6 @@ RacerApp::RacerApp()
         pElement->iFont = 1;
         pElement->dwTextFormat = DT_CENTER | DT_BOTTOM;
     } 
-	//pElement = m_MenuScreen.GetDefaultElement( DXUT_CONTROL_BUTTON, 0 );
- //   if( pElement )
- //   {
-	//	DXUTBlendColor t;
-	//	t.States[ DXUT_STATE_MOUSEOVER ] = D3DCOLOR_ARGB(100,255,77,0);//orange
-	//	t.States[ DXUT_STATE_NORMAL ] = D3DCOLOR_ARGB(100,0,0,0);//orange
- //       //pElement->TextureColor = iFont = 1;
- //   } 
 
 	//Add buttons/text to the menu screen
 	m_MenuScreen.AddStatic( -1, L"SELECT YOUR GAME MODE:", 20, 10, 280, 22 );
@@ -398,4 +396,6 @@ RacerApp::~RacerApp()
 	if( m_MenuController )
 		delete m_MenuController;
 
+	if( m_SceneLoader )
+		delete m_SceneLoader;
 }

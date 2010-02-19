@@ -1,6 +1,6 @@
 #include "VarLoader.h"
 
-bool VarLoader::loadVars()
+bool VarLoader::loadVars( Simulator* sim )
 {
 	file.open("variables.txt");
 	if (!file.is_open()) return false;
@@ -17,6 +17,19 @@ bool VarLoader::loadVars()
 
 	parse(strings);
 	file.close();
+
+	sim->setForceVec(forceVec);
+	sim->setForceStr(forceStrength);
+	sim->setForceMode(forceMode);
+	sim->setGravity(gravity);
+	sim->setRestitution(restitution);
+	sim->setSFriction(sFriction);
+	sim->setDFriction(dFriction);
+	sim->setMaxAngularVelocity(maxAngularVelocity);
+	sim->setMaxWheelAngle(maxWheelAngle);
+	sim->setSpringScale(springScale);
+	sim->setDamperScale(damperScale);
+
 	return true;
 }
 

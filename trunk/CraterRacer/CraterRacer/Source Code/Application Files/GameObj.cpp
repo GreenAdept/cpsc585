@@ -3,41 +3,57 @@
 //--------------------------------------------------------------------------------------
 #include "GameObj.h"
 
+
+//--------------------------------------------------------------------------------------
+// Function:  Constructor
+//--------------------------------------------------------------------------------------
+GameObj::GameObj( )
+{
+	m_Debugger  = new DebugWriter( );
+	m_Renderer  = new Renderer( );
+	m_Simulator = new Simulator( );
+	m_VarLoader = new VarLoader( );
+	m_Entities	= new EntityManager();
+}
+
+
 //--------------------------------------------------------------------------------------
 // Function:  initGame
 // Here we initialize the game's camera and scene.  Eventually we want to read all of this
 // in via file IO.  
 //--------------------------------------------------------------------------------------
-void GameObj::initGame( IDirect3DDevice9* device, const D3DSURFACE_DESC* pSurface )
+void GameObj::initGame( )
 {
-	// Clear debug.txt
-	debug.clearFile();
-
-	m_Simulator = new Simulator();
-	m_Controller1 = new XBox360Controller(0); //player 1 controller
-
-	Vec3 pos( 0.0f, 30.0f, 0.0f );
 	
-	// Create entities
-	Vehicle *pv = m_Entities.makePlayer( device, pos, CAR_BODY_FILE );
-	Vehicle *av = m_Entities.makeComputer( device, Vec3 (-10.0f, 30.0f, 0.0f), CAR_BODY_FILE );
-	//Meteor *m = m_Entities.makeMeteor (device, Vec3 (-10.0f, 0.0f, 0.0f), OBJ_FILE);
-
-	// Create the terrain
-	m_Entities.makeTerrain( device, Vec3( 0.0f, 0.0f, 0.0f ), TERRAIN_FILE );
-
-	//initialize simulator with terrain
-	m_Simulator->InitNx( m_Entities.getTerrain()->getRenderable()->m_pMesh );
-
-	// Add our vehicle to the PhysX system
-	m_Simulator->createVehicle( pv->getRenderable()->m_pMesh, pos, pv->getBoundingBox() );
-	m_Simulator->createVehicle( pv->getRenderable()->m_pMesh, av->getPosition(), pv->getBoundingBox() );
-
-	// Initialize camera and set it to follow the player
-	m_Camera.updateWindow( pSurface );
-	m_Camera.setTarget( pv );    //comment out this line to make the camera stationary
 }
 
+
+//--------------------------------------------------------------------------------------
+// Function:  getSceneObjects
+//--------------------------------------------------------------------------------------
+SceneObjects GameObj::getSceneObjects( )
+{
+	SceneObjects objs;
+	
+	objs.entityManager	= m_Entities;
+	objs.gameCameras	= m_Cameras;
+	objs.simulator		= m_Simulator;
+	objs.renderer		= m_Renderer;
+	objs.debugger		= m_Debugger;
+	objs.varLoader		= m_VarLoader;
+	objs.controllers	= m_Controllers;
+
+	return objs;
+}
+
+//--------------------------------------------------------------------------------------
+// Function:  getSceneObjects
+//--------------------------------------------------------------------------------------
+void GameObj::setSceneObjects( SceneObjects& objs )
+{	
+	m_Cameras = objs.gameCameras;
+	m_Controllers = objs.controllers;
+}
 
 //--------------------------------------------------------------------------------------
 // Function:  pause
@@ -55,9 +71,9 @@ bool GameObj::pauseGame( bool pause )
 //--------------------------------------------------------------------------------------
 void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 {
-	Input* v = m_Entities.getPlayerInputObj (0);
+	Input* v = m_Entities->getPlayerInputObj( 0 );
 
-	v->setController(false);
+	v->setController( false );
 
 	switch (virtualKeyCode)
 	{
@@ -87,35 +103,14 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 	case 76: //L is pressed -> load file
 		if (isKeyDown)
 		{
-			if (loader.loadVars())
-			{
-				//m_Simulator->printVariables();
-				debug.writeToFile("loaded variables");
+			if( m_VarLoader->loadVars( m_Simulator ) )
+				m_Debugger->writeToFile("Loaded variables successfully");
 
-				m_Simulator->setForceVec(loader.forceVec);
-				m_Simulator->setForceStr(loader.forceStrength);
-				m_Simulator->setForceMode(loader.forceMode);
-				m_Simulator->setGravity(loader.gravity);
-				m_Simulator->setRestitution(loader.restitution);
-				m_Simulator->setSFriction(loader.sFriction);
-				m_Simulator->setDFriction(loader.dFriction);
-				m_Simulator->setMaxAngularVelocity(loader.maxAngularVelocity);
-				m_Simulator->setMaxWheelAngle(loader.maxWheelAngle);
-				m_Simulator->setSpringScale(loader.springScale);
-				m_Simulator->setDamperScale(loader.damperScale);
-
-				//m_Simulator->printVariables();
-			}
 			else
-				debug.writeToFile("did not load");
+				m_Debugger->writeToFile("Variables did not load");
 			break;
 		}
-	//case 82: //R is pressed -> reset parameters
-	//	v->setKey(Input::Key::R_KEY, isKeyDown);
-	//	break;
 	default:
-		//double key = (double)virtualKeyCode;
-		//debug.writeToFile(key);
 		break;
 	}
 }
@@ -128,15 +123,15 @@ void GameObj::think ()
 {
 	vector<AI*> minds;
 
-	minds = m_Entities.getAIs (COMPUTERS);
+	minds = m_Entities->getAIs (COMPUTERS);
 	for (int i=0; i<minds.size(); i++)
-		minds[i]->think (&m_Entities, COMPUTERS, i);
+		minds[i]->think( m_Entities, COMPUTERS, i );
 
-	minds = m_Entities.getAIs (METEORS);
+	minds = m_Entities->getAIs (METEORS);
 	for (int i=0; i<minds.size(); i++) {
-		minds[i]->think (&m_Entities, METEORS, i);
+		minds[i]->think( m_Entities, METEORS, i);
 		if (minds[i]->getState() == AI::TRIGGERED)
-			debug.writeToFile ("Triggered.");
+			m_Debugger->writeToFile ("Triggered.");
 	}
 }
 
@@ -146,42 +141,45 @@ void GameObj::think ()
 //--------------------------------------------------------------------------------------
 void GameObj::processInput( float fElapsedTime )
 {
-	if( m_Controller1->IsConnected() )
+	for( int i=0; i < m_Controllers.size(); i++ )
 	{
-		m_Controller1->Update(fElapsedTime);
-		Input* v = m_Entities.getPlayerInputObj (0);
-		
-		if (m_Controller1->A.WasPressedOrHeld())
+		if( m_Controllers[i]->IsConnected() )
 		{
-			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::A_BUTTON);
-		}
-		if (m_Controller1->B.WasPressedOrHeld())
-		{
-			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::B_BUTTON);
-		}
-		if (m_Controller1->Y.WasPressedOrHeld())
-		{
-			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::Y_BUTTON);
-		}
-		if (m_Controller1->X.WasPressedOrHeld())
-		{
-			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::X_BUTTON);
-		}
-		if (m_Controller1->RightTrigger.WasPressedOrHeld())
-		{
-			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::RT_BUTTON);
-		}
-		if (m_Controller1->LeftTrigger.WasPressedOrHeld())
-		{
-			v->setDir(m_Controller1->LeftThumbstick.GetX(), Input::LT_BUTTON);
-		}
-		if (m_Controller1->Start.WasPressedOrHeld())
-		{
-			pauseGame( true );
-		}
+			m_Controllers[i]->Update(fElapsedTime);
+			Input* v = m_Entities->getPlayerInputObj( i );
+			
+			if (m_Controllers[i]->A.WasPressedOrHeld())
+			{
+				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::A_BUTTON);
+			}
+			if (m_Controllers[i]->B.WasPressedOrHeld())
+			{
+				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::B_BUTTON);
+			}
+			if (m_Controllers[i]->Y.WasPressedOrHeld())
+			{
+				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::Y_BUTTON);
+			}
+			if (m_Controllers[i]->X.WasPressedOrHeld())
+			{
+				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::X_BUTTON);
+			}
+			if (m_Controllers[i]->RightTrigger.WasPressedOrHeld())
+			{
+				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::RT_BUTTON);
+			}
+			if (m_Controllers[i]->LeftTrigger.WasPressedOrHeld())
+			{
+				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::LT_BUTTON);
+			}
+			if (m_Controllers[i]->Start.WasPressedOrHeld())
+			{
+				pauseGame( true );
+			}
 
-		//using xbox controller
-		v->setController(true);
+			//using xbox controller
+			v->setController(true);
+		}
 	}
 }
 
@@ -192,10 +190,10 @@ void GameObj::processInput( float fElapsedTime )
 //--------------------------------------------------------------------------------------
 void GameObj::render( Device* device )
 {
-	vector<Renderable*> renderables = m_Entities.getRenderables();
+	vector<Renderable*> renderables = m_Entities->getRenderables();
 
 	// pass the renderables off to the renderer to do all the work
-	m_Renderer->render( device, renderables, m_Camera.getCamera() );
+	m_Renderer->render( device, renderables, m_Cameras );
 }
 
 
@@ -204,12 +202,13 @@ void GameObj::render( Device* device )
 //--------------------------------------------------------------------------------------
 void GameObj::simulate( float fElapsedTime )
 {
-	m_Simulator->simulate( m_Entities.getVehicles(), fElapsedTime );
-	//debug.writeToFile("game obj");
-	//debug.writeToFile( m_Vehicles[0]->getPosition());
+	m_Simulator->simulate( m_Entities->getVehicles(), fElapsedTime );
+
 }
 
-
+//--------------------------------------------------------------------------------------
+// Function: isPaused
+//--------------------------------------------------------------------------------------
 bool GameObj::isPaused( )
 {
 	return m_Simulator->isPaused();
@@ -222,7 +221,7 @@ bool GameObj::isPaused( )
 //--------------------------------------------------------------------------------------
 void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFACE_DESC* pBackSurface )
 {
-	vector<Renderable*> m_Renderables = m_Entities.getRenderables();
+	vector<Renderable*> m_Renderables = m_Entities->getRenderables();
 
 	// when the device is destroyed, we want to release all of the memory attached to it
 	if( type == ON_DESTROY )
@@ -246,7 +245,8 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 	else if( type == ON_RESET )
 	{
 		// re-adjust the camera's projection parameters
-		m_Camera.updateWindow (pBackSurface);
+		for( int i=0; i < m_Cameras.size(); i++ )
+			m_Cameras[i]->updateWindow (pBackSurface);
 
 		// let the renderables know their device was reset
 		for( unsigned int i = 0; i < m_Renderables.size(); i++ ) 
@@ -263,6 +263,21 @@ GameObj::~GameObj( )
 	if( m_Simulator )
 		delete m_Simulator;
 
-	if( m_Controller1 )
-		delete m_Controller1;
+	for( int i=0; i < m_Controllers.size(); i++ )
+		delete m_Controllers[i];
+
+	if( m_Debugger )
+		delete m_Debugger;
+
+	if( m_Renderer )
+		delete m_Renderer;
+
+	if( m_VarLoader )
+		delete m_VarLoader;
+
+	if( m_Entities )
+		delete	m_Entities;
+
+	for( int i=0; i < m_Cameras.size(); i++ )
+		delete m_Cameras[i];
 }

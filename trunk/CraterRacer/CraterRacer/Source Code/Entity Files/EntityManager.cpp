@@ -191,41 +191,40 @@ int EntityManager::getSize () {
 // to it.
 //------------------------------------------------------
 
-PlayerVehicle* EntityManager::makePlayer (Device* device, Vec3 pos, LPCWSTR filename) {
+PlayerVehicle* EntityManager::makePlayer (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename) {
 	PlayerVehicle* pv = new PlayerVehicle();
-	pv->initialize (device, pos, filename);
+	pv->initialize (device, pos, filename, effectFilename);
 	entities[PLAYERS].push_back (pv);
 	return pv;
 }
-AIVehicle* EntityManager::makeComputer (Device* device, Vec3 pos, LPCWSTR filename) {
+AIVehicle* EntityManager::makeComputer (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename) {
 	AIVehicle* av = new AIVehicle();
-	av->initialize (device, pos, filename);
+	av->initialize (device, pos, filename, effectFilename);
 	entities[COMPUTERS].push_back (av);
 	return av;
 }
-Meteor* EntityManager::makeMeteor (Device* device, Vec3 pos, LPCWSTR filename) {
+Meteor* EntityManager::makeMeteor (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename) {
 	Meteor* m = new Meteor();
-	m->initialize (device, pos, filename);
+	m->initialize (device, pos, filename, effectFilename);
 	entities[METEORS].push_back (m);
 	return m;
 }
-Crater* EntityManager::makeCrater (Device* device, Vec3 pos, LPCWSTR filename) {
+Crater* EntityManager::makeCrater (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename) {
 	Crater* c = new Crater();
-	c->initialize (device, pos, filename);
+	c->initialize (device, pos, filename, effectFilename);
 	entities[CRATERS].push_back (c);
 	return c;
 }
-Prop* EntityManager::makeProp (Device* device, Vec3 pos, LPCWSTR filename) {
+Prop* EntityManager::makeProp (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename) {
 	Prop* p = new Prop();
-	p->initialize (device, pos, filename);
+	p->initialize (device, pos, filename, effectFilename);
 	entities[PROPS].push_back (p);
 	return p;
 }
-Terrain* EntityManager::makeTerrain (Device* device, Vec3 pos, LPCWSTR filename) {
+Terrain* EntityManager::makeTerrain (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename ) {
 	Terrain* t = new Terrain();
-	t->initialize (device, pos, filename);
+	t->initialize (device, pos, filename, effectFilename );
 
-	entities[TERRAIN] = vector<Entity*> (1);
-	entities[TERRAIN][0] = t;
+	entities[TERRAIN].push_back( t );
 	return t;
 }

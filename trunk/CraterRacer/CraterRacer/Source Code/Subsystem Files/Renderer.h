@@ -8,7 +8,8 @@
 
 #include <vector>
 #include "Renderable.h"
-#include "..\Utility Files\Constants.h"
+#include "GameCamera.h"
+#include "Constants.h"
 
 using namespace std;
 
@@ -29,7 +30,7 @@ public:
 	Renderer ( ) {}
 	~Renderer( ) {}
 
-	void render		( Device* device, vector<Renderable*>, MCamera& );
+	void render		( Device* device, vector<Renderable*>, vector<GameCamera*> cameras );
 	void renderFloor( );
 
 private:

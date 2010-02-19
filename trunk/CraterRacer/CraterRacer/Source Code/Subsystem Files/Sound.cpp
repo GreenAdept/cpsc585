@@ -11,7 +11,7 @@ AUDIO_STATE g_audioState;
 //      5. Create the XACT sound bank(s) you want to use
 //      6. Store indices to the XACT cue(s) your game uses
 //-----------------------------------------------------------------------------------------
-HRESULT PrepareXACT()
+HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR bgSoundbankFile )
 {
     HRESULT hr;
     WCHAR str[MAX_PATH];
@@ -46,7 +46,7 @@ HRESULT PrepareXACT()
     if( FAILED( hr ) )
         return hr;
 
-    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, BG_MUSIC_WAVEBANK_FILE ) ) )
+    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, bgWavebankFile ) ) )
         return hr;
 
     // Create an "in memory" XACT wave bank file using memory mapped file IO
@@ -78,7 +78,7 @@ HRESULT PrepareXACT()
 
     // Read and register the sound bank file with XACT.  Do not use memory mapped file IO because the 
     // memory needs to be read/write and the working set of sound banks are small.
-    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, BG_MUSIC_SOUNDBANK_FILE ) ) )
+    if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, bgSoundbankFile ) ) )
         return hr;
     hr = E_FAIL; // assume failure
     hFile = CreateFile( str, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL );

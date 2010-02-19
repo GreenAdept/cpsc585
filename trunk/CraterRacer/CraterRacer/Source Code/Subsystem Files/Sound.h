@@ -13,7 +13,7 @@
 //-----------------------------------------------------------------------------
 // Forward declaration
 //-----------------------------------------------------------------------------
-HRESULT PrepareXACT();
+HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR bgSoundbankFile );
 void UpdateAudio();
 VOID CleanupXACT();
 void WINAPI XACTNotificationCallback( const XACT_NOTIFICATION* pNotification );

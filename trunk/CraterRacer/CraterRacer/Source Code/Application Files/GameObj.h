@@ -6,22 +6,13 @@
 //		INCLUDES
 //--------------------------------------------------------
 
-#include "..\Utility Files\Constants.h"
+#include "Constants.h"
 #include "Resource.h"
 #include <iostream>
 #include <vector>
+#include "SceneLoader.h"
 
-#include "EntityManager.h"
-#include "Renderer.h"
-#include "Renderable.h"
-#include "Simulator.h"
-#include "Input.h"
-#include "GameCamera.h"
-#include "DebugWriter.h"
-#include "Terrain.h"
-#include "XBox360Controller.h"
-#include "VarLoader.h"
-
+struct SceneObjects; //forward declaration
 
 //-----------------------------------------------------------------
 //		CLASS: GameObj
@@ -36,7 +27,7 @@ class GameObj
 public:
 	//Public Interface -----------------------------------
 
-	GameObj( ) {}
+	GameObj( );
 	~GameObj( );
 
 	void think           ( void );
@@ -46,20 +37,22 @@ public:
 	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );
 	void simulate		 ( float fElapsedTime );
 	void render			 ( Device* device );
-	void initGame		 ( Device* device, const D3DSURFACE_DESC* );
+	void initGame		 (  );
 	void processCallback ( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
+
+	SceneObjects getSceneObjects( );
+	void setSceneObjects( SceneObjects& objs );
 
 private:
 	//Date Members ---------------------------------------
 
-	EntityManager		m_Entities;		// collection of all entities
-	Renderer*			m_Renderer;		// rendering subsystem
-	Input				m_InputManager;	// input management subsystem
-	GameCamera			m_Camera;		// main camera to follow behind vehicle
-	Simulator*			m_Simulator;
-	DebugWriter			debug;
-	VarLoader			loader;
-	XBox360Controller*	m_Controller1;	//first player controller will have id# 0
+	EntityManager*				m_Entities;		// collection of all entities
+	Renderer*					m_Renderer;		// rendering subsystem
+	Simulator*					m_Simulator;
+	DebugWriter*				m_Debugger;
+	VarLoader*					m_VarLoader;
+	vector<GameCamera*>			m_Cameras;		// main camera to follow behind vehicle
+	vector<XBox360Controller*>	m_Controllers;	//first player controller will have id# 0
 };
 
 #endif GAME_OBJ_H 

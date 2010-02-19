@@ -25,12 +25,13 @@
 #include <stdio.h>
 #include <sstream>
 #include "Constants.h"
+#include "Simulator.h"
 
 using namespace std;
 
 class VarLoader {
 public:
-	bool loadVars();
+	bool loadVars( Simulator* sim );
 
 	void parse(string strings[]);
 	Vec3 parseVec(string s);

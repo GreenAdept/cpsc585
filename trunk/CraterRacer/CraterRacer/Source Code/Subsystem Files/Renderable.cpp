@@ -20,6 +20,7 @@ Renderable::Renderable( const Renderable& renderableCopy  )
 	// Initialize
 	m_pDevice		 = renderableCopy.m_pDevice;
 	m_Filename		 = renderableCopy.m_Filename;
+	m_EffectFilename = renderableCopy.m_EffectFilename;
 	m_vPosition		 = renderableCopy.m_vPosition;
 	m_bCanBeRendered = renderableCopy.m_bCanBeRendered;
 
@@ -28,7 +29,7 @@ Renderable::Renderable( const Renderable& renderableCopy  )
 	m_pMesh->Create( m_pDevice, m_Filename );
 
 	// Create vertex/pixel shader effect from file
-    D3DXCreateEffectFromFile( m_pDevice, OBJ_EFFECT, NULL, NULL, 0,
+    D3DXCreateEffectFromFile( m_pDevice, m_EffectFilename, NULL, NULL, 0,
                                         NULL, &m_pEffect, NULL);
 
 	m_hRenderObj = m_pEffect->GetTechniqueByName( "RenderScene" );
