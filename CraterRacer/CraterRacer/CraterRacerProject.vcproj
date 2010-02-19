@@ -37,7 +37,7 @@
 			/>
 			<Tool
 				Name="VCCustomBuildTool"
-				CommandLine="&quot;$(DXSDK_DIR)\Utilities\bin\x86\xactbld3.exe&quot; /win32 &quot;$(ProjectDir)Media\Audio\BGMusic.xap&quot;"
+				CommandLine="&quot;$(DXSDK_DIR)\Utilities\bin\x86\xactbld3.exe&quot; /win32 &quot;$(ProjectDir)Media\Audio\BGMusic.xap&quot;&#x0D;&#x0A;"
 				AdditionalDependencies="BGMusic.xap"
 				Outputs="BGMusicWaveBank.xwb;BGMusicSoundBank.xsb;BGMusic.xgs"
 			/>
@@ -53,7 +53,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;Source Code\Vehicle Files&quot;;&quot;Source Code\Subsystem Files&quot;;&quot;Source Code\Utility Files&quot;;PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;&quot;Source Code\SubSystem Files&quot;;&quot;Source Code\Application Files&quot;;&quot;Source Code\Entity Files&quot;;&quot;Source Code\Resource Files&quot;;&quot;$(DXSDK_DIR)\Include&quot;;Headers"
+				AdditionalIncludeDirectories="&quot;Source_Code\Vehicle Files&quot;;&quot;Source_Code\Subsystem Files&quot;;&quot;Source_Code\Utility Files&quot;;PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;&quot;Source_Code\Application Files&quot;;Source_Code\Entity_Files;&quot;Source_Code\Resource Files&quot;;&quot;$(DXSDK_DIR)\Include&quot;;Headers"
 				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;PROFILE;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="0"
@@ -569,11 +569,11 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 			>
 			<File
-				RelativePath=".\Source Code\Resource Files\CraterRacer.rc"
+				RelativePath=".\Source_Code\Resource Files\CraterRacer.rc"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Resource Files\Resource.h"
+				RelativePath=".\Source_Code\Resource Files\resource.h"
 				>
 			</File>
 		</Filter>
@@ -584,35 +584,35 @@
 				Name="CPP Files"
 				>
 				<File
-					RelativePath=".\Source Code\Entity Files\AI.cpp"
+					RelativePath=".\Source_Code\Entity_Files\AI.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Crater.cpp"
+					RelativePath=".\Source_Code\Entity_Files\Crater.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Entity.cpp"
+					RelativePath=".\Source_Code\Entity_Files\Entity.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\EntityManager.cpp"
+					RelativePath=".\Source_Code\Entity_Files\EntityManager.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Meteor.cpp"
+					RelativePath=".\Source_Code\Entity_Files\Meteor.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Prop.cpp"
+					RelativePath=".\Source_Code\Entity_Files\Prop.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Terrain.cpp"
+					RelativePath=".\Source_Code\Entity_Files\Terrain.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\TriggerVolumeAI.cpp"
+					RelativePath=".\Source_Code\Entity_Files\TriggerVolumeAI.cpp"
 					>
 				</File>
 			</Filter>
@@ -620,35 +620,35 @@
 				Name="Header Files"
 				>
 				<File
-					RelativePath=".\Source Code\Entity Files\AI.h"
+					RelativePath=".\Source_Code\Entity_Files\AI.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Crater.h"
+					RelativePath=".\Source_Code\Entity_Files\Crater.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Entity.h"
+					RelativePath=".\Source_Code\Entity_Files\Entity.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\EntityManager.h"
+					RelativePath=".\Source_Code\Entity_Files\EntityManager.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Meteor.h"
+					RelativePath=".\Source_Code\Entity_Files\Meteor.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Prop.h"
+					RelativePath=".\Source_Code\Entity_Files\Prop.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\Terrain.h"
+					RelativePath=".\Source_Code\Entity_Files\Terrain.h"
 					>
 				</File>
 				<File
-					RelativePath=".\Source Code\Entity Files\TriggerVolumeAI.h"
+					RelativePath=".\Source_Code\Entity_Files\TriggerVolumeAI.h"
 					>
 				</File>
 			</Filter>
@@ -657,23 +657,23 @@
 			Name="Application Files"
 			>
 			<File
-				RelativePath=".\Source Code\Application Files\CraterRacerApp.cpp"
+				RelativePath=".\Source_Code\Application Files\CraterRacerApp.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Application Files\CraterRacerApp.h"
+				RelativePath=".\Source_Code\Application Files\CraterRacerApp.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Application Files\GameObj.cpp"
+				RelativePath=".\Source_Code\Application Files\GameObj.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Application Files\GameObj.h"
+				RelativePath=".\Source_Code\Application Files\GameObj.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Application Files\Main.cpp"
+				RelativePath=".\Source_Code\Application Files\Main.cpp"
 				>
 			</File>
 		</Filter>
@@ -681,55 +681,63 @@
 			Name="SubSystem Files"
 			>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\GameCamera.cpp"
+				RelativePath=".\Source_Code\Subsystem Files\DebugWriter.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\GameCamera.h"
+				RelativePath=".\Source_Code\Subsystem Files\DebugWriter.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\Input.cpp"
+				RelativePath=".\Source_Code\Subsystem Files\GameCamera.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\input.h"
+				RelativePath=".\Source_Code\Subsystem Files\GameCamera.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\Renderable.cpp"
+				RelativePath=".\Source_Code\Subsystem Files\Input.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\Renderable.h"
+				RelativePath=".\Source_Code\Subsystem Files\input.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\Renderer.cpp"
+				RelativePath=".\Source_Code\Subsystem Files\Renderable.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\Renderer.h"
+				RelativePath=".\Source_Code\Subsystem Files\Renderable.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\Simulator.cpp"
+				RelativePath=".\Source_Code\Subsystem Files\Renderer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\Simulator.h"
+				RelativePath=".\Source_Code\Subsystem Files\Renderer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\Sound.cpp"
+				RelativePath=".\Source_Code\Subsystem Files\Simulator.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\Sound.h"
+				RelativePath=".\Source_Code\Subsystem Files\Simulator.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\XBox360Controller.h"
+				RelativePath=".\Source_Code\Subsystem Files\Sound.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Subsystem Files\Sound.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Subsystem Files\XBox360Controller.h"
 				>
 			</File>
 		</Filter>
@@ -737,7 +745,7 @@
 			Name="Utility Files"
 			>
 			<File
-				RelativePath=".\Source Code\Utility Files\Constants.h"
+				RelativePath=".\Source_Code\Utility Files\Constants.h"
 				>
 			</File>
 			<File
@@ -745,19 +753,19 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\DebugWriter.cpp"
+				RelativePath=".\Source_Code\Utility Files\SceneLoader.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Subsystem Files\DebugWriter.h"
+				RelativePath=".\Source_Code\Utility Files\SceneLoader.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Utility Files\Stream.cpp"
+				RelativePath=".\Source_Code\Utility Files\Stream.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Utility Files\Stream.h"
+				RelativePath=".\Source_Code\Utility Files\Stream.h"
 				>
 			</File>
 			<File
@@ -765,11 +773,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Utility Files\VarLoader.cpp"
+				RelativePath=".\Source_Code\Utility Files\VarLoader.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Utility Files\VarLoader.h"
+				RelativePath=".\Source_Code\Utility Files\VarLoader.h"
 				>
 			</File>
 		</Filter>
@@ -777,7 +785,11 @@
 			Name="Effect Files"
 			>
 			<File
-				RelativePath=".\Source Code\Effect Files\Scene.fx"
+				RelativePath=".\Source_Code\Effect_Files\Scene.fx"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Effect_Files\Terrain.FX"
 				>
 			</File>
 		</Filter>
@@ -785,43 +797,55 @@
 			Name="Vehicle Files"
 			>
 			<File
-				RelativePath=".\Source Code\Vehicle Files\AIVehicle.cpp"
+				RelativePath=".\Source_Code\Vehicle Files\AIVehicle.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Vehicle Files\AIVehicle.h"
+				RelativePath=".\Source_Code\Vehicle Files\AIVehicle.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Vehicle Files\PlayerVehicle.cpp"
+				RelativePath=".\Source_Code\Vehicle Files\PlayerVehicle.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Vehicle Files\PlayerVehicle.h"
+				RelativePath=".\Source_Code\Vehicle Files\PlayerVehicle.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Vehicle Files\Vehicle.cpp"
+				RelativePath=".\Source_Code\Vehicle Files\Vehicle.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Vehicle Files\Vehicle.h"
+				RelativePath=".\Source_Code\Vehicle Files\Vehicle.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Vehicle Files\VehicleAI.cpp"
+				RelativePath=".\Source_Code\Vehicle Files\VehicleAI.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Vehicle Files\VehicleAI.h"
+				RelativePath=".\Source_Code\Vehicle Files\VehicleAI.h"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Vehicle Files\Wheel.cpp"
+				RelativePath=".\Source_Code\Vehicle Files\Wheel.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Source Code\Vehicle Files\Wheel.h"
+				RelativePath=".\Source_Code\Vehicle Files\Wheel.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Scene Files"
+			>
+			<File
+				RelativePath=".\Source_Code\Scene_Files\Initialize.SCENE"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Scene_Files\OnePlayer.SCENE"
 				>
 			</File>
 		</Filter>
