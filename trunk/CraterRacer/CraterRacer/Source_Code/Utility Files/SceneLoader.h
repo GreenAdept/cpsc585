@@ -61,6 +61,7 @@ public:
 	void	 initScene	( Device* device, const D3DSURFACE_DESC* backSurface, string filename );
 
 	void processTerrainInfo		( ifstream& file );
+	void processPathInfo		( ifstream& file );
 	void processVehicleInfo		( ifstream& file );
 	void initializeSimulator	( );
 

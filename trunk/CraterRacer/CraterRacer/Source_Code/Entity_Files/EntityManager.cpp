@@ -76,7 +76,7 @@ vector< Renderable* > EntityManager::getRenderables( ) {
 
 			result[index++] = tempVehicle->getRenderable();
 			
-			//add the wheel renderables
+			//Add the wheel renderables
 			for (int w = WHEEL0; w <= WHEEL3; w++)
 				result[index++] = tempVehicle->m_Wheels[w].getRenderable();
 		}
@@ -115,7 +115,10 @@ vector<AI*> EntityManager::getAIs (int list) {
 //------------------------------------------------------
 
 Terrain* EntityManager::getTerrain () {
-	return (Terrain*) entities[TERRAIN][0];
+	if (entities[TERRAIN].empty())
+		return 0;
+	else
+		return (Terrain*) entities[TERRAIN][0];
 }
 
 
@@ -130,15 +133,28 @@ Vec3 EntityManager::getPosition (int list, int index) {
 	return entities[list][index]->getPosition();
 }
 
+//------------------------------------------------------
+// Function: getPlayerInputObj
+// Returns a pointer to the Input object of the
+// PlayerVehicle with the specified index.
+//------------------------------------------------------
+
 Input* EntityManager::getPlayerInputObj (int index) {
 	Vehicle* v = (Vehicle*) entities[PLAYERS][index];
 	return v->getInputObj ();
 }
 
+//------------------------------------------------------
+// Function: getComputerInputObj
+// Returns a pointer to the Input object of the
+// AIVehicle with the specified index.
+//------------------------------------------------------
+
 Input* EntityManager::getComputerInputObj (int index) {
 	Vehicle* v = (Vehicle*) entities[COMPUTERS][index];
 	return v->getInputObj ();
 }
+
 
 //------------------------------------------------------
 // Function: clear
@@ -210,21 +226,9 @@ Prop* EntityManager::makeProp (Device* device, Vec3 pos, LPCWSTR filename, LPCWS
 	entities[PROPS].push_back (p);
 	return p;
 }
-
-
-void makeTrack (Terrain* t) {
-	Vec3 mainPath [2];
-	mainPath[0] = Vec3 (0, 0, 120);
-	mainPath[1] = Vec3 (0, 0, 180);
-	t->buildTrack (mainPath, 2);
-}
-
-
 Terrain* EntityManager::makeTerrain (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename ) {
 	Terrain* t = new Terrain();
 	t->initialize (device, pos, filename, effectFilename );
-	makeTrack (t);
-
 	entities[TERRAIN].push_back( t );
 	return t;
 }
