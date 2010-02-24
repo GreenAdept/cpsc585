@@ -15,12 +15,20 @@
 // Waypoint data structure to be used for AI pathing.
 //---------------------------------------------------------
 
-struct Waypoint {
+class Waypoint {
 	Vec3 position;
-	Waypoint* next;
+	vector<Waypoint*> next;
 
-	Waypoint (Vec3 p) { position = p; }
-	~Waypoint () { delete next; }
+public:
+	Waypoint (Vec3 p) : position (p) {}
+	Waypoint (float x, float y, float z) : position (x, y, z) {}
+	~Waypoint ();
+
+	Vec3&    getPosition () { return position; }
+	Waypoint *addNext (Vec3 p);
+	Waypoint *addNext (float x, float y, float z);
+	Waypoint *addNext (Waypoint* wp);
+	Waypoint *getNext (int index) { return next[index]; }
 };
 
 
@@ -31,12 +39,12 @@ struct Waypoint {
 class Terrain: public Entity {
 public:
 	//Public Interface ------------------------------------
-	Terrain () {}
+	Terrain () { trackStart = 0; }
 	~Terrain () { delete trackStart; }
 
 	Waypoint* getTrackStart () { return trackStart; }
-	void      buildTrack (Vec3* waypoints, int size);
-	void      buildTrack (std::vector<Vec3> waypoints);
+	void      buildTrack (Vec3* path, int size);		//builds a linear track
+	//void      buildTrack (Vec3* mainPath, Vec3* sidePath, int size);	//builds a track with forks
 	
 private:
 	//Data Members ----------------------------------------

@@ -28,7 +28,7 @@ public:
 	//Public interface -----------------------------------------
 
 	Entity ( ) { }
-	~Entity( );
+	virtual ~Entity( );
 		
 	// Accessors
 	Renderable*		getRenderable	  ( );

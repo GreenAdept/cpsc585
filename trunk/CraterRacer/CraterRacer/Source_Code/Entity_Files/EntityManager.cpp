@@ -8,19 +8,8 @@ using namespace std;
 // tracked by the manager.
 //------------------------------------------------------
 
-EntityManager::~EntityManager () 
-{
-	//delete all the vehicles and their wheels
-	for( int i=PLAYERS; i<= COMPUTERS; i++ )
-	{
-		int size = entities[i].size();
-		for (int j=0; j<size; j++)
-			delete (Vehicle*)entities[i][j];
-	}
-
-	//delete all other entities
-	for (int i=METEORS; i<NUM_LISTS; i++) 
-	{
+EntityManager::~EntityManager () {
+	for (int i=0; i<NUM_LISTS; i++) {
 		int size = entities[i].size();
 		for (int j=0; j<size; j++)
 			delete entities[i][j];
@@ -221,9 +210,19 @@ Prop* EntityManager::makeProp (Device* device, Vec3 pos, LPCWSTR filename, LPCWS
 	entities[PROPS].push_back (p);
 	return p;
 }
+
+
+void makeTrack (Terrain* t) {
+	Vec3 mainPath [1];
+	mainPath[0] = Vec3 (40, 0, 120);
+	t->buildTrack (mainPath, 1);
+}
+
+
 Terrain* EntityManager::makeTerrain (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename ) {
 	Terrain* t = new Terrain();
 	t->initialize (device, pos, filename, effectFilename );
+	makeTrack (t);
 
 	entities[TERRAIN].push_back( t );
 	return t;

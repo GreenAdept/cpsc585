@@ -4,6 +4,8 @@
 #include "AI.h"
 #include "Constants.h"
 
+class Waypoint;
+
 //-----------------------------------------
 // Class: VehicleAI
 // Implementation of a computer-controlled
@@ -11,9 +13,10 @@
 //-----------------------------------------
 
 class VehicleAI : public AI {
-public:
-	VehicleAI () {}
+	Waypoint* destination;
 
+public:
+	VehicleAI () { destination = 0; }
 	void think (EntityManager *em, int myList, int myIndex);
 };
 

@@ -1,30 +1,61 @@
 #include "Terrain.h"
 
 
-void Terrain::buildTrack (Vec3* waypoints, int size) {
-	if (size == 0)
-		return;
+Waypoint::~Waypoint () {
+	for (int i=0; i<next.size(); i++)
+		delete next[i];
+	next.clear();
+}
 
+
+Waypoint* Waypoint::addNext (Vec3 p) {
+	Waypoint* temp = new Waypoint (p);
+	next.push_back (temp);
+	return temp;
+}
+Waypoint* Waypoint::addNext (float x, float y, float z) {
+	Waypoint* temp = new Waypoint (x, y, z);
+	next.push_back (temp);
+	return temp;
+}
+Waypoint* Waypoint::addNext (Waypoint* wp) {
+	next.push_back (wp);
+	return wp;
+}
+
+
+
+void Terrain::buildTrack (Vec3* path, int size) {
 	delete trackStart;
-	trackStart = new Waypoint (waypoints[0]);
+	trackStart = new Waypoint (path[0]);
 	Waypoint* temp = trackStart;
+
+	for (int i=1; i<size; i++)
+		temp = temp->addNext (path[i]);
+}
+/*
+void Terrain::buildTrack (Vec3* mainPath, Vec3* sidePath, int size) {
+	delete trackStart;
+	trackStart = new Waypoint (mainPath[0]);
+	Waypoint *main = trackStart, *side = 0;
 
 	for (int i=1; i<size; i++) {
-		temp->next = new Waypoint (waypoints[i]);
-		temp = temp->next;
+		if (sidePath[i] != NULL) {
+			Waypoint* temp = main->addNext (mainPath[i]);
+			if (side == 0)
+				side = main->addNext (sidePath[i]);
+			else
+				side = side->addNext (sidePath[i]);
+			main = temp;
+		}
+		else {
+			Waypoint* temp = main->addNext (mainPath[i]);
+			if (side != 0) {
+				side->addNext (temp);
+				side = 0;
+			}
+			main = temp;
+		}
 	}
 }
-
-void Terrain::buildTrack (std::vector<Vec3> waypoints) {
-	if (waypoints.size() == 0)
-		return;
-
-	delete trackStart;
-	trackStart = new Waypoint (waypoints[0]);
-	Waypoint* temp = trackStart;
-
-	for (int i=1; i<waypoints.size(); i++) {
-		temp->next = new Waypoint (waypoints[i]);
-		temp = temp->next;
-	}
-}
+*/
