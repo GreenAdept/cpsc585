@@ -46,6 +46,8 @@ void SceneLoader::initScene( Device* device, const D3DSURFACE_DESC* backSurface,
 	//load and initialize components that are common to all game modes here
 	file >> str;
 	processTerrainInfo( file );
+	file >> str;
+	processPathInfo( file );
 	
 	initializeSimulator( );
 
@@ -96,6 +98,31 @@ void SceneLoader::processTerrainInfo( ifstream& file )
 
 	// Create the terrain in the Entity Manager
 	m_Objs.entityManager->makeTerrain( m_Device, Vec3(0, 0, 0), toLPCWSTR(terrainFile).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  processPathInfo
+//--------------------------------------------------------------------------------------
+void SceneLoader::processPathInfo( ifstream& file )
+{
+	string	str,
+			flush;
+	int		num_waypoints;
+	int		x, y, z;
+
+	file >> flush >> str;
+	if( str != "NUM_WAYPOINTS" ) return;
+	file >> num_waypoints;
+
+	Vec3* waypoints = new Vec3 [num_waypoints];
+	for (int i=0; i<num_waypoints; i++) {
+		file >> x >> y >> z;
+		waypoints[i] = Vec3 (x, y, z);
+	}
+
+	m_Objs.entityManager->getTerrain()->buildTrack (waypoints, num_waypoints);
+	delete[] waypoints;
 }
 
 

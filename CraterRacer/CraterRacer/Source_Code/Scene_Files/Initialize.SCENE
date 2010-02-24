@@ -4,6 +4,14 @@ MESH_FILENAME			Media\\Meshes\\Floor.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 
 
+**PATH_INFORMATION ------------------------------------------------
+
+NUM_WAYPOINTS			3
+0 0 120
+0 0 180
+20 0 120
+
+
 **METEOR_INFORMATION ----------------------------------------------
 
 

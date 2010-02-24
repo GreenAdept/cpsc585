@@ -7,7 +7,7 @@
 
 //--------------------------------------------------------------------------------------
 // Function: think
-// A stub for the thinking section of the AI.
+// Sets the input for the AI vehicle based on its desired destination.
 //--------------------------------------------------------------------------------------
 
 //#include "DebugWriter.h"
@@ -15,8 +15,15 @@
 
 void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	if (state == AI::STOPPED) return;
-	if (destination == 0)
-		destination = em->getTerrain()->getTrackStart();
+	if (state == AI::WAITING) {
+		Terrain* terrain = em->getTerrain();
+		if (terrain == 0) return;
+
+		destination = terrain->getTrackStart();
+		if (destination == 0) return;
+
+		state = AI::MOVING;
+	}
 
 	Entity* myEntity = (*em)[myList][myIndex];
 

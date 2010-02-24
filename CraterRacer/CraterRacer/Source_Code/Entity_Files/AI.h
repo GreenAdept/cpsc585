@@ -19,6 +19,8 @@ public:
 	int getState () { return state; }
 	void setState (int stateNew) { state = stateNew; }
 
+	AI () { state = WAITING; }
+
 	virtual void think (EntityManager *em, int myList, int myIndex) = 0;
 };
 
