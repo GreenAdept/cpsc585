@@ -6,10 +6,11 @@ EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 
 **PATH_INFORMATION ------------------------------------------------
 
-NUM_WAYPOINTS			3
+NUM_WAYPOINTS			4
 0 0 120
 0 0 180
-20 0 120
+60 0 120
+80 0 200
 
 
 **METEOR_INFORMATION ----------------------------------------------

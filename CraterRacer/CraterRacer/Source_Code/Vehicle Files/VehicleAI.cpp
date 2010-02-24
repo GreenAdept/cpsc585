@@ -10,9 +10,6 @@
 // Sets the input for the AI vehicle based on its desired destination.
 //--------------------------------------------------------------------------------------
 
-//#include "DebugWriter.h"
-//DebugWriter db;
-
 void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	if (state == AI::STOPPED) return;
 	if (state == AI::WAITING) {
@@ -30,7 +27,7 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
   //Check if the destination has been reached
 	Vec3 myPos = myEntity->getPosition();
 	Vec3 destPos = destination->getPosition();
-	if (distSquared (myPos, destPos) < 100.0f) {
+	if (distSquared (myPos, destPos) < 400.0f) {
 		destination = destination->getRandomNext();
 		if (destination == 0)
 			state = AI::STOPPED;
@@ -50,10 +47,17 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 
   //Set input based on angle
 	Input* input = em->getComputerInputObj (myIndex);
-	input->setInput (Input::UP, true);
-	//Turn if angle > 30 degrees
-	if (sinTheta > 0.5f) {
-		if (temp.y > 0.0) input->setInput (Input::RIGHT, true);
-		else              input->setInput (Input::LEFT, true);
+	if (cosTheta >= -0.707f) {
+		input->setInput (Input::UP, true);
+		//Turn if angle > 30 degrees
+		if (sinTheta > 0.5f) {
+			if (temp.y > 0.0) input->setInput (Input::RIGHT, true);
+			else              input->setInput (Input::LEFT, true);
+		}
+	}
+	else {
+		input->getButtons()[Input::X_BUTTON] = true;
+		if (temp.y > 0.0) input->setInput (Input::LEFT, true);
+		else              input->setInput (Input::RIGHT, true);
 	}
 }
