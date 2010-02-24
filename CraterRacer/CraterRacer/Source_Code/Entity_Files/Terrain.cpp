@@ -23,6 +23,16 @@ Waypoint* Waypoint::addNext (Waypoint* wp) {
 	return wp;
 }
 
+Waypoint* Waypoint::getRandomNext () {
+	if (next.size() == 1)
+		return next[0];
+	if (next.size() == 0)
+		return 0;
+
+	//Should return random member of next - to be implemented
+	return next[0];
+}
+
 
 
 void Terrain::buildTrack (Vec3* path, int size) {

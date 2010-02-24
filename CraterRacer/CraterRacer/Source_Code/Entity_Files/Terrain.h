@@ -28,6 +28,7 @@ public:
 	Waypoint *addNext (Vec3 p);
 	Waypoint *addNext (float x, float y, float z);
 	Waypoint *addNext (Waypoint* wp);
+	Waypoint *getRandomNext ();
 	Waypoint *getNext (int index) { return next[index]; }
 };
 
