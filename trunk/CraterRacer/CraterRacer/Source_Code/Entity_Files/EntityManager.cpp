@@ -213,9 +213,10 @@ Prop* EntityManager::makeProp (Device* device, Vec3 pos, LPCWSTR filename, LPCWS
 
 
 void makeTrack (Terrain* t) {
-	Vec3 mainPath [1];
-	mainPath[0] = Vec3 (40, 0, 120);
-	t->buildTrack (mainPath, 1);
+	Vec3 mainPath [2];
+	mainPath[0] = Vec3 (0, 0, 120);
+	mainPath[1] = Vec3 (0, 0, 180);
+	t->buildTrack (mainPath, 2);
 }
 
 
