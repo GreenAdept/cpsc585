@@ -25,6 +25,7 @@ public:
 	~Waypoint ();
 
 	Vec3&    getPosition () { return position; }
+	Vec3     getDirectionToWP (Vec3 p);
 	Waypoint *addNext (Vec3 p);
 	Waypoint *addNext (float x, float y, float z);
 	Waypoint *addNext (Waypoint* wp);

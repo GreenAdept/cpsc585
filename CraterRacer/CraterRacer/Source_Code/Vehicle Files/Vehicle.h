@@ -66,6 +66,7 @@ public:
 	int	  getMass		( );
 	Vec3  getVelocity	( );
 	Input *getInputObj  ( );
+	Vec3  getDirection	( );
 
 	Wheel m_Wheels[4];
 

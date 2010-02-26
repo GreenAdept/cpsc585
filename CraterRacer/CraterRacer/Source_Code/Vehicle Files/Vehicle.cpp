@@ -96,3 +96,19 @@ Input* Vehicle::getInputObj ()
 {
 	return &input;
 }
+
+
+//--------------------------------------------------------------------------------------
+// Function:  getDirection
+// Returns a unit vector (in the XZ plane) in the direction the front of the car is
+// facing.
+//--------------------------------------------------------------------------------------
+
+Vec3 Vehicle::getDirection ()
+{
+	Vec3 direction (0, 0, 1);
+	D3DXVec3TransformNormal (&direction, &direction, &m_matWorld);
+	direction.y = 0.0f;
+	D3DXVec3Normalize (&direction, &direction);
+	return direction;
+}
