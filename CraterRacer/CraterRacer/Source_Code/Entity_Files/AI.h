@@ -17,7 +17,6 @@ protected:
 public:
 	enum {WAITING, STOPPED, MOVING, TRIGGERED};
 	int getState () { return state; }
-	void setState (int stateNew) { state = stateNew; }
 
 	AI () { state = WAITING; }
 

@@ -129,9 +129,15 @@ void GameObj::think ()
 
 	minds = m_Entities->getAIs (METEORS);
 	for (int i=0; i<minds.size(); i++) {
-		minds[i]->think( m_Entities, METEORS, i);
-		if (minds[i]->getState() == AI::TRIGGERED)
-			m_Debugger->writeToFile ("Triggered.");
+		minds[i]->think( m_Entities, METEORS, i );
+		if (minds[i]->getState() == AI::MOVING) {
+			//add meteor to physics simulation
+		}
+		if (minds[i]->getState() == AI::STOPPED) {
+			//delete entity
+			//remove from physics simulation
+			//spawn crater
+		}
 	}
 }
 
@@ -202,7 +208,7 @@ void GameObj::render( Device* device )
 //--------------------------------------------------------------------------------------
 void GameObj::simulate( float fElapsedTime )
 {
-	m_Simulator->simulate( m_Entities->getVehicles(), fElapsedTime );
+	m_Simulator->simulate( m_Entities->getVehicles(), m_Entities->getMeteors(), fElapsedTime );
 
 }
 

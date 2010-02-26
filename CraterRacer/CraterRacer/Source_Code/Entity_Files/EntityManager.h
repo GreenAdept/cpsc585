@@ -42,6 +42,7 @@ public:
 
 	std::vector<Entity*>     getEntities ();
 	std::vector<Vehicle*>    getVehicles ();
+	std::vector<Meteor*>     getMeteors ();
 	std::vector<Renderable*> getRenderables ();
 	std::vector<AI*>         getAIs (int list);
 	Terrain*                 getTerrain ();

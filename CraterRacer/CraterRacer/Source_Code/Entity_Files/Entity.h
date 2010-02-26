@@ -6,7 +6,9 @@
 //		INCLUDES
 //--------------------------------------------------------
 
+#define  NOMINMAX
 #include "DXUT.h"
+#include "NxPhysics.h"
 #include "Constants.h"
 #include "Renderable.h"
 #include "Input.h"
@@ -23,34 +25,34 @@
 
 class Entity 
 {
-public:
-		
-	//Public interface -----------------------------------------
-
-	Entity ( ) { }
-	virtual ~Entity( );
-		
-	// Accessors
-	Renderable*		getRenderable	  ( );
-	BoundingBox		getBoundingBox	  ( );
-	Vec3&			getPosition		  ( );
-	Matrix			getPositionMatrix ( );
-
-	virtual void	initialize		  ( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename );
-
-	virtual AI*		getAI			  ( ) { return 0; }
-
-	void			update			  ( Vec3 newPostion, Matrix mat );
-	void			update			  ( Matrix matWorldTransform );
-
 protected: 
-	
 	//Accessible to all inheriting classes ---------------------
 
+	NxActor*		m_nxActor;
 	Renderable*		m_pRenderable;
 	Vec3			m_vPosition;
 	Matrix			m_matWorld;
 
+public:
+	//Public interface -----------------------------------------
+
+	Entity ( ) { m_pRenderable = 0; m_nxActor = 0; }
+	virtual ~Entity( );
+	
+	// Accessors
+	Renderable*		getRenderable	  ( );
+	BoundingBox		getBoundingBox	  ( );
+	Vec3&			getPosition		  ( ) { return m_vPosition; }
+	Matrix			getPositionMatrix ( ) { return m_matWorld; }
+
+	virtual void	initialize		  ( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename );
+
+	virtual AI*		getAI			  ( ) { return 0; }
+	NxActor*		getPhysicsObj	  ( ) { return m_nxActor; }
+	void			setPhysicsObj	  ( NxActor* actor ) { m_nxActor = actor; }
+
+	void			update			  ( Vec3 newPostion, Matrix mat );
+	void			update			  ( Matrix matWorldTransform );
 };
 
 #endif //ENTITY_H

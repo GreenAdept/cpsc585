@@ -78,23 +78,3 @@ void Entity::update( Vec3 newPosition, Matrix matWorldTransform )
 	m_pRenderable->m_matWorld = matWorldTransform;
 	m_matWorld = matWorldTransform;
 }
-
-
-//--------------------------------------------------------------------------------------
-// Function:  getPosition
-// Returns the vector position of the entity
-//--------------------------------------------------------------------------------------
-Vec3& Entity::getPosition( ) 
-{
-	return m_vPosition;
-}
-
-
-//--------------------------------------------------------------------------------------
-// Function:  getPositionMatrix
-// Returns the world transformation matrix for the entity
-//--------------------------------------------------------------------------------------
-Matrix Entity::getPositionMatrix( )
-{
-	return m_matWorld;
-}
