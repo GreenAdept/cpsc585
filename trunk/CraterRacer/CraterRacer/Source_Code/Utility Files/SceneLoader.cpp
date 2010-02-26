@@ -181,7 +181,7 @@ void SceneLoader::processPlayerVehicles( ifstream& file, LPCWSTR meshL, int numP
 		m_Objs.controllers.push_back( new XBox360Controller(i) ); 
 
 		//add to simulator
-		m_Objs.simulator->createVehicle( pv->getRenderable()->m_pMesh, pv->getPosition(), pv->getBoundingBox()  );
+		m_Objs.simulator->createVehicle( pv );
 	}
 }
 
@@ -210,7 +210,7 @@ void SceneLoader::processComputerVehicles( ifstream& file, LPCWSTR meshL, int nu
 		av = m_Objs.entityManager->makeComputer( m_Device, pos, meshL, toLPCWSTR(effect).c_str() ); 
 		
 		//add to simulator
-		m_Objs.simulator->createVehicle( av->getRenderable()->m_pMesh, av->getPosition(), av->getBoundingBox() );
+		m_Objs.simulator->createVehicle( av );
 	}
 }
 
@@ -226,10 +226,10 @@ void SceneLoader::initializeSimulator( )
 	m_Objs.varLoader->loadVars( m_Objs.simulator );
 
 	//initialize simulator with terrain
-	Terrain* t = m_Objs.entityManager->getTerrain();
-	if( !t ) return;
+	Terrain* terrain = m_Objs.entityManager->getTerrain();
+	if( !terrain ) return;
 
-	m_Objs.simulator->InitNx( t->getRenderable()->m_pMesh );
+	m_Objs.simulator->InitNx( terrain );
 }
 
 

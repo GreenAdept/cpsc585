@@ -5,16 +5,37 @@
 #include "Entity.h"
 #include "TriggerVolumeAI.h"
 
-class Meteor: public Entity {
-	AI* mind;
+
+//---------------------------------------------
+// Class: MeteorAI
+//---------------------------------------------
+
+class MeteorAI : public AI {
+	TriggerCylinder* trigger;
+
+public:
+	MeteorAI (float radius);
+	~MeteorAI ();
+
+	void think (EntityManager *em, int myList, int myIndex);
+	void informOfCollision ();
+};
+
+
+//---------------------------------------------
+// Class: Meteor
+//---------------------------------------------
+
+class Meteor : public Entity {
+	MeteorAI* mind;
 
 public:
 	Meteor ();
 	~Meteor ();
 
-	void setInput (Input::Arrow dir, bool isKeyDown);
-	bool* getInput ();
 	AI* getAI ();
+	void informOfCollision ();
 };
+
 
 #endif

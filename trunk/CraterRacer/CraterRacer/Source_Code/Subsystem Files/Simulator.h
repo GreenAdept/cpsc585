@@ -10,6 +10,8 @@
 #include "NxCooking.h"
 #include "Stream.h"
 #include "Vehicle.h"
+#include "Meteor.h"
+#include "Terrain.h"
 #include "DebugWriter.h"
 
 #define PI					3.14159265
@@ -26,14 +28,14 @@ public:
 	Simulator();
 	~Simulator();
 	
-	void InitNx( Mesh* terrainMesh );
+	void InitNx( Terrain* terrain );
 
 	bool pause( bool );
 	bool isPaused( );
 
-	void simulate(vector<Vehicle*> entities, double elapsedTime);
-	void createVehicle( Vec3 pos, BoundingBox b );
-	void createVehicle( Mesh* mesh, Vec3 pos, BoundingBox b  );
+	void simulate( vector<Vehicle*> vehicles, vector<Meteor*> meteors, double elapsedTime );
+	void createVehicle( Vehicle* vehicle );
+	void removeFromSimulation( Entity* entity );
 
 	NxTriangleMeshShapeDesc createTriMeshShape( Mesh* mesh );
 
@@ -54,7 +56,7 @@ public:
 
 private:
 
-	void addTerrainFromX( Mesh* mesh, NxVec3 pos );
+	void addTerrainFromX( Terrain* terrain );
 
 	NxActor* createLittleBox( NxVec3 pos );
 
@@ -97,10 +99,7 @@ private:
 	//bool*				m_bButtons;
 
 	//Actors
-	NxActor*			m_GroundPlane;
-	vector< NxActor* >	m_Vehicles;
-	vector< NxActor* >  m_Wheels;
-	NxActor*			m_Terrain;
+	vector<NxActor*>	m_Actors;
 
 	//Debugging
 	DebugWriter			m_Debugger;

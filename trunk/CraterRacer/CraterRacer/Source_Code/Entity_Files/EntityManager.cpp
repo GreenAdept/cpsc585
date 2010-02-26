@@ -58,6 +58,20 @@ vector<Vehicle*> EntityManager::getVehicles () {
 }
 
 //------------------------------------------------------
+// Function: getMeteors
+// Returns an std::vector containing pointers to all
+// the meteor entities being tracked by the manager.
+//------------------------------------------------------
+
+vector<Meteor*> EntityManager::getMeteors () {
+	int size = entities[METEORS].size();
+	vector<Meteor*> result (size);
+	for (int i=0; i<size; i++)
+		result[i] = (Meteor*) entities[METEORS][i];
+	return result;
+}
+
+//------------------------------------------------------
 // Function: getRenderables
 // Returns an std::vector containing pointers to all
 // the Renderable components of the entities being

@@ -38,7 +38,7 @@ Simulator::Simulator()
 // Function:  InitNx
 // Initializes the PhysX engine as well as some other fundamental elements
 //--------------------------------------------------------------------------------------
-void Simulator::InitNx( Mesh* terrainMesh ) 
+void Simulator::InitNx( Terrain* terrain ) 
 {
 	//Create the Phyics SDK
 	m_PhysicsSDK = NxCreatePhysicsSDK( NX_PHYSICS_SDK_VERSION );
@@ -67,7 +67,7 @@ void Simulator::InitNx( Mesh* terrainMesh )
 	defaultMaterial->setDynamicFriction(m_rDynamicFriction);
 
 	//Create the ground
-	addTerrainFromX( terrainMesh, NxVec3(0, 0, 0) );
+	addTerrainFromX( terrain );
 	
 	m_PhysicsSDK->getFoundationSDK().getRemoteDebugger()->connect ("localhost", 5425);
 }
@@ -95,7 +95,7 @@ void Simulator::getPhysicsResults()
 // Function:  simulate
 // Simulates the movement of entities based on the elapsed time
 //--------------------------------------------------------------------------------------
-void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime ) 
+void Simulator::simulate( vector<Vehicle*> vehicles, vector<Meteor*> meteors, double elapsedTime ) 
 {
 	if( m_bPaused )
 		return;
@@ -105,15 +105,17 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 	startPhysics();
 	getPhysicsResults();
 
-	//Update all the entity positions based on PhysX simulated actor positions
-	for( int i=0; i < m_Vehicles.size(); i++ )
+	//Update all the vehicle positions based on PhysX simulated actor positions
+	for( int i=0; i < vehicles.size(); i++ )
 	{
-		processForceKeys(m_Vehicles[i], vehicles[i]);
+		NxActor* m_Vehicle = vehicles[i]->getPhysicsObj();
+		if (!m_Vehicle) continue;
+		processForceKeys(m_Vehicle, vehicles[i]);
 
 		//Get the new position of the vehicle in vector and matrix format
 		Matrix m;
-		NxVec3 vec = m_Vehicles[i]->getGlobalPosition();
-		m_Vehicles[i]->getGlobalPose().getColumnMajor44( m );
+		NxVec3 vec = m_Vehicle->getGlobalPosition();
+		m_Vehicle->getGlobalPose().getColumnMajor44( m );
 
 		float height = vehicles[i]->getBoundingBox().m_fHeight;
 		Matrix mat;
@@ -121,10 +123,19 @@ void Simulator::simulate( vector<Vehicle*> vehicles, double elapsedTime )
 		D3DXMatrixTranslation( &mat, 0, height/2, 0 );
 		D3DXMatrixMultiply( &m, &m, &mat );
 
-		NxVec3 vlc = m_Vehicles[i]->getLinearVelocity();
+		NxVec3 vlc = m_Vehicle->getLinearVelocity();
 
 		//Update the vehicle position in the game
 		vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m );
+	}
+
+	//Update all the meteor positions based on PhysX simulated actor positions
+	for( int i=0; i < meteors.size(); i++ )
+	{
+		NxActor* m_Meteor = meteors[i]->getPhysicsObj();
+		if (!m_Meteor) continue;
+
+		//do stuff
 	}
 }
 
@@ -346,8 +357,12 @@ NxVec3 Simulator::rotate(NxVec3 lateral, float angle) {
 // Function:  createVehicle
 // Creates a vehicle based on a mesh
 //--------------------------------------------------------------------------------------
-void Simulator::createVehicle( Mesh* mesh, Vec3 pos, BoundingBox b ) 
+void Simulator::createVehicle( Vehicle* vehicle ) 
 {
+	Mesh*       mesh = vehicle->getRenderable()->m_pMesh;
+	Vec3        pos = vehicle->getPosition();
+	BoundingBox b = vehicle->getBoundingBox();
+
 	//NxTriangleMeshShapeDesc ShapeDesc = this->createTriMeshShape( mesh );
 	NxBodyDesc bodyDesc;
 	bodyDesc.angularDamping	= 0.5f;
@@ -372,13 +387,30 @@ void Simulator::createVehicle( Mesh* mesh, Vec3 pos, BoundingBox b )
 	assert( pActor );
 
 	//Add the vehicle to global list of all vehicles
-	m_Vehicles.push_back( pActor );
+	vehicle->setPhysicsObj( pActor );
+	m_Actors.push_back( pActor );
 
 	//Now for testing, make placeholders for wheel chassis points
 	/*m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );
 	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );
 	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );
 	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );*/
+}
+
+void Simulator::removeFromSimulation( Entity* entity )
+{
+	NxActor* pActor = entity->getPhysicsObj();
+	m_Scene->releaseActor( *pActor );
+	entity->setPhysicsObj( 0 );
+
+	int size = m_Actors.size();
+	for( int i=0; i < size; i++)
+	{
+		if( m_Actors[i] == pActor ) {
+			m_Actors.erase( m_Actors.begin() + i );
+			return;
+		}
+	}
 }
 
 NxActor* Simulator::createLittleBox( NxVec3 pos )
@@ -404,8 +436,12 @@ NxActor* Simulator::createLittleBox( NxVec3 pos )
 //--------------------------------------------------------------------------------------
 // Function:  addTerrainFromX
 //--------------------------------------------------------------------------------------
-void Simulator::addTerrainFromX( Mesh* mesh, NxVec3 pos )
+void Simulator::addTerrainFromX( Terrain* terrain )
 {
+	Mesh*  mesh = terrain->getRenderable()->m_pMesh;
+	Vec3   p = terrain->getPosition();
+	NxVec3 pos (p.x, p.y, p.z);
+
 	NxTriangleMeshShapeDesc ShapeDesc = this->createTriMeshShape( mesh );
 
 	// Create terrain and add to scene
@@ -413,13 +449,16 @@ void Simulator::addTerrainFromX( Mesh* mesh, NxVec3 pos )
 	actorDesc.shapes.pushBack( &ShapeDesc );
 	actorDesc.globalPose.t = pos;
 
-	m_Terrain = m_Scene->createActor( actorDesc );
+	NxActor* pActor = m_Scene->createActor( actorDesc );
+	terrain->setPhysicsObj( pActor );
+	m_Actors.push_back( pActor );
 }
 
 //--------------------------------------------------------------------------------------
 // Function:  createVehicle
 // Creates a box character in the PhysX scene representing a vehicle.
 //--------------------------------------------------------------------------------------
+/*
 void Simulator::createVehicle( Vec3 pos, BoundingBox b ) 
 {
 	//Add a single shape actor to the scene
@@ -448,6 +487,7 @@ void Simulator::createVehicle( Vec3 pos, BoundingBox b )
 	//Add the vehicle to global list of all vehicles
 	m_Vehicles.push_back( pActor );
 }
+*/
 
 //--------------------------------------------------------------------------------------
 // Function:  createTriMeshShape
@@ -528,14 +568,11 @@ NxTriangleMeshShapeDesc Simulator::createTriMeshShape( Mesh* mesh )
 //--------------------------------------------------------------------------------------
 Simulator::~Simulator() 
 {
-	//release all actors
-	for( int i=0; i < m_Vehicles.size(); i++ )
+	for( int i=0; i < m_Actors.size(); i++ )
 	{
-		m_Scene->releaseActor( *m_Vehicles[i] );
-		m_Vehicles[i] = NULL;
+		m_Scene->releaseActor( *m_Actors[i] );
+		m_Actors[i] = NULL;
 	}
-	
-	m_Scene->releaseActor( *m_Terrain );
 
 	//now release the scene and physics SDK
 	if( m_PhysicsSDK != NULL )
