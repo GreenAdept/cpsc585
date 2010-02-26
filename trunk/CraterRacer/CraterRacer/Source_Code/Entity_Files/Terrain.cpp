@@ -8,6 +8,17 @@ Waypoint::~Waypoint () {
 }
 
 
+Vec3 Waypoint::getDirectionToWP (Vec3 p) {
+	Vec3 temp = position - p;
+	temp.y = 0.0f;
+	if (temp.x==0.0f && temp.z==0.0f)
+		return temp;
+
+	D3DXVec3Normalize (&temp, &temp);
+	return temp;
+}
+
+
 Waypoint* Waypoint::addNext (Vec3 p) {
 	Waypoint* temp = new Waypoint (p);
 	next.push_back (temp);

@@ -22,22 +22,23 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 		state = AI::MOVING;
 	}
 
-	Entity* myEntity = (*em)[myList][myIndex];
+	Vehicle* myEntity = (Vehicle*) (*em)[myList][myIndex];
+	Vec3     myPos = myEntity->getPosition();
+	Input*   input = myEntity->getInputObj();
 
   //Check if the destination has been reached
-	Vec3 myPos = myEntity->getPosition();
 	Vec3 destPos = destination->getPosition();
 	if (distSquared (myPos, destPos) < 400.0f) {
 		destination = destination->getRandomNext();
-		if (destination == 0)
+		if (destination == 0) {
 			state = AI::STOPPED;
+			return;
+		}
 	}
 
   //Find the direction of travel and the desired direction of travel
-	Vec3 currentDir (0, 0, 1);
-	D3DXVec3TransformNormal (&currentDir, &currentDir, &myEntity->getPositionMatrix());
-	Vec3 desiredDir = destPos - myPos;
-	D3DXVec3Normalize (&desiredDir, &desiredDir);
+	Vec3 currentDir = myEntity->getDirection ();
+	Vec3 desiredDir = destination->getDirectionToWP (myPos);
 
   //Find the sine of the angle between the two directions
 	Vec3 temp;
@@ -46,7 +47,6 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	float sinTheta = D3DXVec3Length (&temp);
 
   //Set input based on angle
-	Input* input = em->getComputerInputObj (myIndex);
 	if (cosTheta >= -0.707f) {
 		input->setInput (Input::UP, true);
 		//Turn if angle > 30 degrees
