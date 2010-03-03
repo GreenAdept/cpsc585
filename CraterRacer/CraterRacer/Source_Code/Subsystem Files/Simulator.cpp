@@ -203,11 +203,14 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			}
 			case 5: //RT_BUTTON - emergency brake
 			{
+				Vec3 respawnPoint = vehicle->lastPassedWP();
+				respawnPoint.y += 5;
+
 				NxMat33 reset(NxVec3(1, 0, 0), NxVec3(0, 1, 0), NxVec3(0, 0, 1));
 				actor->setLinearVelocity(NxVec3(0, 0, 0));
 				actor->setAngularVelocity(NxVec3(0, 0, 0));
-				actor->setGlobalOrientation(reset);
-				actor->setGlobalPosition(NxVec3(0, 30, 120));
+				//actor->setGlobalOrientation(reset);
+				actor->setGlobalPosition(NxVec3(respawnPoint.x, respawnPoint.y, respawnPoint.z));
 				break;
 			}
 		}

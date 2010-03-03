@@ -12,6 +12,9 @@
 
 void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	if (state == AI::STOPPED) return;
+
+	Vec3 myPos = em->getPosition (myList, myIndex);
+
 	if (state == AI::WAITING) {
 		Terrain* terrain = em->getTerrain();
 		if (terrain == 0) return;
@@ -20,14 +23,14 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 		destination = terrain->getTrackStart();
 		if (destination == 0) return;
 
+		lastPassedWaypoint = myPos;
 		state = AI::MOVING;
 	}
-
-	Vec3 myPos = em->getPosition (myList, myIndex);
 
   //Check if the destination has been reached
 	Vec3 destPos = destination->getPosition();
 	if (distSquared (myPos, destPos) < 400.0f) {
+		lastPassedWaypoint = destPos;
 		destination = destination->getRandomNext();
 
 		if (destination == 0) {

@@ -52,6 +52,15 @@ void Vehicle::initialize( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR ef
 }
 
 
+Vec3 Vehicle::lastPassedWP ()
+{
+	if (mind != 0)
+		return mind->getLastPassedWaypoint();
+	else
+		return Vec3 (0, 0, 0);
+}
+
+
 //--------------------------------------------------------------------------------------
 // Function:  setVelocity
 //--------------------------------------------------------------------------------------
