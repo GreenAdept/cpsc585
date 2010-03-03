@@ -56,7 +56,7 @@ void MeteorAI::informOfCollision () {
 // Initializes the meteor entity.
 //------------------------------------------------------
 Meteor::Meteor() {
-	mind = new MeteorAI (10.0f);
+	mind = new MeteorAI (400.0f);
 }
 
 //------------------------------------------------------

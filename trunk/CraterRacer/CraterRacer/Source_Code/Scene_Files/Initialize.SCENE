@@ -13,7 +13,11 @@ NUM_WAYPOINTS			2
 
 **METEOR_INFORMATION ----------------------------------------------
 
-NUM_METEORS				0
+MESH_FILENAME           Media\\Meshes\\CarBody.x
+NUM_METEORS				1
+
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION			    -380 30 300
 
 
 **CRATER_INFORMATION ----------------------------------------------

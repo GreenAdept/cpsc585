@@ -112,3 +112,13 @@ Vec3 Vehicle::getDirection ()
 	D3DXVec3Normalize (&direction, &direction);
 	return direction;
 }
+
+
+//--------------------------------------------------------------------------------------
+// Function:  getAI
+//--------------------------------------------------------------------------------------
+
+AI* Vehicle::getAI ()
+{
+	return mind;
+}

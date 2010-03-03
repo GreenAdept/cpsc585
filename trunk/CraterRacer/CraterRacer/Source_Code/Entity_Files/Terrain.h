@@ -41,15 +41,18 @@ public:
 class Terrain: public Entity {
 public:
 	//Public Interface ------------------------------------
-	Terrain () { trackStart = 0; }
+	Terrain () { trackStart = 0; laps = 1; }
 	~Terrain () { delete trackStart; }
 
-	Waypoint* getTrackStart () { return trackStart; }
-	void      buildTrack (Vec3* path, int size);		//builds a linear track
+	int       getNumberOfLaps ()      { return laps; }
+	void      setNumberOfLaps (int l) { if (l > 0) laps = l; }
+	Waypoint* getTrackStart   ()      { return trackStart; }
+	void      buildTrack      (Vec3* path, int size);		//builds a linear track
 	//void      buildTrack (Vec3* mainPath, Vec3* sidePath, int size);	//builds a track with forks
 	
 private:
 	//Data Members ----------------------------------------
+	int       laps;
 	Waypoint* trackStart;
 };
 

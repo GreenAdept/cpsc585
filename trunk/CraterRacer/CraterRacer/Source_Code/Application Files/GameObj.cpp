@@ -123,6 +123,10 @@ void GameObj::think ()
 {
 	vector<AI*> minds;
 
+	minds = m_Entities->getAIs (PLAYERS);
+	for (int i=0; i<minds.size(); i++)
+		minds[i]->think( m_Entities, PLAYERS, i );
+
 	minds = m_Entities->getAIs (COMPUTERS);
 	for (int i=0; i<minds.size(); i++)
 		minds[i]->think( m_Entities, COMPUTERS, i );
@@ -154,6 +158,8 @@ void GameObj::processInput( float fElapsedTime )
 			m_Controllers[i]->Update(fElapsedTime);
 			Input* v = m_Entities->getPlayerInputObj( i );
 			
+			v->setDir(m_Controllers[i]->LeftThumbstick.GetX());
+
 			if (m_Controllers[i]->A.WasPressedOrHeld())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::A_BUTTON);

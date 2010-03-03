@@ -7,7 +7,6 @@
 //--------------------------------------------------------
 
 #include "Vehicle.h"
-#include "VehicleAI.h"
 
 
 //---------------------------------------------------------
@@ -18,13 +17,11 @@
 //---------------------------------------------------------
 
 class AIVehicle: public Vehicle {
-	VehicleAI mind;
-
+	
 public:
 	//Public interface -----------------------------------------
 
-	AIVehicle () { }
-	AI* getAI () { return &mind; }
+	AIVehicle () { mind = new CompVehicleAI(); }
 };
 
 

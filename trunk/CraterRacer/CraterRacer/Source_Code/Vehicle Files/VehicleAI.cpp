@@ -16,25 +16,37 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 		Terrain* terrain = em->getTerrain();
 		if (terrain == 0) return;
 
+		laps = terrain->getNumberOfLaps();
 		destination = terrain->getTrackStart();
 		if (destination == 0) return;
 
 		state = AI::MOVING;
 	}
 
-	Vehicle* myEntity = (Vehicle*) (*em)[myList][myIndex];
-	Vec3     myPos = myEntity->getPosition();
-	Input*   input = myEntity->getInputObj();
+	Vec3 myPos = em->getPosition (myList, myIndex);
 
   //Check if the destination has been reached
 	Vec3 destPos = destination->getPosition();
 	if (distSquared (myPos, destPos) < 400.0f) {
 		destination = destination->getRandomNext();
+
 		if (destination == 0) {
-			state = AI::STOPPED;
-			return;
+			laps--;
+			if (laps == 0)
+				state = AI::STOPPED;
+			else
+				destination = em->getTerrain()->getTrackStart();
 		}
 	}
+}
+
+void CompVehicleAI::think (EntityManager *em, int myList, int myIndex) {
+	VehicleAI::think (em, myList, myIndex);
+	if (state == AI::STOPPED || state == AI::WAITING) return;
+
+	Vehicle* myEntity = (Vehicle*) (*em)[myList][myIndex];
+	Vec3     myPos = myEntity->getPosition();
+	Input*   input = myEntity->getInputObj();
 
   //Find the current direction of travel
 	Vec3 currentDir = myEntity->getDirection ();
@@ -55,7 +67,7 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	steer (currentDir, desiredDir, input);
 }
 
-void VehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
+void CompVehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
   //Find the sine of the angle between the two directions
 	Vec3 temp;
 	D3DXVec3Cross (&temp, &currentDir, &desiredDir);
@@ -77,7 +89,7 @@ void VehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
 	}
 }
 
-bool VehicleAI::avoid (Vec3& currentDir, Vec3& dirOfObstacle, Input* input) {
+bool CompVehicleAI::avoid (Vec3& currentDir, Vec3& dirOfObstacle, Input* input) {
   //Find the sine of the angle between the two directions
 	Vec3 temp;
 	D3DXVec3Cross (&temp, &currentDir, &dirOfObstacle);
