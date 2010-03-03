@@ -4,6 +4,7 @@
 #include "AI.h"
 #include "Constants.h"
 
+class Input;
 class Waypoint;
 
 //-----------------------------------------
@@ -14,6 +15,9 @@ class Waypoint;
 
 class VehicleAI : public AI {
 	Waypoint* destination;
+
+	void steer (Vec3& currentDir, Vec3& desiredDir, Input* input);
+	bool avoid (Vec3& currentDir, Vec3& dirOfObstacle, Input* input);
 
 public:
 	VehicleAI () { destination = 0; }

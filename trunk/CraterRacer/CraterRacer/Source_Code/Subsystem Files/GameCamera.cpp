@@ -76,6 +76,7 @@ MCamera GameCamera::getCamera () {
 	lookAt = target->getPosition();
 	Vec3 temp;
 	D3DXVec3TransformNormal (&temp, &offset, &target->getPositionMatrix());
+	temp.y = offset.y;
 	Vec3 newEye = lookAt + temp;
 
 	eye = interpolate (dist, newEye);

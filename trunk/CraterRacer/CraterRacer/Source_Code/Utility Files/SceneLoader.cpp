@@ -48,6 +48,12 @@ void SceneLoader::initScene( Device* device, const D3DSURFACE_DESC* backSurface,
 	processTerrainInfo( file );
 	file >> str;
 	processPathInfo( file );
+	file >> str;
+	processMeteorInfo( file );
+	file >> str;
+	processCraterInfo( file );
+	file >> str;
+	processPropInfo( file );
 	
 	initializeSimulator( );
 
@@ -109,7 +115,7 @@ void SceneLoader::processPathInfo( ifstream& file )
 	string	str,
 			flush;
 	int		num_waypoints;
-	int		x, y, z;
+	float	x, y, z;
 
 	file >> flush >> str;
 	if( str != "NUM_WAYPOINTS" ) return;
@@ -117,12 +123,58 @@ void SceneLoader::processPathInfo( ifstream& file )
 
 	Vec3* waypoints = new Vec3 [num_waypoints];
 	for (int i=0; i<num_waypoints; i++) {
-		file >> x >> y >> z;
-		waypoints[i] = Vec3 (x, y, z);
+		file >> waypoints[i].x >> waypoints[i].y >> waypoints[i].z;
 	}
 
 	m_Objs.entityManager->getTerrain()->buildTrack (waypoints, num_waypoints);
 	delete[] waypoints;
+}
+
+void SceneLoader::processMeteorInfo( ifstream& file ) {
+	string	str,
+			flush;
+	int		num_meteors;
+
+	file >> flush >> str;
+	if( str != "NUM_METEORS" ) return;
+	file >> num_meteors;
+}
+void SceneLoader::processCraterInfo( ifstream& file ) {
+	string	str,
+			flush;
+	int		num_craters;
+
+	file >> flush >> str;
+	if( str != "NUM_CRATERS" ) return;
+	file >> num_craters;
+}
+void SceneLoader::processPropInfo( ifstream& file ) {
+	string	str,
+			flush,
+			mesh,
+			effect;
+	int		num_props;
+	Vec3    pos;
+
+	file >> flush >> str;
+	if( str != "NUM_PROPS" ) return;
+	file >> num_props;
+
+	for (int i=0; i<num_props; i++) {
+		file >> str;
+		if (str != "MESH_FILENAME") return;
+		file >> mesh;
+
+		file >> str;
+		if (str != "EFFECT_FILENAME") return;
+		file >> effect;
+
+		file >> str;
+		if (str != "POSITION") return;
+		file >> pos.x >> pos.y >> pos.z;
+
+		Prop* p = m_Objs.entityManager->makeProp( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
+	}
 }
 
 

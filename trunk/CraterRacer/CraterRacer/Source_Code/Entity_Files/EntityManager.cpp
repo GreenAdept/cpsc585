@@ -78,7 +78,7 @@ vector<Meteor*> EntityManager::getMeteors () {
 // tracked by the manager.
 //------------------------------------------------------
 
-vector< Renderable* > EntityManager::getRenderables( ) {
+vector<Renderable*> EntityManager::getRenderables () {
 	int index = 0;
 	int numWheels = entities[PLAYERS].size() * 4 + entities[COMPUTERS].size() * 4;
 	vector<Renderable*> result (getSize() + numWheels);
@@ -103,6 +103,29 @@ vector< Renderable* > EntityManager::getRenderables( ) {
 			result[index++] = entities[i][j]->getRenderable();
 	}
 
+	return result;
+}
+
+//------------------------------------------------------
+// Function: getObstacles
+// Returns an std::vector containing pointers to all
+// the entities that could serve as obstacles (i.e. the
+// vehicles and props).
+//------------------------------------------------------
+
+vector<Entity*> EntityManager::getObstacles () {
+	int index = 0;
+	int playerSize = entities[PLAYERS].size();
+	int compSize = entities[COMPUTERS].size();
+	int propSize = entities[PROPS].size();
+
+	vector<Entity*> result (playerSize + compSize + propSize);
+	for (int i=0; i<playerSize; i++)
+		result[index++] = entities[PLAYERS][i];
+	for (int i=0; i<compSize; i++)
+		result[index++] = entities[COMPUTERS][i];
+	for (int i=0; i<propSize; i++)
+		result[index++] = entities[PROPS][i];
 	return result;
 }
 
