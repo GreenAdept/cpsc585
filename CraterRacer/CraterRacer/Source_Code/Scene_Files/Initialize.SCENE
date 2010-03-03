@@ -6,15 +6,29 @@ EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 
 **PATH_INFORMATION ------------------------------------------------
 
-NUM_WAYPOINTS			4
-0 0 120
-0 0 180
-60 0 120
-80 0 200
+NUM_WAYPOINTS			2
+-360 0 150
+-380 0 300
 
 
 **METEOR_INFORMATION ----------------------------------------------
 
+NUM_METEORS				0
 
 
 **CRATER_INFORMATION ----------------------------------------------
+
+NUM_CRATERS				0
+
+
+**PROP_INFORMATION ------------------------------------------------
+
+NUM_PROPS				0
+
+MESH_FILENAME			Media\\Meshes\\CarBody.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				-380 0 300
+
+MESH_FILENAME			Media\\Meshes\\CarBody.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				80 0 200

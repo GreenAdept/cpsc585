@@ -62,6 +62,9 @@ public:
 
 	void processTerrainInfo		( ifstream& file );
 	void processPathInfo		( ifstream& file );
+	void processMeteorInfo		( ifstream& file );
+	void processCraterInfo		( ifstream& file );
+	void processPropInfo		( ifstream& file );
 	void processVehicleInfo		( ifstream& file );
 	void initializeSimulator	( );
 
