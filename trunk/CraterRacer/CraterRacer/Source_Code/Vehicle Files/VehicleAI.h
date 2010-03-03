@@ -17,11 +17,14 @@ class Waypoint;
 class VehicleAI : public AI {
 protected:
 	Waypoint* destination;
+	Vec3      lastPassedWaypoint;
 	int laps;
 
 public:
 	VehicleAI () { destination = 0; laps = 1; }
+
 	virtual void think (EntityManager *em, int myList, int myIndex);
+	Vec3         getLastPassedWaypoint () { return lastPassedWaypoint; }
 };
 
 
