@@ -132,12 +132,31 @@ void SceneLoader::processPathInfo( ifstream& file )
 
 void SceneLoader::processMeteorInfo( ifstream& file ) {
 	string	str,
-			flush;
+			flush,
+			mesh,
+			effect;
 	int		num_meteors;
+	Vec3    pos;
 
 	file >> flush >> str;
+	if( str != "MESH_FILENAME" ) return;
+	file >> mesh;
+
+	file >> str;
 	if( str != "NUM_METEORS" ) return;
 	file >> num_meteors;
+
+	for (int i=0; i<num_meteors; i++) {
+		file >> str;
+		if (str != "EFFECT_FILENAME") return;
+		file >> effect;
+
+		file >> str;
+		if (str != "POSITION") return;
+		file >> pos.x >> pos.y >> pos.z;
+
+		m_Objs.entityManager->makeMeteor( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
+	}
 }
 void SceneLoader::processCraterInfo( ifstream& file ) {
 	string	str,
@@ -173,7 +192,7 @@ void SceneLoader::processPropInfo( ifstream& file ) {
 		if (str != "POSITION") return;
 		file >> pos.x >> pos.y >> pos.z;
 
-		Prop* p = m_Objs.entityManager->makeProp( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
+		m_Objs.entityManager->makeProp( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
 	}
 }
 

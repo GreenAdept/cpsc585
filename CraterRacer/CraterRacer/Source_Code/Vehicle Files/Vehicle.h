@@ -34,6 +34,7 @@ Wheel angle (degrees):
 
 #define NOMINMAX
 #include "Entity.h"
+#include "VehicleAI.h"
 #include "Input.h"
 #include "Wheel.h"
 
@@ -52,7 +53,8 @@ class Vehicle: public Entity
 public:
 	// Public interface ------------------------------------
 
-	Vehicle( void ) { }
+	Vehicle( void )     { mind = 0; }
+	~Vehicle( void )    { delete mind; }
 
 	void update			( Vec3 newPosition, Vec3 velocity, Matrix matBody );
 	void update			( Vec3 pos, Vec3 vel, Matrix body, Matrix w0, Matrix w1, Matrix w2, Matrix w3 );
@@ -67,13 +69,15 @@ public:
 	Vec3  getVelocity	( );
 	Input *getInputObj  ( );
 	Vec3  getDirection	( );
+	AI*   getAI         ( );
 
 	Wheel m_Wheels[4];
 
 protected:
-	Input input;
-	Vec3  velocity;	//m/s
-	int   mass;		//kg
+	Input      input;
+	Vec3       velocity;	//m/s
+	int        mass;		//kg
+	VehicleAI* mind;
 };
 
 #endif //VEHICLE_H

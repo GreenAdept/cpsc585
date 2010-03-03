@@ -22,8 +22,7 @@ public:
 
 	//Public interface ------------------------------------
 
-	PlayerVehicle( void ) { }
-	void update( void );
+	PlayerVehicle( void ) { mind = new VehicleAI(); }
 };
 
 #endif //PLAYERVEHICLE_H
