@@ -23,6 +23,7 @@
 #include "VarLoader.h"
 #include "Constants.h"
 #include "GameObj.h"
+#include "MeteorGroup.h"
 
 using namespace std;
 

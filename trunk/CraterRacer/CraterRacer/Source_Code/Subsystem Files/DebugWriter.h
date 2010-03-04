@@ -18,6 +18,7 @@ public:
 	void writeToFile(string s);
 	void writeToFile(double d);
 	void writeToFile(float f);
+	void writeToFile(int i);
 	//void writeToFile(NxVec3 vec);
 	void writeToFile(Vec3 vec);
 	//void writeToFile(bool set);

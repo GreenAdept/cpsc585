@@ -130,34 +130,72 @@ void SceneLoader::processPathInfo( ifstream& file )
 	delete[] waypoints;
 }
 
-void SceneLoader::processMeteorInfo( ifstream& file ) {
-	string	str,
-			flush,
-			mesh,
-			effect;
-	int		num_meteors;
-	Vec3    pos;
+//--------------------------------------------------------------------------------------
+// Function:  processMeteorInfo
+//--------------------------------------------------------------------------------------
+void SceneLoader::processMeteorInfo( ifstream& file )
+{
+	//DebugWriter debug;
+	string	str, flush;
+	string	mesh, effect;
+	int		numMeteorGroups, meteorGroupID, numMeteors;
+	int		x, y, z, radius;
 
 	file >> flush >> str;
 	if( str != "MESH_FILENAME" ) return;
 	file >> mesh;
+	/*debug.writeToFile("mesh file name works");
+	debug.writeToFile(mesh);*/
 
 	file >> str;
-	if( str != "NUM_METEORS" ) return;
-	file >> num_meteors;
+	if( str != "EFFECT_FILENAME" ) return;
+	file >> effect;
 
-	for (int i=0; i<num_meteors; i++) {
+	/*debug.writeToFile("effect file name works");
+	debug.writeToFile(effect);*/
+
+	file >> str;
+	if( str != "NUM_METEOR_GROUPS" ) return;
+	file >> numMeteorGroups;
+
+	/*debug.writeToFile("num meteor groups works");
+	debug.writeToFile(numMeteorGroups);*/
+
+	MeteorGroup *meteorGroups = new MeteorGroup[numMeteorGroups];
+	MeteorGroup* meteorGroup;
+
+	for (int i = 0; i < numMeteorGroups; i++) {
 		file >> str;
-		if (str != "EFFECT_FILENAME") return;
-		file >> effect;
+		if( str != "METEOR_GROUP" ) return;
+		file >> meteorGroupID;
+
+		/*debug.writeToFile("meteor id works");
+		debug.writeToFile(meteorGroupID);*/
 
 		file >> str;
-		if (str != "POSITION") return;
-		file >> pos.x >> pos.y >> pos.z;
+		if( str != "NUM_METEORS" ) return;
+		file >> numMeteors;
 
-		m_Objs.entityManager->makeMeteor( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
+		/*debug.writeToFile("num meteors works");
+		debug.writeToFile(numMeteors);*/
+
+		meteorGroup = new MeteorGroup(meteorGroupID, numMeteors);
+
+		file >> x >> y >> z >> radius;
+		meteorGroup->setTriggerVolume(Vec3(x, y, z), radius);
+
+		for (int j = 0; j < numMeteors; j++) {
+			file >> x >> y >> z;
+			meteorGroup->addMeteor(j, Vec3(x, y, z));
+		}
+
+		m_Objs.entityManager->makeMeteorGroup(m_Device, meteorGroup, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str());
 	}
+
+	/*debug.writeToFile("end");*/
+	delete[] meteorGroups;
 }
+
 void SceneLoader::processCraterInfo( ifstream& file ) {
 	string	str,
 			flush;
@@ -195,7 +233,6 @@ void SceneLoader::processPropInfo( ifstream& file ) {
 		m_Objs.entityManager->makeProp( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
 	}
 }
-
 
 //--------------------------------------------------------------------------------------
 // Function:  processVehicleInfo
@@ -302,7 +339,6 @@ void SceneLoader::initializeSimulator( )
 
 	m_Objs.simulator->InitNx( terrain );
 }
-
 
 //--------------------------------------------------------------------------------------
 // Function:  toLPCWSTR
