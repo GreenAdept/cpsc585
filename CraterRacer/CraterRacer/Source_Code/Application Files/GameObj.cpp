@@ -122,6 +122,7 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 void GameObj::think ()
 {
 	vector<AI*> minds;
+	vector<MeteorGroup*> meteorGroups;
 
 	minds = m_Entities->getAIs (PLAYERS);
 	for (int i=0; i<minds.size(); i++)
@@ -131,17 +132,20 @@ void GameObj::think ()
 	for (int i=0; i<minds.size(); i++)
 		minds[i]->think( m_Entities, COMPUTERS, i );
 
-	minds = m_Entities->getAIs (METEORS);
+	minds = m_Entities->getAIs (METEORGROUPS);
 	for (int i=0; i<minds.size(); i++) {
-		minds[i]->think( m_Entities, METEORS, i );
-		if (minds[i]->getState() == AI::MOVING) {
-			//add meteor to physics simulation
+		minds[i]->think( m_Entities, METEORGROUPS, i );
+
+		//this is already handled by PhysX
+
+		/*if (minds[i]->getState() == AI::TRIGGERED) {
+			//add meteorgroup to physics simulation 
 		}
 		if (minds[i]->getState() == AI::STOPPED) {
 			//delete entity
 			//remove from physics simulation
 			//spawn crater
-		}
+		}*/
 	}
 }
 
@@ -195,7 +199,6 @@ void GameObj::processInput( float fElapsedTime )
 	}
 }
 
-
 //--------------------------------------------------------------------------------------
 // Function: render
 // This function renders the game's scene to the specified device.
@@ -203,6 +206,8 @@ void GameObj::processInput( float fElapsedTime )
 void GameObj::render( Device* device )
 {
 	vector<Renderable*> renderables = m_Entities->getRenderables();
+
+	int test;
 
 	// pass the renderables off to the renderer to do all the work
 	m_Renderer->render( device, renderables, m_Cameras );
@@ -214,7 +219,7 @@ void GameObj::render( Device* device )
 //--------------------------------------------------------------------------------------
 void GameObj::simulate( float fElapsedTime )
 {
-	m_Simulator->simulate( m_Entities->getVehicles(), m_Entities->getMeteors(), fElapsedTime );
+	m_Simulator->simulate( m_Entities->getVehicles(), m_Entities->getMeteorGroups(), fElapsedTime );
 
 }
 

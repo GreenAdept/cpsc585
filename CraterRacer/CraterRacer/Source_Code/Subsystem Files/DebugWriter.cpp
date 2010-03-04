@@ -23,6 +23,13 @@ void DebugWriter::writeToFile(float f) {
   myfile.close();
 }
 
+void DebugWriter::writeToFile(int i) {
+  ofstream myfile;
+  myfile.open ("debug.txt", ios::out | ios::app);
+  myfile << i << endl;
+  myfile.close();
+}
+
 /*void DebugWriter::writeToFile(NxVec3 vec) {
   ofstream myfile;
   myfile.open ("debug.txt", ios::out | ios::app);

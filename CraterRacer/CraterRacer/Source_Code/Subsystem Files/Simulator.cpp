@@ -95,7 +95,7 @@ void Simulator::getPhysicsResults()
 // Function:  simulate
 // Simulates the movement of entities based on the elapsed time
 //--------------------------------------------------------------------------------------
-void Simulator::simulate( vector<Vehicle*> vehicles, vector<Meteor*> meteors, double elapsedTime ) 
+void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteorGroups, double elapsedTime ) 
 {
 	if( m_bPaused )
 		return;
@@ -129,14 +129,20 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<Meteor*> meteors, do
 		vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m );
 	}
 
-	//Update all the meteor positions based on PhysX simulated actor positions
-	for( int i=0; i < meteors.size(); i++ )
+	//Initialize the meteors and update all the meteor positions
+	for( int i=0; i < meteorGroups.size(); i++ )
 	{
-		NxActor* m_Meteor = meteors[i]->getPhysicsObj();
-		if (!m_Meteor) continue;
-
-		//do stuff
+		if (meteorGroups[i]->getAI()->getState() == AI::TRIGGERED) {
+			//create the meteors for the group
+			createMeteorGroup(meteorGroups[i]);
+		}
+		else if (meteorGroups[i]->getAI()->getState() == AI::MOVING) {
+			//simulate the meteors for the group
+		}
 	}
+
+	NxVec3 test(vehicles[0]->getPosition());
+	m_Debugger.writeToFile(Vec3(test.x, test.y, test.z));
 }
 
 //--------------------------------------------------------------------------------------
@@ -398,6 +404,17 @@ void Simulator::createVehicle( Vehicle* vehicle )
 	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );
 	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );
 	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );*/
+}
+
+void Simulator::createMeteorGroup(MeteorGroup *mg) {
+	//m_Debugger.writeToFile("here");
+	for (int i = 0; i < mg->numMeteors; i++) {
+		Matrix m;
+		mg->meteors[i]->update(Vec3(340, 2, 20), m);
+		mg->meteors[i]->informOfTrigger();
+	}
+
+	int test;
 }
 
 void Simulator::removeFromSimulation( Entity* entity )

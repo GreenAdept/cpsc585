@@ -11,6 +11,7 @@
 #include "Stream.h"
 #include "Vehicle.h"
 #include "Meteor.h"
+#include "MeteorGroup.h"
 #include "Terrain.h"
 #include "DebugWriter.h"
 
@@ -33,8 +34,9 @@ public:
 	bool pause( bool );
 	bool isPaused( );
 
-	void simulate( vector<Vehicle*> vehicles, vector<Meteor*> meteors, double elapsedTime );
+	void simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteorGroups, double elapsedTime );
 	void createVehicle( Vehicle* vehicle );
+	void createMeteorGroup(MeteorGroup *mg);
 	void removeFromSimulation( Entity* entity );
 
 	NxTriangleMeshShapeDesc createTriMeshShape( Mesh* mesh );

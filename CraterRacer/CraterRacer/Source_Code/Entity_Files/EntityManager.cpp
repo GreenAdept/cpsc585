@@ -58,16 +58,16 @@ vector<Vehicle*> EntityManager::getVehicles () {
 }
 
 //------------------------------------------------------
-// Function: getMeteors
+// Function: getMeteorGroups
 // Returns an std::vector containing pointers to all
-// the meteor entities being tracked by the manager.
+// the meteor groups being tracked by the manager.
 //------------------------------------------------------
 
-vector<Meteor*> EntityManager::getMeteors () {
-	int size = entities[METEORS].size();
-	vector<Meteor*> result (size);
+vector<MeteorGroup*> EntityManager::getMeteorGroups () {
+	int size = entities[METEORGROUPS].size();
+	vector<MeteorGroup*> result (size);
 	for (int i=0; i<size; i++)
-		result[i] = (Meteor*) entities[METEORS][i];
+		result[i] = (MeteorGroup*) entities[METEORGROUPS][i];
 	return result;
 }
 
@@ -81,7 +81,20 @@ vector<Meteor*> EntityManager::getMeteors () {
 vector<Renderable*> EntityManager::getRenderables () {
 	int index = 0;
 	int numWheels = entities[PLAYERS].size() * 4 + entities[COMPUTERS].size() * 4;
-	vector<Renderable*> result (getSize() + numWheels);
+	
+	int numMeteorGroups = entities[METEORGROUPS].size();
+	int numMeteors = 0;
+	for (int i = 0; i < entities[METEORGROUPS].size(); i++) {
+		MeteorGroup* meteorGroup = (MeteorGroup*) entities[METEORGROUPS][i];
+		for (int j = 0; j < meteorGroup->numMeteors; j++) {
+			if (meteorGroup->meteors[j]->getAI()->getState() == AI::MOVING) {
+				numMeteors++;
+			}
+		}
+		//numMeteors += meteorGroup->numMeteors;
+	}
+
+	vector<Renderable*> result (getSize() + numWheels + numMeteors - numMeteorGroups);
 
 	//Get vehicle renderables first because they have wheel renderables inside them
 	for (int i=PLAYERS; i <= COMPUTERS; i++) {
@@ -96,8 +109,19 @@ vector<Renderable*> EntityManager::getRenderables () {
 		}
 	}
 
+	//Get the meteor renderables, since they are inside the meteor groups
+	for (int i = 0; i < entities[METEORGROUPS].size(); i++) {
+		MeteorGroup* meteorGroup = (MeteorGroup*) entities[METEORGROUPS][i];
+
+		for (int j = 0; j < meteorGroup->numMeteors; j++) {
+			if (meteorGroup->meteors[j]->getAI()->getState() == AI::MOVING) {
+				result[index++] = meteorGroup->meteors[j]->getRenderable();
+			}
+		}
+	}
+
 	//Now add all the rest of the renderables
-	for (int i = METEORS; i < NUM_LISTS; i++) {
+	for (int i = CRATERS; i < NUM_LISTS; i++) {
 		int s = entities[i].size();
 		for( int j=0; j<s; j++ )
 			result[index++] = entities[i][j]->getRenderable();
@@ -245,11 +269,17 @@ AIVehicle* EntityManager::makeComputer (Device* device, Vec3 pos, LPCWSTR filena
 	entities[COMPUTERS].push_back (av);
 	return av;
 }
-Meteor* EntityManager::makeMeteor (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename) {
-	Meteor* m = new Meteor();
-	m->initialize (device, pos, filename, effectFilename);
-	entities[METEORS].push_back (m);
-	return m;
+MeteorGroup* EntityManager::makeMeteorGroup (Device* device, MeteorGroup* mg, LPCWSTR filename, LPCWSTR effectFilename) {
+	Vec3 pos(340, 2, 20);
+	
+	for (int i = 0; i < mg->numMeteors; i++) {
+		Meteor* m = new Meteor();
+		mg->meteors[i] = m;
+		mg->meteors[i]->initialize(device, pos, filename, effectFilename);
+	}
+	
+	entities[METEORGROUPS].push_back(mg);
+	return mg;
 }
 Crater* EntityManager::makeCrater (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename) {
 	Crater* c = new Crater();
