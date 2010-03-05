@@ -35,7 +35,7 @@ public:
 	~MeteorGroup ();
 
 	AI* getAI ();
-	void addMeteor (int index, Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
+	void addMeteor (int index, Meteor* m);
 
 	int id;
 	int numMeteors;

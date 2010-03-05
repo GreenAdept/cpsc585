@@ -66,6 +66,14 @@ void Entity::update( Matrix matWorldTransform )
 	m_matWorld = matWorldTransform;
 }
 
+//--------------------------------------------------------------------------------------
+// Function:  update
+// Update the entity's new position in the game.
+//--------------------------------------------------------------------------------------
+void Entity::update( Vec3 newPosition )
+{
+	m_vPosition = newPosition;
+}
 
 //--------------------------------------------------------------------------------------
 // Function:  update
