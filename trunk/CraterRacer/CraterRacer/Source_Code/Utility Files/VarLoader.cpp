@@ -5,14 +5,14 @@ bool VarLoader::loadVars( Simulator* sim )
 	file.open("variables.txt");
 	if (!file.is_open()) return false;
 
-	//read in the 11 variables from the file
-	string strings[11];
-	for (int i = 0; i < 11; i++)
+	//read in the variables from the file
+	string strings[NUM_VARIABLES];
+	for (int i = 0; i < NUM_VARIABLES; i++)
 	{
 		if (!file.eof())
 			getline(file, strings[i]);
 		else
-			return false; //there aren't 11 lines in the file
+			return false; //there aren't the right number of lines in the file
 	}
 
 	parse(strings);
@@ -29,6 +29,9 @@ bool VarLoader::loadVars( Simulator* sim )
 	sim->setMaxWheelAngle(maxWheelAngle);
 	sim->setSpringScale(springScale);
 	sim->setDamperScale(damperScale);
+	sim->setSteeringPower(steeringPower);
+	sim->setBrakingFriction(brakingFriction);
+	sim->setVehicleMass(vehicleMass);
 
 	return true;
 }
@@ -46,6 +49,9 @@ void VarLoader::parse(string strings[])
 	maxWheelAngle		= getDouble(strings[8]);
 	springScale			= getDouble(strings[9]);
 	damperScale			= getDouble(strings[10]);
+	steeringPower		= getDouble(strings[11]);
+	brakingFriction		= getDouble(strings[12]);
+	vehicleMass			= getDouble(strings[13]);
 }
 
 double VarLoader::getDouble( string s )

@@ -17,7 +17,7 @@ Simulator::Simulator()
 	m_rRestitution			= NxReal(0.0);
 	m_rStaticFriction		= NxReal(0.4);
 	m_rDynamicFriction		= NxReal(0.0);
-	m_rBreakingFriction		= NxReal(1.0);
+	m_rBrakingFriction		= NxReal(1.0);
 	m_rMaxAngularVelocity	= NxReal(2);
 	m_rVehicleMass			= 10.0;
 	m_rWheelRestLength		= 0.3;
@@ -180,7 +180,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			}
 			case 1: //B_BUTTON - brake / reverse
 			{
-				friction = friction + m_rBreakingFriction;
+				friction = friction + m_rBrakingFriction;
 				break; 
 			}
 			case 2: //X_BUTTON - reverse
@@ -413,7 +413,7 @@ void Simulator::createVehicle( Vehicle* vehicle )
 }
 
 void Simulator::createMeteorGroup(MeteorGroup *mg) {
-	//m_Debugger.writeToFile("here");
+	m_Debugger.writeToFile("here");
 	for (int i = 0; i < mg->numMeteors; i++) {
 		Matrix m;
 		mg->meteors[i]->update(Vec3(340, 2, 20), m);
@@ -668,6 +668,21 @@ void Simulator::setSpringScale( double springScale )
 void Simulator::setDamperScale( double damperScale )
 {
 	m_rDamperScale = damperScale;
+}
+
+void Simulator::setSteeringPower( double steeringPower )
+{
+	m_rSteeringPower = steeringPower;
+}
+
+void Simulator::setBrakingFriction( double friction )
+{
+	m_rBrakingFriction = friction;
+}
+
+void Simulator::setVehicleMass( double mass )
+{
+	m_rVehicleMass = mass;
 }
 
 void Simulator::printVariables()

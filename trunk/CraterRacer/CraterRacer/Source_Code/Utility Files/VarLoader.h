@@ -14,6 +14,7 @@
  * #9 m_rMaxWheelAngle -> double
  * #10 m_rSpringScale -> double
  * #11 m_rDamperScale -> double
+ * #12 m_rSteeringPower -> double
  *
  * When running the game, hit 'L' to load the variables from
  * variables.txt.
@@ -28,6 +29,8 @@
 #include "Simulator.h"
 
 using namespace std;
+
+const int NUM_VARIABLES = 14;
 
 class VarLoader {
 public:
@@ -51,6 +54,9 @@ public:
 	double maxWheelAngle;
 	double springScale;
 	double damperScale;
+	double steeringPower;
+	double brakingFriction;
+	double vehicleMass;
 	
 private:
 	ifstream file;
