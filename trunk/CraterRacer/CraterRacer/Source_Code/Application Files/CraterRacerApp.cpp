@@ -16,6 +16,8 @@ XBox360Controller*		RacerApp::m_MenuController;
 vector<CDXUTButton*>	RacerApp::buttons;
 UINT					RacerApp::m_uiCurrentButton;
 SceneLoader*			RacerApp::m_SceneLoader;
+ID3DXFont*				RacerApp::m_pFont;
+ID3DXSprite*            RacerApp::m_pTextSprite;
 
 
 //--------------------------------------------------------------------------------------
@@ -214,6 +216,12 @@ HRESULT CALLBACK RacerApp::OnResetDevice( IDirect3DDevice9* device, const D3DSUR
 	if( g_pGame )
 		g_pGame->processCallback( ON_RESET, device, pBackBufferSurfaceDesc );
 
+	if( m_pFont )
+        V_RETURN( m_pFont->OnResetDevice() );
+
+    // Create a sprite to help batch calls when drawing many lines of text
+    V_RETURN( D3DXCreateSprite( device, &m_pTextSprite ) );
+
 	//initialize the size and position of the startup menu based on size of device surface
 	m_MenuScreen.SetLocation( ( pBackBufferSurfaceDesc->Width - 300 ) / 2,
                              ( pBackBufferSurfaceDesc->Height - 200 ) / 2 );
@@ -239,6 +247,11 @@ void CALLBACK RacerApp::OnLostDevice(void* pUserContext )
 
 	if( g_pGame )
 		g_pGame->processCallback( ON_LOST );
+
+	if( m_pFont )
+        m_pFont->OnLostDevice();
+
+    SAFE_RELEASE( m_pTextSprite );
 }
 
 
@@ -269,8 +282,12 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 			case APP_PAUSED:
 
 				if( g_pGame )
+				{
 					//get the game to render all of its components
 					g_pGame->render( device );
+
+					renderFPS( );
+				}
 
 				if( m_AppState == APP_PAUSED )
 					m_PauseScreen.OnRender( fElapsedTime );
@@ -292,6 +309,11 @@ HRESULT CALLBACK RacerApp::OnCreateDevice( Device* device, const D3DSURFACE_DESC
 
 	//initialize the resource manager for our HUD, Pause Screen and Menu Screen.
 	V_RETURN( m_ResourceManager.OnD3D9CreateDevice( device ) );
+	
+	//set the size and font of text to be used in "RenderText" function
+    V_RETURN( D3DXCreateFont( device, 24, 0, FW_BOLD, 1, FALSE, DEFAULT_CHARSET,
+                          OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE,
+                          L"Arial", &m_pFont ) );
 
 	m_SceneLoader->initScene( device, pBackBufferSurfaceDesc, INIT_SCENE_FILE );
 
@@ -310,6 +332,8 @@ void CALLBACK RacerApp::OnDestroyDevice( void* pUserContext )
 
 	if( g_pGame )
 		g_pGame->processCallback( ON_DESTROY );
+
+	SAFE_RELEASE( m_pFont );
 }
 
 
@@ -333,6 +357,26 @@ bool CALLBACK RacerApp::IsD3D9DeviceAcceptable( D3DCAPS9* pCaps, D3DFORMAT Adapt
         return false;
 
     return true;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  renderFPS
+//--------------------------------------------------------------------------------------
+void RacerApp::renderFPS( )
+{
+    CDXUTTextHelper txtHelper( m_pFont, m_pTextSprite, 15 );
+
+    txtHelper.Begin();
+    txtHelper.SetInsertionPos( 10, 10 );
+	txtHelper.SetForegroundColor( D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
+	LPCWSTR stats = DXUTGetFrameStats( true );
+
+	wstring str( stats ), fps;
+	fps = str.substr( 5, 10 );
+    txtHelper.DrawTextLine( fps.c_str() ); // Show FPS
+		
+	txtHelper.End();
 }
 
 
@@ -390,8 +434,10 @@ RacerApp::~RacerApp()
 {
 	if( g_pGame )
 	{
-		g_pGame->processCallback( ON_LOST );
-		g_pGame->processCallback( ON_DESTROY ); //release the memory/objects used by the game
+		this->OnLostDevice( NULL );
+		this->OnDestroyDevice( NULL );
+		//g_pGame->processCallback( ON_LOST );
+		//g_pGame->processCallback( ON_DESTROY ); //release the memory/objects used by the game
 		delete g_pGame;
 		g_pGame = NULL;
 	}
@@ -400,4 +446,7 @@ RacerApp::~RacerApp()
 
 	if( m_SceneLoader )
 		delete m_SceneLoader;
+
+	SAFE_RELEASE( m_pFont );
+	SAFE_RELEASE( m_pTextSprite );
 }

@@ -53,6 +53,7 @@ public:
 	static void	processMenuSelection ( );
 	static void moveMenuUp			 ( );
 	static void moveMenuDown		 ( );
+	static void renderFPS			 ( );
 
 	static ResourceManager		m_ResourceManager;	// manager for shared resources of dialogs
 	static ApplicationState		m_AppState;
@@ -66,6 +67,9 @@ public:
 
 	static XBox360Controller*	m_MenuController;
 	static SceneLoader*			m_SceneLoader;		// used to load the game
+	static ID3DXFont*           m_pFont;
+	static ID3DXSprite*         m_pTextSprite;
+
 };
 
 extern GameObj *g_pGame; //Our global instantiation of the game which will be used by the RacerApp class
