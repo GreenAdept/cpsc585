@@ -205,6 +205,11 @@ void GameObj::processInput( float fElapsedTime )
 				//m_Debugger->writeToFile("pause toggled!");
 				pauseGame( );
 			}
+			if (m_Controllers[i]->Back.WasPressedOrHeld())
+			{
+				//respawn car
+				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::BACK_BUTTON);
+			}
 
 			//using xbox controller
 			v->setController(true);
