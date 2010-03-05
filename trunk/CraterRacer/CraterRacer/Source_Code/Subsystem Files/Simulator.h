@@ -83,6 +83,7 @@ private:
 	NxReal				m_rRestitution;
 	NxReal				m_rStaticFriction;
 	NxReal				m_rDynamicFriction;
+	NxReal				m_rBreakingFriction;
 	NxReal				m_rMaxAngularVelocity;
 	NxReal				m_rVehicleMass;
 	NxReal				m_rSpringK;
