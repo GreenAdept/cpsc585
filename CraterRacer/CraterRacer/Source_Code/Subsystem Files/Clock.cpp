@@ -105,7 +105,27 @@ string Clock::getFormattedTime()
 	remaining = remaining - (seconds * 1000); //number of ms left
 	int ten_milliseconds = remaining/10;
 	
-	ss << minutes << ":" << seconds << ":" << ten_milliseconds;
+	ss << ten_milliseconds;
+	string ms = ss.str();
+	ss.str("");
+	if (ten_milliseconds < 10)
+		ms = "0" + ms;
+
+	ss << seconds;
+	string sec = ss.str();
+	ss.str("");
+	if (seconds < 10)
+		sec = "0" + sec;
+
+	ss << minutes;
+	string mins = ss.str();
+	ss.str("");
+	if (minutes < 10)
+		mins = "0" + mins;
+
+	//ss << minutes << ":" << seconds << ":" << ten_milliseconds;
+	//s = ss.str();
+	ss << mins << ":" << sec << ":" << ms;
 	s = ss.str();
 	return s;
 }

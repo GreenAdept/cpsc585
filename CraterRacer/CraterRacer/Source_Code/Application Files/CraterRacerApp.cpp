@@ -86,7 +86,8 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 		{
 			case  VK_SPACE:
 				//pause game here
-				if( g_pGame->pauseGame( true ) )
+				//if( g_pGame->pauseGame( true ) )
+				if (g_pGame->pauseGame())
 				{
 					m_uiCurrentButton = GUI_BTN_UNPAUSE;
 					m_AppState = APP_PAUSED;
@@ -180,12 +181,13 @@ void RacerApp::processMenuSelection( )
 					g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
 
 				g_pGame = m_SceneLoader->startGame( ONE_PLAYER_SCENE_FILE ); //load one player game
+				g_pGame->startClock();
 
 				m_AppState = APP_RENDER_GAME; 
 				break;
 			//start game again
 			case GUI_BTN_UNPAUSE:
-				g_pGame->pauseGame( false );
+				g_pGame->pauseGame( );
 				m_AppState = APP_RENDER_GAME; 
 				break;
 

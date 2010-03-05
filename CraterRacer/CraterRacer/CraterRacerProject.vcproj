@@ -604,6 +604,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\Source_Code\Entity_Files\MeteorGroup.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\Source_Code\Entity_Files\Prop.cpp"
 					>
 				</File>
@@ -637,6 +641,10 @@
 				</File>
 				<File
 					RelativePath=".\Source_Code\Entity_Files\Meteor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\Source_Code\Entity_Files\MeteorGroup.h"
 					>
 				</File>
 				<File
@@ -680,6 +688,14 @@
 		<Filter
 			Name="SubSystem Files"
 			>
+			<File
+				RelativePath=".\Source_Code\Subsystem Files\Clock.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Subsystem Files\Clock.h"
+				>
+			</File>
 			<File
 				RelativePath=".\Source_Code\Subsystem Files\DebugWriter.cpp"
 				>
