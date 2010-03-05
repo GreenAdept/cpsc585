@@ -9,15 +9,17 @@
 // Constructor: MeteorAI
 // Initializes the meteor AI.
 //------------------------------------------------------
-MeteorAI::MeteorAI () {
-	state = AI::WAITING;
+MeteorAI::MeteorAI (float radius) {
+	trigger = new TriggerCylinder (radius);
 }
 
 //------------------------------------------------------
 // Destructor: MeteorAI
 // Frees all the memory allocated to the meteor AI.
 //------------------------------------------------------
-MeteorAI::~MeteorAI () {}
+MeteorAI::~MeteorAI () {
+	delete trigger;
+}
 
 //------------------------------------------------------
 // Function: think
@@ -25,7 +27,14 @@ MeteorAI::~MeteorAI () {}
 // AI detects if the player has enter its trigger
 // volume and sets its state to MOVING.
 //------------------------------------------------------
-void MeteorAI::think (EntityManager *em, int myList, int myIndex) {}
+void MeteorAI::think (EntityManager *em, int myList, int myIndex) {
+	if (state==AI::STOPPED || state==AI::MOVING)
+		return;
+
+	trigger->think (em, myList, myIndex);
+	if (trigger->getState() == AI::TRIGGERED)
+		state = AI::MOVING;
+}
 
 //------------------------------------------------------
 // Function: informOfCollision
@@ -34,13 +43,11 @@ void MeteorAI::think (EntityManager *em, int myList, int myIndex) {}
 // by its trigger volume.
 //------------------------------------------------------
 void MeteorAI::informOfCollision () {
-	state = AI::TRIGGERED;
+	state = AI::STOPPED;
+	delete trigger;
+	trigger = 0;
 }
 
-//------------------------------------------------------
-// Function: informOfTrigger
-// Informs the meteor entity that it has been triggered.
-//------------------------------------------------------
 void MeteorAI::informOfTrigger () {
 	state = AI::MOVING;
 }
@@ -52,17 +59,8 @@ void MeteorAI::informOfTrigger () {
 // Constructor: Meteor
 // Initializes the meteor entity.
 //------------------------------------------------------
-Meteor::Meteor(Vec3 target) {
-	mind = new MeteorAI ();
-	this->target = target;
-}
-
-//------------------------------------------------------
-// Constructor: Meteor
-// Initializes the meteor entity.
-//------------------------------------------------------
 Meteor::Meteor() {
-	mind = new MeteorAI ();
+	mind = new MeteorAI (400.0f);
 }
 
 //------------------------------------------------------
@@ -90,10 +88,6 @@ void Meteor::informOfCollision () {
 	mind->informOfCollision();
 }
 
-//------------------------------------------------------
-// Function: informOfTrigger
-// Informs the meteor entity that it has been triggered.
-//------------------------------------------------------
 void Meteor::informOfTrigger () {
 	mind->informOfTrigger();
 }

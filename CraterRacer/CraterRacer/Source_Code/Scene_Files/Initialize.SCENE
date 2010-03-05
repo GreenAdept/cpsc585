@@ -1199,7 +1199,7 @@ NUM_METEOR_GROUPS	1
 METEOR_GROUP		1
 NUM_METEORS			2
 -340 0 40 10
-0 0 120
+-340 0 40
 0 0 180
 
 **CRATER_INFORMATION ----------------------------------------------

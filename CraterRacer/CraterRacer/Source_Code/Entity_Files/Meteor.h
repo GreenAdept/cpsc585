@@ -11,8 +11,10 @@
 //---------------------------------------------
 
 class MeteorAI : public AI {
+	TriggerCylinder* trigger;
+
 public:
-	MeteorAI ();
+	MeteorAI (float radius);
 	~MeteorAI ();
 
 	void think (EntityManager *em, int myList, int myIndex);
@@ -26,19 +28,15 @@ public:
 //---------------------------------------------
 
 class Meteor : public Entity {
-private:
 	MeteorAI* mind;
 
 public:
 	Meteor ();
-	Meteor (Vec3 target);
 	~Meteor ();
 
 	AI* getAI ();
 	void informOfCollision ();
 	void informOfTrigger ();
-
-	Vec3 target;
 };
 
 
