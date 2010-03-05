@@ -139,7 +139,7 @@ void SceneLoader::processMeteorInfo( ifstream& file )
 	string	str, flush;
 	string	mesh, effect;
 	int		numMeteorGroups, meteorGroupID, numMeteors;
-	int		x, y, z, radius;
+	float	x, y, z, radius;
 
 	file >> flush >> str;
 	if( str != "MESH_FILENAME" ) return;
@@ -161,39 +161,24 @@ void SceneLoader::processMeteorInfo( ifstream& file )
 	/*debug.writeToFile("num meteor groups works");
 	debug.writeToFile(numMeteorGroups);*/
 
-	MeteorGroup *meteorGroups = new MeteorGroup[numMeteorGroups];
-	MeteorGroup* meteorGroup;
-
 	for (int i = 0; i < numMeteorGroups; i++) {
 		file >> str;
 		if( str != "METEOR_GROUP" ) return;
 		file >> meteorGroupID;
 
-		/*debug.writeToFile("meteor id works");
-		debug.writeToFile(meteorGroupID);*/
-
 		file >> str;
 		if( str != "NUM_METEORS" ) return;
 		file >> numMeteors;
-
-		/*debug.writeToFile("num meteors works");
-		debug.writeToFile(numMeteors);*/
-
-		meteorGroup = new MeteorGroup(meteorGroupID, numMeteors);
-
 		file >> x >> y >> z >> radius;
-		meteorGroup->setTriggerVolume(Vec3(x, y, z), radius);
+
+		MeteorGroup* meteorGroup = m_Objs.entityManager->makeMeteorGroup
+			(m_Device, Vec3(x,y,z), toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str(), meteorGroupID, numMeteors, radius);
 
 		for (int j = 0; j < numMeteors; j++) {
 			file >> x >> y >> z;
-			meteorGroup->addMeteor(j, Vec3(x, y, z));
+			meteorGroup->addMeteor (j, m_Device, Vec3(x,y,z), toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str());
 		}
-
-		m_Objs.entityManager->makeMeteorGroup(m_Device, meteorGroup, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str());
 	}
-
-	/*debug.writeToFile("end");*/
-	delete[] meteorGroups;
 }
 
 void SceneLoader::processCraterInfo( ifstream& file ) {

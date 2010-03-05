@@ -10,31 +10,35 @@
 #include "DebugWriter.h"
 
 //---------------------------------------------
-// Class: MeteorAI
+// Class: MeteorGroupAI
 //---------------------------------------------
 
 class MeteorGroupAI : public AI {
 	TriggerCylinder* trigger;
 
 public:
-	MeteorGroupAI();
-	MeteorGroupAI(Vec3 position, int radius);
-	~MeteorGroupAI();
+	MeteorGroupAI (float radius);
+	~MeteorGroupAI ();
 
-	void think(EntityManager *em, int myList, int myIndex);
+	void think (EntityManager *em, int myList, int myIndex);
 };
 
+//---------------------------------------------
+// Class: MeteorGroup
+//---------------------------------------------
+
 class MeteorGroup: public Entity {
+	MeteorGroupAI* mind;
+
 public:
-	MeteorGroup();
-	MeteorGroup(int id, int numMeteors);
-	void setTriggerVolume(Vec3 position, int radius);
-	AI* getAI();
-	void addMeteor(int index, Vec3 position);
+	MeteorGroup (int id, int numMeteors, float radius);
+	~MeteorGroup ();
+
+	AI* getAI ();
+	void addMeteor (int index, Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
 
 	int id;
 	int numMeteors;
-	Meteor* *meteors;
-	MeteorGroupAI* mind;
+	Meteor** meteors;
 };
 #endif

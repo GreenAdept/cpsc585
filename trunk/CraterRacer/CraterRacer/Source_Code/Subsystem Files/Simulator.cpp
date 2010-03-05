@@ -135,7 +135,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 	{
 		if (meteorGroups[i]->getAI()->getState() == AI::TRIGGERED) {
 			//create the meteors for the group
-			createMeteorGroup(meteorGroups[i]);
+			//createMeteorGroup(meteorGroups[i]);
 		}
 		else if (meteorGroups[i]->getAI()->getState() == AI::MOVING) {
 			//simulate the meteors for the group
