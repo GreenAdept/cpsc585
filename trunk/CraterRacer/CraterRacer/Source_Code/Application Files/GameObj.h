@@ -11,6 +11,7 @@
 #include <iostream>
 #include <vector>
 #include "SceneLoader.h"
+#include "Clock.h"
 
 struct SceneObjects; //forward declaration
 
@@ -31,13 +32,14 @@ public:
 	~GameObj( );
 
 	void think           ( void );
-	bool pauseGame		 ( bool );
+	bool pauseGame		 ( );
 	bool isPaused		 ( );
 	void processInput	 ( float fElapsedTime );
 	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );
 	void simulate		 ( float fElapsedTime );
 	void render			 ( Device* device );
-	void initGame		 (  );
+	void initGame		 ( );
+	void startClock		 ( );
 	void processCallback ( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
 
 	SceneObjects getSceneObjects( );
@@ -53,6 +55,8 @@ private:
 	VarLoader*					m_VarLoader;
 	vector<GameCamera*>			m_Cameras;		// main camera to follow behind vehicle
 	vector<XBox360Controller*>	m_Controllers;	//first player controller will have id# 0
+
+	Clock						m_clock;
 };
 
 #endif GAME_OBJ_H 

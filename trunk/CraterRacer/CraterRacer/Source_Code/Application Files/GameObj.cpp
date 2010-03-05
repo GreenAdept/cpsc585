@@ -27,6 +27,14 @@ void GameObj::initGame( )
 	
 }
 
+//--------------------------------------------------------------------------------------
+// Function: startClock
+// Start the game clock.
+//--------------------------------------------------------------------------------------
+void GameObj::startClock()
+{
+	m_clock.start();
+}
 
 //--------------------------------------------------------------------------------------
 // Function:  getSceneObjects
@@ -60,9 +68,11 @@ void GameObj::setSceneObjects( SceneObjects& objs )
 // pause=true to try to pause simulation
 // Returns true if the game pause was toggled
 //--------------------------------------------------------------------------------------
-bool GameObj::pauseGame( bool pause )
+bool GameObj::pauseGame()
 {
-	return m_Simulator->pause( pause );
+	m_Debugger->writeToFile("pause toggled!");
+	bool pause = m_clock.togglePause();
+	return m_Simulator->pause(pause);
 }
 
 
@@ -190,13 +200,17 @@ void GameObj::processInput( float fElapsedTime )
 			}
 			if (m_Controllers[i]->Start.WasPressedOrHeld())
 			{
-				pauseGame( true );
+				m_clock.togglePause();
+				m_Debugger->writeToFile("pause toggled!");
+				pauseGame( );
 			}
 
 			//using xbox controller
 			v->setController(true);
 		}
 	}
+
+	m_Debugger->writeToFile(m_clock.getFormattedTime());
 }
 
 //--------------------------------------------------------------------------------------

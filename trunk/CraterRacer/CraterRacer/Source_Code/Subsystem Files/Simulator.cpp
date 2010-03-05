@@ -142,7 +142,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 	}
 
 	NxVec3 test(vehicles[0]->getPosition());
-	m_Debugger.writeToFile(Vec3(test.x, test.y, test.z));
+	//m_Debugger.writeToFile(Vec3(test.x, test.y, test.z));
 }
 
 //--------------------------------------------------------------------------------------
@@ -197,9 +197,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength );
 				break;
 			}
-			case 3: //Y_BUTTON - emergency brake
+			case 3: //Y_BUTTON - print waypoint for now
 			{
-				
+				NxVec3 v = actor->getGlobalPosition();
+				m_Debugger.writeToFile(Vec3(v.x, v.y, v.z));
 			}
 			case 4: //LT_BUTTON - emergency brake
 			{
@@ -323,7 +324,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 // Function:  pause
 // pause=true simulation is paused
 //--------------------------------------------------------------------------------------
-bool Simulator::pause( bool pause )
+bool Simulator::pause(bool pause)
 {
 	if( pause == m_bPaused )
 		return false;
