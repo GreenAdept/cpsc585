@@ -171,12 +171,12 @@ void SceneLoader::processMeteorInfo( ifstream& file )
 		file >> numMeteors;
 		file >> x >> y >> z >> radius;
 
-		MeteorGroup* meteorGroup = m_Objs.entityManager->makeMeteorGroup
-			(m_Device, Vec3(x,y,z), toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str(), meteorGroupID, numMeteors, radius);
+		MeteorGroup* meteorGroup = m_Objs.entityManager->makeMeteorGroup (Vec3(x,y,z), meteorGroupID, numMeteors, radius);
 
 		for (int j = 0; j < numMeteors; j++) {
 			file >> x >> y >> z;
-			meteorGroup->addMeteor (j, m_Device, Vec3(x,y,z), toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str());
+			Meteor* m = m_Objs.entityManager->makeMeteor (m_Device, Vec3(x,y,z), toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str());
+			meteorGroup->addMeteor (j, m);
 		}
 	}
 }

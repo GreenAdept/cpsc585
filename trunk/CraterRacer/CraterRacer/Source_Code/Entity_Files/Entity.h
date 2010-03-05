@@ -52,6 +52,7 @@ public:
 	void			setPhysicsObj	  ( NxActor* actor ) { m_nxActor = actor; }
 
 	void			update			  ( Vec3 newPostion, Matrix mat );
+	void            update            ( Vec3 newPosition );
 	void			update			  ( Matrix matWorldTransform );
 };
 

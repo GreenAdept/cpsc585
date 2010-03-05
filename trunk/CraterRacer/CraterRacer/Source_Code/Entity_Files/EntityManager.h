@@ -61,7 +61,7 @@ public:
 	Crater*        makeCrater   (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
 	Prop*          makeProp     (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
 	Terrain*       makeTerrain  (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
-	MeteorGroup*   makeMeteorGroup (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename, int id, int numMeteors, float radius);
+	MeteorGroup*   makeMeteorGroup (Vec3 pos, int id, int numMeteors, float radius);
 
 	std::vector<Entity*> & operator[] (int i) { return entities[i]; }
 	void clear ();
