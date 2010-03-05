@@ -200,8 +200,8 @@ void GameObj::processInput( float fElapsedTime )
 			}
 			if (m_Controllers[i]->Start.WasPressedOrHeld())
 			{
-				m_clock.togglePause();
-				m_Debugger->writeToFile("pause toggled!");
+				//m_clock.togglePause();
+				//m_Debugger->writeToFile("pause toggled!");
 				pauseGame( );
 			}
 
