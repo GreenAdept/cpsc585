@@ -9,3 +9,6 @@
 35.0		//m_rMaxWheelAngle -> double
 20.0		//m_rSpringScale -> double
 0.7			//m_rDamperScale -> double
+5.0			//m_rSteeringPower -> double
+1.0			//m_rBreakingFriction -> double
+10.0		//m_rVehicleMass -> double

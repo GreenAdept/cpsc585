@@ -52,6 +52,9 @@ public:
 	void setMaxWheelAngle(double maxAngle);
 	void setSpringScale(double scale);
 	void setDamperScale(double scale);
+	void setSteeringPower(double steeringPower);
+	void setBrakingFriction(double friction);
+	void setVehicleMass(double mass);
 
 	void printVariables();
 	void setSuspensionFlag(bool flag);
@@ -83,7 +86,7 @@ private:
 	NxReal				m_rRestitution;
 	NxReal				m_rStaticFriction;
 	NxReal				m_rDynamicFriction;
-	NxReal				m_rBreakingFriction;
+	NxReal				m_rBrakingFriction;
 	NxReal				m_rMaxAngularVelocity;
 	NxReal				m_rVehicleMass;
 	NxReal				m_rSpringK;
