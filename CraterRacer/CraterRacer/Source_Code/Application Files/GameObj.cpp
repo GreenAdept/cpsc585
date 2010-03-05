@@ -70,7 +70,7 @@ void GameObj::setSceneObjects( SceneObjects& objs )
 //--------------------------------------------------------------------------------------
 bool GameObj::pauseGame()
 {
-	m_Debugger->writeToFile("pause toggled!");
+	//m_Debugger->writeToFile("pause toggled!");
 	bool pause = m_clock.togglePause();
 	return m_Simulator->pause(pause);
 }
@@ -113,11 +113,12 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 	case 76: //L is pressed -> load file
 		if (isKeyDown)
 		{
-			if( m_VarLoader->loadVars( m_Simulator ) )
-				m_Debugger->writeToFile("Loaded variables successfully");
+			m_VarLoader->loadVars(m_Simulator);
+			//if( m_VarLoader->loadVars( m_Simulator ) )
+			//	m_Debugger->writeToFile("Loaded variables successfully");
 
-			else
-				m_Debugger->writeToFile("Variables did not load");
+			//else
+				//m_Debugger->writeToFile("Variables did not load");
 			break;
 		}
 	default:
@@ -210,7 +211,7 @@ void GameObj::processInput( float fElapsedTime )
 		}
 	}
 
-	m_Debugger->writeToFile(m_clock.getFormattedTime());
+	//m_Debugger->writeToFile(m_clock.getFormattedTime());
 }
 
 //--------------------------------------------------------------------------------------
