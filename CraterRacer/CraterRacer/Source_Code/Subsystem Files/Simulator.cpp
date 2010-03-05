@@ -16,7 +16,8 @@ Simulator::Simulator()
 	m_vDefaultGravity		= NxVec3(0,-10,0);
 	m_rRestitution			= NxReal(0.0);
 	m_rStaticFriction		= NxReal(0.4);
-	m_rDynamicFriction		= NxReal(0.4);
+	m_rDynamicFriction		= NxReal(0.0);
+	m_rBreakingFriction		= NxReal(1.0);
 	m_rMaxAngularVelocity	= NxReal(2);
 	m_rVehicleMass			= 10.0;
 	m_rWheelRestLength		= 0.3;
@@ -158,6 +159,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 		localWheelForce[i] = globalWheelForce[i] = NxVec3(0, 0, 0);
 	
 	bool* buttons = vehicle->getInputObj()->getButtons();
+	NxVec3 velocity;
+	NxReal friction = m_rDynamicFriction;
 
 	//INPUT
 	for( int i = 0; i < 6; i++ )
@@ -168,7 +171,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 		{
 			case 0: //A_BUTTON - accelerate
 			{
-				NxVec3 velocity = actor->getLinearVelocity();
+				velocity = actor->getLinearVelocity();
 				if(velocity.magnitude() < MAX_VELOCITY){
 					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
 					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
@@ -177,18 +180,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			}
 			case 1: //B_BUTTON - brake / reverse
 			{
-				NxVec3 velocity = actor->getLinearVelocity();
-
-				//brake
-				if (velocity.magnitude() > 1) 
-				{
-					velocity = normalize(velocity);
-				
-					globalWheelForce[0] += (velocity * ( -m_rVehicleMass * m_rForceStrength ));
-					globalWheelForce[1] += (velocity * ( -m_rVehicleMass * m_rForceStrength ));
-					globalWheelForce[2] += (velocity * ( -m_rVehicleMass * m_rForceStrength ));
-					globalWheelForce[3] += (velocity * ( -m_rVehicleMass * m_rForceStrength ));
-				}
+				friction = friction + m_rBreakingFriction;
 				break; 
 			}
 			case 2: //X_BUTTON - reverse
@@ -235,6 +227,19 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	NxMat33 orient = actor->getGlobalOrientation();
 	BoundingBox BB = vehicle->getBoundingBox();
 
+	//Friction (dynamic friction and breaking)
+	velocity = actor->getLinearVelocity();
+
+	if (velocity.magnitude() > 1) 
+	{
+		velocity = normalize(velocity);
+	
+		globalWheelForce[0] += (velocity * ( -m_rVehicleMass * m_rForceStrength * friction));
+		globalWheelForce[1] += (velocity * ( -m_rVehicleMass * m_rForceStrength * friction));
+		globalWheelForce[2] += (velocity * ( -m_rVehicleMass * m_rForceStrength * friction));
+		globalWheelForce[3] += (velocity * ( -m_rVehicleMass * m_rForceStrength * friction));
+	}
+
 	//STEERING
 	float angle = vehicle->getInputObj()->getThumbstick() * m_rMaxWheelAngle; //maximum wheel angle
 
@@ -279,7 +284,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			//NEW STEERING
 			NxMat33 localOrientation;
 			actor->getGlobalOrientation().getInverse(localOrientation);
-			NxVec3 velocity = localOrientation * actor->getLocalPointVelocity(w->getChassisPt());
+			velocity = localOrientation * actor->getLocalPointVelocity(w->getChassisPt());
 
 			NxVec3 normal = rotate(w->getWheelLateral(), w->getAngle());
 
