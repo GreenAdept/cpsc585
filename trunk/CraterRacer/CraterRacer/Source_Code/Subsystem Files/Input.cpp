@@ -19,7 +19,7 @@ Input::Input()
 //--------------------------------------------------------------------------------------
 void Input::reset()
 {
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 7; i++)
 	{
 		inputs[i] = false;
 		keys[i] = false;
@@ -147,7 +147,6 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 	switch(dir) {
 		case (Arrow::LEFT):
 			{
-				//setThumbstick(-1.0);
 				break;
 			}
 		case (Arrow::UP):
@@ -157,7 +156,6 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 			}
 		case (Arrow::RIGHT):
 			{
-				//setThumbstick(1.0);
 				break;
 			}
 		case (Arrow::DOWN):

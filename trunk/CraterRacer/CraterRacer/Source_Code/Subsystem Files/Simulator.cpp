@@ -163,7 +163,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	NxReal friction = m_rDynamicFriction;
 
 	//INPUT
-	for( int i = 0; i < 6; i++ )
+	for( int i = 0; i < 7; i++ )
 	{
 		if( !buttons[i] ) { continue; } 
 
@@ -171,17 +171,13 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 		{
 			case 0: //A_BUTTON - accelerate
 			{
-				velocity = actor->getLinearVelocity();
-				if(velocity.magnitude() < MAX_VELOCITY){
-					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
-					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
-				}
-				break; 
+				break;
 			}
-			case 1: //B_BUTTON - brake / reverse
+			case 1: //B_BUTTON - stop simulation
 			{
-				friction = friction + m_rBrakingFriction;
-				break; 
+				actor->setLinearVelocity(NxVec3(0, 0, 0));
+				actor->setAngularVelocity(NxVec3(0, 0, 0));
+				break;
 			}
 			case 2: //X_BUTTON - reverse
 			{
@@ -193,14 +189,23 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			{
 				NxVec3 v = actor->getGlobalPosition();
 				m_Debugger.writeToFile(Vec3(v.x, v.y, v.z));
-			}
-			case 4: //LT_BUTTON - emergency brake
-			{
-				actor->setLinearVelocity(NxVec3(0, 0, 0));
-				actor->setAngularVelocity(NxVec3(0, 0, 0));
 				break;
 			}
-			case 5: //RT_BUTTON - emergency brake
+			case 4: //LT_BUTTON - braking
+			{
+				friction = friction + m_rBrakingFriction;
+				break; 
+			}
+			case 5: //RT_BUTTON - accelerating
+			{
+				velocity = actor->getLinearVelocity();
+				if(velocity.magnitude() < MAX_VELOCITY){
+					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
+					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
+				}
+				break; 
+			}
+			case 6: //BACK_BUTTON - respawn
 			{
 				Vec3 respawnPoint = vehicle->lastPassedWP();
 				respawnPoint.y += 5;
