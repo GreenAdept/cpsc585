@@ -57,10 +57,10 @@ bool* Input::getButtons()
 {
 	if (!xBoxController)
 	{
-		buttons[Button::B_BUTTON] = keys[Key::S_KEY];
-		buttons[Button::BACK_BUTTON] = keys[Key::D_KEY];
-		buttons[Button::LT_BUTTON] = inputs[Arrow::DOWN];
-		buttons[Button::RT_BUTTON] = inputs[Arrow::UP];
+		buttons[Button::A_BUTTON] = inputs[Arrow::UP];
+		buttons[Button::B_BUTTON] = inputs[Arrow::DOWN];
+		buttons[Button::LT_BUTTON] = keys[Key::S_KEY];
+		buttons[Button::RT_BUTTON] = keys[Key::D_KEY];
 	}
 
 	return buttons;
