@@ -73,6 +73,9 @@ public:
 	Vec3  getDirection	( );
 	AI*   getAI         ( );
 
+	bool isReversing	( );
+	void setReverse		( bool r );
+
 	Wheel m_Wheels[4];
 
 protected:
@@ -80,6 +83,8 @@ protected:
 	Vec3       velocity;	//m/s
 	int        mass;		//kg
 	VehicleAI* mind;
+
+	bool	   reversing;
 };
 
 #endif //VEHICLE_H
