@@ -3,12 +3,8 @@
 */
 #include "VehicleAI.h"
 #include "EntityManager.h"
+#include <math.h>
 
-
-//--------------------------------------------------------------------------------------
-// Function: think
-// Sets the input for the AI vehicle based on its desired destination.
-//--------------------------------------------------------------------------------------
 
 void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	if (state == AI::STOPPED) return;
@@ -29,8 +25,9 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 
   //Check if the destination has been reached
 	Vec3 destPos = destination->getPosition();
-	if (distSquared (myPos, destPos) < 900.0f) {
+	if (distSquared (myPos, destPos) < 1600.0f) {
 		lastPassedWaypoint = destPos;
+		passedWPs++;
 		destination = destination->getRandomNext();
 
 		if (destination == 0) {
@@ -42,6 +39,28 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 		}
 	}
 }
+
+Vec3 VehicleAI::getNextWaypoint() {
+	if (destination != 0) {
+		return destination->getPosition();
+	}
+	else {
+		return Vec3(0, 0, 0);
+	}
+}
+
+float VehicleAI::getDistanceToNextWP (Vec3 myPos) {
+	if (destination == 0)
+		return 0;
+	else
+		return sqrt (distSquared (myPos, destination->getPosition()));
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: think
+// Sets the input for the AI vehicle based on its desired destination.
+//--------------------------------------------------------------------------------------
 
 void CompVehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	VehicleAI::think (em, myList, myIndex);
@@ -79,7 +98,7 @@ void CompVehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
 
   //Set input based on angle
 	if (cosTheta >= -0.707f) {
-		input->setInput (Input::UP, true);
+		input->setKey (Input::D_KEY, true);
 		if (sinTheta > 0.2f) {
 			if (temp.y > 0.0) input->setInput (Input::RIGHT, true);
 			else              input->setInput (Input::LEFT, true);
@@ -100,7 +119,7 @@ bool CompVehicleAI::avoid (Vec3& currentDir, Vec3& dirOfObstacle, Input* input) 
 
   //Set input based on angle
 	if (cosTheta >= 0.5f) {
-		input->setInput (Input::UP, true);
+		input->setKey (Input::D_KEY, true);
 		if (temp.y < 0.0) input->setInput (Input::RIGHT, true);
 		else              input->setInput (Input::LEFT, true);
 
@@ -108,13 +127,4 @@ bool CompVehicleAI::avoid (Vec3& currentDir, Vec3& dirOfObstacle, Input* input) 
 	}
 	else
 		return false;
-}
-
-Vec3 VehicleAI::getNextWaypoint() {
-	if (destination != 0) {
-		return destination->getPosition();
-	}
-	else {
-		return Vec3(0, 0, 0);
-	}
 }

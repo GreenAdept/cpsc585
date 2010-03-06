@@ -286,6 +286,14 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 					//get the game to render all of its components
 					g_pGame->render( device );
 
+					    CDXUTTextHelper txtHelper( m_pFont, m_pTextSprite, 15 );
+						txtHelper.Begin();
+						txtHelper.SetInsertionPos( 10, 50 );
+						txtHelper.SetForegroundColor( D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
+						wstring str = g_pGame->m_Victory.getFormattedString(0);
+						txtHelper.DrawFormattedTextLine( str.c_str(), g_pGame->m_Victory.getRank(0) );
+						txtHelper.End();
+
 					renderFPS( );
 				}
 

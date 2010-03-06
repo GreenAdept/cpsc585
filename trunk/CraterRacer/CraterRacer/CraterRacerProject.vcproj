@@ -796,6 +796,14 @@
 				RelativePath=".\Source_Code\Utility Files\VarLoader.h"
 				>
 			</File>
+			<File
+				RelativePath=".\Source_Code\Utility Files\VictoryCalculator.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Utility Files\VictoryCalculator.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Effect Files"

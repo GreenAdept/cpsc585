@@ -12,6 +12,7 @@
 #include <vector>
 #include "SceneLoader.h"
 #include "Clock.h"
+#include "VictoryCalculator.h"
 
 struct SceneObjects; //forward declaration
 
@@ -44,6 +45,8 @@ public:
 
 	SceneObjects getSceneObjects( );
 	void setSceneObjects( SceneObjects& objs );
+
+	VictoryCalculator           m_Victory;
 
 private:
 	//Date Members ---------------------------------------
