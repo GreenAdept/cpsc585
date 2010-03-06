@@ -161,6 +161,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	bool* buttons = vehicle->getInputObj()->getButtons();
 	NxVec3 velocity;
 	NxReal friction = m_rDynamicFriction;
+	boolean noInput = true;
 
 	//INPUT
 	for( int i = 0; i < 7; i++ )
@@ -183,6 +184,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			{
 				localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength );
 				localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength );
+				noInput = false;
 				break;
 			}
 			case 3: //Y_BUTTON - print waypoint for now
@@ -203,6 +205,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
 					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
 				}
+				noInput = false;
 				break; 
 			}
 			case 6: //BACK_BUTTON - respawn
@@ -219,6 +222,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				actor->setAngularVelocity(NxVec3(0, 0, 0));
 				actor->setGlobalOrientation(reset);
 				actor->setGlobalPosition(NxVec3(respawnPoint.x, respawnPoint.y, respawnPoint.z));
+				noInput = false;
 				break;
 			}
 		}
@@ -243,10 +247,18 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	{
 		velocity = normalize(velocity);
 	
-		globalWheelForce[0] += (velocity * ( -m_rVehicleMass * m_rForceStrength * friction));
-		globalWheelForce[1] += (velocity * ( -m_rVehicleMass * m_rForceStrength * friction));
-		globalWheelForce[2] += (velocity * ( -m_rVehicleMass * m_rForceStrength * friction));
-		globalWheelForce[3] += (velocity * ( -m_rVehicleMass * m_rForceStrength * friction));
+		NxVec3 frictionForce = velocity * ( -m_rVehicleMass * m_rForceStrength * friction);
+
+		globalWheelForce[0] += frictionForce;
+		globalWheelForce[1] += frictionForce;
+		globalWheelForce[2] += frictionForce;
+		globalWheelForce[3] += frictionForce;
+	}
+	else {
+		if (noInput) {
+			actor->setAngularVelocity(NxVec3(0, 0, 0));
+			actor->setLinearVelocity(NxVec3(0, velocity.y, 0));
+		}
 	}
 
 	//STEERING
