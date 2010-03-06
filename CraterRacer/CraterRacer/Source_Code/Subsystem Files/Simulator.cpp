@@ -32,7 +32,6 @@ Simulator::Simulator()
 	m_rSteeringPower		= 5;
 
 	forward = false;
-	m_bSuspension = true;
 }
 
 //--------------------------------------------------------------------------------------
@@ -281,66 +280,72 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	vehicle->m_Wheels[0].setAngle(angle);
 	vehicle->m_Wheels[1].setAngle(angle);
 
-	if (m_bSuspension)
+	bool inAir = true;
+
+	//SUSPENSION
+	for (int i = 0; i < 4 /*number of wheels*/; i++) 
 	{
-		//SUSPENSION
-		for (int i = 0; i < 4 /*number of wheels*/; i++) 
+		w = &vehicle->m_Wheels[ i ];
+		wheelRadius = w->getBoundingBox().m_fRadius/2;
+
+		//Calculate world wheel position, used for raycast
+		wheelPos = mat * w->getChassisPt();
+
+		//Calculate vehicle up vector
+		upVec = normalize( orient * NxVec3( 0, 1, 0 ));
+		susAxis = normalize( orient * NxVec3(0,-1,0) );
+		w->setSuspensionAxis( susAxis );
+
+		//Raycast to ground to find distance
+		NxRay ray( wheelPos, susAxis );
+		NxRaycastHit hit;
+		m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
+
+		//NEW STEERING
+		NxMat33 localOrientation;
+		actor->getGlobalOrientation().getInverse(localOrientation);
+		velocity = localOrientation * actor->getLocalPointVelocity(w->getChassisPt());
+
+		NxVec3 normal = rotate(w->getWheelLateral(), w->getAngle());
+
+		NxVec3 applied = (velocity.dot(normal) / normal.dot(normal))*normal;
+		applied = -applied*m_rSteeringPower;
+		
+		localWheelForce[i] += applied;
+		//END NEW STEERING
+		
+		//apply forces to wheel if it is on the ground
+		if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 
 		{
-			w = &vehicle->m_Wheels[ i ];
-			wheelRadius = w->getBoundingBox().m_fRadius/2;
+			inAir = false;
 
-			//Calculate world wheel position, used for raycast
-			wheelPos = mat * w->getChassisPt();
-
-			//Calculate vehicle up vector
-			upVec = normalize( orient * NxVec3( 0, 1, 0 ));
-			susAxis = normalize( orient * NxVec3(0,-1,0) );
-			w->setSuspensionAxis( susAxis );
-
-			//Raycast to ground to find distance
-			NxRay ray( wheelPos, susAxis );
-			NxRaycastHit hit;
-			m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
-
-			//NEW STEERING
-			NxMat33 localOrientation;
-			actor->getGlobalOrientation().getInverse(localOrientation);
-			velocity = localOrientation * actor->getLocalPointVelocity(w->getChassisPt());
-
-			NxVec3 normal = rotate(w->getWheelLateral(), w->getAngle());
-
-			NxVec3 applied = (velocity.dot(normal) / normal.dot(normal))*normal;
-			applied = -applied*m_rSteeringPower;
+			//set the translation distance for the renderer
+			w->setDisplacement( hit.distance - wheelRadius*2 );
 			
-			localWheelForce[i] += applied;
-			//END NEW STEERING
+			//calculate the spring force
+			susForce = -1 * m_rSpringScale * m_rSpringK * ( hit.distance - wheelRadius - m_rWheelRestLength );
+
+			//calculate the damping force
+			NxVec3 ptVelocity = actor->getLocalPointVelocity( w->getChassisPt() );
+			damperForce = m_rSpringC * m_rDamperScale * ptVelocity.dot( susAxis );
 			
-			//apply forces to wheel if it is on the ground
-			if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 
-			{
-				//set the translation distance for the renderer
-				w->setDisplacement( hit.distance - wheelRadius*2 );
-				
-				//calculate the spring force
-				susForce = -1 * m_rSpringScale * m_rSpringK * ( hit.distance - wheelRadius - m_rWheelRestLength );
+			//add suspension force to current wheel
+			localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
 
-				//calculate the damping force
-				NxVec3 ptVelocity = actor->getLocalPointVelocity( w->getChassisPt() );
-				damperForce = m_rSpringC * m_rDamperScale * ptVelocity.dot( susAxis );
-				
-				//add suspension force to current wheel
-				localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
-
-				//apply all accumulated forces to current wheel
-				actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
-				actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
-			}
-			else
-			{
-				//set maximum translation for renderer
-				w->setDisplacement( m_rMaxWheelDisplacement );
-			}
+			//apply all accumulated forces to current wheel
+			actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
+			actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
 		}
+		else
+		{
+			//set maximum translation for renderer
+			w->setDisplacement( m_rMaxWheelDisplacement );
+		}
+	}
+
+	//Try to keep the vehicle level
+	if (inAir) {
+		
 	}
 
 	vehicle->getInputObj()->reset();
