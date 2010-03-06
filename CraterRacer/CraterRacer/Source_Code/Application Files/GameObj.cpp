@@ -196,12 +196,16 @@ void GameObj::processInput( float fElapsedTime )
 				pauseGame( );
 			}
 
+			if (m_Controllers[i]->Back.WasPressedOrHeld())
+			{
+				//respawn car
+				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::BACK_BUTTON);
+			}
+
 			//using xbox controller
 			v->setController(true);
 		}
 	}
-
-	m_Debugger->writeToFile(m_clock.getFormattedTime());
 }
 
 //--------------------------------------------------------------------------------------
