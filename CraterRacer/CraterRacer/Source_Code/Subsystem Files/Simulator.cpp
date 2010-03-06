@@ -209,11 +209,15 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			{
 				Vec3 respawnPoint = vehicle->lastPassedWP();
 				respawnPoint.y += 5;
+				Vec3 nextPoint = vehicle->nextWP();
+				Vec3 difference = nextPoint - respawnPoint;
+				NxVec3 diff = NxVec3(difference.x, difference.y, difference.z);
+				diff = normalize(diff);
 
-				NxMat33 reset(NxVec3(1, 0, 0), NxVec3(0, 1, 0), NxVec3(0, 0, 1));
+				NxMat33 reset(NxVec3(difference.z, 0, difference.x), NxVec3(0, 1, 0), NxVec3(0, 0, 1));
 				actor->setLinearVelocity(NxVec3(0, 0, 0));
 				actor->setAngularVelocity(NxVec3(0, 0, 0));
-				//actor->setGlobalOrientation(reset);
+				actor->setGlobalOrientation(reset);
 				actor->setGlobalPosition(NxVec3(respawnPoint.x, respawnPoint.y, respawnPoint.z));
 				break;
 			}
@@ -369,7 +373,6 @@ NxVec3 Simulator::rotate(NxVec3 lateral, float angle) {
 	float z = lateral.x * sin(radians) + lateral.z * cos(radians);
 	float x = lateral.x * cos(radians) - lateral.z * sin(radians);
 
-	//return NxVec3(lateral.x * cos(radians) - lateral.z * sin(radians), 0, lateral.x * sin(radians) + lateral.z * cos(radians));
 	return NxVec3(x, 0, z);
 }
 

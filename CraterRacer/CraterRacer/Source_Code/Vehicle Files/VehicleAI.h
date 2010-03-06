@@ -25,6 +25,7 @@ public:
 
 	virtual void think (EntityManager *em, int myList, int myIndex);
 	Vec3         getLastPassedWaypoint () { return lastPassedWaypoint; }
+	Vec3		 getNextWaypoint();
 };
 
 

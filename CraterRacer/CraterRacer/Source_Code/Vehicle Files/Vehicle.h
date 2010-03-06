@@ -60,6 +60,7 @@ public:
 	void update			( Vec3 pos, Vec3 vel, Matrix body, Matrix w0, Matrix w1, Matrix w2, Matrix w3 );
 	void initialize		( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename );
 	Vec3 lastPassedWP   ( );
+	Vec3 nextWP			( );
 
 	// Setter's
 	void  setMass		( int mass );
