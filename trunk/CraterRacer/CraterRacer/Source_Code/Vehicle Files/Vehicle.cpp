@@ -60,6 +60,14 @@ Vec3 Vehicle::lastPassedWP ()
 		return Vec3 (0, 0, 0);
 }
 
+Vec3 Vehicle::nextWP ()
+{
+	if (mind != 0)
+		return mind->getNextWaypoint();
+	else
+		return Vec3 (0, 0, 0);
+}
+
 
 //--------------------------------------------------------------------------------------
 // Function:  setVelocity
