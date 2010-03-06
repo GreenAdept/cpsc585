@@ -175,15 +175,12 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			}
 			case 1: //B_BUTTON - stop simulation
 			{
-				actor->setLinearVelocity(NxVec3(0, 0, 0));
-				actor->setAngularVelocity(NxVec3(0, 0, 0));
 				break;
 			}
 			case 2: //X_BUTTON - reverse
 			{
-				localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength );
-				localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength );
-				noInput = false;
+				actor->setLinearVelocity(NxVec3(0, 0, 0));
+				actor->setAngularVelocity(NxVec3(0, 0, 0));
 				break;
 			}
 			case 3: //Y_BUTTON - print waypoint for now
@@ -194,11 +191,32 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			}
 			case 4: //LT_BUTTON - braking
 			{
-				friction = friction + m_rBrakingFriction;
-				break; 
+				// if velocity is less than 1m/s when pressing LT_BUTTON, reverse
+				bool reversing = vehicle->isReversing();
+				if (reversing || (actor->getLinearVelocity().magnitude() < 0.05))
+				{
+					vehicle->setReverse(true);
+					localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength );
+					localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength );
+					noInput = false;
+					break;
+				}
+				//else brake
+				else {
+					friction = friction + m_rBrakingFriction;
+					break;
+				}
 			}
 			case 5: //RT_BUTTON - accelerating
 			{
+				//if reversing, brake
+				if (vehicle->isReversing())
+				{
+					friction = friction + m_rBrakingFriction;
+					vehicle->setReverse(false);
+					break;
+				}
+				//else, accelerate
 				velocity = actor->getLinearVelocity();
 				if(velocity.magnitude() < MAX_VELOCITY){
 					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
@@ -725,9 +743,4 @@ void Simulator::printVariables()
 	m_Debugger.writeToFile((double)m_rDynamicFriction);
 	m_Debugger.writeToFile((double)m_rMaxAngularVelocity);
 	m_Debugger.writeToFile(m_rMaxWheelAngle);
-}
-
-void Simulator::setSuspensionFlag(bool flag)
-{
-	m_bSuspension = flag;
 }

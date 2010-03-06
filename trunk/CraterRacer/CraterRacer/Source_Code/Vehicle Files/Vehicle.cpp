@@ -49,6 +49,8 @@ void Vehicle::initialize( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR ef
 	m_Wheels[ WHEEL1 ].initialize( device, WHEEL1_FILE, Vec3(width, height, length), effectFilename );
 	m_Wheels[ WHEEL2 ].initialize( device, WHEEL2_FILE, Vec3(-width, height, -length), effectFilename );
 	m_Wheels[ WHEEL3 ].initialize( device, WHEEL3_FILE, Vec3(width, height, -length), effectFilename );
+
+	reversing = false;
 }
 
 
@@ -138,4 +140,14 @@ Vec3 Vehicle::getDirection ()
 AI* Vehicle::getAI ()
 {
 	return mind;
+}
+
+bool Vehicle::isReversing()
+{
+	return reversing;
+}
+
+void Vehicle::setReverse(bool r)
+{
+	reversing = r;
 }
