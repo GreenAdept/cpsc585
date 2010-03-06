@@ -110,7 +110,6 @@ private:
 	//Debugging
 	DebugWriter			m_Debugger;
 	bool				forward;
-	bool				m_bSuspension;
 
 };
 
