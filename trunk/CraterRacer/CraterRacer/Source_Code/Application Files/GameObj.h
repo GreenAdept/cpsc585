@@ -9,6 +9,7 @@
 #include "Constants.h"
 #include "Resource.h"
 #include <iostream>
+#include <string>
 #include <vector>
 #include "SceneLoader.h"
 #include "Clock.h"
@@ -42,6 +43,7 @@ public:
 	void initGame		 ( );
 	void startClock		 ( );
 	void processCallback ( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
+	string getTime		 ( );
 
 	SceneObjects getSceneObjects( );
 	void setSceneObjects( SceneObjects& objs );

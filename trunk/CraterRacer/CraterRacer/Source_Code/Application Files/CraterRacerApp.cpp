@@ -295,6 +295,7 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 						txtHelper.End();
 
 					renderFPS( );
+					renderClock( );
 				}
 
 				if( m_AppState == APP_PAUSED )
@@ -383,6 +384,26 @@ void RacerApp::renderFPS( )
 	wstring str( stats ), fps;
 	fps = str.substr( 5, 10 );
     txtHelper.DrawTextLine( fps.c_str() ); // Show FPS
+		
+	txtHelper.End();
+}
+
+//--------------------------------------------------------------------------------------
+// Function: renderClock
+// Renders the game time in the right hand corner of the screen
+//--------------------------------------------------------------------------------------
+void RacerApp::renderClock( )
+{
+	CDXUTTextHelper txtHelper( m_pFont, m_pTextSprite, 15 );
+
+    txtHelper.Begin();
+    txtHelper.SetInsertionPos( 10, 35 );
+	txtHelper.SetForegroundColor( D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
+	string time = g_pGame->getTime();
+
+	wstring wTime(time.length(), L' ');
+	copy(time.begin(), time.end(), wTime.begin());
+    txtHelper.DrawTextLine( wTime.c_str() );
 		
 	txtHelper.End();
 }

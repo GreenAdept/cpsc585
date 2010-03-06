@@ -12,7 +12,6 @@ void Clock::start()
 
 	totalTimeMS = 0;
 	totalPausedTimeMS = 0;
-	pausedTimeMS = 0;
 	startPausedMS = 0;
 }
 
@@ -38,8 +37,7 @@ bool Clock::togglePause() //change from paused to resume, and vice versa
 	else {
 		//startTimeMS = GetTickCount(); //reset the start time when resuming
 		int time = GetTickCount();
-		pausedTimeMS = time - startPausedMS;
-		totalPausedTimeMS += pausedTimeMS;
+		totalPausedTimeMS = totalPausedTimeMS + time - startPausedMS;
 	}
 	return paused;
 }
@@ -51,9 +49,17 @@ bool Clock::togglePause() //change from paused to resume, and vice versa
 int Clock::getTotalTimeInMS() //returns the elapsed time in milliseconds
 {
 	long time = GetTickCount(); //get current time
-	// total time = last elapsed time + time that passed since then
-	totalTimeMS = (time - startTimeMS) - totalPausedTimeMS; 
-	//startTimeMS = time; //start time resets
+
+	if (paused)
+	{
+		// startPausedMS - startTimeMS - totalPausedTimeMS
+		totalTimeMS = (startPausedMS - startTimeMS) - totalPausedTimeMS;
+	}
+	else
+	{
+		// total time = last elapsed time + time that passed since then
+		totalTimeMS = (time - startTimeMS) - totalPausedTimeMS; 
+	}
 	return totalTimeMS;
 }
 
