@@ -193,11 +193,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			{
 				// if velocity is less than 1m/s when pressing LT_BUTTON, reverse
 				bool reversing = vehicle->isReversing();
-				if (reversing || (actor->getLinearVelocity().magnitude() < 0.05))
+				if (reversing || (actor->getLinearVelocity().magnitude() < 1))
 				{
 					vehicle->setReverse(true);
-					localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength );
-					localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength );
+					localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 );
+					localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 );
 					noInput = false;
 					break;
 				}
@@ -219,8 +219,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 				//else, accelerate
 				velocity = actor->getLinearVelocity();
 				if(velocity.magnitude() < MAX_VELOCITY){
-					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
-					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
+					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * 1.5 );
+					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * 1.5 );
 				}
 				noInput = false;
 				break; 
