@@ -21,7 +21,6 @@ private:
 	int totalTimeMS;
 	int lastTimeMS; //last retrieved time
 	int totalPausedTimeMS;
-	int pausedTimeMS;
 	int startPausedMS;
 	bool paused;
 };

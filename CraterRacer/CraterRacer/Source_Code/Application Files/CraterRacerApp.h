@@ -9,6 +9,7 @@
 #include "Resource.h"
 #include "Constants.h"
 #include "SceneLoader.h"
+#include <string>
 
 #define ONE_PLAYER_SCENE_FILE	"Source_Code\\Scene_Files\\OnePlayer.SCENE"
 #define TWO_PLAYER_SCENE_FILE	"Source_Code\\Scene_Files\\TwoPlayer.SCENE"
@@ -54,6 +55,7 @@ public:
 	static void moveMenuUp			 ( );
 	static void moveMenuDown		 ( );
 	static void renderFPS			 ( );
+	static void renderClock			 ( );
 
 	static ResourceManager		m_ResourceManager;	// manager for shared resources of dialogs
 	static ApplicationState		m_AppState;

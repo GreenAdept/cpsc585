@@ -276,6 +276,10 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 	}
 }
 
+string GameObj::getTime()
+{
+	return m_clock.getFormattedTime();
+}
 
 //--------------------------------------------------------------------------------------
 // Function:  Destructor 
