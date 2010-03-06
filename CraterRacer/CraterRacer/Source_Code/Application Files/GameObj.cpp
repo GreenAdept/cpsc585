@@ -70,7 +70,7 @@ void GameObj::setSceneObjects( SceneObjects& objs )
 //--------------------------------------------------------------------------------------
 bool GameObj::pauseGame()
 {
-	//m_Debugger->writeToFile("pause toggled!");
+	m_Debugger->writeToFile("pause toggled!");
 	bool pause = m_clock.togglePause();
 	return m_Simulator->pause(pause);
 }
@@ -113,12 +113,11 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 	case 76: //L is pressed -> load file
 		if (isKeyDown)
 		{
-			m_VarLoader->loadVars(m_Simulator);
-			//if( m_VarLoader->loadVars( m_Simulator ) )
-			//	m_Debugger->writeToFile("Loaded variables successfully");
+			if( m_VarLoader->loadVars( m_Simulator ) )
+				m_Debugger->writeToFile("Loaded variables successfully");
 
-			//else
-				//m_Debugger->writeToFile("Variables did not load");
+			else
+				m_Debugger->writeToFile("Variables did not load");
 			break;
 		}
 	default:
@@ -144,20 +143,11 @@ void GameObj::think ()
 		minds[i]->think( m_Entities, COMPUTERS, i );
 
 	minds = m_Entities->getAIs (METEORGROUPS);
-	for (int i=0; i<minds.size(); i++) {
+	for (int i=0; i<minds.size(); i++)
 		minds[i]->think( m_Entities, METEORGROUPS, i );
 
-		//this is already handled by PhysX
 
-		/*if (minds[i]->getState() == AI::TRIGGERED) {
-			//add meteorgroup to physics simulation 
-		}
-		if (minds[i]->getState() == AI::STOPPED) {
-			//delete entity
-			//remove from physics simulation
-			//spawn crater
-		}*/
-	}
+	m_Victory.calculateRanks (m_Entities->getVehicles());
 }
 
 
@@ -205,18 +195,13 @@ void GameObj::processInput( float fElapsedTime )
 				//m_Debugger->writeToFile("pause toggled!");
 				pauseGame( );
 			}
-			if (m_Controllers[i]->Back.WasPressedOrHeld())
-			{
-				//respawn car
-				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::BACK_BUTTON);
-			}
 
 			//using xbox controller
 			v->setController(true);
 		}
 	}
 
-	//m_Debugger->writeToFile(m_clock.getFormattedTime());
+	m_Debugger->writeToFile(m_clock.getFormattedTime());
 }
 
 //--------------------------------------------------------------------------------------
