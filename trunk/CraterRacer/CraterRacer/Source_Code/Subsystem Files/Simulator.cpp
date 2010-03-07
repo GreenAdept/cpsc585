@@ -352,8 +352,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 			localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
 
 			//apply all accumulated forces to current wheel
-			actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() );
-			actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() );
+			actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() - NxVec3(0, 2, 0));
+			actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() - NxVec3(0, 2, 0));
 		}
 		else
 		{
