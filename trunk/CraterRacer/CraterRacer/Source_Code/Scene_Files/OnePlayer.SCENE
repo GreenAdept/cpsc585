@@ -8,7 +8,7 @@ NUM_COMPUTERS			2
 **PLAYER_VEHICLES ------------------------------------------------
 
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
-POSITION:			-340 5 0
+POSITION:			-242 40 30
 
 
 **COMPUTER_VEHICLES ----------------------------------------------
