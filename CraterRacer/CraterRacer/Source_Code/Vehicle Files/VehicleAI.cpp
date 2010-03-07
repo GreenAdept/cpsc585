@@ -105,7 +105,7 @@ void CompVehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
 		}
 	}
 	else {
-		input->getButtons()[Input::X_BUTTON] = true;
+		input->getButtons()[Input::BACK_BUTTON] = true;
 		if (temp.y > 0.0) input->setInput (Input::LEFT, true);
 		else              input->setInput (Input::RIGHT, true);
 	}
