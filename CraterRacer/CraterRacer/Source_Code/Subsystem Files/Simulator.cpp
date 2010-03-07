@@ -368,6 +368,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 	}
 
 	vehicle->getInputObj()->reset();
+
+	//Check to see if the vehicle is falling
+	if (actor->getGlobalPosition().y < -40) {
+		vehicle->getInputObj()->setDir(0, Input::BACK_BUTTON);
+	}
 }
 
 //--------------------------------------------------------------------------------------
