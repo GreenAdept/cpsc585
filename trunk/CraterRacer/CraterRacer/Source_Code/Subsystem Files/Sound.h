@@ -30,17 +30,13 @@ struct AUDIO_STATE
 
     IXACT3Engine* pEngine;
     IXACT3SoundBank* pSoundBank;
-	IXACT3WaveBank* pWaveBank;
-    IXACT3WaveBank* pMenuWaveBank;//pInMemoryWaveBank;
-    IXACT3WaveBank* pGameBGMusicWaveBank;//pStreamingWaveBank;
+    IXACT3WaveBank* pBGMusicWaveBank;//pStreamingWaveBank;
 
     IXACT3Cue* pZeroLatencyRevCue;
 
     // Handles to audio files to be closed upon cleanup
-    HANDLE hMenuWaveBankFile;
-    HANDLE hGameMusicWaveBankFile; // Handle to wave bank data.  Its memory mapped so call UnmapViewOfFile() upon cleanup to release file
+    HANDLE hBGMusicWaveBankFile; // Handle to wave bank data.  Its memory mapped so call UnmapViewOfFile() upon cleanup to release file
     VOID* pbSoundBank; // Pointer to sound bank data.  Call delete on it when the sound bank is destroyed
-	VOID* pbWaveBank;
 	VOID* pbGameWaveBank;
 
     CRITICAL_SECTION cs;
