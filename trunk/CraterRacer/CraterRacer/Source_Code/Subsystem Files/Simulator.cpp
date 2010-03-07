@@ -110,7 +110,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 	{
 		NxActor* m_Vehicle = vehicles[i]->getPhysicsObj();
 		if (!m_Vehicle) continue;
-		processForceKeys(m_Vehicle, vehicles[i]);
+		processForceKeys(m_Vehicle, vehicles[i], elapsedTime);
 
 		//Get the new position of the vehicle in vector and matrix format
 		Matrix m;
@@ -150,7 +150,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 // Function:  processForceKeys
 // Processes all of the force inputs
 //--------------------------------------------------------------------------------------
-void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle) 
+void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time) 
 {
 	NxVec3 localWheelForce[4];
 	NxVec3 globalWheelForce[4];
@@ -358,7 +358,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle)
 		else
 		{
 			//set maximum translation for renderer
-			w->setDisplacement( m_rMaxWheelDisplacement );
+			float maxWheelSpeed = 7;
+			w->setDisplacement(min((float)m_rMaxWheelDisplacement, (w->getDisplacement() + maxWheelSpeed * (float)time)));
 		}
 	}
 
