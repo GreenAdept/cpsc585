@@ -424,7 +424,7 @@ void Simulator::createVehicle( Vehicle* vehicle )
 
 	//NxTriangleMeshShapeDesc ShapeDesc = this->createTriMeshShape( mesh );
 	NxBodyDesc bodyDesc;
-	bodyDesc.angularDamping	= 0.5f;
+	bodyDesc.angularDamping	= 2.5f;
 	bodyDesc.mass = m_rVehicleMass;
 
 	// Create terrain and add to scene
