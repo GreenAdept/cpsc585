@@ -10,10 +10,11 @@ MeteorGroupAI::~MeteorGroupAI () {
 
 void MeteorGroupAI::think(EntityManager *em, int myList, int myIndex) {
 	MeteorGroup* meteorGroup = (MeteorGroup*) (*em)[myList][myIndex];
+
 	if (state == AI::STOPPED)
 		return;
 	if (state == AI::TRIGGERED) {
-		state == AI::MOVING;
+		state = AI::MOVING;
 		return;
 	}
 	if (state == AI::MOVING) {

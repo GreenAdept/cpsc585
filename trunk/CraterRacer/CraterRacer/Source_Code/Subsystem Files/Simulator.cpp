@@ -134,10 +134,11 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 	{
 		if (meteorGroups[i]->getAI()->getState() == AI::TRIGGERED) {
 			//create the meteors for the group
-			//createMeteorGroup(meteorGroups[i]);
+			createMeteorGroup(meteorGroups[i]);
 		}
 		else if (meteorGroups[i]->getAI()->getState() == AI::MOVING) {
 			//simulate the meteors for the group
+			simulateMeteorGroup(meteorGroups[i], elapsedTime);
 		}
 	}
 
@@ -455,15 +456,39 @@ void Simulator::createVehicle( Vehicle* vehicle )
 	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );*/
 }
 
-void Simulator::createMeteorGroup(MeteorGroup *mg) {
-	m_Debugger.writeToFile("here");
+void Simulator::createMeteorGroup(MeteorGroup* mg) {
+	//m_Debugger.writeToFile("create group");
 	for (int i = 0; i < mg->numMeteors; i++) {
+		mg->meteors[i]->update(Vec3(-400, 100, 500));
+		Vec3 position = mg->meteors[i]->getPosition();
+		
 		Matrix m;
-		mg->meteors[i]->update(Vec3(340, 2, 20), m);
-		mg->meteors[i]->informOfTrigger();
+		D3DXMatrixIdentity( &m );
+		D3DXMatrixTranslation( &m, position.x, position.y, position.z );
+		
+		mg->meteors[i]->update(position, m);
 	}
+}
 
-	int test;
+void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time) {
+	for (int i = 0; i < mg->numMeteors; i++) {
+		NxVec3 target(-381.64, -7, 262.186);
+		float speed = 70;
+
+		Vec3 tempPos(mg->meteors[i]->getPosition());
+		NxVec3 currentPosition(tempPos.x, tempPos.y, tempPos.z);
+		NxVec3 direction = target - currentPosition;
+		direction = normalize(direction);
+
+		currentPosition += (direction * speed * time);
+		Vec3 currentPos = Vec3(currentPosition.x, currentPosition.y, currentPosition.z);
+
+		Matrix m;
+		D3DXMatrixIdentity( &m );
+		D3DXMatrixTranslation( &m, currentPos.x, currentPos.y, currentPos.z );
+		
+		mg->meteors[i]->update(currentPos, m);
+	}
 }
 
 void Simulator::removeFromSimulation( Entity* entity )
