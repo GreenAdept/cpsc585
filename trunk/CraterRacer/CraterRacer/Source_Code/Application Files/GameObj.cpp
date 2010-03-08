@@ -201,11 +201,12 @@ void GameObj::processInput( float fElapsedTime )
 					g_audioState.nRPM = 0.0f;
 				g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );
 			}
-			if (m_Controllers[i]->Start.WasPressedOrHeld())
+			if (m_Controllers[i]->Start.WasPressed())
 			{
 				//m_clock.togglePause();
-				//m_Debugger->writeToFile("pause toggled!");
-				pauseGame( );
+
+				if( !m_Simulator->isPaused() )
+					pauseGame( );
 			}
 
 			if (m_Controllers[i]->Back.WasPressedOrHeld())

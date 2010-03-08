@@ -14,7 +14,7 @@ void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat )
 	BoundingBox tempBB = getBoundingBox();
 
 	D3DXMatrixIdentity( &translationMat );
-	D3DXMatrixTranslation( &translationMat, 0, -tempBB.m_fHeight, 0 );
+	D3DXMatrixTranslation( &translationMat, 0, -tempBB.m_fHeight/2, 0 );
 	D3DXMatrixMultiply( &mat, &mat, &translationMat );
 
 	setVelocity(velocity);
@@ -45,10 +45,10 @@ void Vehicle::initialize( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR ef
 	float length = BB.m_fLength/2;
 	float height = -BB.m_fHeight/2;
 
-	m_Wheels[ WHEEL0 ].initialize( device, WHEEL0_FILE, Vec3(-width, height, length), effectFilename);
-	m_Wheels[ WHEEL1 ].initialize( device, WHEEL1_FILE, Vec3(width, height, length), effectFilename );
-	m_Wheels[ WHEEL2 ].initialize( device, WHEEL2_FILE, Vec3(-width, height, -length), effectFilename );
-	m_Wheels[ WHEEL3 ].initialize( device, WHEEL3_FILE, Vec3(width, height, -length), effectFilename );
+	m_Wheels[ WHEEL0 ].initialize( device, WHEEL0_FILE, Vec3(-2.5, height, 3.15), effectFilename);
+	m_Wheels[ WHEEL1 ].initialize( device, WHEEL1_FILE, Vec3(2.5, height, 3.15), effectFilename );
+	m_Wheels[ WHEEL2 ].initialize( device, WHEEL2_FILE, Vec3(-2.5, height, -3.6), effectFilename );
+	m_Wheels[ WHEEL3 ].initialize( device, WHEEL3_FILE, Vec3(2.5, height, -3.6), effectFilename );
 
 	reversing = false;
 }

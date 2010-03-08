@@ -20,11 +20,11 @@ Simulator::Simulator()
 	m_rBrakingFriction		= NxReal(1.0);
 	m_rMaxAngularVelocity	= NxReal(2);
 	m_rVehicleMass			= 10.0;
-	m_rWheelRestLength		= 0.3;
+	m_rWheelRestLength		= 0.5;
 	m_rMinWheelDisplacement = 1.25;
 	m_rSpringK				= ( -m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
 	m_rSpringC				= 2 * sqrt( m_rSpringK * m_rVehicleMass );
-	m_rMaxWheelDisplacement = 0.5;
+	m_rMaxWheelDisplacement = 1.0;
 	m_rMaxWheelAngle		= 35.0;
 	m_bPaused				= false;
 	m_rSpringScale			= 20.0;
@@ -220,8 +220,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				//else, accelerate
 				velocity = actor->getLinearVelocity();
 				if(velocity.magnitude() < MAX_VELOCITY){
-					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * 1.5 );
-					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * 1.5 );
+					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
+					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
 				}
 				noInput = false;
 				break; 
@@ -346,7 +346,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 
 			//if the car is close to bottoming out, double the force
 			if (w->getDisplacement()/m_rMaxWheelDisplacement >= 0.75) {
-				susForce = susForce * 2;
+				susForce = susForce * susForce;
 			}
 
 			//calculate the damping force
@@ -453,18 +453,12 @@ void Simulator::createVehicle( Vehicle* vehicle )
 	//Create the vehicle in the scene
 	NxActor* pActor = m_Scene->createActor( actorDesc );
 	pActor->setMaxAngularVelocity(m_rMaxAngularVelocity);
-	pActor->setCMassOffsetGlobalPosition( NxVec3(pos.x, pos.y-b.m_fHeight/2, pos.z) );
+	pActor->setCMassOffsetGlobalPosition( NxVec3(pos.x, pos.y-b.m_fHeight, pos.z) );
 	assert( pActor );
 
 	//Add the vehicle to global list of all vehicles
 	vehicle->setPhysicsObj( pActor );
 	m_Actors.push_back( pActor );
-
-	//Now for testing, make placeholders for wheel chassis points
-	/*m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );
-	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );
-	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );
-	m_Wheels.push_back( createLittleBox( NxVec3(pos.x, pos.y, pos.z) ) );*/
 }
 
 void Simulator::createMeteorGroup(MeteorGroup* mg) {
@@ -711,7 +705,17 @@ void Simulator::setForceMode(bool mode)
 
 void Simulator::setGravity(Vec3 gravity)
 {
+	NxScene* scene;
+
 	m_vDefaultGravity = NxVec3(gravity.x, gravity.y, gravity.z);
+	if( m_PhysicsSDK )
+	{
+		scene = m_PhysicsSDK->getScene( 0 );
+		scene->setGravity( m_vDefaultGravity );
+	}
+
+	m_rSpringK	= ( -m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
+	m_rSpringC	= 2 * sqrt( m_rSpringK * m_rVehicleMass );
 }
 
 void Simulator::setRestitution(double res)
@@ -762,7 +766,14 @@ void Simulator::setBrakingFriction( double friction )
 void Simulator::setVehicleMass( double mass )
 {
 	m_rVehicleMass = mass;
+
+	m_rSpringK	= ( -m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
+	m_rSpringC	= 2 * sqrt( m_rSpringK * m_rVehicleMass );
+
+	for( int i=0; i<m_Actors.size(); i++ )
+		m_Actors[i]->setMass( mass );
 }
+
 
 void Simulator::printVariables()
 {
