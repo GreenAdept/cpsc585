@@ -139,7 +139,7 @@ POSITION				0 -100 0
 
 **METEOR_INFORMATION ----------------------------------------------
 
-MESH_FILENAME			Media\\Meshes\\CarBody.x
+MESH_FILENAME			Media\\Meshes\\Wheel1.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 NUM_METEOR_GROUPS		1
 
