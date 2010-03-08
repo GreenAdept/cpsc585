@@ -3,6 +3,7 @@
 #define METEOR_H
 
 #include "Entity.h"
+#include "Crater.h"
 #include "TriggerVolumeAI.h"
 
 
@@ -29,12 +30,17 @@ public:
 
 class Meteor : public Entity {
 	MeteorAI* mind;
+	Vec3 target;
+	Crater* toSpawn;
 
 public:
 	Meteor ();
 	~Meteor ();
 
 	AI* getAI ();
+	Vec3 getTarget ();
+	void setTarget (Vec3 t);
+	void setCraterToSpawn (Crater* c);
 	void informOfCollision ();
 	void informOfTrigger ();
 };

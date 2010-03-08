@@ -73,6 +73,15 @@ void Entity::update( Matrix matWorldTransform )
 void Entity::update( Vec3 newPosition )
 {
 	m_vPosition = newPosition;
+
+	if (m_pRenderable != 0) {
+		Matrix m;
+		D3DXMatrixIdentity( &m );
+		D3DXMatrixTranslation( &m, newPosition.x, newPosition.y, newPosition.z );
+
+		m_matWorld = m;
+		m_pRenderable->m_matWorld = m;
+	}
 }
 
 //--------------------------------------------------------------------------------------

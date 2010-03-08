@@ -49,6 +49,7 @@ public:
 	std::vector<Entity*>     getObstacles ();
 	std::vector<AI*>         getAIs (int list);
 	Terrain*                 getTerrain ();
+	Crater*                  getCrater (int index);
 	
 	Vec3   getPosition         (int list, int index);
 	Input* getPlayerInputObj   (int index);

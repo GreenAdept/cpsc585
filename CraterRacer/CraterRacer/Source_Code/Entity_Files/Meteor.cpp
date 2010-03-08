@@ -80,12 +80,34 @@ AI* Meteor::getAI () {
 }
 
 //------------------------------------------------------
+// Function: getTarget
+// Returns the meteor's target destination.
+//------------------------------------------------------
+Vec3 Meteor::getTarget () {
+	return target;
+}
+
+//------------------------------------------------------
+// Function: setTarget
+// Sets the meteor's target destination.
+//------------------------------------------------------
+void Meteor::setTarget (Vec3 t) {
+	target = t;
+}
+
+void Meteor::setCraterToSpawn (Crater* c) {
+	toSpawn = c;
+}
+
+//------------------------------------------------------
 // Function: informOfCollision
 // Informs the meteor entity that it has collided with
 // the ground.
 //------------------------------------------------------
 void Meteor::informOfCollision () {
 	mind->informOfCollision();
+	update (toSpawn->getPosition());
+	toSpawn->update (target);
 }
 
 void Meteor::informOfTrigger () {
