@@ -11,7 +11,7 @@ AUDIO_STATE g_audioState;
 //      5. Create the XACT sound bank(s) you want to use
 //      6. Store indices to the XACT cue(s) your game uses
 //-----------------------------------------------------------------------------------------
-HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR bgSoundbankFile )
+HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgSettingsFile, LPCWSTR bgSoundbankFile )
 {
     HRESULT hr;
     WCHAR str[MAX_PATH];
@@ -40,9 +40,44 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR bgSoundbankFile )
     if( FAILED( hr ) || g_audioState.pEngine == NULL )
         return E_FAIL;
 
+	// Load the global settings file and pass it into XACTInitialize
+    VOID* pGlobalSettingsData = NULL;
+    DWORD dwGlobalSettingsFileSize = 0;
+    bool bSuccess = false;
+    if( SUCCEEDED( FindMediaFileCch( str, MAX_PATH, bgSettingsFile ) ) )
+    {
+        hFile = CreateFile( str, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL );
+        if( hFile )
+        {
+            dwGlobalSettingsFileSize = GetFileSize( hFile, NULL );
+            if( dwGlobalSettingsFileSize != INVALID_FILE_SIZE )
+            {
+                pGlobalSettingsData = CoTaskMemAlloc( dwGlobalSettingsFileSize );
+                if( pGlobalSettingsData )
+                {
+                    if( 0 != ReadFile( hFile, pGlobalSettingsData, dwGlobalSettingsFileSize, &dwBytesRead, NULL ) )
+                    {
+                        bSuccess = true;
+                    }
+                }
+            }
+            CloseHandle( hFile );
+        }
+    }
+    if( !bSuccess )
+    {
+        if( pGlobalSettingsData )
+            CoTaskMemFree( pGlobalSettingsData );
+        pGlobalSettingsData = NULL;
+        dwGlobalSettingsFileSize = 0;
+    }
+
     // Initialize & create the XACT runtime 
     XACT_RUNTIME_PARAMETERS xrParams = {0};
     xrParams.lookAheadTime = XACT_ENGINE_LOOKAHEAD_DEFAULT;
+	xrParams.pGlobalSettingsBuffer = pGlobalSettingsData;
+    xrParams.globalSettingsBufferSize = dwGlobalSettingsFileSize;
+    xrParams.globalSettingsFlags = XACT_FLAG_GLOBAL_SETTINGS_MANAGEDATA; // this will tell XACT to delete[] the buffer when its unneeded
 	xrParams.fnNotificationCallback = XACTNotificationCallback;
     hr = g_audioState.pEngine->Initialize( &xrParams );
     if( FAILED( hr ) )
@@ -108,6 +143,34 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR bgSoundbankFile )
 
         hr = g_audioState.pEngine->CreateStreamingWaveBank( &wsParams, &g_audioState.pBGMusicWaveBank );
     }
+	
+	if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, seWavebankFile ) ) )
+        return hr;
+
+    // Create an "in memory" XACT wave bank file using memory mapped file IO
+    hr = E_FAIL; // assume failure
+    hFile = CreateFile( str, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL );
+    if( hFile != INVALID_HANDLE_VALUE )
+    {
+        dwFileSize = GetFileSize( hFile, NULL );
+        if( dwFileSize != -1 )
+        {
+            hMapFile = CreateFileMapping( hFile, NULL, PAGE_READONLY, 0, dwFileSize, NULL );
+            if( hMapFile )
+            {
+                g_audioState.pbSoundEffectWaveBank = MapViewOfFile( hMapFile, FILE_MAP_READ, 0, 0, 0 );
+                if( g_audioState.pbSoundEffectWaveBank )
+                {
+                    hr = g_audioState.pEngine->CreateInMemoryWaveBank( g_audioState.pbSoundEffectWaveBank, dwFileSize, 0,
+                                                                       0, &g_audioState.pSoundEffectWaveBank );
+                }
+                CloseHandle( hMapFile ); // pbWaveBank maintains a handle on the file so close this unneeded handle
+            }
+        }
+        CloseHandle( hFile ); // pbWaveBank maintains a handle on the file so close this unneeded handle
+    }
+    if( FAILED( hr ) )
+        return E_FAIL; // CleanupXACT() will cleanup state before exiting
 
     // Read and register the sound bank file with XACT.  Do not use memory mapped file IO because the 
     // memory needs to be read/write and the working set of sound banks are small.
@@ -141,7 +204,18 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR bgSoundbankFile )
     // Note that if the cue does not exist in the sound bank, the index will be XACTINDEX_INVALID
     // however this is ok especially during development.  The Play or Prepare call will just fail.
 	g_audioState.iGameStart = g_audioState.pSoundBank->GetCueIndex( "GameStart" );
+	g_audioState.iEngine = g_audioState.pSoundBank->GetCueIndex( "Engine" );
 
+	// Get indices to XACT categories 
+    g_audioState.iMusicCategory = g_audioState.pEngine->GetCategory( "Music" );
+
+    // Get indices to XACT variables
+    g_audioState.iRPMVariable = g_audioState.pEngine->GetGlobalVariableIndex( "RPM" );
+    g_audioState.pEngine->GetGlobalVariable( g_audioState.iRPMVariable, &g_audioState.nRPM );
+
+	// Set the music volume
+	g_audioState.fMusicVolume = 0.7f;
+	g_audioState.pEngine->SetVolume( g_audioState.iMusicCategory, g_audioState.fMusicVolume );
     return S_OK;
 }
 
@@ -214,7 +288,7 @@ void UpdateAudio()
 
         // Starting playing background music after the streaming wave bank 
         // has been prepared but no sooner.  The background music does not need to be 
-        // zero-latency so the cues do not need to be prepared first 
+        // zero-latency so the cues do not need to be prepared first
         g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
     }
 

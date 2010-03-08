@@ -180,14 +180,26 @@ void GameObj::processInput( float fElapsedTime )
 			if (m_Controllers[i]->X.WasPressedOrHeld())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::X_BUTTON);
+				g_audioState.nRPM -= 10.0f;
+				if( g_audioState.nRPM < 0.0f )
+					g_audioState.nRPM = 0.0f;
+				g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );
 			}
 			if (m_Controllers[i]->RightTrigger.WasPressedOrHeld())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::RT_BUTTON);
+				g_audioState.nRPM += 10.0f;
+                if( g_audioState.nRPM > 3000.0f )
+                    g_audioState.nRPM = 3000.0f;
+                g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );
 			}
 			if (m_Controllers[i]->LeftTrigger.WasPressedOrHeld())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::LT_BUTTON);
+				g_audioState.nRPM -= 10.0f;
+				if( g_audioState.nRPM < 0.0f )
+					g_audioState.nRPM = 0.0f;
+				g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );
 			}
 			if (m_Controllers[i]->Start.WasPressedOrHeld())
 			{

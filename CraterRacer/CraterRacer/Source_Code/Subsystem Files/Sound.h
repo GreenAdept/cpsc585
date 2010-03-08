@@ -9,11 +9,12 @@
 #include <strsafe.h>
 #pragma warning( default : 4996 )
 #include "Constants.h"
+#include "Sound.h"
 
 //-----------------------------------------------------------------------------
 // Forward declaration
 //-----------------------------------------------------------------------------
-HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR bgSoundbankFile );
+HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgSettingsFile, LPCWSTR bgSoundbankFile );
 void UpdateAudio();
 VOID CleanupXACT();
 void WINAPI XACTNotificationCallback( const XACT_NOTIFICATION* pNotification );
@@ -27,10 +28,19 @@ struct AUDIO_STATE
 {
     XACTINDEX iApplicationStart;
     XACTINDEX iGameStart;
+	XACTINDEX iEngine;
+
+	XACTCATEGORY iMusicCategory;
+    XACTCATEGORY iGlobalCategory;
+    XACTVARIABLEINDEX iRPMVariable;
+    XACTVARIABLEVALUE nRPM;
+
+	float fMusicVolume;
 
     IXACT3Engine* pEngine;
     IXACT3SoundBank* pSoundBank;
     IXACT3WaveBank* pBGMusicWaveBank;//pStreamingWaveBank;
+	IXACT3WaveBank* pSoundEffectWaveBank;
 
     IXACT3Cue* pZeroLatencyRevCue;
 
@@ -38,6 +48,7 @@ struct AUDIO_STATE
     HANDLE hBGMusicWaveBankFile; // Handle to wave bank data.  Its memory mapped so call UnmapViewOfFile() upon cleanup to release file
     VOID* pbSoundBank; // Pointer to sound bank data.  Call delete on it when the sound bank is destroyed
 	VOID* pbGameWaveBank;
+	VOID* pbSoundEffectWaveBank;
 
     CRITICAL_SECTION cs;
     bool bHandleStreamingWaveBankPrepared;
