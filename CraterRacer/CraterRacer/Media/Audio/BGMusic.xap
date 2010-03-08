@@ -226,7 +226,7 @@ Global Settings
         Reserved = 0;
         Read Only = 0;
         Time = 0;
-        Value = -3000.000000;
+        Value = 2852.216797;
         Initial Value = 0.000000;
         Min = -3000.000000;
         Max = 3000.000000;
@@ -238,7 +238,7 @@ Global Settings
 
         RPC Curve
         {
-            Name = 1::0791c363-ff6d-4a3e-a636-fe4c57cc5fc0;
+            Name = 1::f08fa5c9-9df1-485f-94ab-6177469c9b25;
             Property = 1;
             Sound = 0;
             Line Color = 4278212278;
@@ -251,22 +251,22 @@ Global Settings
 
             RPC Point
             {
-                X = -2940.886719;
-                Y = -178.546722;
+                X = -2926.108398;
+                Y = -303.114166;
                 Curve = 1;
             }
 
             RPC Point
             {
-                X = -2246.305420;
-                Y = -369.550171;
+                X = -2142.857178;
+                Y = -435.986145;
                 Curve = 1;
             }
 
             RPC Point
             {
-                X = -1167.487671;
-                Y = -502.422150;
+                X = -1152.709351;
+                Y = -577.162659;
                 Curve = 1;
             }
 
@@ -279,29 +279,29 @@ Global Settings
 
             RPC Point
             {
-                X = 1004.926086;
-                Y = -460.899628;
+                X = 1064.039429;
+                Y = -510.726654;
                 Curve = 2;
             }
 
             RPC Point
             {
-                X = 2068.965576;
-                Y = -269.896210;
+                X = 2142.857178;
+                Y = -361.245667;
                 Curve = 2;
             }
 
             RPC Point
             {
                 X = 3000.000000;
-                Y = -53.979237;
+                Y = -186.851212;
                 Curve = 2;
             }
         }
 
         RPC Curve
         {
-            Name = 1::f33ff4eb-06c8-4e83-a3d7-eed1d123ab9e;
+            Name = 1::a4c3ab46-3ccb-4a35-92ea-6bc960a81f00;
             Property = 0;
             Sound = 0;
             Line Color = 4284373633;
@@ -315,7 +315,7 @@ Global Settings
             RPC Point
             {
                 X = -2985.221680;
-                Y = 0.000000;
+                Y = -70.588234;
                 Curve = 0;
             }
 
@@ -328,8 +328,8 @@ Global Settings
 
             RPC Point
             {
-                X = 2985.221680;
-                Y = 70.588234;
+                X = 2955.665039;
+                Y = -70.588234;
                 Curve = 0;
             }
         }
@@ -526,15 +526,15 @@ Wave Bank
     Windows Bank Path Edited = 0;
     Seek Tables = 1;
     Compression Preset Name = <none>;
-    Bank Last Revised Low = 646748480;
-    Bank Last Revised High = 30064245;
+    Bank Last Revised Low = 591834520;
+    Bank Last Revised High = 30064389;
 
     Wave
     {
-        Name = engine;
-        File = engine.wav;
-        Build Settings Last Modified Low = 3788205776;
-        Build Settings Last Modified High = 30064244;
+        Name = Engine;
+        File = SoundEffects\Engine.wav;
+        Build Settings Last Modified Low = 802726408;
+        Build Settings Last Modified High = 30064386;
 
         Cache
         {
@@ -543,12 +543,35 @@ Wave Bank
             Sampling Rate = 44100;
             Bits Per Sample = 1;
             Play Region Offset = 44;
-            Play Region Length = 536506;
+            Play Region Length = 499200;
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 2658135428;
-            Last Modified High = 30026790;
+            Last Modified Low = 2663071816;
+            Last Modified High = 30064388;
+        }
+    }
+
+    Wave
+    {
+        Name = MeteorImpact;
+        File = SoundEffects\MeteorImpact.wav;
+        Build Settings Last Modified Low = 862236408;
+        Build Settings Last Modified High = 30064386;
+
+        Cache
+        {
+            Format Tag = 0;
+            Channels = 1;
+            Sampling Rate = 44100;
+            Bits Per Sample = 1;
+            Play Region Offset = 44;
+            Play Region Length = 264708;
+            Loop Region Offset = 0;
+            Loop Region Length = 0;
+            File Type = 1;
+            Last Modified Low = 24916408;
+            Last Modified High = 30064386;
         }
     }
 }
@@ -936,7 +959,7 @@ Sound Bank
                 {
                     Bank Name = SoundEffectWaveBank;
                     Bank Index = 1;
-                    Entry Name = engine;
+                    Entry Name = Engine;
                     Entry Index = 0;
                     Weight = 255;
                     Weight Min = 0;
@@ -946,13 +969,60 @@ Sound Bank
             RPC Curve Entry
             {
                 RPC Name = RPC Preset;
-                RPC Curve Name = 1::f33ff4eb-06c8-4e83-a3d7-eed1d123ab9e;
+                RPC Curve Name = 1::a4c3ab46-3ccb-4a35-92ea-6bc960a81f00;
             }
 
             RPC Curve Entry
             {
                 RPC Name = RPC Preset;
-                RPC Curve Name = 1::0791c363-ff6d-4a3e-a636-fe4c57cc5fc0;
+                RPC Curve Name = 1::f08fa5c9-9df1-485f-94ab-6177469c9b25;
+            }
+        }
+    }
+
+    Sound
+    {
+        Name = MeteorImpact;
+        Volume = -1200;
+        Pitch = 0;
+        Priority = 0;
+
+        Category Entry
+        {
+            Name = Default;
+        }
+
+        Track
+        {
+            Volume = 0;
+            Use Filter = 0;
+
+            Play Wave Event
+            {
+                Break Loop = 0;
+                Use Speaker Position = 0;
+                Use Center Speaker = 1;
+                New Speaker Position On Loop = 1;
+                Speaker Position Angle = 0.000000;
+                Speaker Position Arc = 0.000000;
+
+                Event Header
+                {
+                    Timestamp = 0;
+                    Relative = 0;
+                    Random Recurrence = 0;
+                    Random Offset = 0;
+                }
+
+                Wave Entry
+                {
+                    Bank Name = SoundEffectWaveBank;
+                    Bank Index = 1;
+                    Entry Name = MeteorImpact;
+                    Entry Index = 1;
+                    Weight = 255;
+                    Weight Min = 0;
+                }
             }
         }
     }
@@ -1053,6 +1123,26 @@ Sound Bank
         {
             Name = Engine;
             Index = 7;
+            Weight Min = 0;
+            Weight Max = 255;
+        }
+    }
+
+    Cue
+    {
+        Name = MeteorImpact;
+
+        Variation
+        {
+            Variation Type = 3;
+            Variation Table Type = 1;
+            New Variation on Loop = 0;
+        }
+
+        Sound Entry
+        {
+            Name = MeteorImpact;
+            Index = 8;
             Weight Min = 0;
             Weight Max = 255;
         }
