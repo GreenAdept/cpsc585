@@ -101,7 +101,7 @@ Material Material__79_19_-_DefaultSub0 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "CB_SKIN.TGA";
+  "CB_SKIN.bmp";
  }
 }
 
@@ -112,7 +112,7 @@ Material Material__79_23_-_DefaultSub1 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "GLASS.TGA";
+  "GLASS.bmp";
  }
 }
 
@@ -123,7 +123,7 @@ Material Material__79_18_-_DefaultSub2 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "STEER.TGA";
+  "STEER.bmp";
  }
 }
 
@@ -134,7 +134,7 @@ Material Material__79_22_-_DefaultSub3 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "BUG_ENG.TGA";
+  "BUG_ENG.bmp";
  }
 }
 
@@ -145,7 +145,7 @@ Material Material__68_24_-_DefaultSub0 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "TIRE_TEX.TGA";
+  "TIRE_TEX.bmp";
  }
 }
 
@@ -156,7 +156,7 @@ Material Material__68_17_-_DefaultSub1 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "BRAKE.TGA";
+  "BRAKE.bmp";
  }
 }
 
@@ -167,7 +167,7 @@ Material PDX24_-_Default {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "TIRE_TEX.TGA";
+  "TIRE_TEX.bmp";
  }
 }
 
@@ -178,7 +178,7 @@ Material Material__57_24_-_DefaultSub0 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "TIRE_TEX.TGA";
+  "TIRE_TEX.bmp";
  }
 }
 
@@ -189,7 +189,7 @@ Material Material__57_19_-_DefaultSub1 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "CB_SKIN.TGA";
+  "CB_SKIN.bmp";
  }
 }
 
@@ -200,7 +200,7 @@ Material Material__46_24_-_DefaultSub0 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "TIRE_TEX.TGA";
+  "TIRE_TEX.bmp";
  }
 }
 
@@ -211,7 +211,7 @@ Material Material__46_19_-_DefaultSub1 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "CB_SKIN.TGA";
+  "CB_SKIN.bmp";
  }
 }
 
@@ -222,7 +222,7 @@ Material Material__46_17_-_DefaultSub2 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "BRAKE.TGA";
+  "BRAKE.bmp";
  }
 }
 
@@ -233,7 +233,7 @@ Material PDX19_-_Default {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "CB_SKIN.TGA";
+  "CB_SKIN.bmp";
  }
 }
 
@@ -244,7 +244,7 @@ Material Material__35_19_-_DefaultSub0 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "CB_SKIN.TGA";
+  "CB_SKIN.bmp";
  }
 }
 
@@ -255,7 +255,7 @@ Material Material__35_22_-_DefaultSub1 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "BUG_ENG.TGA";
+  "BUG_ENG.bmp";
  }
 }
 
@@ -266,7 +266,7 @@ Material Material__35_PANSub2 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "BUGSPIN.TGA";
+  "BUGSPIN.bmp";
  }
 }
 
@@ -277,7 +277,7 @@ Material Material__35_14_-_DefaultSub3 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "BUGSPIN.TGA";
+  "BUGSPIN.bmp";
  }
 }
 
@@ -288,7 +288,7 @@ Material Material__35_21_-_DefaultSub4 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "PULLEY.TGA";
+  "PULLEY.bmp";
  }
 }
 
@@ -296,14 +296,14 @@ Frame RFWheel {
  
 
  FrameTransformMatrix {
-  0.000122,-0.000000,0.004398,0.000000,-0.000000,0.004384,-0.000000,0.000000,-0.006473,0.000000,-0.000223,0.000000,2.387296,-0.157713,3.193766,1.000000;;
+  -0.000041,0.000000,0.004384,0.000000,-0.000000,0.004384,-0.000000,0.000000,-0.006487,-0.000000,-0.000061,0.000000,2.500000,-0.157713,3.193766,1.000000;;
  }
 
  Frame {
   
 
   FrameTransformMatrix {
-   1.000000,0.000000,0.000000,0.000000,0.000000,1.000000,-0.000000,0.000000,-0.000000,-0.000000,1.000000,0.000000,-523.56799,135.974152,1704.83228,1.000000;;
+   1.000000,0.000000,0.000000,0.000000,0.000000,1.000000,-0.000000,0.000000,-0.000000,0.000000,1.000000,0.000000,-523.56799,135.974167,1704.83240,1.000000;;
   }
 
   Mesh  {

@@ -14,7 +14,7 @@ void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat )
 	BoundingBox tempBB = getBoundingBox();
 
 	D3DXMatrixIdentity( &translationMat );
-	D3DXMatrixTranslation( &translationMat, 0, -tempBB.m_fHeight/2, 0 );
+	D3DXMatrixTranslation( &translationMat, 0, -tempBB.m_fHeight, 0 );
 	D3DXMatrixMultiply( &mat, &mat, &translationMat );
 
 	setVelocity(velocity);
