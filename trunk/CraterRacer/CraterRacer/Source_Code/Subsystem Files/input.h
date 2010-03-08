@@ -29,6 +29,8 @@ public:
 	void setDir(float x, Input::Button button);
 	void setDir(float x);
 	void setDir(Input::Arrow, bool isKeyDown);
+	void setPressure(float p);
+	float getPressure();
 
 	void setKey(Input::Key key, bool isKeyDown);
 
@@ -39,6 +41,7 @@ private:
 
 	bool xBoxController;
 	float x;
+	float pressure;
 
 	DebugWriter m_Debugger;
 };

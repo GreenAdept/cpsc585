@@ -172,3 +172,13 @@ void Input::setKey(Input::Key key, bool isKeyDown)
 {
 	keys[key] = isKeyDown;
 }
+
+void Input::setPressure(float p)
+{
+	pressure = p;
+}
+
+float Input::getPressure()
+{
+	return pressure;
+}
