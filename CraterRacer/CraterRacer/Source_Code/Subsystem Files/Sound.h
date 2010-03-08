@@ -29,6 +29,7 @@ struct AUDIO_STATE
     XACTINDEX iApplicationStart;
     XACTINDEX iGameStart;
 	XACTINDEX iEngine;
+	XACTINDEX iImpact;
 
 	XACTCATEGORY iMusicCategory;
     XACTCATEGORY iGlobalCategory;

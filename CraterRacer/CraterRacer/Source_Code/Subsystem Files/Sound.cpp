@@ -205,6 +205,7 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgS
     // however this is ok especially during development.  The Play or Prepare call will just fail.
 	g_audioState.iGameStart = g_audioState.pSoundBank->GetCueIndex( "GameStart" );
 	g_audioState.iEngine = g_audioState.pSoundBank->GetCueIndex( "Engine" );
+	g_audioState.iImpact = g_audioState.pSoundBank->GetCueIndex( "MeteorImpact" );
 
 	// Get indices to XACT categories 
     g_audioState.iMusicCategory = g_audioState.pEngine->GetCategory( "Music" );
@@ -214,7 +215,7 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgS
     g_audioState.pEngine->GetGlobalVariable( g_audioState.iRPMVariable, &g_audioState.nRPM );
 
 	// Set the music volume
-	g_audioState.fMusicVolume = 0.4f;
+	g_audioState.fMusicVolume = 0.3f;
 	g_audioState.fGlobalVolume = 0.7f;
 	g_audioState.pEngine->SetVolume( g_audioState.iMusicCategory, g_audioState.fMusicVolume );
 	g_audioState.pEngine->SetVolume( g_audioState.iGlobalCategory, g_audioState.fGlobalVolume );
