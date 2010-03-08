@@ -69,7 +69,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 			moveMenuDown( );
 		
 		//a selection was made
-		if( m_MenuController->A.WasPressedOrHeld() )
+		if( m_MenuController->A.WasPressedOrHeld() || m_MenuController->Start.WasPressed() && m_AppState == APP_PAUSED )
 			processMenuSelection( );
 	}
 }

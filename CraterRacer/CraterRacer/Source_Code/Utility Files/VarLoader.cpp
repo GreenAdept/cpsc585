@@ -2,8 +2,10 @@
 
 bool VarLoader::loadVars( Simulator* sim )
 {
-	file.open("variables.txt");
+	file.open("variables.txt", ios::in );
 	if (!file.is_open()) return false;
+
+	file.seekg (0, ios::beg);
 
 	//read in the variables from the file
 	string strings[NUM_VARIABLES];
