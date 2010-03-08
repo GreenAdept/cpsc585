@@ -48,21 +48,30 @@ NUM_WAYPOINTS			39
 -255.858 31.8127 1.88409
 
 
-**METEOR_INFORMATION ----------------------------------------------
-
-MESH_FILENAME		Media\\Meshes\\CarBody.x
-EFFECT_FILENAME		Source_Code\\Effect_Files\\Scene.fx
-NUM_METEOR_GROUPS	1
-
-METEOR_GROUP		1
-NUM_METEORS			2
--340 0 40 10
--340 0 40
-0 0 180
-
 **CRATER_INFORMATION ----------------------------------------------
 
-NUM_CRATERS				0
+NUM_CRATERS				2
+
+MESH_FILENAME			Media\\Meshes\\CarBox.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\CarBox.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+
+
+**METEOR_INFORMATION ----------------------------------------------
+
+MESH_FILENAME			Media\\Meshes\\CarBody.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+NUM_METEOR_GROUPS		1
+
+METEOR_GROUP			1
+POSITION				-60 0 416
+RADIUS					50
+NUM_METEORS				2
+-73.8526 30 416			-73.8526 15 416				0
+-65 30 416				-60 15 416					1
 
 
 **PROP_INFORMATION ------------------------------------------------

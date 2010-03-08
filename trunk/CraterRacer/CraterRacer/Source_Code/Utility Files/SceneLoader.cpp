@@ -49,9 +49,9 @@ void SceneLoader::initScene( Device* device, const D3DSURFACE_DESC* backSurface,
 	file >> str;
 	processPathInfo( file );
 	file >> str;
-	processMeteorInfo( file );
-	file >> str;
 	processCraterInfo( file );
+	file >> str;
+	processMeteorInfo( file );
 	file >> str;
 	processPropInfo( file );
 	
@@ -138,7 +138,7 @@ void SceneLoader::processMeteorInfo( ifstream& file )
 	//DebugWriter debug;
 	string	str, flush;
 	string	mesh, effect;
-	int		numMeteorGroups, meteorGroupID, numMeteors;
+	int		numMeteorGroups, meteorGroupID, numMeteors, craterIndex;
 	float	x, y, z, radius;
 
 	file >> flush >> str;
@@ -167,15 +167,28 @@ void SceneLoader::processMeteorInfo( ifstream& file )
 		file >> meteorGroupID;
 
 		file >> str;
+		if( str != "POSITION" ) return;
+		file >> x >> y >> z;
+
+		file >> str;
+		if( str != "RADIUS" ) return;
+		file >> radius;
+
+		file >> str;
 		if( str != "NUM_METEORS" ) return;
 		file >> numMeteors;
-		file >> x >> y >> z >> radius;
 
 		MeteorGroup* meteorGroup = m_Objs.entityManager->makeMeteorGroup (Vec3(x,y,z), meteorGroupID, numMeteors, radius);
 
 		for (int j = 0; j < numMeteors; j++) {
 			file >> x >> y >> z;
 			Meteor* m = m_Objs.entityManager->makeMeteor (m_Device, Vec3(x,y,z), toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str());
+			file >> x >> y >> z;
+			m->setTarget (Vec3 (x, y, z));
+
+			file >> craterIndex;
+			m->setCraterToSpawn (m_Objs.entityManager->getCrater(craterIndex));
+
 			meteorGroup->addMeteor (j, m);
 		}
 	}
@@ -183,12 +196,31 @@ void SceneLoader::processMeteorInfo( ifstream& file )
 
 void SceneLoader::processCraterInfo( ifstream& file ) {
 	string	str,
-			flush;
+			flush,
+			mesh,
+			effect;
 	int		num_craters;
+	Vec3    pos;
 
 	file >> flush >> str;
 	if( str != "NUM_CRATERS" ) return;
 	file >> num_craters;
+
+	for (int i=0; i<num_craters; i++) {
+		file >> str;
+		if (str != "MESH_FILENAME") return;
+		file >> mesh;
+
+		file >> str;
+		if (str != "EFFECT_FILENAME") return;
+		file >> effect;
+
+		file >> str;
+		if (str != "POSITION") return;
+		file >> pos.x >> pos.y >> pos.z;
+
+		m_Objs.entityManager->makeCrater( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
+	}
 }
 void SceneLoader::processPropInfo( ifstream& file ) {
 	string	str,

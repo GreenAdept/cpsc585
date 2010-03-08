@@ -166,6 +166,10 @@ Terrain* EntityManager::getTerrain () {
 		return (Terrain*) entities[TERRAIN][0];
 }
 
+Crater* EntityManager::getCrater (int index) {
+	return (Crater*) entities[CRATERS][index];
+}
+
 
 
 //------------------------------------------------------

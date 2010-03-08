@@ -145,16 +145,13 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 	{
 		if (meteorGroups[i]->getAI()->getState() == AI::TRIGGERED) {
 			//create the meteors for the group
-			createMeteorGroup(meteorGroups[i]);
+			//createMeteorGroup(meteorGroups[i]);
 		}
 		else if (meteorGroups[i]->getAI()->getState() == AI::MOVING) {
 			//simulate the meteors for the group
 			simulateMeteorGroup(meteorGroups[i], elapsedTime);
 		}
 	}
-
-	NxVec3 test(vehicles[0]->getPosition());
-	//m_Debugger.writeToFile(Vec3(test.x, test.y, test.z));
 }
 
 void Simulator::respawn(NxActor* actor, Vehicle* vehicle)
@@ -498,22 +495,27 @@ void Simulator::createMeteorGroup(MeteorGroup* mg) {
 
 void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time) {
 	for (int i = 0; i < mg->numMeteors; i++) {
-		NxVec3 target(-381.64, -7, 262.186);
+		Meteor* m = mg->meteors[i];
+		if (m->getAI()->getState() != AI::MOVING)
+			continue;
+
+		Vec3 currentPos = m->getPosition();
+		Vec3 target = m->getTarget();
 		float speed = 70;
 
-		Vec3 tempPos(mg->meteors[i]->getPosition());
-		NxVec3 currentPosition(tempPos.x, tempPos.y, tempPos.z);
-		NxVec3 direction = target - currentPosition;
-		direction = normalize(direction);
+		Vec3 direction = target - currentPos;
+		float travelled = speed * time;
+		float toTravel = D3DXVec3Length (&direction);
+		if (travelled >= toTravel) {
+			currentPos = target;
+			m->informOfCollision();
+		}
+		else {
+			direction /= toTravel;
+			currentPos += (direction * travelled);
 
-		currentPosition += (direction * speed * time);
-		Vec3 currentPos = Vec3(currentPosition.x, currentPosition.y, currentPosition.z);
-
-		Matrix m;
-		D3DXMatrixIdentity( &m );
-		D3DXMatrixTranslation( &m, currentPos.x, currentPos.y, currentPos.z );
-		
-		mg->meteors[i]->update(currentPos, m);
+			m->update (currentPos);
+		}
 	}
 }
 
