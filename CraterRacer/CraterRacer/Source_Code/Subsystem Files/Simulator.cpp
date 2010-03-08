@@ -117,6 +117,17 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 		NxVec3 vec = m_Vehicle->getGlobalPosition();
 		m_Vehicle->getGlobalPose().getColumnMajor44( m );
 
+		//NxVec3 upVec = m_Vehicle->getGlobalOrientation().getRow(1);
+		//double dot = upVec.dot(NxVec3(0, 1, 0));
+		//dot = acos(dot);
+		//m_Debugger.writeToFile(dot*180/3.1415);
+		//if (dot < -(3.1415/2))
+		//	//apply force to make it upright again
+		//	m_Debugger.writeToFile("tilted < -90");
+		//else if (dot > (3.1415/2))
+		//	m_Debugger.writeToFile("tilted > 90");
+
+
 		float height = vehicles[i]->getBoundingBox().m_fHeight;
 		Matrix mat;
 		D3DXMatrixIdentity( &mat );
@@ -144,6 +155,22 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 
 	NxVec3 test(vehicles[0]->getPosition());
 	//m_Debugger.writeToFile(Vec3(test.x, test.y, test.z));
+}
+
+void Simulator::respawn(NxActor* actor, Vehicle* vehicle)
+{
+	Vec3 respawnPoint = vehicle->lastPassedWP();
+	respawnPoint.y += 5;
+	Vec3 nextPoint = vehicle->nextWP();
+	Vec3 difference = nextPoint - respawnPoint;
+	NxVec3 diff = NxVec3(difference.x, difference.y, difference.z);
+	diff = normalize(diff);
+
+	NxMat33 reset(NxVec3(difference.z, 0, difference.x), NxVec3(0, 1, 0), NxVec3(0, 0, 1));
+	actor->setLinearVelocity(NxVec3(0, 0, 0));
+	actor->setAngularVelocity(NxVec3(0, 0, 0));
+	actor->setGlobalOrientation(reset);
+	actor->setGlobalPosition(NxVec3(respawnPoint.x, respawnPoint.y, respawnPoint.z));
 }
 
 //--------------------------------------------------------------------------------------
@@ -228,18 +255,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			}
 			case 6: //BACK_BUTTON - respawn
 			{
-				Vec3 respawnPoint = vehicle->lastPassedWP();
-				respawnPoint.y += 5;
-				Vec3 nextPoint = vehicle->nextWP();
-				Vec3 difference = nextPoint - respawnPoint;
-				NxVec3 diff = NxVec3(difference.x, difference.y, difference.z);
-				diff = normalize(diff);
-
-				NxMat33 reset(NxVec3(difference.z, 0, difference.x), NxVec3(0, 1, 0), NxVec3(0, 0, 1));
-				actor->setLinearVelocity(NxVec3(0, 0, 0));
-				actor->setAngularVelocity(NxVec3(0, 0, 0));
-				actor->setGlobalOrientation(reset);
-				actor->setGlobalPosition(NxVec3(respawnPoint.x, respawnPoint.y, respawnPoint.z));
+				respawn(actor, vehicle);
 				noInput = false;
 				break;
 			}

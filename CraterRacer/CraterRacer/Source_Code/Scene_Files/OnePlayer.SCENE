@@ -14,7 +14,7 @@ POSITION:			-242 40 30
 **COMPUTER_VEHICLES ----------------------------------------------
 
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
-POSITION:			-330 5 0
+POSITION:			-230 40 40
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
-POSITION:			-330 5 -25
+POSITION:			-250 40 20
 

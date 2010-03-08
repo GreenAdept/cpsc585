@@ -173,7 +173,8 @@ void GameObj::processInput( float fElapsedTime )
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::B_BUTTON);
 			}
-			if (m_Controllers[i]->Y.WasPressedOrHeld())
+			//if (m_Controllers[i]->Y.WasPressedOrHeld())
+			if (m_Controllers[i]->Y.WasPressed())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::Y_BUTTON);
 			}
@@ -188,6 +189,7 @@ void GameObj::processInput( float fElapsedTime )
 			if (m_Controllers[i]->RightTrigger.WasPressedOrHeld())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::RT_BUTTON);
+				v->setPressure(m_Controllers[i]->LeftTrigger.GetValue());
 				g_audioState.nRPM += 10.0f;
                 if( g_audioState.nRPM > 3000.0f )
                     g_audioState.nRPM = 3000.0f;
@@ -196,6 +198,7 @@ void GameObj::processInput( float fElapsedTime )
 			if (m_Controllers[i]->LeftTrigger.WasPressedOrHeld())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::LT_BUTTON);
+				v->setPressure(m_Controllers[i]->LeftTrigger.GetValue());
 				g_audioState.nRPM -= 10.0f;
 				if( g_audioState.nRPM < 0.0f )
 					g_audioState.nRPM = 0.0f;
@@ -209,7 +212,7 @@ void GameObj::processInput( float fElapsedTime )
 					pauseGame( );
 			}
 
-			if (m_Controllers[i]->Back.WasPressedOrHeld())
+			if (m_Controllers[i]->Back.WasPressed())
 			{
 				//respawn car
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::BACK_BUTTON);
