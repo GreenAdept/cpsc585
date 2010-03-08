@@ -1,5 +1,3 @@
-= Issues =
-
 - Engine logic isn't entirely correct and hackish implementation
 
 - AI navigation is buggy
