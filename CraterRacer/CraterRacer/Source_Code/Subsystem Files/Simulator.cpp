@@ -182,7 +182,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 	for (int i = 0; i < 4; i++) 
 		localWheelForce[i] = globalWheelForce[i] = NxVec3(0, 0, 0);
 	
-	bool* buttons = vehicle->getInputObj()->getButtons();
+	Input* input = vehicle->getInputObj();
+	bool* buttons = input->getButtons();
 	NxVec3 velocity;
 	NxReal friction = m_rDynamicFriction;
 	boolean noInput = true;
@@ -218,12 +219,13 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			{
 				// if velocity is less than 1m/s when pressing LT_BUTTON, reverse
 				bool reversing = vehicle->isReversing();
+				float pressure = input->getPressure();
 				g_audioState.reverse = true;
 				if (reversing || (actor->getLinearVelocity().magnitude() < 1))
 				{
 					vehicle->setReverse(true);
-					localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 );
-					localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 );
+					localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5);// * (0.5+pressure) );
+					localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5);// * (0.5+pressure) );
 					noInput = false;
 					break;
 				}
@@ -236,9 +238,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			case 5: //RT_BUTTON - accelerating
 			{
 				//if reversing, brake
+				float pressure = input->getPressure();
 				if (vehicle->isReversing())
 				{
-					friction = friction + m_rBrakingFriction;
+					friction = friction + m_rBrakingFriction;// * (0.5+pressure);
 					vehicle->setReverse(false);
 					g_audioState.reverse = -1;
 					break;
@@ -246,8 +249,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				//else, accelerate
 				velocity = actor->getLinearVelocity();
 				if(velocity.magnitude() < MAX_VELOCITY){
-					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
-					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
+					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength);// * (0.5+pressure) );
+					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength);// * (0.5+pressure) );
 				}
 				noInput = false;
 				g_audioState.acceleration = 1;
