@@ -18,6 +18,7 @@
 
 #define PI					3.14159265
 #define MAX_VELOCITY		65.0
+#define MIN_VELOCITY		0.5
 
 #include <iostream>
 using namespace std;

@@ -221,6 +221,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			{
 				// if velocity is less than 1m/s when pressing LT_BUTTON, reverse
 				bool reversing = vehicle->isReversing();
+				g_audioState.reverse = true;
 				if (reversing || (actor->getLinearVelocity().magnitude() < 1))
 				{
 					vehicle->setReverse(true);
@@ -242,6 +243,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				{
 					friction = friction + m_rBrakingFriction;
 					vehicle->setReverse(false);
+					g_audioState.reverse = -1;
 					break;
 				}
 				//else, accelerate
@@ -251,6 +253,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength );
 				}
 				noInput = false;
+				g_audioState.acceleration = 1;
 				break; 
 			}
 			case 6: //BACK_BUTTON - respawn
@@ -259,6 +262,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				noInput = false;
 				break;
 			}
+			default:
+				g_audioState.acceleration = 0;
 		}
 	}
 

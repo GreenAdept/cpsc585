@@ -36,6 +36,10 @@ struct AUDIO_STATE
     XACTVARIABLEVALUE nRPM;
 
 	float fMusicVolume;
+	float fGlobalVolume;
+
+	int acceleration;
+	bool reverse;
 
     IXACT3Engine* pEngine;
     IXACT3SoundBank* pSoundBank;
