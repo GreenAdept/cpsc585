@@ -226,9 +226,9 @@ Global Settings
         Reserved = 0;
         Read Only = 0;
         Time = 0;
-        Value = 1426.108398;
+        Value = -3000.000000;
         Initial Value = 0.000000;
-        Min = 0.000000;
+        Min = -3000.000000;
         Max = 3000.000000;
     }
 
@@ -238,7 +238,7 @@ Global Settings
 
         RPC Curve
         {
-            Name = 1::a767e0b4-c106-4e50-8592-572017f1536a;
+            Name = 1::0791c363-ff6d-4a3e-a636-fe4c57cc5fc0;
             Property = 1;
             Sound = 0;
             Line Color = 4278212278;
@@ -251,36 +251,43 @@ Global Settings
 
             RPC Point
             {
+                X = -2940.886719;
+                Y = -178.546722;
+                Curve = 1;
+            }
+
+            RPC Point
+            {
+                X = -2246.305420;
+                Y = -369.550171;
+                Curve = 1;
+            }
+
+            RPC Point
+            {
+                X = -1167.487671;
+                Y = -502.422150;
+                Curve = 1;
+            }
+
+            RPC Point
+            {
                 X = 0.000000;
-                Y = -734.948120;
+                Y = -600.000000;
                 Curve = 2;
             }
 
             RPC Point
             {
-                X = 532.019714;
-                Y = -577.162659;
+                X = 1004.926086;
+                Y = -460.899628;
                 Curve = 2;
             }
 
             RPC Point
             {
-                X = 1241.379272;
-                Y = -419.377197;
-                Curve = 2;
-            }
-
-            RPC Point
-            {
-                X = 1876.847290;
-                Y = -303.114166;
-                Curve = 2;
-            }
-
-            RPC Point
-            {
-                X = 2534.482666;
-                Y = -170.242218;
+                X = 2068.965576;
+                Y = -269.896210;
                 Curve = 2;
             }
 
@@ -289,6 +296,41 @@ Global Settings
                 X = 3000.000000;
                 Y = -53.979237;
                 Curve = 2;
+            }
+        }
+
+        RPC Curve
+        {
+            Name = 1::f33ff4eb-06c8-4e83-a3d7-eed1d123ab9e;
+            Property = 0;
+            Sound = 0;
+            Line Color = 4284373633;
+            Viewable = 1;
+
+            Variable Entry
+            {
+                Name = RPM;
+            }
+
+            RPC Point
+            {
+                X = -2985.221680;
+                Y = 0.000000;
+                Curve = 0;
+            }
+
+            RPC Point
+            {
+                X = 0.000000;
+                Y = -458.823547;
+                Curve = 0;
+            }
+
+            RPC Point
+            {
+                X = 2985.221680;
+                Y = 70.588234;
+                Curve = 0;
             }
         }
     }
@@ -304,6 +346,12 @@ Wave Bank
     Streaming = 1;
     Seek Tables = 1;
     Compression Preset Name = <none>;
+    Xbox Bank Last Modified Low = 0;
+    Xbox Bank Last Modified High = 0;
+    PC Bank Last Modified Low = 0;
+    PC Bank Last Modified High = 0;
+    Header Last Modified Low = 0;
+    Header Last Modified High = 0;
     Bank Last Revised Low = 3562896544;
     Bank Last Revised High = 30064211;
 
@@ -512,6 +560,8 @@ Sound Bank
     Windows File = Win\MainSoundBank.xsb;
     Xbox Bank Path Edited = 0;
     Windows Bank Path Edited = 0;
+    Header Last Modified High = 0;
+    Header Last Modified Low = 0;
 
     Sound
     {
@@ -851,7 +901,7 @@ Sound Bank
 
         Category Entry
         {
-            Name = Default;
+            Name = Global;
         }
 
         RPC Entry
@@ -896,7 +946,13 @@ Sound Bank
             RPC Curve Entry
             {
                 RPC Name = RPC Preset;
-                RPC Curve Name = 1::a767e0b4-c106-4e50-8592-572017f1536a;
+                RPC Curve Name = 1::f33ff4eb-06c8-4e83-a3d7-eed1d123ab9e;
+            }
+
+            RPC Curve Entry
+            {
+                RPC Name = RPC Preset;
+                RPC Curve Name = 1::0791c363-ff6d-4a3e-a636-fe4c57cc5fc0;
             }
         }
     }

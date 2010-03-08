@@ -214,8 +214,10 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgS
     g_audioState.pEngine->GetGlobalVariable( g_audioState.iRPMVariable, &g_audioState.nRPM );
 
 	// Set the music volume
-	g_audioState.fMusicVolume = 0.7f;
+	g_audioState.fMusicVolume = 0.4f;
+	g_audioState.fGlobalVolume = 0.7f;
 	g_audioState.pEngine->SetVolume( g_audioState.iMusicCategory, g_audioState.fMusicVolume );
+	g_audioState.pEngine->SetVolume( g_audioState.iGlobalCategory, g_audioState.fGlobalVolume );
     return S_OK;
 }
 
@@ -433,4 +435,9 @@ bool DoesCommandLineContainAuditionSwitch()
     }
     LocalFree( pstrArgList );
     return false;
+}
+
+//--------------------------------------------------------
+void CalculateRPM(){
+	
 }
