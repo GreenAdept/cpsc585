@@ -44,7 +44,7 @@
  - Menu screen:  - UP/DOWN Arrow Keys to move to menu buttons
 		 - ENTER to select menu choice
 
- - Game Play:	 - Arrow Keys to move the car around
+ - Game Play:
 		 - "d" key to drop the car from a position above the ground
 		 - "s" key to stop the vehicle motion
 		 - "spacebar" to pause the game
@@ -97,6 +97,9 @@
  The sound system plays background music and loops through various
  soundtracks. Engine noise and meteor crashing sound effects also
  present.
+
+ The keyboard's controls do not work for this milestone anymore. The
+ controller layout has been changed to reflect standard racing controls.
 
 -----------------------------------------------------------------------
 				Issues
