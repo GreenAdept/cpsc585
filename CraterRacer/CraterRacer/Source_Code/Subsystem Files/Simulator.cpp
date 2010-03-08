@@ -344,6 +344,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			//calculate the spring force
 			susForce = -1 * m_rSpringScale * m_rSpringK * ( hit.distance - wheelRadius - m_rWheelRestLength );
 
+			//if the car is close to bottoming out, double the force
+			if (w->getDisplacement()/m_rMaxWheelDisplacement >= 0.75) {
+				susForce = susForce * 2;
+			}
+
 			//calculate the damping force
 			NxVec3 ptVelocity = actor->getLocalPointVelocity( w->getChassisPt() );
 			damperForce = m_rSpringC * m_rDamperScale * ptVelocity.dot( susAxis );
