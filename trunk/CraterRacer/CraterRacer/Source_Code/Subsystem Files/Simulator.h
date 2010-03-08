@@ -14,6 +14,7 @@
 #include "MeteorGroup.h"
 #include "Terrain.h"
 #include "DebugWriter.h"
+#include "Sound.h"
 
 #define PI					3.14159265
 #define MAX_VELOCITY		65.0

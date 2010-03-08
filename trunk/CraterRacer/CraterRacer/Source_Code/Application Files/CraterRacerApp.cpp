@@ -179,11 +179,12 @@ void RacerApp::processMenuSelection( )
 		{
 			//start the game
 			case GUI_BTN_SINGLE_PLAYER:
-				if( g_audioState.pSoundBank )
-					g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
-
 				g_pGame = m_SceneLoader->startGame( ONE_PLAYER_SCENE_FILE ); //load one player game
 				g_pGame->startClock();
+				if( g_audioState.pSoundBank ){
+					g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
+					g_audioState.pSoundBank->Play(g_audioState.iEngine, 0, 0, NULL);
+				}
 
 				m_AppState = APP_RENDER_GAME; 
 				break;
@@ -419,7 +420,7 @@ RacerApp::RacerApp()
 	m_AppState = APP_STARTUP;
 
 	// Set up the audio
-	HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, BG_SOUNDBANK_FILE );
+	HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, SE_WAVEBANK_FILE, BG_SETTINGS_FILE, BG_SOUNDBANK_FILE );
 
 	//initialize the resource manager to keep track of all our screens and HUD
 	m_MenuScreen.Init( &m_ResourceManager );

@@ -214,6 +214,84 @@ Global Settings
         Min = 0.000000;
         Max = 1000000.000000;
     }
+
+    Variable
+    {
+        Name = RPM;
+        Public = 1;
+        Global = 1;
+        Internal = 0;
+        External = 0;
+        Monitored = 1;
+        Reserved = 0;
+        Read Only = 0;
+        Time = 0;
+        Value = 1426.108398;
+        Initial Value = 0.000000;
+        Min = 0.000000;
+        Max = 3000.000000;
+    }
+
+    RPC
+    {
+        Name = RPC Preset;
+
+        RPC Curve
+        {
+            Name = 1::a767e0b4-c106-4e50-8592-572017f1536a;
+            Property = 1;
+            Sound = 0;
+            Line Color = 4278212278;
+            Viewable = 1;
+
+            Variable Entry
+            {
+                Name = RPM;
+            }
+
+            RPC Point
+            {
+                X = 0.000000;
+                Y = -734.948120;
+                Curve = 2;
+            }
+
+            RPC Point
+            {
+                X = 532.019714;
+                Y = -577.162659;
+                Curve = 2;
+            }
+
+            RPC Point
+            {
+                X = 1241.379272;
+                Y = -419.377197;
+                Curve = 2;
+            }
+
+            RPC Point
+            {
+                X = 1876.847290;
+                Y = -303.114166;
+                Curve = 2;
+            }
+
+            RPC Point
+            {
+                X = 2534.482666;
+                Y = -170.242218;
+                Curve = 2;
+            }
+
+            RPC Point
+            {
+                X = 3000.000000;
+                Y = -53.979237;
+                Curve = 2;
+            }
+        }
+    }
 }
 
 Wave Bank
@@ -226,10 +304,8 @@ Wave Bank
     Streaming = 1;
     Seek Tables = 1;
     Compression Preset Name = <none>;
-    Header Last Modified Low = 0;
-    Header Last Modified High = 0;
-    Bank Last Revised Low = 496533280;
-    Bank Last Revised High = 30064195;
+    Bank Last Revised Low = 3562896544;
+    Bank Last Revised High = 30064211;
 
     Wave
     {
@@ -387,21 +463,55 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 3190338884;
-            Last Modified High = 30059455;
+            Last Modified Low = 1427389936;
+            Last Modified High = 30059534;
+        }
+    }
+}
+
+Wave Bank
+{
+    Name = SoundEffectWaveBank;
+    Xbox File = Xbox\SoundEffectWaveBank.xwb;
+    Windows File = Win\SoundEffectWaveBank.xwb;
+    Xbox Bank Path Edited = 0;
+    Windows Bank Path Edited = 0;
+    Seek Tables = 1;
+    Compression Preset Name = <none>;
+    Bank Last Revised Low = 646748480;
+    Bank Last Revised High = 30064245;
+
+    Wave
+    {
+        Name = engine;
+        File = engine.wav;
+        Build Settings Last Modified Low = 3788205776;
+        Build Settings Last Modified High = 30064244;
+
+        Cache
+        {
+            Format Tag = 0;
+            Channels = 1;
+            Sampling Rate = 44100;
+            Bits Per Sample = 1;
+            Play Region Offset = 44;
+            Play Region Length = 536506;
+            Loop Region Offset = 0;
+            Loop Region Length = 0;
+            File Type = 1;
+            Last Modified Low = 2658135428;
+            Last Modified High = 30026790;
         }
     }
 }
 
 Sound Bank
 {
-    Name = BGMusicSoundBank;
-    Xbox File = Xbox\BGMusicSoundBank.xsb;
-    Windows File = Win\BGMusicSoundBank.xsb;
+    Name = MainSoundBank;
+    Xbox File = Xbox\MainSoundBank.xsb;
+    Windows File = Win\MainSoundBank.xsb;
     Xbox Bank Path Edited = 0;
     Windows Bank Path Edited = 0;
-    Header Last Modified High = 0;
-    Header Last Modified Low = 0;
 
     Sound
     {
@@ -412,7 +522,7 @@ Sound Bank
 
         Category Entry
         {
-            Name = Default;
+            Name = Music;
         }
 
         Track
@@ -459,7 +569,7 @@ Sound Bank
 
         Category Entry
         {
-            Name = Default;
+            Name = Music;
         }
 
         Track
@@ -506,7 +616,7 @@ Sound Bank
 
         Category Entry
         {
-            Name = Default;
+            Name = Music;
         }
 
         Track
@@ -553,7 +663,7 @@ Sound Bank
 
         Category Entry
         {
-            Name = Default;
+            Name = Music;
         }
 
         Track
@@ -600,7 +710,7 @@ Sound Bank
 
         Category Entry
         {
-            Name = Default;
+            Name = Music;
         }
 
         Track
@@ -647,7 +757,7 @@ Sound Bank
 
         Category Entry
         {
-            Name = Default;
+            Name = Music;
         }
 
         Track
@@ -694,7 +804,7 @@ Sound Bank
 
         Category Entry
         {
-            Name = Default;
+            Name = Music;
         }
 
         Track
@@ -728,6 +838,65 @@ Sound Bank
                     Weight = 255;
                     Weight Min = 0;
                 }
+            }
+        }
+    }
+
+    Sound
+    {
+        Name = Engine;
+        Volume = -1200;
+        Pitch = 0;
+        Priority = 0;
+
+        Category Entry
+        {
+            Name = Default;
+        }
+
+        RPC Entry
+        {
+            RPC Name = RPC Preset;
+        }
+
+        Track
+        {
+            Volume = 0;
+            Use Filter = 0;
+
+            Play Wave Event
+            {
+                Loop Count = 255;
+                Break Loop = 0;
+                Use Speaker Position = 0;
+                Use Center Speaker = 1;
+                New Speaker Position On Loop = 1;
+                Speaker Position Angle = 0.000000;
+                Speaker Position Arc = 0.000000;
+
+                Event Header
+                {
+                    Timestamp = 0;
+                    Relative = 0;
+                    Random Recurrence = 0;
+                    Random Offset = 0;
+                }
+
+                Wave Entry
+                {
+                    Bank Name = SoundEffectWaveBank;
+                    Bank Index = 1;
+                    Entry Name = engine;
+                    Entry Index = 0;
+                    Weight = 255;
+                    Weight Min = 0;
+                }
+            }
+
+            RPC Curve Entry
+            {
+                RPC Name = RPC Preset;
+                RPC Curve Name = 1::a767e0b4-c106-4e50-8592-572017f1536a;
             }
         }
     }
@@ -810,6 +979,26 @@ Sound Bank
                 Fade Out = 0;
                 Crossfade Type = 2;
             }
+        }
+    }
+
+    Cue
+    {
+        Name = Engine;
+
+        Variation
+        {
+            Variation Type = 4;
+            Variation Table Type = 1;
+            New Variation on Loop = 0;
+        }
+
+        Sound Entry
+        {
+            Name = Engine;
+            Index = 7;
+            Weight Min = 0;
+            Weight Max = 255;
         }
     }
 }

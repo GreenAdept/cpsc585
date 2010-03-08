@@ -16,8 +16,9 @@
 #define TIME_TRIAL_SCENE_FILE	"Source_Code\\Scene_Files\\TimeTrial.SCENE"
 #define INIT_SCENE_FILE			"Source_Code\\Scene_Files\\Initialize.SCENE"
 #define BG_WAVEBANK_FILE		L"Media\\Audio\\Win\\BGMusicWaveBank.xwb"
-#define BG_SOUNDBANK_FILE		L"Media\\Audio\\Win\\BGMusicSoundBank.xsb"
-
+#define SE_WAVEBANK_FILE		L"Media\\Audio\\Win\\SoundEffectWaveBank.xwb"
+#define BG_SOUNDBANK_FILE		L"Media\\Audio\\Win\\MainSoundBank.xsb"
+#define BG_SETTINGS_FILE		L"Media\\Audio\\Win\\BGMusic.xgs"
 //--------------------------------------------------------
 //		CLASS: RacerApp
 //--------------------------------------------------------
