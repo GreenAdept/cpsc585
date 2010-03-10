@@ -20,6 +20,7 @@ class GameCamera {
 	Entity *target;
 	MCamera camera;
 
+	bool rearView;
 	Vec3 offset;
 	Vec3 eye, lookAt;
 	Vec3 interpolate (float distance, Vec3 newEye);
@@ -27,9 +28,10 @@ class GameCamera {
 public:
 	GameCamera();
 
-	void setTarget (Entity *e);
-	void updateWindow (const D3DSURFACE_DESC* pSurface);
-	MCamera getCamera ();
+	void    setTarget      (Entity *e);
+	void    updateWindow   (const D3DSURFACE_DESC* pSurface);
+	MCamera getCamera      ();
+	void    toggleRearView ();
 };
 
 
