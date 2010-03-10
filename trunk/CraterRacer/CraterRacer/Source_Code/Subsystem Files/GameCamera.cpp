@@ -9,6 +9,7 @@
 
 GameCamera::GameCamera () {
 	offset = Vec3 (0.0f, 5.0f, -20.0f);
+	rearView = false;
 	setTarget (0);
 }
 
@@ -82,4 +83,15 @@ MCamera GameCamera::getCamera () {
 	eye = interpolate (dist, newEye);
 	camera.SetViewParams (&eye, &lookAt);
 	return camera;
+}
+
+void GameCamera::toggleRearView () {
+	rearView = !rearView;
+	offset.x = -offset.x;
+	offset.z = -offset.z;
+
+	Vec3 temp = eye - lookAt;
+	temp.x = -temp.x;
+	temp.z = -temp.z;
+	eye = lookAt + temp;
 }

@@ -12,12 +12,16 @@
 void TriggerCylinder::think (EntityManager *em, int myList, int myIndex) {
 	if (state == AI::STOPPED) return;
 
-	Vec3 player = em->getPosition (PLAYERS, 0);
+	vector<Vehicle*> vehicles = em->getVehicles ();
 	Vec3 center = em->getPosition (myList, myIndex);
 	
-	float d = distSquared (player, center);
-	if (d <= radius)
-		state = AI::TRIGGERED;
-	else
-		state = AI::WAITING;
+	for (int i=0; i<vehicles.size(); i++) {
+		Vec3 pos = vehicles[i]->getPosition();
+		float d = distSquared (pos, center);
+		if (d <= radius) {
+			state = AI::TRIGGERED;
+			return;
+		}
+	}
+	state = AI::WAITING;
 }
