@@ -148,6 +148,7 @@ void GameObj::think ()
 
 
 	m_Victory.calculateRanks (m_Entities->getVehicles());
+	m_Victory.recordTime(m_clock.getTotalTimeInMS());
 }
 
 
