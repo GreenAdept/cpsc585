@@ -58,8 +58,9 @@ public:
 	SceneLoader ( );
 	~SceneLoader( );
 
-	GameObj* startGame	( string filename );	
-	void	 initScene	( Device* device, const D3DSURFACE_DESC* backSurface, string filename );
+	void startGame	( string filename );	
+	void initScene	( GameObj** obj );
+	void initVars	( Device* device, const D3DSURFACE_DESC* backSurface, string filename );
 
 	void processTerrainInfo		( ifstream& file );
 	void processPathInfo		( ifstream& file );
@@ -81,6 +82,7 @@ private:
 	D3DSURFACE_DESC*	m_BackSurface;
 	GameObj*			m_Game;
 	SceneObjects		m_Objs;
+	string				m_InitFilename;
 };
 
 #endif //SCENE_LOADER_H

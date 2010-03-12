@@ -34,7 +34,8 @@ public:
 	~GameObj( );
 
 	void think           ( void );
-	bool pauseGame		 ( );
+	void pauseGame		 ( );
+	void unpauseGame	 ( );
 	bool isPaused		 ( );
 	void processInput	 ( float fElapsedTime );
 	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );

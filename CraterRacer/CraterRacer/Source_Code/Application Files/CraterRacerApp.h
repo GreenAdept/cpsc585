@@ -15,10 +15,42 @@
 #define TWO_PLAYER_SCENE_FILE	"Source_Code\\Scene_Files\\TwoPlayer.SCENE"
 #define TIME_TRIAL_SCENE_FILE	"Source_Code\\Scene_Files\\TimeTrial.SCENE"
 #define INIT_SCENE_FILE			"Source_Code\\Scene_Files\\Initialize.SCENE"
+
+//Image constants
+#define MENU_IMAGE_FILE					L"Media\\Images\\Logo.png"
+#define ONEPLAYER_NOTACTIVE_IMAGE_FILE	L"Media\\Images\\OnePlayerNotActive.png"
+#define ONEPLAYER_ACTIVE_IMAGE_FILE		L"Media\\Images\\OnePlayerActive.png"
+#define EXIT_NOTACTIVE_IMAGE_FILE		L"Media\\Images\\ExitNotActive.png"
+#define EXIT_ACTIVE_IMAGE_FILE			L"Media\\Images\\ExitActive.png"
+#define LOADING_IMAGE_FILE				L"Media\\Images\\Loading.png"
+#define LOADING_SMALLBALL_IMAGE_FILE	L"Media\\Images\\LoadingSmallBall.png"
+#define LOADING_BIGBALL_IMAGE_FILE		L"Media\\Images\\LoadingBigBall.png"
+#define UNPAUSE_IMAGE_FILE				L"Media\\Images\\Unpause.png"
+#define UNPAUSE_ACTIVE_IMAGE_FILE		L"Media\\Images\\UnpauseActive.png"
+#define EXIT2_NOTACTIVE_IMAGE_FILE		L"Media\\Images\\ExitNotActive.png"
+#define EXIT2_ACTIVE_IMAGE_FILE			L"Media\\Images\\ExitActive.png"
+
+#define INIT_LOAD				0
+#define GAME_LOAD				1
+#define NUM_IMAGES				12
+#define NUM_BUTTONS				4
+#define NUM_LOADING_BALLS		7
+
 #define BG_WAVEBANK_FILE		L"Media\\Audio\\Win\\BGMusicWaveBank.xwb"
 #define SE_WAVEBANK_FILE		L"Media\\Audio\\Win\\SoundEffectWaveBank.xwb"
 #define BG_SOUNDBANK_FILE		L"Media\\Audio\\Win\\MainSoundBank.xsb"
 #define BG_SETTINGS_FILE		L"Media\\Audio\\Win\\BGMusic.xgs"
+
+
+enum GuiControls{ GUI_BTN_SINGLE_PLAYER, GUI_BTN_EXIT, GUI_BTN_UNPAUSE, GUI_BTN_EXIT2 };
+
+enum ImageNames{ MENU_IMAGE, 
+				 ONEPLAYER_NOTACTIVE_IMAGE, ONEPLAYER_ACTIVE_IMAGE, 
+				 EXIT_NOTACTIVE_IMAGE, EXIT_ACTIVE_IMAGE, 
+				 LOADING_IMAGE, LOADING_SMALLBALL_IMAGE, LOADING_BIGBALL_IMAGE,
+				 UNPAUSE_IMAGE, UNPAUSE_ACTIVE_IMAGE,
+				 EXIT2_NOTACTIVE_IMAGE, EXIT2_ACTIVE_IMAGE };
+
 //--------------------------------------------------------
 //		CLASS: RacerApp
 //--------------------------------------------------------
@@ -50,6 +82,12 @@ public:
 	static bool		CALLBACK IsD3D9DeviceAcceptable	( D3DCAPS9*, D3DFORMAT, D3DFORMAT, bool, void* );
 
 
+	// Thread Functions -------------------------------------
+
+	static long WINAPI startGame ( long lParam );
+	static long WINAPI initGame	 ( long lParam );
+
+
 	// GUI  -------------------------------------------------
 
 	static void	processMenuSelection ( );
@@ -57,22 +95,46 @@ public:
 	static void moveMenuDown		 ( );
 	static void renderFPS			 ( );
 	static void renderClock			 ( );
+	static void doLoadScreen		 ( );
+
+
+	// Other Functions ---------------------------------------
+
+	static void cleanupAll ( );
+	static void animateBall( );
+
+
+	// Data Members ------------------------------------------
 
 	static ResourceManager		m_ResourceManager;	// manager for shared resources of dialogs
 	static ApplicationState		m_AppState;
-	static vector<CDXUTButton*> buttons; 
 	static UINT					m_uiCurrentButton;
 
-	// dialog for standard game controls
-	static Dialog				m_MenuScreen;		// dialog for sample specific controls
-	static Dialog				m_OnePlayerScreen;	// game view
-	static Dialog				m_PauseScreen;		//
+	static Dialog				m_GameScreen;	// game view
 
 	static XBox360Controller*	m_MenuController;
 	static SceneLoader*			m_SceneLoader;		// used to load the game
 	static ID3DXFont*           m_pFont;
 	static ID3DXSprite*         m_pTextSprite;
 
+	// buttons
+	static ID3DXSprite*			m_pImageSprite;
+	static RECT					m_PauseRECT;
+	static Sprite				m_Images[ NUM_IMAGES ];
+	static Vec3					m_ImageLocations[ NUM_IMAGES ];
+	static int					m_iButtonImage[ NUM_BUTTONS ];
+	
+	// ball animation on loading screen
+	static int					m_iBallImages[ NUM_LOADING_BALLS ];
+	static Vec3					m_BallLocations[ NUM_LOADING_BALLS ];
+	static int					m_iCurrentBall;
+
+	// thread stuff and loading
+	static HANDLE				m_hThread;
+	static DWORD				m_dwThreadID;
+	static bool					m_bGameIsReady;
+	static CRITICAL_SECTION		m_CriticalSection; // used for multithreading
+	
 };
 
 extern GameObj *g_pGame; //Our global instantiation of the game which will be used by the RacerApp class

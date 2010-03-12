@@ -406,12 +406,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 // Function:  pause
 // pause=true simulation is paused
 //--------------------------------------------------------------------------------------
-bool Simulator::pause(bool pause)
+void Simulator::pause(bool pause)
 {
-	if( pause == m_bPaused )
-		return false;
 	m_bPaused = pause;
-	return true;
 }
 
 //--------------------------------------------------------------------------------------

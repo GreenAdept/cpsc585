@@ -68,13 +68,24 @@ void GameObj::setSceneObjects( SceneObjects& objs )
 // pause=true to try to pause simulation
 // Returns true if the game pause was toggled
 //--------------------------------------------------------------------------------------
-bool GameObj::pauseGame()
+void GameObj::pauseGame()
 {
-	m_Debugger->writeToFile("pause toggled!");
+	//m_Debugger->writeToFile("pause toggled!");
 	bool pause = m_clock.togglePause();
-	return m_Simulator->pause(pause);
+	return m_Simulator->pause( true );
 }
 
+//--------------------------------------------------------------------------------------
+// Function:  unpause
+// pause=true to try to pause simulation
+// Returns true if the game pause was toggled
+//--------------------------------------------------------------------------------------
+void GameObj::unpauseGame()
+{
+	//m_Debugger->writeToFile("pause toggled!");
+	bool pause = m_clock.togglePause();
+	return m_Simulator->pause( false );
+}
 
 //--------------------------------------------------------------------------------------
 // Function: addInput
@@ -113,11 +124,11 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 	case 76: //L is pressed -> load file
 		if (isKeyDown)
 		{
-			if( m_VarLoader->loadVars( m_Simulator ) )
-				m_Debugger->writeToFile("Loaded variables successfully");
+			m_VarLoader->loadVars( m_Simulator );
+			//	m_Debugger->writeToFile("Loaded variables successfully");
 
-			else
-				m_Debugger->writeToFile("Variables did not load");
+			/*else
+				m_Debugger->writeToFile("Variables did not load");*/
 			break;
 		}
 	default:
@@ -208,8 +219,7 @@ void GameObj::processInput( float fElapsedTime )
 			{
 				//m_clock.togglePause();
 
-				if( !m_Simulator->isPaused() )
-					pauseGame( );
+				pauseGame( );
 			}
 
 			if (m_Controllers[i]->Back.WasPressed())
