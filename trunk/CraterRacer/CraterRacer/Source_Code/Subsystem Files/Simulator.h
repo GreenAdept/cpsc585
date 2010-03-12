@@ -33,7 +33,7 @@ public:
 	
 	void InitNx( Terrain* terrain );
 
-	bool pause( bool pause );
+	void pause( bool pause );
 	bool isPaused( );
 
 	void simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteorGroups, double elapsedTime );

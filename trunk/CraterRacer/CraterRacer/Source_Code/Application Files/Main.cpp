@@ -31,7 +31,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 
     // Initialize DXUT and create the desired Win32 window and Direct3D device for the application
     DXUTInit( true, true );						
-    DXUTSetHotkeyHandling( false, true, false );  // handle the default hotkeys 
+    DXUTSetHotkeyHandling( false, false, false );  // handle the default hotkeys 
 												// ALT+ENTER -> full screen toggle
 												// ESC -> exit application
 												// PAUSE or BREAK -> pause time

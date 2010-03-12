@@ -22,25 +22,34 @@ SceneLoader::~SceneLoader( )
 
 
 //--------------------------------------------------------------------------------------
+// Function:  initVars
+//--------------------------------------------------------------------------------------
+void SceneLoader::initVars( Device* device, const D3DSURFACE_DESC* backSurface, string filename )
+{
+	m_Device = device;
+	m_InitFilename = filename;
+	m_BackSurface = new D3DSURFACE_DESC( *backSurface );
+}
+
+
+//--------------------------------------------------------------------------------------
 // Function:  initScene
 // This function is used to load and initialize components that are common to all game 
 // modes.  This function must be called before startGame().
 //--------------------------------------------------------------------------------------
-void SceneLoader::initScene( Device* device, const D3DSURFACE_DESC* backSurface, string filename )
+void SceneLoader::initScene( GameObj** obj )
 {
 	string str;
 
 	m_Game = new GameObj();
+	*obj = m_Game;
 	m_Objs = m_Game->getSceneObjects( );
-
-	m_Device = device;
-	m_BackSurface = new D3DSURFACE_DESC( *backSurface );
 
 	// Clear debug.txt
 	m_Objs.debugger->clearFile();
 
 	ifstream file;
-	file.open( filename.c_str() );
+	file.open( m_InitFilename.c_str() );
 	if (!file.is_open()) return;
 
 	//load and initialize components that are common to all game modes here
@@ -66,14 +75,14 @@ void SceneLoader::initScene( Device* device, const D3DSURFACE_DESC* backSurface,
 // This function is to be called after the initScene function call.  It loads all
 // game-type specific components ( eg. vehicles ). 
 //--------------------------------------------------------------------------------------
-GameObj* SceneLoader::startGame( string filename )
+void SceneLoader::startGame( string filename )
 {
 	string str;
-	if( !m_Game ) return NULL;
+	if( !m_Game ) return;
 
 	ifstream file;
 	file.open( filename.c_str() );
-	if (!file.is_open()) return NULL;
+	if (!file.is_open()) return;
 
 	//do all scene specific loading & initialization here
 	file >> str;
@@ -81,7 +90,7 @@ GameObj* SceneLoader::startGame( string filename )
 
 	file.close();
 	m_Game->setSceneObjects( m_Objs );
-	return m_Game;
+	return;
 }
 
 

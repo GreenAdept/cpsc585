@@ -46,8 +46,11 @@ Waypoint* Waypoint::getRandomNext () {
 
 
 
-void Terrain::buildTrack (Vec3* path, int size) {
-	delete trackStart;
+void Terrain::buildTrack (Vec3* path, int size) 
+{
+	if( trackStart )
+		delete trackStart;
+
 	if (size == 0) return;
 
 	trackStart = new Waypoint (path[0]);
