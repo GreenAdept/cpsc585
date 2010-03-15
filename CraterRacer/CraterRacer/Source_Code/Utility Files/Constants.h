@@ -29,7 +29,6 @@
 
 enum ProcessType		{ ON_LOST, ON_RESET, ON_DESTROY };
 enum Directions			{ LEFT, FORWARD, RIGHT, BACKWARD }; 
-enum ApplicationState	{ APP_STARTUP, APP_RENDER_GAME, APP_PAUSED, APP_GAME_LOADING };
 enum Wheels				{ WHEEL0, WHEEL1, WHEEL2, WHEEL3 };
 enum GameType			{ ONE_PLAYER, MULTI_PLAYER, TIME_TRIAL };
 

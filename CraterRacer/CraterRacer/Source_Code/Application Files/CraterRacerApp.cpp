@@ -27,6 +27,10 @@ int						RacerApp::m_iButtonImage[ NUM_BUTTONS ];
 int						RacerApp::m_iBallImages[ NUM_LOADING_BALLS ];
 int						RacerApp::m_iCurrentBall;
 RECT					RacerApp::m_PauseRECT;
+UINT_PTR				RacerApp::m_AnimationID;
+float					RacerApp::m_fCheckTime;
+ApplicationState		RacerApp::m_iPreviousAppState;
+
 
 //--------------------------------------------------------------------------------------
 // Function:  OnUpdateGame
@@ -58,12 +62,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 		g_pGame->think( );
 		UpdateAudio();
 	}
-	else if( g_pGame && m_AppState == APP_STARTUP )
-	{
-		//The menu is active, so check for controller movement
-	//	m_MenuController->Update(fElapsedTime);
-		doControllerProcessing = true;
-	}
+
 	else if( g_pGame && m_AppState == APP_GAME_LOADING )
 	{
 		if( m_bGameIsReady )
@@ -71,13 +70,21 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 			//do start game animation/countdown here, but until we
 			//have one, we'll just start the game
 
+			//make sure the thread to load the game will not run anymore
+			HWND fWindow = FindWindow(NULL, L"Crater Racer"); // Find the window
 			SuspendThread( m_hThread );
 
+			//stop loading animation
+			KillTimer( fWindow, m_AnimationID );
+
+			//start background music
 			if( g_audioState.pSoundBank )
 			{
 				g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
 				g_audioState.pSoundBank->Play(g_audioState.iEngine, 0, 0, NULL);
 			}
+
+			//start game
 			g_pGame->startClock();
 			m_AppState = APP_RENDER_GAME;
 		}
@@ -85,9 +92,11 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 	else
 		doControllerProcessing = true;
 	
-	if( doControllerProcessing )
+	//just check the controller if a certain amount of time has passed
+	m_fCheckTime += fElapsedTime;
+	if( doControllerProcessing && m_fCheckTime > 0.18 )
 	{
-		m_MenuController->Update( fElapsedTime );
+		m_MenuController->Update( m_fCheckTime );
 		//move menu up
 		if( m_MenuController->LeftThumbstick.GetY() > 0.2  )
 			moveMenuUp( );
@@ -95,9 +104,11 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 		else if( m_MenuController->LeftThumbstick.GetY() < -0.2 )
 			moveMenuDown( );
 		
-		//a selection was made
-		if( m_MenuController->A.WasPressedOrHeld() )
+		//A selection was made
+		if( m_MenuController->A.WasPressed() )
 			processMenuSelection( );
+
+		m_fCheckTime = 0.0f;
 	}
 }
 
@@ -110,15 +121,9 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 {
 	//Terminate game if esc key is pressed (and cleanup all memory first)
 	if( nChar == VK_ESCAPE )
-	{
-		if( m_hThread )
-			TerminateThread( m_hThread, 0 );
-
-		//cleanupAll( );
 		DXUTShutdown( 0 );
-	}
 
-	if( g_pGame && m_AppState == APP_RENDER_GAME )
+	if( g_pGame && m_AppState == APP_RENDER_GAME && bKeyDown )
 	{
 		// online virtual key codes: http://msdn.microsoft.com/en-us/library/ms927178.aspx
 		switch( nChar ) 
@@ -131,11 +136,10 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 				break;
 
 			default:
-				//g_pGame->addInput( bKeyDown, nChar );
 				break;
 		}
 	}
-	else //The menu is active, so we want check for button selection
+	else if( bKeyDown ) //A menu is active, so we want check for button selection
 	{ 
 		switch( nChar )
 		{
@@ -160,19 +164,20 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 //--------------------------------------------------------------------------------------
 void RacerApp::moveMenuUp( )
 {
-	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_SINGLE_PLAYER )
+	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_SINGLE_PLAYER ||
+		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_UNPAUSE )
 	{
 		//send message to current button to go back to normal state
 		m_iButtonImage[ m_uiCurrentButton ]--;
 		m_uiCurrentButton--;
 		m_iButtonImage[ m_uiCurrentButton ]++;
 	}
-	else if( g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_UNPAUSE )
+	/*else if(  )
 	{
 		m_iButtonImage[ m_uiCurrentButton ]--;
 		m_uiCurrentButton--;
 		m_iButtonImage[ m_uiCurrentButton ]++;
-	}
+	}*/
 }
 
 
@@ -182,20 +187,21 @@ void RacerApp::moveMenuUp( )
 //--------------------------------------------------------------------------------------
 void RacerApp::moveMenuDown( )
 {
-	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_EXIT )
+	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_EXIT ||
+		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_EXIT2 )
 	{
 		//tell current button to go back to normal/unselected state
 		m_iButtonImage[ m_uiCurrentButton ]--;
 		m_uiCurrentButton++;
 		m_iButtonImage[ m_uiCurrentButton ]++;
 	}
-	else if( g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_EXIT2 )
-	{
-		//tell current button to go back to normal/unselected state
-		m_iButtonImage[ m_uiCurrentButton ]--;
-		m_uiCurrentButton++;
-		m_iButtonImage[ m_uiCurrentButton ]++;
-	}
+	//else if(  )
+	//{
+	//	//tell current button to go back to normal/unselected state
+	//	m_iButtonImage[ m_uiCurrentButton ]--;
+	//	m_uiCurrentButton++;
+	//	m_iButtonImage[ m_uiCurrentButton ]++;
+	//}
 }
 
 
@@ -207,32 +213,50 @@ void RacerApp::processMenuSelection( )
 {
 		HWND fWindow; // Window handle to our window
 
-		//a selection was made
-		switch( m_uiCurrentButton )
+		if( m_AppState == APP_SHOW_GAMERULES || m_AppState == APP_SHOW_GAMERULES2 )
+			m_AppState = m_iPreviousAppState;
+
+		else
 		{
-			//start the game
-			case GUI_BTN_SINGLE_PLAYER:
+			//a selection was made
+			switch( m_uiCurrentButton )
+			{
+				//start the game
+				case GUI_BTN_SINGLE_PLAYER:
+				case GUI_BTN_TWO_PLAYER:
+				case GUI_BTN_TIMETRIAL:
 
-				//start loading game
-				m_AppState = APP_GAME_LOADING;
-				m_hThread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)startGame,NULL,0,&m_dwThreadID);
+					//start loading game in a separate thread
+					m_AppState = APP_GAME_LOADING;
+					m_hThread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)startGame,NULL,0,&m_dwThreadID);
 
-				//start ball loading animation
-				fWindow = FindWindow(NULL, L"Crater Racer"); // Find the window
-				SetTimer( fWindow, NULL, 500, (TIMERPROC)animateBall);
- 
-				break;
-			//start game again
-			case GUI_BTN_UNPAUSE:
-				g_pGame->unpauseGame( );
-				m_AppState = APP_RENDER_GAME; 
-				break;
+					//start ball loading animation
+					fWindow = FindWindow(NULL, L"Crater Racer");
+					SetTimer( fWindow, m_AnimationID, 500, (TIMERPROC)animateBall);
+					break;
+					
+				case GUI_BTN_UNPAUSE:
+					g_pGame->unpauseGame( );
+					m_AppState = APP_RENDER_GAME; 
+					break;
 
-			//or exit 
-			case GUI_BTN_EXIT:
-			case GUI_BTN_EXIT2:
-				DXUTShutdown();
-				break;
+				case GUI_BTN_GAMERULES:
+					m_iPreviousAppState = m_AppState;
+					m_AppState = APP_SHOW_GAMERULES;
+					break;
+
+				//in pause screen
+				case GUI_BTN_GAMERULES2: 
+					m_iPreviousAppState = m_AppState;
+					m_AppState = APP_SHOW_GAMERULES2;
+					break;
+
+				//or exit 
+				case GUI_BTN_EXIT:
+				case GUI_BTN_EXIT2:
+					DXUTShutdown();
+					break;
+			}
 		}
 }
 
@@ -248,66 +272,28 @@ HRESULT CALLBACK RacerApp::OnResetDevice( IDirect3DDevice9* device, const D3DSUR
 	UINT width = pBackBufferSurfaceDesc->Width, 
 		 height = pBackBufferSurfaceDesc->Height;
 
+	device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+	device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
+	device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
+	device->SetRenderState(D3DRS_ALPHAREF, (DWORD)100);
+	device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE); 
+
 	V_RETURN( m_ResourceManager.OnD3D9ResetDevice() );
 
 	if( g_pGame )
 		g_pGame->processCallback( ON_RESET, device, pBackBufferSurfaceDesc );
 
 	if( m_pFont )
-        V_RETURN( m_pFont->OnResetDevice() );
+       V_RETURN( m_pFont->OnResetDevice() );
 
     // Create a sprite to help batch calls when drawing many lines of text
     V_RETURN( D3DXCreateSprite( device, &m_pTextSprite ) );
-	V_RETURN( D3DXCreateSprite( device, &m_pImageSprite  ) );
+	V_RETURN( D3DXCreateSprite( device, &m_pImageSprite ) );
 	
-	//load images used in the game
-	D3DXCreateTextureFromFile( device, MENU_IMAGE_FILE, &m_Images[ MENU_IMAGE ] );
-	D3DXCreateTextureFromFile( device, ONEPLAYER_NOTACTIVE_IMAGE_FILE, &m_Images[ ONEPLAYER_NOTACTIVE_IMAGE ] );
-	D3DXCreateTextureFromFile( device, ONEPLAYER_ACTIVE_IMAGE_FILE, &m_Images[ ONEPLAYER_ACTIVE_IMAGE ] );
-	D3DXCreateTextureFromFile( device, EXIT_NOTACTIVE_IMAGE_FILE, &m_Images[ EXIT_NOTACTIVE_IMAGE ] );
-	D3DXCreateTextureFromFile( device, EXIT_ACTIVE_IMAGE_FILE, &m_Images[ EXIT_ACTIVE_IMAGE ] );
-	D3DXCreateTextureFromFile( device, LOADING_IMAGE_FILE, &m_Images[ LOADING_IMAGE ] );
-	D3DXCreateTextureFromFile( device, LOADING_SMALLBALL_IMAGE_FILE, &m_Images[LOADING_SMALLBALL_IMAGE] );
-	D3DXCreateTextureFromFile( device, LOADING_BIGBALL_IMAGE_FILE, &m_Images[LOADING_BIGBALL_IMAGE] );
-	D3DXCreateTextureFromFile( device, UNPAUSE_IMAGE_FILE, &m_Images[UNPAUSE_IMAGE] );
-	D3DXCreateTextureFromFile( device, UNPAUSE_ACTIVE_IMAGE_FILE, &m_Images[UNPAUSE_ACTIVE_IMAGE] );
-	D3DXCreateTextureFromFile( device, EXIT2_NOTACTIVE_IMAGE_FILE, &m_Images[ EXIT2_NOTACTIVE_IMAGE ] );
-	D3DXCreateTextureFromFile( device, EXIT2_ACTIVE_IMAGE_FILE, &m_Images[ EXIT2_ACTIVE_IMAGE ] );
+	// Load all images used in the game as textures
+	loadImages( device, width, height );
 
-	int w = width/2 - 250;
-	int h = (height - 440)/2;
-
-	//initialize the size and position of the startup menu based on size of device surface
-	m_ImageLocations[MENU_IMAGE] = Vec3( w, h, 0 );
-	h += 270;
-	m_ImageLocations[ONEPLAYER_NOTACTIVE_IMAGE] = Vec3( w, h, 0 );
-	m_ImageLocations[ONEPLAYER_ACTIVE_IMAGE] = Vec3( w, h, 0 );
-	h += 60;
-	m_ImageLocations[EXIT_NOTACTIVE_IMAGE] = Vec3( w, h, 0 );
-	m_ImageLocations[EXIT_ACTIVE_IMAGE] = Vec3( w, h, 0 );
-	
-	//loading screen
-	h =  height/2-100;
-	m_ImageLocations[LOADING_IMAGE] = Vec3( w, h, 0 );
-
-	h += 70;  w += 85; 
-	for( int i=0; i < NUM_LOADING_BALLS; i++ )
-	{
-		m_BallLocations[i] = Vec3( w, h, 0 );
-		w += 50;
-	}
-
-	//pause screen
-	w = ( width - 600 ) / 2;
-	h = ( height - 500 ) / 2;
-	m_PauseRECT.left = w;   m_PauseRECT.right = w+600;
-	m_PauseRECT.top = h;   m_PauseRECT.bottom = h+500;
-
-	m_ImageLocations[UNPAUSE_IMAGE] = Vec3( w+50, h+170, 0 );
-	m_ImageLocations[UNPAUSE_ACTIVE_IMAGE] = Vec3( w+50, h+170, 0 );
-	m_ImageLocations[EXIT2_NOTACTIVE_IMAGE] = Vec3( w+50, h+230, 0 );
-	m_ImageLocations[EXIT2_ACTIVE_IMAGE] = Vec3( w+50, h+230, 0 );
-	
 	return S_OK;
 }
 
@@ -342,10 +328,11 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 	HRESULT hr;
 	Vec3 center( 0, 0, 0 );
 	int image = 0;
+	
 	CDXUTTextHelper txtHelper( m_pFont, m_pTextSprite, 15 );
 
 	// Clear the render target and the zbuffer 
-	V( device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 255, 80, 32, 9 ), 1.0f, 0 ) );
+	V( device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 255, 0,0,0 ), 1.0f, 0 ) );
 
 	// Render the scene
 	if( SUCCEEDED( device->BeginScene() ) )
@@ -354,42 +341,27 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 		{
 			case APP_STARTUP:
 				
-				//render the game menu
-				m_pImageSprite->Begin( NULL );
-				
-				m_pImageSprite->Flush();
-				V( m_pImageSprite->Draw( m_Images[ MENU_IMAGE ], NULL, &center, &m_ImageLocations[ MENU_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+				drawStartupMenu( );
+				break;
 
+			case APP_SHOW_GAMERULES:
+
+				//Draw the game rules image (as entire screen)
+				m_pImageSprite->Begin( NULL );
 				m_pImageSprite->Flush();
-				image = m_iButtonImage[ GUI_BTN_SINGLE_PLAYER ];
-				V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
-				
-				m_pImageSprite->Flush();
-				image = m_iButtonImage[ GUI_BTN_EXIT ];
-				V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
-				
-				m_pImageSprite->Flush();
-				m_pImageSprite->End( );
+				V( m_pImageSprite->Draw( m_Images[GAMERULES_INFO_IMAGE], NULL, &center, 
+						&m_ImageLocations[GAMERULES_INFO_IMAGE], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+				m_pImageSprite->End();
+
 				break;
 
 			case APP_GAME_LOADING:
 
-				m_pImageSprite->Begin( NULL );
-				m_pImageSprite->Flush();
-
-				V( m_pImageSprite->Draw( m_Images[LOADING_IMAGE], NULL, &center, &m_ImageLocations[LOADING_IMAGE], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
-				
-				//draw animating balls
-				for( int i=0; i < NUM_LOADING_BALLS; i++ )
-				{
-					image = m_iBallImages[ i ];
-					m_pImageSprite->Flush();
-					V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_BallLocations[i], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
-				}
-				m_pImageSprite->End( );
+				drawLoadingScreen( );
 				break;
 
 			case APP_RENDER_GAME:
+			case APP_SHOW_GAMERULES2:
 			case APP_PAUSED:
 
 				if( g_pGame )
@@ -397,6 +369,7 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 					//get the game to render all of its components
 					g_pGame->render( device );
 
+						//render the player's rank
 						txtHelper.Begin();
 						txtHelper.SetInsertionPos( 10, 50 );
 						txtHelper.SetForegroundColor( D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
@@ -406,25 +379,23 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 
 					renderFPS( );
 					renderClock( );
+					drawHUD();
 				}
 
 				if( m_AppState == APP_PAUSED )
-				{
-					m_pImageSprite->Begin( NULL );
-					
-					m_pImageSprite->Flush();
-					m_GameScreen.DrawRect( &m_PauseRECT, D3DCOLOR_ARGB( 255, 80, 32, 9 ) );
-					
-					m_pImageSprite->Flush();
+					drawPauseScreen( );
 
-					image = m_iButtonImage[ GUI_BTN_UNPAUSE ];
-					V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
-					
+				if( m_AppState == APP_SHOW_GAMERULES2 )
+				{
+					//render the game rules screen overtop the game in the center of the screen
+					RECT temp;
+					temp.top = 0; temp.right = 650;
+					temp.bottom = 550; temp.left = 0;
+					m_pImageSprite->Begin( NULL );
 					m_pImageSprite->Flush();
-					image = m_iButtonImage[ GUI_BTN_EXIT2 ];
-					V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
-					
-					m_pImageSprite->End( );
+					V( m_pImageSprite->Draw( m_Images[GAMERULES_INFO_SMALL_IMAGE], &temp, &center, 
+							&m_ImageLocations[GAMERULES_INFO_SMALL_IMAGE], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+					m_pImageSprite->End();
 				}
 				break;
 		}
@@ -538,6 +509,112 @@ void RacerApp::renderClock( )
 
 
 //--------------------------------------------------------------------------------------
+// Function: drawPauseScreen( )
+// Renders the pause menu.
+//--------------------------------------------------------------------------------------
+void RacerApp::drawPauseScreen( )
+{
+	HRESULT hr;
+	Vec3 center( 0, 0, 0 );
+	int image = 0;
+
+	m_pImageSprite->Begin( NULL );
+					
+	m_pImageSprite->Flush();
+	m_GameScreen.DrawRect( &m_PauseRECT, D3DCOLOR_ARGB( 255, 0,0,0 ) );
+
+	//draw the menu buttons
+	for( int i=GUI_BTN_UNPAUSE; i <= GUI_BTN_EXIT2; i++ )
+	{
+		m_pImageSprite->Flush();
+		image = m_iButtonImage[ i ];
+		V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	}
+	m_pImageSprite->Flush();
+	m_pImageSprite->End( );
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: drawHUD( )
+// Renders the speedometer, time display, ranking and minimap
+//--------------------------------------------------------------------------------------
+void RacerApp::drawHUD( )
+{
+	HRESULT hr;
+	Vec3 center( 0, 0, 0 );
+	int image = 0;
+
+	//render the HUD
+	m_pImageSprite->Begin( NULL );
+	
+	m_pImageSprite->Flush();
+	V( m_pImageSprite->Draw( m_Images[ SPEEDOMETER_IMAGE ], NULL, &center, &m_ImageLocations[ SPEEDOMETER_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+
+	m_pImageSprite->Flush();
+	
+	m_pImageSprite->End( );
+}
+
+//--------------------------------------------------------------------------------------
+// Function: drawStartupMenu( )
+// Renders the startup menu.
+//--------------------------------------------------------------------------------------
+void RacerApp::drawStartupMenu( )
+{
+	HRESULT hr;
+	Vec3 center( 0, 0, 0 );
+	int image = 0;
+
+	//render the game menu
+	m_pImageSprite->Begin( NULL );
+	
+	m_pImageSprite->Flush();
+	V( m_pImageSprite->Draw( m_Images[ MENU_IMAGE ], NULL, &center, &m_ImageLocations[ MENU_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+
+	//draw the menu buttons
+	for( int i=GUI_BTN_SINGLE_PLAYER; i <= GUI_BTN_EXIT; i++ )
+	{
+		m_pImageSprite->Flush();
+		image = m_iButtonImage[ i ];
+		V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	}
+	m_pImageSprite->Flush();
+	m_pImageSprite->End( );
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: drawLoadingScreen( )
+// Renders the loading screen and animation.
+//--------------------------------------------------------------------------------------
+void RacerApp::drawLoadingScreen( )
+{
+	HRESULT hr;
+	Vec3 center( 0, 0, 0 );
+	int image = 0;
+
+	m_pImageSprite->Begin( NULL );
+	m_pImageSprite->Flush();
+
+	V( m_pImageSprite->Draw( m_Images[LOADING_IMAGE], NULL, &center, &m_ImageLocations[LOADING_IMAGE], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	
+	//draw animating balls
+	for( int i=0; i < NUM_LOADING_BALLS; i++ )
+	{
+		image = m_iBallImages[ i ];
+		m_pImageSprite->Flush();
+		V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_BallLocations[i], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	}
+
+	m_pImageSprite->Flush();
+	V( m_pImageSprite->Draw( m_Images[CONTROLS_IMAGE], NULL, &center, &m_ImageLocations[CONTROLS_IMAGE], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	
+	m_pImageSprite->End( );
+
+}
+
+//--------------------------------------------------------------------------------------
 // Function: startGame
 // Function call started by initialization thread.
 //--------------------------------------------------------------------------------------
@@ -588,6 +665,138 @@ void RacerApp::doLoadScreen( )
 
 
 //--------------------------------------------------------------------------------------
+// Function: loadImages
+// Creates textures for all images used in game and stores their rendering positions
+// to be used later.
+//--------------------------------------------------------------------------------------
+void RacerApp::loadImages( Device* device, UINT width, UINT height )
+{
+	//Non-button images
+	createTexture( m_Images[ MENU_IMAGE ], MENU_IMAGE_FILE, device );
+	createTexture( m_Images[ LOADING_IMAGE ],  LOADING_IMAGE_FILE, device );
+	createTexture( m_Images[ LOADING_SMALLBALL_IMAGE ], LOADING_SMALLBALL_IMAGE_FILE, device );
+	createTexture( m_Images[ LOADING_BIGBALL_IMAGE ], LOADING_BIGBALL_IMAGE_FILE, device );
+	createTexture( m_Images[ CONTROLS_IMAGE ], CONTROLS_IMAGE_FILE, device );
+	createTexture( m_Images[ GAMERULES_INFO_IMAGE ], GAMERULES_INFO_IMAGE_FILE, device );
+	createTexture( m_Images[ GAMERULES_INFO_SMALL_IMAGE ], GAMERULES_INFO_SMALL_IMAGE_FILE, device );
+	createTexture( m_Images[ SPEEDOMETER_IMAGE ], SPEEDOMETER_IMAGE_FILE, device );
+
+	//Startup Menu Buttons
+	createTexture( m_Images[ ONEPLAYER_NOTACTIVE_IMAGE ], ONEPLAYER_NOTACTIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ ONEPLAYER_ACTIVE_IMAGE ], ONEPLAYER_ACTIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ TWOPLAYER_IMAGE ], TWOPLAYER_IMAGE_FILE, device );
+	createTexture( m_Images[ TWOPLAYER_ACTIVE_IMAGE ], TWOPLAYER_ACTIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ TIMETRIAL_IMAGE ], TIMETRIAL_IMAGE_FILE, device );
+	createTexture( m_Images[ TIMETRIAL_ACTIVE_IMAGE ], TIMETRIAL_ACTIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ GAMERULES_IMAGE ], GAMERULES_IMAGE_FILE, device );
+	createTexture( m_Images[ GAMERULES_ACTIVE_IMAGE ], GAMERULES_ACTIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ EXIT_NOTACTIVE_IMAGE ], EXIT_NOTACTIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ EXIT_ACTIVE_IMAGE ], EXIT_ACTIVE_IMAGE_FILE, device );
+	
+	//Pause Menu Buttons
+	createTexture( m_Images[ UNPAUSE_IMAGE ], UNPAUSE_IMAGE_FILE, device );
+	createTexture( m_Images[ UNPAUSE_ACTIVE_IMAGE ], UNPAUSE_ACTIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ GAMERULES2_IMAGE ], GAMERULES_IMAGE_FILE, device );
+	createTexture( m_Images[ GAMERULES2_ACTIVE_IMAGE ], GAMERULES_ACTIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ EXIT2_NOTACTIVE_IMAGE ], EXIT_NOTACTIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ EXIT2_ACTIVE_IMAGE ], EXIT_ACTIVE_IMAGE_FILE, device );
+
+	//Position the startup menu buttons and images --------------
+	int w = (width - 400)/2; if( w<0 ) w=0;
+	int h = (height - 430)/2; if( h<0 ) h=0;
+
+	m_ImageLocations[MENU_IMAGE] = Vec3( w, h, 0 );
+	h += 230;
+	m_ImageLocations[ONEPLAYER_NOTACTIVE_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[ONEPLAYER_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+	h += 40;
+	m_ImageLocations[TWOPLAYER_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[TWOPLAYER_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+	h += 40;
+	m_ImageLocations[TIMETRIAL_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[TIMETRIAL_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+	h += 40;
+	m_ImageLocations[GAMERULES_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[GAMERULES_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+	h += 40;
+	m_ImageLocations[EXIT_NOTACTIVE_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[EXIT_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+	
+	//Position the loading screen images ----------------------
+	h = ( height - 480 ) / 2; if( h<0 ) h=0;
+	m_ImageLocations[LOADING_IMAGE] = Vec3( w, h, 0 );
+
+	//Position the loading screen animating balls
+	h += 40;  w += 122; 
+	for( int i=0; i < NUM_LOADING_BALLS; i++ )
+	{
+		m_BallLocations[i] = Vec3( w, h, 0 );
+		w += 30;
+	}
+	h += 40;
+	w = ( width - 600 ) / 2; if( w<0 ) w=0;
+	m_ImageLocations[CONTROLS_IMAGE] = Vec3( w, h, 0 );
+
+	//Position the pause menu ----------------------------------
+	w = ( width - 650 ) / 2; if( w<0 ) w=0;
+	h = ( height - 550 ) / 2; if( h<0 ) h=0;
+	m_PauseRECT.left = w;   m_PauseRECT.right = w+650;
+	m_PauseRECT.top = h;   m_PauseRECT.bottom = h+550;
+
+	w = (width - 400) / 2; if( w<0 ) w=0;
+	h = (height - 120) / 2;  if( h<0 ) h=0;
+	m_ImageLocations[UNPAUSE_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[UNPAUSE_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+	h += 40;
+	m_ImageLocations[GAMERULES2_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[GAMERULES2_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+	h += 40;
+	m_ImageLocations[EXIT2_NOTACTIVE_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[EXIT2_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+
+	//Position HUD images
+	m_ImageLocations[SPEEDOMETER_IMAGE] = Vec3( 10, height-140, 0 );
+
+	//Position all other images
+	w = ( width - 800 ) / 2; if( w<0 ) w=0;
+	h = ( height - 700 ) / 2; if( h<0 ) h=0;
+	m_ImageLocations[GAMERULES_INFO_IMAGE] = Vec3( w, h, 0 );
+
+	w = ( width - 650 ) / 2; if( w<0 ) w=0;
+	h = ( height - 550 ) / 2; if( h<0 ) h=0;
+	m_ImageLocations[GAMERULES_INFO_SMALL_IMAGE] = Vec3( w, h, 0 );
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: createTexture
+// Creates a sprite based on input "file" and stores it in the specified "texture" variable.
+//--------------------------------------------------------------------------------------
+void RacerApp::createTexture( Sprite& texture, LPCSTR file, Device* device )
+{
+	D3DXIMAGE_INFO pInfo;
+
+	D3DXCreateTextureFromFileExA(
+	device,
+	file,
+	D3DX_DEFAULT,
+	D3DX_DEFAULT,
+	D3DX_DEFAULT, // mipmap
+	0,
+	D3DFMT_UNKNOWN,
+	D3DPOOL_MANAGED,
+	D3DX_FILTER_NONE,
+	D3DX_DEFAULT,
+	D3DCOLOR_ARGB( 255, 255,255,255 ),	
+	&pInfo,
+	NULL,
+	&texture );
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: CONSTRUCTOR
+//--------------------------------------------------------------------------------------
 RacerApp::RacerApp()
 {
 	m_MenuController = new XBox360Controller(0);
@@ -600,10 +809,14 @@ RacerApp::RacerApp()
 	m_AppState = APP_STARTUP;
 
 	m_iButtonImage[ GUI_BTN_SINGLE_PLAYER ] = ONEPLAYER_ACTIVE_IMAGE;
+	m_iButtonImage[ GUI_BTN_TWO_PLAYER ] = TWOPLAYER_IMAGE;
+	m_iButtonImage[ GUI_BTN_TIMETRIAL ] = TIMETRIAL_IMAGE;
+	m_iButtonImage[ GUI_BTN_GAMERULES ] = GAMERULES_IMAGE;
 	m_iButtonImage[ GUI_BTN_EXIT ] = EXIT_NOTACTIVE_IMAGE;
+	
 	m_iButtonImage[ GUI_BTN_UNPAUSE ] = UNPAUSE_ACTIVE_IMAGE;
+	m_iButtonImage[ GUI_BTN_GAMERULES2 ] = GAMERULES2_IMAGE;
 	m_iButtonImage[ GUI_BTN_EXIT2 ] = EXIT2_NOTACTIVE_IMAGE;
-
 
 	//Set up ball animation images for loading screen
 	for( int i=0; i < NUM_LOADING_BALLS; i++ )
@@ -620,9 +833,13 @@ RacerApp::RacerApp()
 
 	//The currently highlighted button
 	m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
+
+	m_fCheckTime = 0.0f;
 }
 
 
+//--------------------------------------------------------------------------------------
+// Function: DECONSTRUCTOR
 //--------------------------------------------------------------------------------------
 RacerApp::~RacerApp()
 {
@@ -631,7 +848,9 @@ RacerApp::~RacerApp()
 
 
 //--------------------------------------------------------------------------------------
-
+// Function: cleanupAll( )
+// Clears up all memory used by game and releases all devices.
+//--------------------------------------------------------------------------------------
 void RacerApp::cleanupAll( )
 {
 	if( g_pGame )
@@ -651,7 +870,8 @@ void RacerApp::cleanupAll( )
 	SAFE_RELEASE( m_pTextSprite );
 	SAFE_RELEASE( m_pImageSprite );
 	
-	CloseHandle( m_hThread );
+	if( m_hThread )
+			CloseHandle( m_hThread );
 
 	for( int i=0; i < NUM_IMAGES; i++ )
 		SAFE_RELEASE( m_Images[i] );
