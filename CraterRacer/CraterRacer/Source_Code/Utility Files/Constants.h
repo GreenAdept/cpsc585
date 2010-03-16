@@ -16,16 +16,10 @@
 //		DEFINITIONS
 //--------------------------------------------------------
 
-#define OBJ_FILE		L"Media\\Meshes\\CarBox.x"
-#define CAR_BODY_FILE	L"Media\\Meshes\\CarBody.x"
 #define WHEEL0_FILE		L"Media\\Meshes\\Wheel0.x"
 #define WHEEL1_FILE		L"Media\\Meshes\\Wheel1.x"
 #define WHEEL2_FILE		L"Media\\Meshes\\Wheel2.x"
 #define WHEEL3_FILE		L"Media\\Meshes\\Wheel3.x"
-#define OBJ_EFFECT		L"Source Code\\Effect Files\\Scene.fx"
-#define TERRAIN_FILE	L"Media\\Meshes\\Track.x"
-#define TERRAIN_EFFECT_FILE		L"Source Code\\Effect Files\\Terrain.fx"
-
 
 enum ProcessType		{ ON_LOST, ON_RESET, ON_DESTROY };
 enum Directions			{ LEFT, FORWARD, RIGHT, BACKWARD }; 
