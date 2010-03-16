@@ -10,22 +10,11 @@
 GameObj::GameObj( )
 {
 	m_Debugger  = new DebugWriter( );
-	m_Renderer  = new Renderer( );
 	m_Simulator = new Simulator( );
 	m_VarLoader = new VarLoader( );
 	m_Entities	= new EntityManager();
 }
 
-
-//--------------------------------------------------------------------------------------
-// Function:  initGame
-// Here we initialize the game's camera and scene.  Eventually we want to read all of this
-// in via file IO.  
-//--------------------------------------------------------------------------------------
-void GameObj::initGame( )
-{
-	
-}
 
 //--------------------------------------------------------------------------------------
 // Function: startClock
@@ -46,7 +35,6 @@ SceneObjects GameObj::getSceneObjects( )
 	objs.entityManager	= m_Entities;
 	objs.gameCameras	= m_Cameras;
 	objs.simulator		= m_Simulator;
-	objs.renderer		= m_Renderer;
 	objs.debugger		= m_Debugger;
 	objs.varLoader		= m_VarLoader;
 	objs.controllers	= m_Controllers;
@@ -238,14 +226,14 @@ void GameObj::processInput( float fElapsedTime )
 // Function: render
 // This function renders the game's scene to the specified device.
 //--------------------------------------------------------------------------------------
-void GameObj::render( Device* device )
+void GameObj::render( Device* device, Renderer* renderer )
 {
 	vector<Renderable*> renderables = m_Entities->getRenderables();
 
 	int test;
 
 	// pass the renderables off to the renderer to do all the work
-	m_Renderer->render( device, renderables, m_Cameras );
+	renderer->renderGame( device, renderables, m_Cameras );
 }
 
 
@@ -324,9 +312,6 @@ GameObj::~GameObj( )
 
 	if( m_Debugger )
 		delete m_Debugger;
-
-	if( m_Renderer )
-		delete m_Renderer;
 
 	if( m_VarLoader )
 		delete m_VarLoader;

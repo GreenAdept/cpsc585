@@ -40,8 +40,7 @@ public:
 	void processInput	 ( float fElapsedTime );
 	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );
 	void simulate		 ( float fElapsedTime );
-	void render			 ( Device* device );
-	void initGame		 ( );
+	void render			 ( Device* device, Renderer* renderer );
 	void startClock		 ( );
 	void processCallback ( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
 	string getTime		 ( );
@@ -55,7 +54,6 @@ private:
 	//Date Members ---------------------------------------
 
 	EntityManager*				m_Entities;		// collection of all entities
-	Renderer*					m_Renderer;		// rendering subsystem
 	Simulator*					m_Simulator;
 	DebugWriter*				m_Debugger;
 	VarLoader*					m_VarLoader;
