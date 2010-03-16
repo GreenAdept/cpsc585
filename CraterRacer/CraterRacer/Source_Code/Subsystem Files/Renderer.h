@@ -7,6 +7,7 @@
 //--------------------------------------------------------
 
 #include <vector>
+#include <string>
 #include "Renderable.h"
 #include "GameCamera.h"
 #include "Constants.h"
@@ -38,8 +39,11 @@ public:
 	void	OnDestroy		( );
 
 	// Utility functions
-	void adjustBall			( int ballIndex, int adjust );
-	void adjustButton		( int buttonIndex, int adjust );
+	void adjustBallImage	( int ballIndex, int adjust );
+	void adjustButtonImage	( int buttonIndex, int adjust );
+	void adjustRankImage	( int rank );
+	void adjustClockImages	( string time );
+	void adjustSpeedImage	( float speed );
 
 	// Drawing functions
 	void renderGame			( Device* device, vector<Renderable*>, vector<GameCamera*> cameras );
@@ -49,9 +53,7 @@ public:
 	void drawLoadingScreen	( );
 	void drawPauseGameRules ( );
 	void drawGameRules		( );
-	void renderClock		( string time );
 	void renderFPS			( );
-
 
 private:
 
@@ -68,9 +70,16 @@ private:
 	Sprite				m_Images		[ NUM_IMAGES ];			//list of all images used in the game
 	Vec3				m_ImageLocations[ NUM_IMAGES ];			//list of all image locations used in the game
 	Vec3				m_BallLocations	[ NUM_LOADING_BALLS ];	//ball image locations
-	int					m_iButtonImage	[ NUM_BUTTONS ];		//current button images (index into m_Images)
+	Vec3				m_TimeLocations	[ 8 ];					//clock image locations
+	int					m_iButtonImages	[ NUM_BUTTONS ];		//current button images (index into m_Images)
 	int					m_iBallImages	[ NUM_LOADING_BALLS ];	//current ball images (index into m_Images)
+	int					m_iPlayerOneRank;						//current image index of player rank
+	int					m_iPlayerOneImage;						//starting index for player ranking images
+	int					m_iClockImage;							//starting image index for zero
+	int					m_iTimeImages	[ 8 ];					//clock image indexes( index into m_Images )
 	Dialog				m_GameScreen;							//HUD and pause screen are rendered to this
+	ResourceManager		m_ResourceManager;						
+	float				m_fSpeedRotation;						//degree in radians to rotate speedometer wand image
 };
 
 #endif

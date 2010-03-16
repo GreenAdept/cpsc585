@@ -19,7 +19,7 @@ int						RacerApp::m_iCurrentBall;
 UINT_PTR				RacerApp::m_AnimationID;
 float					RacerApp::m_fCheckTime;
 ApplicationState		RacerApp::m_iPreviousAppState;
-Renderer*				RacerApp::m_Renderer;		// rendering subsystem
+Renderer*				RacerApp::m_Renderer;			// rendering subsystem
 
 
 //--------------------------------------------------------------------------------------
@@ -158,9 +158,9 @@ void RacerApp::moveMenuUp( )
 		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_UNPAUSE )
 	{
 		//send message to current button to go back to normal state
-		m_Renderer->adjustButton( m_uiCurrentButton, -1 );
+		m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
 		m_uiCurrentButton--;
-		m_Renderer->adjustButton( m_uiCurrentButton, +1 );
+		m_Renderer->adjustButtonImage( m_uiCurrentButton, +1 );
 	}
 }
 
@@ -175,9 +175,9 @@ void RacerApp::moveMenuDown( )
 		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_EXIT2 )
 	{
 		//tell current button to go back to normal/unselected state
-		m_Renderer->adjustButton( m_uiCurrentButton, -1 );
+		m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
 		m_uiCurrentButton++;
-		m_Renderer->adjustButton( m_uiCurrentButton, +1 );
+		m_Renderer->adjustButtonImage( m_uiCurrentButton, +1 );
 	}
 }
 
@@ -310,17 +310,13 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 					//get the game to render all of its components
 					g_pGame->render( device, m_Renderer );
 
-						////render the player's rank
-						//txtHelper.Begin();
-						//txtHelper.SetInsertionPos( 10, 50 );
-						//txtHelper.SetForegroundColor( D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
-						//wstring str = g_pGame->m_Victory.getFormattedString(0);
-						//txtHelper.DrawFormattedTextLine( str.c_str(), g_pGame->m_Victory.getRank(0) );
-						//txtHelper.End();
+					//Adjust all HUD images to reflect current state
+					m_Renderer->adjustRankImage( g_pGame->m_Victory.getRank( PLAYER1 ) );
+					m_Renderer->adjustClockImages( g_pGame->getTime() );
+					m_Renderer->adjustSpeedImage( g_pGame->getVehicleSpeed( PLAYER1 ) );
 
 					m_Renderer->renderFPS( );
-					m_Renderer->renderClock( g_pGame->getTime() );
-					m_Renderer->drawHUD();
+					m_Renderer->drawHUD( );
 				}
 
 				if( m_AppState == APP_PAUSED )
@@ -418,13 +414,13 @@ long WINAPI RacerApp::startGame( long lParam )
 //--------------------------------------------------------------------------------------
 void RacerApp::animateBall( )
 {
-	m_Renderer->adjustBall( m_iCurrentBall, -1 );
+	m_Renderer->adjustBallImage( m_iCurrentBall, -1 );
 	m_iCurrentBall++;
 
 	if( m_iCurrentBall >= NUM_LOADING_BALLS )
 		m_iCurrentBall = 0;
 
-	m_Renderer->adjustBall( m_iCurrentBall, +1 );
+	m_Renderer->adjustBallImage( m_iCurrentBall, +1 );
 }
 
 

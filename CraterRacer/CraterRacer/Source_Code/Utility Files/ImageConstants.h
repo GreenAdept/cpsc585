@@ -17,7 +17,25 @@
 
 //HUD image files
 #define SPEEDOMETER_IMAGE_FILE			"Media\\Images\\Speedometer.png"
+#define SPEEDWAND_IMAGE_FILE			"Media\\Images\\Speedwand.png"
 #define MINIMAP_IMAGE_FILE				"Media\\Images\\MiniMap.png"
+#define FIRST_IMAGE_FILE				"Media\\Images\\Numbers\\First.png"
+#define SECOND_IMAGE_FILE				"Media\\Images\\Numbers\\Second.png"
+#define THIRD_IMAGE_FILE				"Media\\Images\\Numbers\\Third.png"
+#define FOURTH_IMAGE_FILE				"Media\\Images\\Numbers\\Fourth.png"
+
+//Number image files
+#define ZERO_IMAGE_FILE					"Media\\Images\\Numbers\\Zero.png"
+#define ONE_IMAGE_FILE					"Media\\Images\\Numbers\\One.png"
+#define TWO_IMAGE_FILE					"Media\\Images\\Numbers\\Two.png"
+#define THREE_IMAGE_FILE				"Media\\Images\\Numbers\\Three.png"
+#define FOUR_IMAGE_FILE					"Media\\Images\\Numbers\\Four.png"
+#define FIVE_IMAGE_FILE					"Media\\Images\\Numbers\\Five.png"
+#define SIX_IMAGE_FILE					"Media\\Images\\Numbers\\Six.png"
+#define SEVEN_IMAGE_FILE				"Media\\Images\\Numbers\\Seven.png"
+#define EIGHT_IMAGE_FILE				"Media\\Images\\Numbers\\Eight.png"
+#define NINE_IMAGE_FILE					"Media\\Images\\Numbers\\Nine.png"
+#define COLON_IMAGE_FILE				"Media\\Images\\Numbers\\Colon.png"
 
 //Startup screen image files
 #define MENU_IMAGE_FILE					"Media\\Images\\Logo.png"
@@ -46,14 +64,19 @@
 #define GAMERULES_INFO_IMAGE_FILE		"Media\\Images\\GameRulesInfo.png"
 #define GAMERULES_INFO_SMALL_IMAGE_FILE	"Media\\Images\\GameRulesInfoSmall.png"
 
-
 #define NUM_BUTTONS				8
 #define NUM_LOADING_BALLS		5
-#define NUM_IMAGES				25
+#define NUM_IMAGES				41
 
 enum ImageNames{	MENU_IMAGE, CONTROLS_IMAGE, GAMERULES_INFO_IMAGE, 
 					LOADING_IMAGE, LOADING_SMALLBALL_IMAGE, LOADING_BIGBALL_IMAGE,
-					GAMERULES_INFO_SMALL_IMAGE, SPEEDOMETER_IMAGE, MINIMAP_IMAGE,
+					GAMERULES_INFO_SMALL_IMAGE, 
+					
+					SPEEDOMETER_IMAGE, SPEEDWAND_IMAGE, MINIMAP_IMAGE, 
+					FIRST_IMAGE, SECOND_IMAGE, THIRD_IMAGE, FOURTH_IMAGE,
+
+					ZERO_IMAGE, ONE_IMAGE, TWO_IMAGE, THREE_IMAGE, FOUR_IMAGE, FIVE_IMAGE,
+					SIX_IMAGE, SEVEN_IMAGE, EIGHT_IMAGE, NINE_IMAGE, COLON_IMAGE,
 
 					ONEPLAYER_NOTACTIVE_IMAGE, ONEPLAYER_ACTIVE_IMAGE, 
 					TWOPLAYER_IMAGE, TWOPLAYER_ACTIVE_IMAGE,

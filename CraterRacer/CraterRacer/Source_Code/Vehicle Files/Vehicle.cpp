@@ -13,12 +13,15 @@ void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat )
 	Matrix translationMat;
 	BoundingBox tempBB = getBoundingBox();
 
+	//save previous position for speed calculation
+	m_vPreviousPosition = m_vPosition;
+
 	D3DXMatrixIdentity( &translationMat );
 	D3DXMatrixTranslation( &translationMat, 0, -tempBB.m_fHeight, 0 );
 	D3DXMatrixMultiply( &mat, &mat, &translationMat );
 
 	setVelocity(velocity);
-	Entity::update(newPosition, mat);
+	Entity::update( newPosition, mat );
 
 	m_Wheels[ 0 ].update( mat ); 
 	m_Wheels[ 1 ].update( mat ); 
@@ -29,7 +32,6 @@ void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat )
 	m_Wheels[WHEEL1].setWheelLateral(NxVec3(-1, 0, 0));
 	m_Wheels[WHEEL2].setWheelLateral(NxVec3(1, 0, 0));
 	m_Wheels[WHEEL3].setWheelLateral(NxVec3(-1, 0, 0));
-
 }
 
 
@@ -38,13 +40,20 @@ void Vehicle::update( Vec3 newPosition, Vec3 velocity, Matrix mat )
 //--------------------------------------------------------------------------------------
 void Vehicle::initialize( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename )
 {
+	//load mesh for vehicle
 	Entity::initialize( device, pos, filename, effectFilename );
+
+	//initialize speed to zero
+	m_fSpeed = 0.0;
+	m_fRunningTime = 0.0;
+	m_fRunningDistance = 0.0;
 
 	BoundingBox BB = this->getBoundingBox();
 	float width = BB.m_fWidth/2;
 	float length = BB.m_fLength/2;
 	float height = -BB.m_fHeight/2;
 
+	//load the wheel meshes for the vehicle
 	m_Wheels[ WHEEL0 ].initialize( device, WHEEL0_FILE, Vec3(-2.5, height, 3.15), effectFilename);
 	m_Wheels[ WHEEL1 ].initialize( device, WHEEL1_FILE, Vec3(2.5, height, 3.15), effectFilename );
 	m_Wheels[ WHEEL2 ].initialize( device, WHEEL2_FILE, Vec3(-2.5, height, -3.6), effectFilename );
@@ -104,6 +113,35 @@ void Vehicle::setMass( int mass )
 int Vehicle::getMass()
 {
 	return mass;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  getSpeed
+// This function calculates and returns the vehicle speed based on the last simulation.
+//--------------------------------------------------------------------------------------
+float Vehicle::getSpeed( )
+{
+	Vec3 d = m_vPosition - m_vPreviousPosition;
+	m_fRunningDistance += sqrt(d.x*d.x + d.y*d.y + d.z*d.z);
+
+	if( m_fRunningTime >= MAX_SPEED_TIME_ELAPSED )
+	{
+		m_fSpeed = m_fRunningDistance * m_fTimeElapsed;
+		m_fRunningTime = 0.0;
+		m_fRunningDistance = 0.0;
+	}
+	return m_fSpeed;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  setTimeElapsed
+//--------------------------------------------------------------------------------------
+void  Vehicle::setTimeElapsed( float time )
+{
+	m_fTimeElapsed = time;
+	m_fRunningTime += time;
 }
 
 
