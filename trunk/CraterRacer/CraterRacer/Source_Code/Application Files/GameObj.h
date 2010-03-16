@@ -43,10 +43,12 @@ public:
 	void render			 ( Device* device, Renderer* renderer );
 	void startClock		 ( );
 	void processCallback ( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
-	string getTime		 ( );
-
-	SceneObjects getSceneObjects( );
-	void setSceneObjects( SceneObjects& objs );
+	
+	//Getter's and setter's
+	string		 getTime			( );
+	float		 getVehicleSpeed	( int playerNum );
+	SceneObjects getSceneObjects	( );
+	void		 setSceneObjects	( SceneObjects& objs );
 
 	VictoryCalculator           m_Victory;
 

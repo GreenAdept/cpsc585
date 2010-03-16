@@ -138,6 +138,9 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 
 		//Update the vehicle position in the game
 		vehicles[i]->update( Vec3(vec.x, vec.y, vec.z), Vec3(vlc.x, 0, vlc.z), m );
+
+		//set elapsed time in vehicles for speed calculation later
+		vehicles[i]->setTimeElapsed( elapsedTime );
 	}
 
 	//Initialize the meteors and update all the meteor positions

@@ -65,6 +65,7 @@ public:
 	// Setter's
 	void  setMass		( int mass );
 	void  setVelocity	( Vec3 velocity );
+	void  setTimeElapsed( float time );
 
 	// Getter's
 	int	  getMass		( );
@@ -72,6 +73,7 @@ public:
 	Input *getInputObj  ( );
 	Vec3  getDirection	( );
 	AI*   getAI         ( );
+	float getSpeed		( );
 
 	bool isReversing	( );
 	void setReverse		( bool r );
@@ -79,12 +81,16 @@ public:
 	Wheel m_Wheels[4];
 
 protected:
-	Input      input;
-	Vec3       velocity;	//m/s
-	int        mass;		//kg
-	VehicleAI* mind;
-
-	bool	   reversing;
+	Input		input;
+	Vec3		velocity;	//m/s
+	int			mass;		//kg
+	VehicleAI*	mind;
+	bool		reversing;
+	Vec3		m_vPreviousPosition;
+	float		m_fTimeElapsed;
+	float		m_fRunningTime;
+	float		m_fRunningDistance;
+	float		m_fSpeed;
 };
 
 #endif //VEHICLE_H

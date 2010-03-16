@@ -5,7 +5,7 @@
 
 
 //--------------------------------------------------------------------------------------
-// Function:  Constructor
+// Function:  CONSTRUCTOR
 //--------------------------------------------------------------------------------------
 GameObj::GameObj( )
 {
@@ -13,6 +13,31 @@ GameObj::GameObj( )
 	m_Simulator = new Simulator( );
 	m_VarLoader = new VarLoader( );
 	m_Entities	= new EntityManager();
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function:  DESTRUCTOR 
+//--------------------------------------------------------------------------------------
+GameObj::~GameObj( )
+{
+	if( m_Simulator )
+		delete m_Simulator;
+
+	for( int i=0; i < m_Controllers.size(); i++ )
+		delete m_Controllers[i];
+
+	if( m_Debugger )
+		delete m_Debugger;
+
+	if( m_VarLoader )
+		delete m_VarLoader;
+
+	if( m_Entities )
+		delete	m_Entities;
+
+	for( int i=0; i < m_Cameras.size(); i++ )
+		delete m_Cameras[i];
 }
 
 
@@ -25,8 +50,20 @@ void GameObj::startClock()
 	m_clock.start();
 }
 
+
+//--------------------------------------------------------------------------------------
+// Function: getTime
+// Returns the game clock in the format mm:ss:msms
+//--------------------------------------------------------------------------------------
+string GameObj::getTime()
+{
+	return m_clock.getFormattedTime();
+}
+
+
 //--------------------------------------------------------------------------------------
 // Function:  getSceneObjects
+// This function gets game objects and returns them in a single SceneObjects variable.
 //--------------------------------------------------------------------------------------
 SceneObjects GameObj::getSceneObjects( )
 {
@@ -42,8 +79,10 @@ SceneObjects GameObj::getSceneObjects( )
 	return objs;
 }
 
+
 //--------------------------------------------------------------------------------------
-// Function:  getSceneObjects
+// Function:  setSceneObjects
+// This function sets the game cameras and controllers.
 //--------------------------------------------------------------------------------------
 void GameObj::setSceneObjects( SceneObjects& objs )
 {	
@@ -51,36 +90,55 @@ void GameObj::setSceneObjects( SceneObjects& objs )
 	m_Controllers = objs.controllers;
 }
 
+
 //--------------------------------------------------------------------------------------
 // Function:  pause
-// pause=true to try to pause simulation
-// Returns true if the game pause was toggled
+// This function pauses the game simulation and game clock.
 //--------------------------------------------------------------------------------------
 void GameObj::pauseGame()
 {
-	//m_Debugger->writeToFile("pause toggled!");
 	bool pause = m_clock.togglePause();
 	return m_Simulator->pause( true );
 }
 
+
 //--------------------------------------------------------------------------------------
 // Function:  unpause
-// pause=true to try to pause simulation
-// Returns true if the game pause was toggled
+// This function unpauses the game simulation and game clock.
 //--------------------------------------------------------------------------------------
 void GameObj::unpauseGame()
 {
-	//m_Debugger->writeToFile("pause toggled!");
 	bool pause = m_clock.togglePause();
 	return m_Simulator->pause( false );
 }
+
+
+//--------------------------------------------------------------------------------------
+// Function: isPaused
+//--------------------------------------------------------------------------------------
+bool GameObj::isPaused( )
+{
+	return m_Simulator->isPaused();
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: getVehicleSpeed
+//--------------------------------------------------------------------------------------
+float GameObj::getVehicleSpeed( int playerNum )
+{
+	vector<Vehicle*> vehicles = m_Entities->getVehicles();
+
+	return vehicles[ playerNum ]->getSpeed( );
+}
+
 
 //--------------------------------------------------------------------------------------
 // Function: addInput
 //--------------------------------------------------------------------------------------
 void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 {
-	Input* v = m_Entities->getPlayerInputObj( 0 );
+	Input* v = m_Entities->getPlayerInputObj( PLAYER1 );
 
 	v->setController( false );
 
@@ -113,10 +171,6 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 		if (isKeyDown)
 		{
 			m_VarLoader->loadVars( m_Simulator );
-			//	m_Debugger->writeToFile("Loaded variables successfully");
-
-			/*else
-				m_Debugger->writeToFile("Variables did not load");*/
 			break;
 		}
 	default:
@@ -165,6 +219,7 @@ void GameObj::processInput( float fElapsedTime )
 			
 			v->setDir(m_Controllers[i]->LeftThumbstick.GetX());
 
+			
 			if (m_Controllers[i]->A.WasPressedOrHeld())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::A_BUTTON);
@@ -173,7 +228,6 @@ void GameObj::processInput( float fElapsedTime )
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::B_BUTTON);
 			}
-			//if (m_Controllers[i]->Y.WasPressedOrHeld())
 			if (m_Controllers[i]->Y.WasPressed())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::Y_BUTTON);
@@ -182,15 +236,21 @@ void GameObj::processInput( float fElapsedTime )
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::X_BUTTON);
 			}
+
+			//Check for acceleration
 			if (m_Controllers[i]->RightTrigger.WasPressedOrHeld())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::RT_BUTTON);
 				v->setPressure(m_Controllers[i]->LeftTrigger.GetValue());
+
+				//Increase vehicle RPM for sound
 				g_audioState.nRPM += 15.0f;
                 if( g_audioState.nRPM > 3000.0f )
                     g_audioState.nRPM = 3000.0f;
                 g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );
 			}
+
+			//Check for braking
 			if (m_Controllers[i]->LeftTrigger.WasPressedOrHeld())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::LT_BUTTON);
@@ -205,8 +265,6 @@ void GameObj::processInput( float fElapsedTime )
 			}
 			if (m_Controllers[i]->Start.WasPressed())
 			{
-				//m_clock.togglePause();
-
 				pauseGame( );
 			}
 
@@ -221,6 +279,7 @@ void GameObj::processInput( float fElapsedTime )
 		}
 	}
 }
+
 
 //--------------------------------------------------------------------------------------
 // Function: render
@@ -246,13 +305,6 @@ void GameObj::simulate( float fElapsedTime )
 
 }
 
-//--------------------------------------------------------------------------------------
-// Function: isPaused
-//--------------------------------------------------------------------------------------
-bool GameObj::isPaused( )
-{
-	return m_Simulator->isPaused();
-}
 
 //--------------------------------------------------------------------------------------
 // Function: processCallback
@@ -294,31 +346,4 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 	}
 }
 
-string GameObj::getTime()
-{
-	return m_clock.getFormattedTime();
-}
 
-//--------------------------------------------------------------------------------------
-// Function:  Destructor 
-//--------------------------------------------------------------------------------------
-GameObj::~GameObj( )
-{
-	if( m_Simulator )
-		delete m_Simulator;
-
-	for( int i=0; i < m_Controllers.size(); i++ )
-		delete m_Controllers[i];
-
-	if( m_Debugger )
-		delete m_Debugger;
-
-	if( m_VarLoader )
-		delete m_VarLoader;
-
-	if( m_Entities )
-		delete	m_Entities;
-
-	for( int i=0; i < m_Cameras.size(); i++ )
-		delete m_Cameras[i];
-}

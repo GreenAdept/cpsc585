@@ -79,20 +79,12 @@ public:
 
 
 	// Data Members ------------------------------------------
-
-	//static ResourceManager		m_ResourceManager;	// manager for shared resources of dialogs
 	static ApplicationState		m_AppState;
 	static UINT					m_uiCurrentButton;
 	static ApplicationState		m_iPreviousAppState;
-
-	//static Dialog				m_GameScreen;	// game view
-
-	static Renderer*			m_Renderer;		// rendering subsystem
-
+	static Renderer*			m_Renderer;			// rendering subsystem
 	static XBox360Controller*	m_MenuController;
 	static SceneLoader*			m_SceneLoader;		// used to load the game
-
-	// buttons
 	static float				m_fCheckTime;
 	
 	// ball animation on loading screen

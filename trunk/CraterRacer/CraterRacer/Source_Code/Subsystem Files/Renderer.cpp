@@ -16,21 +16,34 @@
 //--------------------------------------------------------------------------------------
 Renderer::Renderer( )
 {
-	m_iButtonImage[ GUI_BTN_SINGLE_PLAYER ] = ONEPLAYER_ACTIVE_IMAGE;
-	m_iButtonImage[ GUI_BTN_TWO_PLAYER ] = TWOPLAYER_IMAGE;
-	m_iButtonImage[ GUI_BTN_TIMETRIAL ] = TIMETRIAL_IMAGE;
-	m_iButtonImage[ GUI_BTN_GAMERULES ] = GAMERULES_IMAGE;
-	m_iButtonImage[ GUI_BTN_EXIT ] = EXIT_NOTACTIVE_IMAGE;
+	m_iButtonImages[ GUI_BTN_SINGLE_PLAYER ] = ONEPLAYER_ACTIVE_IMAGE;
+	m_iButtonImages[ GUI_BTN_TWO_PLAYER ] = TWOPLAYER_IMAGE;
+	m_iButtonImages[ GUI_BTN_TIMETRIAL ] = TIMETRIAL_IMAGE;
+	m_iButtonImages[ GUI_BTN_GAMERULES ] = GAMERULES_IMAGE;
+	m_iButtonImages[ GUI_BTN_EXIT ] = EXIT_NOTACTIVE_IMAGE;
 	
-	m_iButtonImage[ GUI_BTN_UNPAUSE ] = UNPAUSE_ACTIVE_IMAGE;
-	m_iButtonImage[ GUI_BTN_GAMERULES2 ] = GAMERULES2_IMAGE;
-	m_iButtonImage[ GUI_BTN_EXIT2 ] = EXIT2_NOTACTIVE_IMAGE;
+	m_iButtonImages[ GUI_BTN_UNPAUSE ] = UNPAUSE_ACTIVE_IMAGE;
+	m_iButtonImages[ GUI_BTN_GAMERULES2 ] = GAMERULES2_IMAGE;
+	m_iButtonImages[ GUI_BTN_EXIT2 ] = EXIT2_NOTACTIVE_IMAGE;
 
 	//Set up ball animation images for loading screen
 	for( int i=0; i < NUM_LOADING_BALLS; i++ )
 		m_iBallImages[i] = LOADING_SMALLBALL_IMAGE;
-
 	m_iBallImages[0] = LOADING_BIGBALL_IMAGE;
+
+	//Set up time images to be zeros
+	for( int i=0; i < 8; i++ )
+		m_iTimeImages[i] = ZERO_IMAGE;
+	m_iTimeImages[2] = COLON_IMAGE;
+	m_iTimeImages[5] = COLON_IMAGE;
+
+	m_iPlayerOneRank = FIRST_IMAGE;
+	m_iPlayerOneImage = FIRST_IMAGE;
+	m_iClockImage = ZERO_IMAGE;
+	m_fSpeedRotation = 0;
+
+	//initialize the resource manager to keep track of all our screens and HUD
+    m_GameScreen.Init( &m_ResourceManager );
 }
 
 
@@ -66,6 +79,8 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 	UINT width = pBack->Width, 
 		 height = pBack->Height;
 
+	V_RETURN( m_ResourceManager.OnD3D9ResetDevice() );
+
 	device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
@@ -94,6 +109,9 @@ HRESULT Renderer::OnCreate( Device* device )
 {
 	HRESULT hr;
 
+	//initialize the resource manager for our HUD and Pause Screen.
+	V_RETURN( m_ResourceManager.OnD3D9CreateDevice( device ) );
+
 	//set the size and font of text to be used in "RenderText" function
     V_RETURN( D3DXCreateFont( device, 24, 0, FW_BOLD, 1, FALSE, DEFAULT_CHARSET,
                           OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE,
@@ -107,6 +125,8 @@ HRESULT Renderer::OnCreate( Device* device )
 //--------------------------------------------------------------------------------------
 void Renderer::OnLost( )
 {
+	m_ResourceManager.OnD3D9LostDevice();
+
 	if( m_pFont )
         m_pFont->OnLostDevice();
 
@@ -122,6 +142,8 @@ void Renderer::OnLost( )
 //--------------------------------------------------------------------------------------
 void Renderer::OnDestroy( )
 {
+	m_ResourceManager.OnD3D9DestroyDevice( );
+
 	SAFE_RELEASE( m_pFont );
 }
 
@@ -132,24 +154,6 @@ void Renderer::OnDestroy( )
 //		
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-//--------------------------------------------------------------------------------------
-// Function: renderClock
-// Renders the game time in the right hand corner of the screen
-//--------------------------------------------------------------------------------------
-void Renderer::renderClock( string time )
-{
-	CDXUTTextHelper txtHelper( m_pFont, m_pTextSprite, 15 );
-
-    txtHelper.Begin();
-    txtHelper.SetInsertionPos( 10, 35 );
-	txtHelper.SetForegroundColor( D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
-
-	wstring wTime(time.length(), L' ');
-	copy(time.begin(), time.end(), wTime.begin());
-    txtHelper.DrawTextLine( wTime.c_str() );
-		
-	txtHelper.End();
-}
 
 //--------------------------------------------------------------------------------------
 // Function: drawPauseGameRules
@@ -195,7 +199,7 @@ void Renderer::drawPauseScreen( )
 	for( int i=GUI_BTN_UNPAUSE; i <= GUI_BTN_EXIT2; i++ )
 	{
 		m_pImageSprite->Flush();
-		image = m_iButtonImage[ i ];
+		image = m_iButtonImages[ i ];
 		V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	}
 	m_pImageSprite->Flush();
@@ -210,19 +214,44 @@ void Renderer::drawPauseScreen( )
 void Renderer::drawHUD( )
 {
 	HRESULT hr;
-	Vec3 center( 0, 0, 0 );
+	Matrix mat;
+	D3DXVECTOR2 center( 85, 15 );
+	D3DXVECTOR2 trans( m_ImageLocations[ SPEEDWAND_IMAGE ].x, m_ImageLocations[ SPEEDWAND_IMAGE ].y);
+	Matrix rotateZ;
 	int image = 0;
 
 	//render the HUD
-	m_pImageSprite->Begin( NULL );
+	m_pImageSprite->Begin( D3DXSPRITE_ALPHABLEND );
 	
-	//draw the speedometer background
+	//draw the speedometer 
 	m_pImageSprite->Flush();
-	V( m_pImageSprite->Draw( m_Images[ SPEEDOMETER_IMAGE ], NULL, &center, &m_ImageLocations[ SPEEDOMETER_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
-
+	V( m_pImageSprite->Draw( m_Images[ SPEEDOMETER_IMAGE ], NULL, NULL, &m_ImageLocations[ SPEEDOMETER_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	m_pImageSprite->Flush();
-	V( m_pImageSprite->Draw( m_Images[ MINIMAP_IMAGE ], NULL, &center, &m_ImageLocations[ MINIMAP_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 
+	//rotate the speedometer wand image to correct position
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, NULL, &center, m_fSpeedRotation, &trans );
+	m_pImageSprite->SetTransform( &mat );
+	V( m_pImageSprite->Draw( m_Images[ SPEEDWAND_IMAGE ], NULL, NULL, NULL, D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+
+	//reset sprite transform matrix so all sprites aren't rotated
+	D3DXMatrixIdentity( &mat );
+	m_pImageSprite->SetTransform( &mat );
+
+	//draw the minimap
+	m_pImageSprite->Flush();
+	V( m_pImageSprite->Draw( m_Images[ MINIMAP_IMAGE ], NULL, NULL, &m_ImageLocations[ MINIMAP_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+
+	//draw the ranking
+	m_pImageSprite->Flush();
+	V( m_pImageSprite->Draw( m_Images[ m_iPlayerOneRank ], NULL, NULL, &m_ImageLocations[ m_iPlayerOneRank ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+
+	//draw the clock
+	for( int i=0; i < 8; i++ )
+	{
+		m_pImageSprite->Flush();
+		image = m_iTimeImages[ i ];
+		V( m_pImageSprite->Draw( m_Images[ image ], NULL, NULL, &m_TimeLocations[i], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	}
 	m_pImageSprite->Flush();
 	m_pImageSprite->End( );
 }
@@ -235,26 +264,23 @@ void Renderer::drawHUD( )
 void Renderer::drawStartupMenu( )
 {
 	HRESULT hr;
-	Vec3 center( 0, 0, 0 );
 	int image = 0;
 
 	//render the game menu
-	m_pImageSprite->Begin( NULL );
+	m_pImageSprite->Begin( D3DXSPRITE_ALPHABLEND );
 	
 	m_pImageSprite->Flush();
-	V( m_pImageSprite->Draw( m_Images[ MENU_IMAGE ], NULL, &center, &m_ImageLocations[ MENU_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	V( m_pImageSprite->Draw( m_Images[ MENU_IMAGE ], NULL, NULL, &m_ImageLocations[ MENU_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 
 	//draw the menu buttons
 	for( int i=GUI_BTN_SINGLE_PLAYER; i <= GUI_BTN_EXIT; i++ )
 	{
 		m_pImageSprite->Flush();
-		image = m_iButtonImage[ i ];
-		V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+		image = m_iButtonImages[ i ];
+		V( m_pImageSprite->Draw( m_Images[ image ], NULL, NULL, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	}
 	m_pImageSprite->Flush();
 	m_pImageSprite->End( );
-
-	drawHUD();
 }
 
 
@@ -266,12 +292,11 @@ void Renderer::drawStartupMenu( )
 void Renderer::drawGameRules( )
 {
 	HRESULT hr;
-	Vec3 center( 0, 0, 0 );
 
 	//Draw the game rules image (as entire screen)
-	m_pImageSprite->Begin( NULL );
+	m_pImageSprite->Begin( D3DXSPRITE_ALPHABLEND );
 	m_pImageSprite->Flush();
-	V( m_pImageSprite->Draw( m_Images[GAMERULES_INFO_IMAGE], NULL, &center, 
+	V( m_pImageSprite->Draw( m_Images[GAMERULES_INFO_IMAGE], NULL, NULL, 
 			&m_ImageLocations[GAMERULES_INFO_IMAGE], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	m_pImageSprite->End();
 }
@@ -284,24 +309,23 @@ void Renderer::drawGameRules( )
 void Renderer::drawLoadingScreen( )
 {
 	HRESULT hr;
-	Vec3 center( 0, 0, 0 );
 	int image = 0;
 
-	m_pImageSprite->Begin( NULL );
+	m_pImageSprite->Begin( D3DXSPRITE_ALPHABLEND );
 	m_pImageSprite->Flush();
 
-	V( m_pImageSprite->Draw( m_Images[LOADING_IMAGE], NULL, &center, &m_ImageLocations[LOADING_IMAGE], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	V( m_pImageSprite->Draw( m_Images[LOADING_IMAGE], NULL, NULL, &m_ImageLocations[LOADING_IMAGE], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	
 	//draw animating balls
 	for( int i=0; i < NUM_LOADING_BALLS; i++ )
 	{
 		image = m_iBallImages[ i ];
 		m_pImageSprite->Flush();
-		V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_BallLocations[i], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+		V( m_pImageSprite->Draw( m_Images[ image ], NULL, NULL, &m_BallLocations[i], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	}
 
 	m_pImageSprite->Flush();
-	V( m_pImageSprite->Draw( m_Images[CONTROLS_IMAGE], NULL, &center, &m_ImageLocations[CONTROLS_IMAGE], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	V( m_pImageSprite->Draw( m_Images[CONTROLS_IMAGE], NULL, NULL, &m_ImageLocations[CONTROLS_IMAGE], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	
 	m_pImageSprite->End( );
 }
@@ -408,7 +432,7 @@ void Renderer::renderGame( Device* device, vector<Renderable*> renderables, vect
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 //--------------------------------------------------------------------------------------
-// Function: adjustButton
+// Function: adjustButtonImage
 // This function increments or decrements the specified button image index.   
 // Each button has two images, one for being selected and one for being inactive. The
 // caller of this function should be aware which buttons are active and inactive and
@@ -417,22 +441,80 @@ void Renderer::renderGame( Device* device, vector<Renderable*> renderables, vect
 // INPUTS:  int buttonIndex	- button number to adjust image of
 //			int adjust		- use "+1" to make active, and "-1" to make inactive.
 //--------------------------------------------------------------------------------------
-void Renderer::adjustButton( int buttonIndex, int adjust )
+void Renderer::adjustButtonImage( int buttonIndex, int adjust )
 {
-	m_iButtonImage[ buttonIndex ] += adjust;
+	m_iButtonImages[ buttonIndex ] += adjust;
 }
 
 
 //--------------------------------------------------------------------------------------
-// Function: adjustBall
+// Function: adjustBallImage
 // This function increments or decrements the specified ball image index.   
 // There are two ball images, one small and one big.  The order is small then big.
 // INPUTS:  int bballIndex	- ball number to adjust image of
 //			int adjust		- use "+1" to make ball bigger, and "-1" to make ball smaller.
 //--------------------------------------------------------------------------------------
-void Renderer::adjustBall( int ballIndex, int adjust )
+void Renderer::adjustBallImage( int ballIndex, int adjust )
 {
 	m_iBallImages[ ballIndex ] += adjust;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: adjustRankImage
+// This function sets the ranking image for the player.
+// INPUTS:  int rank - 1, 2, 3 or 4
+//--------------------------------------------------------------------------------------
+void Renderer::adjustRankImage( int rank )
+{
+	m_iPlayerOneRank = m_iPlayerOneImage + rank - 1;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: adjustClockImages
+// This function sets the clock images for the HUD time display.
+// INPUTS:  string time - the time comes in the format mm:ss:msms
+//--------------------------------------------------------------------------------------
+void Renderer::adjustClockImages( string time )
+{
+	char temp;
+	//mm
+	temp = time.at(0);
+	m_iTimeImages[0] = m_iClockImage + atoi( &temp );
+	temp = time.at(1);
+	m_iTimeImages[1] = m_iClockImage + atoi( &temp );
+	
+	//ss
+	temp = time.at(3);
+	m_iTimeImages[3] = m_iClockImage + atoi( &temp );
+	temp = time.at(4);
+	m_iTimeImages[4] = m_iClockImage + atoi( &temp );
+
+	//ms ms
+	temp = time.at(6);
+	m_iTimeImages[6] = m_iClockImage + atoi( &temp );
+	temp = time.at(7);
+	m_iTimeImages[7] = m_iClockImage + atoi( &temp );
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: adjustSpeedImage
+// This function sets the speedometer wand image rotation based on the incoming speed.
+// INPUTS:  float speed - in meters/ms
+//--------------------------------------------------------------------------------------
+void Renderer::adjustSpeedImage( float speed )
+{
+	float maxSpeed = 85;
+	float maxRadians = 4.41238898;
+
+	speed = speed / (MAX_SPEED_TIME_ELAPSED+0.1) * maxSpeed;
+
+	if( speed > maxSpeed )
+		speed = maxSpeed;
+
+	m_fSpeedRotation = maxRadians * ( speed / maxSpeed );
 }
 
 
@@ -460,8 +542,28 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	createTexture( m_Images[ CONTROLS_IMAGE ], CONTROLS_IMAGE_FILE, device );
 	createTexture( m_Images[ GAMERULES_INFO_IMAGE ], GAMERULES_INFO_IMAGE_FILE, device );
 	createTexture( m_Images[ GAMERULES_INFO_SMALL_IMAGE ], GAMERULES_INFO_SMALL_IMAGE_FILE, device );
+	
+	//HUD images
 	createTexture( m_Images[ SPEEDOMETER_IMAGE ], SPEEDOMETER_IMAGE_FILE, device );
+	createTexture( m_Images[ SPEEDWAND_IMAGE ], SPEEDWAND_IMAGE_FILE, device );
 	createTexture( m_Images[ MINIMAP_IMAGE ], MINIMAP_IMAGE_FILE, device );
+	createTexture( m_Images[ FIRST_IMAGE ], FIRST_IMAGE_FILE, device );
+	createTexture( m_Images[ SECOND_IMAGE ], SECOND_IMAGE_FILE, device );
+	createTexture( m_Images[ THIRD_IMAGE ], THIRD_IMAGE_FILE, device );
+	createTexture( m_Images[ FOURTH_IMAGE ], FOURTH_IMAGE_FILE, device );
+
+	//Number images
+	createTexture( m_Images[ ZERO_IMAGE ], ZERO_IMAGE_FILE, device );
+	createTexture( m_Images[ ONE_IMAGE ], ONE_IMAGE_FILE, device );
+	createTexture( m_Images[ TWO_IMAGE ], TWO_IMAGE_FILE, device );
+	createTexture( m_Images[ THREE_IMAGE ], THREE_IMAGE_FILE, device );
+	createTexture( m_Images[ FOUR_IMAGE ], FOUR_IMAGE_FILE, device );
+	createTexture( m_Images[ FIVE_IMAGE ], FIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ SIX_IMAGE ], SIX_IMAGE_FILE, device );
+	createTexture( m_Images[ SEVEN_IMAGE ], SEVEN_IMAGE_FILE, device );
+	createTexture( m_Images[ EIGHT_IMAGE ], EIGHT_IMAGE_FILE, device );
+	createTexture( m_Images[ NINE_IMAGE ], NINE_IMAGE_FILE, device );
+	createTexture( m_Images[ COLON_IMAGE ], COLON_IMAGE_FILE, device );
 
 	//Startup Menu Buttons
 	createTexture( m_Images[ ONEPLAYER_NOTACTIVE_IMAGE ], ONEPLAYER_NOTACTIVE_IMAGE_FILE, device );
@@ -536,11 +638,7 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	m_ImageLocations[EXIT2_NOTACTIVE_IMAGE] = Vec3( w, h, 0 );
 	m_ImageLocations[EXIT2_ACTIVE_IMAGE] = Vec3( w, h, 0 );
 
-	//Position HUD images
-	m_ImageLocations[SPEEDOMETER_IMAGE] = Vec3( 10, height-180, 0 );
-	m_ImageLocations[MINIMAP_IMAGE] = Vec3( width-260, height-180, 0 );
-
-	//Position all other images
+	//Position Game Rule screen images
 	w = ( width - 800 ) / 2; if( w<0 ) w=0;
 	h = ( height - 700 ) / 2; if( h<0 ) h=0;
 	m_ImageLocations[GAMERULES_INFO_IMAGE] = Vec3( w, h, 0 );
@@ -548,6 +646,23 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	w = ( width - 650 ) / 2; if( w<0 ) w=0;
 	h = ( height - 550 ) / 2; if( h<0 ) h=0;
 	m_ImageLocations[GAMERULES_INFO_SMALL_IMAGE] = Vec3( w, h, 0 );
+
+	//Position HUD images
+	m_ImageLocations[SPEEDOMETER_IMAGE] = Vec3( 10, height-180, 0 );
+	m_ImageLocations[SPEEDWAND_IMAGE] = Vec3( 50, height-70, 0 );
+	m_ImageLocations[MINIMAP_IMAGE] = Vec3( width-260, height-180, 0 );
+	m_ImageLocations[FIRST_IMAGE] = Vec3( width-160, 10, 0 );
+	m_ImageLocations[SECOND_IMAGE] = Vec3( width-160, 10, 0 );
+	m_ImageLocations[THIRD_IMAGE] = Vec3( width-160, 10, 0 );
+	m_ImageLocations[FOURTH_IMAGE] = Vec3( width-160, 10, 0 );
+
+	//Position number images
+	w = ( width - 160 ); if( w<0 ) w=0;
+	for( int i=0; i < 8; i++ )
+	{
+		m_TimeLocations[i] = Vec3( w, 85, 0 );
+		w += 18;
+	}
 }
 
 
