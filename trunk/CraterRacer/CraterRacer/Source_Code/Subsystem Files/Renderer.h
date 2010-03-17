@@ -44,6 +44,8 @@ public:
 	void adjustRankImage	( int rank );
 	void adjustClockImages	( string time );
 	void adjustSpeedImage	( float speed );
+	void adjustVictoryRank	( vector<int>& ranks );
+
 
 	// Drawing functions
 	void renderGame			( Device* device, vector<Renderable*>, vector<GameCamera*> cameras );
@@ -54,6 +56,7 @@ public:
 	void drawPauseGameRules ( );
 	void drawGameRules		( );
 	void renderFPS			( );
+	void drawVictoryScreen	( );
 
 private:
 
@@ -80,6 +83,7 @@ private:
 	Dialog				m_GameScreen;							//HUD and pause screen are rendered to this
 	ResourceManager		m_ResourceManager;						
 	float				m_fSpeedRotation;						//degree in radians to rotate speedometer wand image
+	string				m_sVictoryRanks[ 4 ];
 };
 
 #endif

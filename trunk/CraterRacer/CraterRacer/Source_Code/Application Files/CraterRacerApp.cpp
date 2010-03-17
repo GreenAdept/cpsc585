@@ -37,7 +37,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 	DWORD dwReturnVal;
 
 	//The game is active, so go into game loop processing
-	if( g_pGame && m_AppState ==  APP_RENDER_GAME )
+	if( g_pGame && m_AppState == APP_RENDER_GAME )
 	{
 		g_pGame->processInput( fElapsedTime );
 
@@ -51,6 +51,13 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 		g_pGame->simulate( fElapsedTime );
 		g_pGame->think( );
 		UpdateAudio();
+
+		//load victory screen if someone has won
+		if( g_pGame->isFinished() )
+		{
+			m_AppState = APP_VICTORY;
+
+		}
 	}
 
 	else if( g_pGame && m_AppState == APP_GAME_LOADING )
@@ -216,6 +223,10 @@ void RacerApp::processMenuSelection( )
 					g_pGame->unpauseGame( );
 					m_AppState = APP_RENDER_GAME; 
 					break;
+				
+				case GUI_BTN_MAINMENU:
+					m_AppState = APP_STARTUP; 
+					break;
 
 				case GUI_BTN_GAMERULES:
 					m_iPreviousAppState = m_AppState;
@@ -230,6 +241,7 @@ void RacerApp::processMenuSelection( )
 
 				//or exit 
 				case GUI_BTN_EXIT:
+				case GUI_BTN_EXITSMALL:
 				case GUI_BTN_EXIT2:
 					DXUTShutdown();
 					break;
@@ -289,6 +301,7 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 		{
 			case APP_STARTUP:
 				
+				//m_Renderer->drawVictoryScreen( );
 				m_Renderer->drawStartupMenu( );
 				break;
 
@@ -299,6 +312,11 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 			case APP_GAME_LOADING:
 
 				m_Renderer->drawLoadingScreen( );
+				break;
+
+			case APP_VICTORY:
+
+				m_Renderer->drawVictoryScreen( );
 				break;
 
 			case APP_RENDER_GAME:

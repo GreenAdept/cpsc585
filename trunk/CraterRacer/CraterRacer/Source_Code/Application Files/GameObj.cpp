@@ -13,6 +13,7 @@ GameObj::GameObj( )
 	m_Simulator = new Simulator( );
 	m_VarLoader = new VarLoader( );
 	m_Entities	= new EntityManager();
+	m_bIsFinished = false;
 }
 
 
@@ -123,6 +124,14 @@ bool GameObj::isPaused( )
 
 
 //--------------------------------------------------------------------------------------
+// Function: isFinished
+//--------------------------------------------------------------------------------------
+bool GameObj::isFinished( )
+{
+	return m_bIsFinished;
+}
+
+//--------------------------------------------------------------------------------------
 // Function: getVehicleSpeed
 //--------------------------------------------------------------------------------------
 float GameObj::getVehicleSpeed( int playerNum )
@@ -200,8 +209,12 @@ void GameObj::think ()
 		minds[i]->think( m_Entities, METEORGROUPS, i );
 
 
-	m_Victory.calculateRanks (m_Entities->getVehicles());
+	m_Victory.calculateRanks(m_Entities->getVehicles());
 	m_Victory.recordTime(m_clock.getTotalTimeInMS());
+
+	//check if a player is done and set the flag to make the victory screen load
+	//(we will eventually want to start a finishing animation here)
+	m_bIsFinished = m_Victory.isGameFinished( );
 }
 
 

@@ -26,7 +26,8 @@
 #define BG_SETTINGS_FILE		L"Media\\Audio\\Win\\BGMusic.xgs"
 
 enum ApplicationState { APP_STARTUP, APP_RENDER_GAME, APP_PAUSED, 
-						APP_GAME_LOADING, APP_SHOW_GAMERULES, APP_SHOW_GAMERULES2 };
+						APP_GAME_LOADING, APP_SHOW_GAMERULES, APP_SHOW_GAMERULES2,
+						APP_VICTORY };
 
 //--------------------------------------------------------
 //		CLASS: RacerApp

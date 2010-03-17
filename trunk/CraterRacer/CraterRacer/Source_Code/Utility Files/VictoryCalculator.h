@@ -24,6 +24,7 @@ public:
 	bool    isFinished         (int index);
 	wstring getFormattedString (int index);
 	void	recordTime		   (int milliseconds);
+	bool	isGameFinished	   ( );
 };
 
 
