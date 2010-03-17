@@ -20,7 +20,7 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 	VehicleAI* myAI = (VehicleAI*) v->getAI();
 	int rank = 1;
 
-	if (myAI->finished()) {
+	if (myAI->isFinished()) {
 		for (int i=0; i<finished.size(); i++)
 			if (finished[i])
 				rank++;
@@ -46,6 +46,7 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 		}
 
 		laps[index] = myAI->getRemainingLaps();
+		wrongWay[index] = myAI->isGoingWrongWay();
 		ranks[index] = rank;
 	}
 }
@@ -61,6 +62,7 @@ void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles) {
 		ranks.resize (vehicles.size(), 1);
 		laps.resize (vehicles.size(), 1);
 		finished.resize (vehicles.size(), false);
+		wrongWay.resize (vehicles.size(), false);
 	}
 
 	for (int i=0; i<vehicles.size(); i++)
@@ -101,17 +103,33 @@ int VictoryCalculator::getRank (int index) {
 //------------------------------------------------------
 // Function: isFinished
 // Returns true if the vehicle (player or computer-
-// controlled)with the specified index has finished
+// controlled) with the specified index has finished
 // the race, false otherwise.
 //
 // Player 1 has index 0, Player 2 has index 1, etc...
 //------------------------------------------------------
 
 bool VictoryCalculator::isFinished (int index) {
-	if (index >= ranks.size())
+	if (index >= finished.size())
 		return false;
 	else
 		return finished[index];
+}
+
+//------------------------------------------------------
+// Function: isFinished
+// Returns true if the player vehicle with the specified
+// index is going the wrong way, false otherwise. AI
+// vehicles always return false.
+//
+// Player 1 has index 0, Player 2 has index 1, etc...
+//------------------------------------------------------
+
+bool VictoryCalculator::isGoingWrongWay (int index) {
+	if (index >= wrongWay.size())
+		return false;
+	else
+		return wrongWay[index];
 }
 
 wstring VictoryCalculator::getFormattedString (int index) {

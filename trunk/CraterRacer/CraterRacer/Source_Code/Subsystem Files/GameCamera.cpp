@@ -85,6 +85,24 @@ MCamera GameCamera::getCamera () {
 	return camera;
 }
 
+
+//------------------------------------------------------
+// Function: setRearView
+// Activates/deactivates rear view camera mode.
+//------------------------------------------------------
+
+void GameCamera::setRearView (bool activate) {
+	if (rearView == activate)
+		return;
+	else
+		toggleRearView ();
+}
+
+//------------------------------------------------------
+// Function: toggleRearView
+// Toggles rear view camera mode on/off.
+//------------------------------------------------------
+
 void GameCamera::toggleRearView () {
 	rearView = !rearView;
 	offset.x = -offset.x;

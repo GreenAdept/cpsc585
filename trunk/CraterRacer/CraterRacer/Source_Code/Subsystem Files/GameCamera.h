@@ -31,6 +31,7 @@ public:
 	void    setTarget      (Entity *e);
 	void    updateWindow   (const D3DSURFACE_DESC* pSurface);
 	MCamera getCamera      ();
+	void    setRearView    (bool activate);
 	void    toggleRearView ();
 };
 
