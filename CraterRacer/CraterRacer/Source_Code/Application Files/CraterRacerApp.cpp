@@ -307,13 +307,13 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 
 				if( g_pGame )
 				{
-					//get the game to render all of its components
-					g_pGame->render( device, m_Renderer );
-
 					//Adjust all HUD images to reflect current state
 					m_Renderer->adjustRankImage( g_pGame->m_Victory.getRank( PLAYER1 ) );
 					m_Renderer->adjustClockImages( g_pGame->getTime() );
 					m_Renderer->adjustSpeedImage( g_pGame->getVehicleSpeed( PLAYER1 ) );
+
+					//get the game to render all of its components
+					g_pGame->render( device, m_Renderer );
 
 					m_Renderer->renderFPS( );
 					m_Renderer->drawHUD( );
@@ -400,7 +400,7 @@ long WINAPI RacerApp::startGame( long lParam )
 
 	//Leave the critical section -- other threads can now EnterCriticalSection() 
     LeaveCriticalSection(&m_CriticalSection);
-	
+
 	m_bGameIsReady = true;
 
 	return 0;
