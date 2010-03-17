@@ -19,6 +19,7 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 				rank++;
 
 		finished[index] = true;
+		laps[index] = 0;
 		ranks[index] = rank;
 	}
 	else {
@@ -37,6 +38,7 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 			}
 		}
 
+		laps[index] = myAI->getRemainingLaps();
 		ranks[index] = rank;
 	}
 }
@@ -44,11 +46,19 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles) {
 	if (ranks.size() != vehicles.size()) {
 		ranks.resize (vehicles.size(), 1);
+		laps.resize (vehicles.size(), 1);
 		finished.resize (vehicles.size(), false);
 	}
 
 	for (int i=0; i<vehicles.size(); i++)
 		calculateRank (vehicles, i);
+}
+
+int VictoryCalculator::getRemainingLaps (int index) {
+	if (index >= laps.size())
+		return -1;
+	else
+		return laps[index];
 }
 
 int VictoryCalculator::getRank (int index) {
