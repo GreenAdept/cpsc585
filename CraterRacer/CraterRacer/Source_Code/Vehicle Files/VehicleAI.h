@@ -19,17 +19,19 @@ protected:
 	Waypoint* destination;
 	Vec3      lastPassedWaypoint;
 	int       laps, passedWPs;
+	bool      wrongWay;
 
 public:
-	VehicleAI () { destination = 0; laps = 1; passedWPs = 0; }
+	VehicleAI () { destination = 0; laps = 1; passedWPs = 0; wrongWay = false; }
 
 	virtual void think (EntityManager *em, int myList, int myIndex);
 	Vec3         getLastPassedWaypoint () { return lastPassedWaypoint; }
-	Vec3		 getNextWaypoint();
+	Vec3		 getNextWaypoint ();
 	float        getDistanceToNextWP (Vec3 myPos);
 	int          getNumberofPassedWaypoints () { return passedWPs; }
 	int          getRemainingLaps () { return laps; }
-	bool         finished () { return laps == 0; }
+	bool         isFinished () { return laps == 0; }
+	bool         isGoingWrongWay () { return wrongWay; }
 };
 
 

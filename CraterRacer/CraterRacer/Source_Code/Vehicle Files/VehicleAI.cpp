@@ -16,7 +16,8 @@
 void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	if (state == AI::STOPPED) return;
 
-	Vec3 myPos = em->getPosition (myList, myIndex);
+	Vehicle* myEntity = (Vehicle*) (*em)[myList][myIndex];
+	Vec3     myPos = myEntity->getPosition ();
 
 	if (state == AI::WAITING) {
 		Terrain* terrain = em->getTerrain();
@@ -44,6 +45,18 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 			else
 				destination = em->getTerrain()->getTrackStart();
 		}
+	}
+
+
+	if (myList == PLAYERS) {
+		Vec3 currentDir = myEntity->getDirection ();
+		Vec3 desiredDir = destination->getDirectionToWP (myPos);
+
+		float cosTheta = D3DXVec3Dot (&currentDir, &desiredDir);
+		if (cosTheta < 0)
+			wrongWay = true;
+		else
+			wrongWay = false;
 	}
 }
 
