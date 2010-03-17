@@ -20,6 +20,7 @@ class VictoryCalculator {
 
 public:
 	VictoryCalculator();
+
 	void    calculateRanks     (std::vector<Vehicle*> vehicles);
 	int     getRank            (int index);
 	int     getRemainingLaps   (int index);
