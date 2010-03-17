@@ -28,6 +28,7 @@ public:
 	Vec3		 getNextWaypoint();
 	float        getDistanceToNextWP (Vec3 myPos);
 	int          getNumberofPassedWaypoints () { return passedWPs; }
+	int          getRemainingLaps () { return laps; }
 	bool         finished () { return laps == 0; }
 };
 
