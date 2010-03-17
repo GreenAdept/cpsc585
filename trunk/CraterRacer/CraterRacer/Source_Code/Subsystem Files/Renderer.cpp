@@ -59,7 +59,6 @@ Renderer::~Renderer( )
 	
 	for( int i=0; i < NUM_IMAGES; i++ )
 		SAFE_RELEASE( m_Images[i] );
-
 }
 
 
@@ -81,12 +80,12 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 
 	V_RETURN( m_ResourceManager.OnD3D9ResetDevice() );
 
-	device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
+	/*device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
 	device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
 	device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
 	device->SetRenderState(D3DRS_ALPHAREF, (DWORD)100);
-	device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE); 
+	device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE); */
 
 	// Create a sprite to help batch calls when drawing many lines of text
 	D3DXCreateSprite( device, &m_pTextSprite );
