@@ -6,6 +6,13 @@ VictoryCalculator::VictoryCalculator() {
 	recorded = false;
 }
 
+//------------------------------------------------------
+// Function: calculateRank
+// Calculates the ranking and remaining laps for the
+// Vehicle in the provided vector/list with the specified
+// index.
+//------------------------------------------------------
+
 void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 	if (finished[index]) return;
 
@@ -43,6 +50,12 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 	}
 }
 
+//------------------------------------------------------
+// Function: calculateRanks
+// Calculates the rankings and remaining laps for the
+// Vehicles in the provided vector/list.
+//------------------------------------------------------
+
 void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles) {
 	if (ranks.size() != vehicles.size()) {
 		ranks.resize (vehicles.size(), 1);
@@ -54,6 +67,15 @@ void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles) {
 		calculateRank (vehicles, i);
 }
 
+//------------------------------------------------------
+// Function: getRank
+// Returns the number of laps remaining for the vehicle
+// (player or computer-controlled) with the specified
+// index.
+//
+// Player 1 has index 0, Player 2 has index 1, etc...
+//------------------------------------------------------
+
 int VictoryCalculator::getRemainingLaps (int index) {
 	if (index >= laps.size())
 		return -1;
@@ -61,12 +83,29 @@ int VictoryCalculator::getRemainingLaps (int index) {
 		return laps[index];
 }
 
+//------------------------------------------------------
+// Function: getRank
+// Returns the ranking of the vehicle (player or
+// computer-controlled) with the specified index.
+//
+// Player 1 has index 0, Player 2 has index 1, etc...
+//------------------------------------------------------
+
 int VictoryCalculator::getRank (int index) {
 	if (index >= ranks.size())
 		return 0;
 	else
 		return ranks[index];
 }
+
+//------------------------------------------------------
+// Function: isFinished
+// Returns true if the vehicle (player or computer-
+// controlled)with the specified index has finished
+// the race, false otherwise.
+//
+// Player 1 has index 0, Player 2 has index 1, etc...
+//------------------------------------------------------
 
 bool VictoryCalculator::isFinished (int index) {
 	if (index >= ranks.size())
@@ -84,6 +123,7 @@ wstring VictoryCalculator::getFormattedString (int index) {
 	else
 		return L"You are in %i place";
 }
+
 
 void VictoryCalculator::recordTime(int milliseconds) {
 	//if the player is not finished, or we have already recorded the time, return

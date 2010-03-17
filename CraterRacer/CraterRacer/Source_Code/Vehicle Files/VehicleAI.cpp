@@ -6,6 +6,13 @@
 #include <math.h>
 
 
+//------------------------------------------------------
+// Function: think
+// Checks if the vehicle has reached its destination
+// waypoint, and updates the destination waypoint and
+// lap count.
+//------------------------------------------------------
+
 void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	if (state == AI::STOPPED) return;
 
@@ -57,10 +64,13 @@ float VehicleAI::getDistanceToNextWP (Vec3 myPos) {
 }
 
 
-//--------------------------------------------------------------------------------------
+
+
+//------------------------------------------------------
 // Function: think
-// Sets the input for the AI vehicle based on its desired destination.
-//--------------------------------------------------------------------------------------
+// Sets the input for the AI vehicle based on its
+// desired destination.
+//------------------------------------------------------
 
 void CompVehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	VehicleAI::think (em, myList, myIndex);
@@ -89,6 +99,12 @@ void CompVehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	steer (currentDir, desiredDir, input);
 }
 
+//------------------------------------------------------
+// Function: steer
+// Sets the input for the AI vehicle based on the
+// difference between its current and desired directions.
+//------------------------------------------------------
+
 void CompVehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
   //Find the sine of the angle between the two directions
 	Vec3 temp;
@@ -110,6 +126,14 @@ void CompVehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
 		else              input->setInput (Input::RIGHT, true);
 	}
 }
+
+//------------------------------------------------------
+// Function: avoid
+// Sets the input for the AI vehicle to avoid an obstacle
+// based on the difference between its current direction
+// and the direction of the obstacle. Returns true if the
+// vehicle is steering to avoid the obstacle.
+//------------------------------------------------------
 
 bool CompVehicleAI::avoid (Vec3& currentDir, Vec3& dirOfObstacle, Input* input) {
   //Find the sine of the angle between the two directions
