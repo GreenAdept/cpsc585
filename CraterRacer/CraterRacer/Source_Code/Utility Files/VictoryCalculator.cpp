@@ -115,3 +115,9 @@ void VictoryCalculator::recordTime(int milliseconds) {
 
 	recorded = true;
 }
+
+// This function returns true when at least one player is finished
+bool VictoryCalculator::isGameFinished( )
+{
+	return finished[ PLAYER1 ];
+}

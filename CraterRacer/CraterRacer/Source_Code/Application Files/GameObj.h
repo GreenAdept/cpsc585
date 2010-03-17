@@ -49,6 +49,7 @@ public:
 	float		 getVehicleSpeed	( int playerNum );
 	SceneObjects getSceneObjects	( );
 	void		 setSceneObjects	( SceneObjects& objs );
+	bool		 isFinished			( );
 
 	VictoryCalculator           m_Victory;
 
@@ -63,6 +64,7 @@ private:
 	vector<XBox360Controller*>	m_Controllers;	//first player controller will have id# 0
 
 	Clock						m_clock;
+	bool						m_bIsFinished;
 };
 
 #endif GAME_OBJ_H 

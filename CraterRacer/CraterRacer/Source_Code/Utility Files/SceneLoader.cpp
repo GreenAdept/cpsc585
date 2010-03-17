@@ -28,6 +28,8 @@ void SceneLoader::initVars( Device* device, const D3DSURFACE_DESC* backSurface, 
 {
 	m_Device = device;
 	m_InitFilename = filename;
+	if( m_BackSurface )
+		delete m_BackSurface;
 	m_BackSurface = new D3DSURFACE_DESC( *backSurface );
 }
 
@@ -40,6 +42,9 @@ void SceneLoader::initVars( Device* device, const D3DSURFACE_DESC* backSurface, 
 void SceneLoader::initScene( GameObj** obj )
 {
 	string str;
+
+	if( m_Game )
+		delete m_Game;
 
 	m_Game = new GameObj();
 	*obj = m_Game;

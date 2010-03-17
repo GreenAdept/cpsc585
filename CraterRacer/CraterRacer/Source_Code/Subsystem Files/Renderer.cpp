@@ -16,15 +16,21 @@
 //--------------------------------------------------------------------------------------
 Renderer::Renderer( )
 {
+	//startup menu buttons
 	m_iButtonImages[ GUI_BTN_SINGLE_PLAYER ] = ONEPLAYER_ACTIVE_IMAGE;
 	m_iButtonImages[ GUI_BTN_TWO_PLAYER ] = TWOPLAYER_IMAGE;
 	m_iButtonImages[ GUI_BTN_TIMETRIAL ] = TIMETRIAL_IMAGE;
 	m_iButtonImages[ GUI_BTN_GAMERULES ] = GAMERULES_IMAGE;
 	m_iButtonImages[ GUI_BTN_EXIT ] = EXIT_NOTACTIVE_IMAGE;
-	
+
+	//pause screen buttons
 	m_iButtonImages[ GUI_BTN_UNPAUSE ] = UNPAUSE_ACTIVE_IMAGE;
 	m_iButtonImages[ GUI_BTN_GAMERULES2 ] = GAMERULES2_IMAGE;
 	m_iButtonImages[ GUI_BTN_EXIT2 ] = EXIT2_NOTACTIVE_IMAGE;
+
+	//victory screen buttons
+	m_iButtonImages[ GUI_BTN_MAINMENU ] = MAINMENU_ACTIVE_IMAGE;
+	m_iButtonImages[ GUI_BTN_EXITSMALL ] = EXIT_SMALL_IMAGE;
 
 	//Set up ball animation images for loading screen
 	for( int i=0; i < NUM_LOADING_BALLS; i++ )
@@ -79,13 +85,6 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 		 height = pBack->Height;
 
 	V_RETURN( m_ResourceManager.OnD3D9ResetDevice() );
-
-	/*device->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);
-	device->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
-	device->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ZERO);
-	device->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATEREQUAL);
-	device->SetRenderState(D3DRS_ALPHAREF, (DWORD)100);
-	device->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE); */
 
 	// Create a sprite to help batch calls when drawing many lines of text
 	D3DXCreateSprite( device, &m_pTextSprite );
@@ -352,6 +351,37 @@ void Renderer::renderFPS( )
 
 
 //--------------------------------------------------------------------------------------
+// Function:  drawVictoryScreen
+// This function renders the victory screen. 
+//--------------------------------------------------------------------------------------
+void Renderer::drawVictoryScreen( )
+{
+	HRESULT hr;
+	int image = 0;
+
+	//render the game menu
+	m_pImageSprite->Begin( D3DXSPRITE_ALPHABLEND );
+	
+	m_pImageSprite->Flush();
+	V( m_pImageSprite->Draw( m_Images[ VICTORY_IMAGE ], NULL, NULL, &m_ImageLocations[ VICTORY_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+
+	//draw the victory buttons
+	for( int i=GUI_BTN_MAINMENU; i <= GUI_BTN_EXITSMALL; i++ )
+	{
+		m_pImageSprite->Flush();
+		image = m_iButtonImages[ i ];
+		V( m_pImageSprite->Draw( m_Images[ image ], NULL, NULL, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	}
+
+	//here is where I'll draw the rankings overtop the stars on the victory screen
+	//(I'll just do it with DirectX text, not images)
+
+	m_pImageSprite->Flush();
+	m_pImageSprite->End( );
+}
+
+
+//--------------------------------------------------------------------------------------
 // Function: renderGame
 // Draws game objects to the specified device.  The renderables of these objects 
 // are passed to this function and contain all the rendering-specific information needed
@@ -517,6 +547,20 @@ void Renderer::adjustSpeedImage( float speed )
 }
 
 
+//--------------------------------------------------------------------------------------
+// Function: adjustVictoryRank
+// This function formats the strings that will display on the victory screen.  The 
+// strings will reflect the ranking of players when the game is over.
+//--------------------------------------------------------------------------------------
+void Renderer::adjustVictoryRank( vector<int>& ranks )
+{
+	for( int i=0; i < ranks.size(); i++ )
+	{
+		m_sVictoryRanks[ ranks[i] ] =  "PLAYER #" + i;
+	}
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////		
 // 
 //	Private Utility Functions
@@ -583,6 +627,13 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	createTexture( m_Images[ GAMERULES2_ACTIVE_IMAGE ], GAMERULES_ACTIVE_IMAGE_FILE, device );
 	createTexture( m_Images[ EXIT2_NOTACTIVE_IMAGE ], EXIT_NOTACTIVE_IMAGE_FILE, device );
 	createTexture( m_Images[ EXIT2_ACTIVE_IMAGE ], EXIT_ACTIVE_IMAGE_FILE, device );
+
+	//Victory screen images and buttons
+	createTexture( m_Images[ VICTORY_IMAGE ], VICTORY_IMAGE_FILE, device );
+	createTexture( m_Images[ MAINMENU_IMAGE ],MAINMENU_IMAGE_FILE, device );
+	createTexture( m_Images[ MAINMENU_ACTIVE_IMAGE ], MAINMENU_ACTIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ EXIT_SMALL_IMAGE ], EXIT_SMALL_IMAGE_FILE, device );
+	createTexture( m_Images[ EXIT_SMALL_ACTIVE_IMAGE ], EXIT_SMALL_ACTIVE_IMAGE_FILE, device );
 
 	//Position the startup menu buttons and images --------------
 	int w = (width - 400)/2; if( w<0 ) w=0;
@@ -662,6 +713,19 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 		m_TimeLocations[i] = Vec3( w, 85, 0 );
 		w += 18;
 	}
+
+	//Position victory screen images
+	w = ( width - 800 ) / 2; if( w<0 ) w=0;
+	h = ( height - 700 ) / 2; if( h<0 ) h=0;
+	m_ImageLocations[VICTORY_IMAGE] = Vec3( w, h, 0 );
+
+	w = width - 300; if( w<0 ) w=0;
+	h = height - 100;  if( h<0 ) h=0;
+	m_ImageLocations[MAINMENU_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[MAINMENU_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+	h += 40;
+	m_ImageLocations[EXIT_SMALL_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[EXIT_SMALL_ACTIVE_IMAGE] = Vec3( w, h, 0 );
 }
 
 
