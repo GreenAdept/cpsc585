@@ -2,19 +2,20 @@
 
 MESH_FILENAME			Media\\Meshes\\CarBody.x
 NUM_PLAYERS				1
-NUM_COMPUTERS			2
+NUM_COMPUTERS			3
 
 
 **PLAYER_VEHICLES ------------------------------------------------
 
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
-POSITION:			-242 30 30
+POSITION:			-235 30 20
 
 
 **COMPUTER_VEHICLES ----------------------------------------------
 
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
-POSITION:			-235 30 10
+POSITION:			-250 30 50
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
-POSITION:			-249 30 20
-
+POSITION:			-235 30 40
+EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
+POSITION:			-250 30 30
