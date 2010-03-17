@@ -70,7 +70,7 @@ void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles) {
 }
 
 //------------------------------------------------------
-// Function: getRank
+// Function: getRemainingLaps
 // Returns the number of laps remaining for the vehicle
 // (player or computer-controlled) with the specified
 // index.
@@ -117,7 +117,7 @@ bool VictoryCalculator::isFinished (int index) {
 }
 
 //------------------------------------------------------
-// Function: isFinished
+// Function: isGoingWrongWay
 // Returns true if the player vehicle with the specified
 // index is going the wrong way, false otherwise. AI
 // vehicles always return false.

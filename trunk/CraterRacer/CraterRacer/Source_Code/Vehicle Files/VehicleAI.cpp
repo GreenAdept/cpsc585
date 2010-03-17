@@ -48,7 +48,7 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	}
 
 
-	if (myList == PLAYERS) {
+	if (myList == PLAYERS && destination != 0) {
 		Vec3 currentDir = myEntity->getDirection ();
 		Vec3 desiredDir = destination->getDirectionToWP (myPos);
 
@@ -61,12 +61,10 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 }
 
 Vec3 VehicleAI::getNextWaypoint() {
-	if (destination != 0) {
+	if (destination != 0)
 		return destination->getPosition();
-	}
-	else {
+	else
 		return Vec3(0, 0, 0);
-	}
 }
 
 float VehicleAI::getDistanceToNextWP (Vec3 myPos) {
@@ -126,7 +124,7 @@ void CompVehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
 	float sinTheta = D3DXVec3Length (&temp);
 
   //Set input based on angle
-	if (cosTheta >= -0.707f) {
+	if (cosTheta >= 0.0f) {
 		input->setKey (Input::D_KEY, true);
 		if (sinTheta > 0.2f) {
 			if (temp.y > 0.0) input->setInput (Input::RIGHT, true);
@@ -155,7 +153,7 @@ bool CompVehicleAI::avoid (Vec3& currentDir, Vec3& dirOfObstacle, Input* input) 
 	float cosTheta = D3DXVec3Dot (&currentDir, &dirOfObstacle);
 
   //Set input based on angle
-	if (cosTheta >= 0.5f) {
+	if (cosTheta >= 0.707f) {
 		input->setKey (Input::D_KEY, true);
 		if (temp.y < 0.0) input->setInput (Input::RIGHT, true);
 		else              input->setInput (Input::LEFT, true);
