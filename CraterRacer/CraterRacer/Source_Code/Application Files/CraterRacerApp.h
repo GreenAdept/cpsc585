@@ -56,14 +56,12 @@ public:
 	static void		CALLBACK OnRender				( Device* device, double dTime, float fElapsedTime, void *pUserContext );
 	static HRESULT	CALLBACK OnCreateDevice			( IDirect3DDevice9* pd3dDevice, const D3DSURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext );
 	static void		CALLBACK OnDestroyDevice		( void* pUserContext );
-	static bool		CALLBACK ModifyDeviceSettings	( DXUTDeviceSettings* pDeviceSettings, void* pUserContext );
 	static bool		CALLBACK IsD3D9DeviceAcceptable	( D3DCAPS9*, D3DFORMAT, D3DFORMAT, bool, void* );
 
 
 	// Thread Functions -------------------------------------
 
 	static long WINAPI startGame ( long lParam );
-	static long WINAPI initGame	 ( long lParam );
 
 
 	// GUI  -------------------------------------------------
@@ -87,6 +85,7 @@ public:
 	static XBox360Controller*	m_MenuController;
 	static SceneLoader*			m_SceneLoader;		// used to load the game
 	static float				m_fCheckTime;
+	static bool					m_bIsLoading;
 	
 	// ball animation on loading screen
 	static int					m_iCurrentBall;

@@ -20,7 +20,7 @@ UINT_PTR				RacerApp::m_AnimationID;
 float					RacerApp::m_fCheckTime;
 ApplicationState		RacerApp::m_iPreviousAppState;
 Renderer*				RacerApp::m_Renderer;			// rendering subsystem
-
+bool					RacerApp::m_bIsLoading;
 
 //--------------------------------------------------------------------------------------
 // Function:  OnUpdateGame
@@ -36,76 +36,82 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 	bool doControllerProcessing = false;
 	DWORD dwReturnVal;
 
-	//The game is active, so go into game loop processing
-	if( g_pGame && m_AppState == APP_RENDER_GAME )
-	{
-		g_pGame->processInput( fElapsedTime );
+	if( m_bIsLoading )
+		startGame( 0 );
 
-		//check if any of the players paused the game
-		if( g_pGame->isPaused( ) )
-		{
-			m_AppState = APP_PAUSED;
-			m_uiCurrentButton = GUI_BTN_UNPAUSE;
-			return;
-		}
-		g_pGame->simulate( fElapsedTime );
-		g_pGame->think( );
-		UpdateAudio();
-
-		//load victory screen if someone has won
-		if( g_pGame->isFinished() )
-		{
-			m_AppState = APP_VICTORY;
-
-		}
-	}
-
-	else if( g_pGame && m_AppState == APP_GAME_LOADING )
-	{
-		if( m_bGameIsReady )
-		{
-			//do start game animation/countdown here, but until we
-			//have one, we'll just start the game
-
-			//make sure the thread to load the game will not run anymore
-			HWND fWindow = FindWindow(NULL, L"Crater Racer"); // Find the window
-			SuspendThread( m_hThread );
-
-			//stop loading animation
-			KillTimer( fWindow, m_AnimationID );
-
-			//start background music
-			if( g_audioState.pSoundBank )
-			{
-				g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
-				g_audioState.pSoundBank->Play(g_audioState.iEngine, 0, 0, NULL);
-			}
-
-			//start game
-			g_pGame->startClock();
-			m_AppState = APP_RENDER_GAME;
-		}
-	}
 	else
-		doControllerProcessing = true;
-	
-	//just check the controller if a certain amount of time has passed
-	m_fCheckTime += fElapsedTime;
-	if( doControllerProcessing && m_fCheckTime > 0.18 )
 	{
-		m_MenuController->Update( m_fCheckTime );
-		//move menu up
-		if( m_MenuController->LeftThumbstick.GetY() > 0.2  )
-			moveMenuUp( );
-		//move menu down
-		else if( m_MenuController->LeftThumbstick.GetY() < -0.2 )
-			moveMenuDown( );
-		
-		//A selection was made using the A button
-		if( m_MenuController->A.WasPressed() )
-			processMenuSelection( );
+		//The game is active, so go into game loop processing
+		if( g_pGame && m_AppState == APP_RENDER_GAME )
+		{
+			g_pGame->processInput( fElapsedTime );
 
-		m_fCheckTime = 0.0f;
+			//check if any of the players paused the game
+			if( g_pGame->isPaused( ) )
+			{
+				m_AppState = APP_PAUSED;
+				m_uiCurrentButton = GUI_BTN_UNPAUSE;
+				return;
+			}
+			g_pGame->simulate( fElapsedTime );
+			g_pGame->think( );
+			UpdateAudio();
+
+			//load victory screen if someone has won
+			if( g_pGame->isFinished() )
+			{
+				m_AppState = APP_VICTORY;
+
+			}
+		}
+
+		else if( g_pGame && m_AppState == APP_GAME_LOADING )
+		{
+			if( m_bGameIsReady )
+			{
+				//do start game animation/countdown here, but until we
+				//have one, we'll just start the game
+
+				//make sure the thread to load the game will not run anymore
+				//HWND fWindow = FindWindow(NULL, L"Crater Racer"); // Find the window
+				//SuspendThread( m_hThread );
+
+				//stop loading animation
+				//KillTimer( fWindow, m_AnimationID );
+
+				//start background music
+				if( g_audioState.pSoundBank )
+				{
+					g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
+					g_audioState.pSoundBank->Play(g_audioState.iEngine, 0, 0, NULL);
+				}
+
+				//start game
+				g_pGame->startClock();
+				m_AppState = APP_RENDER_GAME;
+			}
+		}
+		else
+			doControllerProcessing = true;
+		
+		//just check the controller if a certain amount of time has passed
+		m_fCheckTime += fElapsedTime;
+		if( doControllerProcessing && m_fCheckTime > 0.18 )
+		{
+			m_MenuController->Update( m_fCheckTime );
+			//move menu up
+			if( m_MenuController->LeftThumbstick.GetY() > 0.2  )
+				moveMenuUp( );
+			//move menu down
+			else if( m_MenuController->LeftThumbstick.GetY() < -0.2 )
+				moveMenuDown( );
+			
+			//A selection was made using the A button
+			if( m_MenuController->A.WasPressed() )
+				processMenuSelection( );
+
+			m_fCheckTime = 0.0f;
+		}
 	}
 }
 
@@ -212,11 +218,11 @@ void RacerApp::processMenuSelection( )
 
 					//start loading game in a separate thread
 					m_AppState = APP_GAME_LOADING;
-					m_hThread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)startGame,NULL,0,&m_dwThreadID);
+					//m_hThread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)startGame,NULL,0,&m_dwThreadID);
 
 					//start ball loading animation
-					fWindow = FindWindow(NULL, L"Crater Racer");
-					SetTimer( fWindow, m_AnimationID, 500, (TIMERPROC)animateBall);
+					//fWindow = FindWindow(NULL, L"Crater Racer");
+					//SetTimer( fWindow, m_AnimationID, 500, (TIMERPROC)animateBall);
 					break;
 					
 				case GUI_BTN_UNPAUSE:
@@ -312,6 +318,8 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 			case APP_GAME_LOADING:
 
 				m_Renderer->drawLoadingScreen( );
+				
+				m_bIsLoading = m_bIsLoading ? false : true;
 				break;
 
 			case APP_VICTORY:
@@ -410,16 +418,18 @@ bool CALLBACK RacerApp::IsD3D9DeviceAcceptable( D3DCAPS9* pCaps, D3DFORMAT Adapt
 long WINAPI RacerApp::startGame( long lParam )
 {
 	//Enter the critical section -- other threads are locked out
-    EnterCriticalSection(&m_CriticalSection);
+    //EnterCriticalSection(&m_CriticalSection);
  
 	m_SceneLoader->initScene( &g_pGame );
 
 	m_SceneLoader->startGame( ONE_PLAYER_SCENE_FILE ); //load one player game
 
 	//Leave the critical section -- other threads can now EnterCriticalSection() 
-    LeaveCriticalSection(&m_CriticalSection);
+   // LeaveCriticalSection(&m_CriticalSection);
 
 	m_bGameIsReady = true;
+	//m_bIsLoading = false;
+	//m_AppState = APP_RENDER_GAME;
 
 	return 0;
 }
@@ -466,7 +476,6 @@ RacerApp::RacerApp()
 
 	g_pGame = NULL;
 	m_AppState = APP_STARTUP;
-
 	m_iCurrentBall = 0;
 
 	// Set up the audio
@@ -476,6 +485,7 @@ RacerApp::RacerApp()
 	m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
 	m_fCheckTime = 0.0f;
 	m_Renderer  = new Renderer( );
+	m_bIsLoading = false;
 }
 
 
