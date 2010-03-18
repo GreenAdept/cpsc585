@@ -125,18 +125,17 @@ void CompVehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
 
   //Set input based on angle
 	if (cosTheta >= 0.0f) {
-		input->setKey (Input::D_KEY, true);
+		input->setDir (Input::UP, true);
 		if (sinTheta > 0.2f) {
 			if (temp.y > 0.0) input->setInput (Input::RIGHT, true);
 			else              input->setInput (Input::LEFT, true);
 		}
 	}
 	else {
-		input->setKey (Input::S_KEY, true);
+		input->setDir (Input::DOWN, true);
 		if (temp.y > 0.0) input->setInput (Input::LEFT, true);
 		else              input->setInput (Input::RIGHT, true);
 	}
-	input->setPressure(1.0f);
 }
 
 //------------------------------------------------------
@@ -155,10 +154,9 @@ bool CompVehicleAI::avoid (Vec3& currentDir, Vec3& dirOfObstacle, Input* input) 
 
   //Set input based on angle
 	if (cosTheta >= 0.707f) {
-		input->setKey (Input::D_KEY, true);
+		input->setInput (Input::UP, true);
 		if (temp.y < 0.0) input->setInput (Input::RIGHT, true);
 		else              input->setInput (Input::LEFT, true);
-		input->setPressure(1.0f);
 		return true;
 	}
 	else
