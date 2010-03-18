@@ -35,7 +35,7 @@ Renderer::Renderer( )
 	//Set up ball animation images for loading screen
 	for( int i=0; i < NUM_LOADING_BALLS; i++ )
 		m_iBallImages[i] = LOADING_SMALLBALL_IMAGE;
-	m_iBallImages[0] = LOADING_BIGBALL_IMAGE;
+	//m_iBallImages[0] = LOADING_BIGBALL_IMAGE;
 
 	//Set up time images to be zeros
 	for( int i=0; i < 8; i++ )
