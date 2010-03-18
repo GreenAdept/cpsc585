@@ -136,6 +136,7 @@ void CompVehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
 		if (temp.y > 0.0) input->setInput (Input::LEFT, true);
 		else              input->setInput (Input::RIGHT, true);
 	}
+	input->setPressure(1.0f);
 }
 
 //------------------------------------------------------
@@ -157,7 +158,7 @@ bool CompVehicleAI::avoid (Vec3& currentDir, Vec3& dirOfObstacle, Input* input) 
 		input->setKey (Input::D_KEY, true);
 		if (temp.y < 0.0) input->setInput (Input::RIGHT, true);
 		else              input->setInput (Input::LEFT, true);
-
+		input->setPressure(1.0f);
 		return true;
 	}
 	else
