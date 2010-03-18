@@ -20,9 +20,10 @@ protected:
 	Vec3      lastPassedWaypoint;
 	int       laps, passedWPs;
 	bool      wrongWay;
+	int		  m_iPlayerNum;
 
 public:
-	VehicleAI () { destination = 0; laps = 1; passedWPs = 0; wrongWay = false; }
+	VehicleAI () { destination = 0; laps = 2; passedWPs = 0; wrongWay = false; }
 
 	virtual void think (EntityManager *em, int myList, int myIndex);
 	Vec3         getLastPassedWaypoint () { return lastPassedWaypoint; }
@@ -32,6 +33,7 @@ public:
 	int          getRemainingLaps () { return laps; }
 	bool         isFinished () { return laps == 0; }
 	bool         isGoingWrongWay () { return wrongWay; }
+	void		 setPlayerNum( int num ) { m_iPlayerNum = num; }
 };
 
 

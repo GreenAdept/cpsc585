@@ -1,5 +1,9 @@
 #define  NOMINMAX
 #include "Windows.h"
+#pragma once
+#ifndef CLOCK_H
+#define CLOCK_H
+
 #include <string>
 #include <sstream>
 
@@ -24,3 +28,5 @@ private:
 	int startPausedMS;
 	bool paused;
 };
+
+#endif

@@ -3,6 +3,7 @@
 //
 //--------------------------------------------------------------------------------------
 #include "CraterRacerApp.h"
+#include "MessageManager.h"
 
 GameObj* g_pGame = NULL;	//global game used by the RacerApp class 
 
@@ -45,24 +46,9 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 		if( g_pGame && m_AppState == APP_RENDER_GAME )
 		{
 			g_pGame->processInput( fElapsedTime );
-
-			//check if any of the players paused the game
-			if( g_pGame->isPaused( ) )
-			{
-				m_AppState = APP_PAUSED;
-				m_uiCurrentButton = GUI_BTN_UNPAUSE;
-				return;
-			}
 			g_pGame->simulate( fElapsedTime );
 			g_pGame->think( );
 			UpdateAudio();
-
-			//load victory screen if someone has won
-			if( g_pGame->isFinished() )
-			{
-				m_AppState = APP_VICTORY;
-
-			}
 		}
 
 		else if( g_pGame && m_AppState == APP_GAME_LOADING )
@@ -87,7 +73,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 				}
 
 				//start game
-				g_pGame->startClock();
+				Emit( EStartClock );//g_pGame->startClock();
 				m_AppState = APP_RENDER_GAME;
 			}
 		}
@@ -133,7 +119,9 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 		{
 			case  VK_SPACE:
 				//pause game here
-				g_pGame->pauseGame();
+				Emit( EPauseGame );
+
+				//g_pGame->pauseGame();
 				m_uiCurrentButton = GUI_BTN_UNPAUSE;
 				m_AppState = APP_PAUSED;
 				break;
@@ -168,7 +156,8 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 void RacerApp::moveMenuUp( )
 {
 	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_SINGLE_PLAYER ||
-		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_UNPAUSE )
+		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_UNPAUSE ||
+		m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_MAINMENU )
 	{
 		//send message to current button to go back to normal state
 		m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
@@ -185,7 +174,8 @@ void RacerApp::moveMenuUp( )
 void RacerApp::moveMenuDown( )
 {
 	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_EXIT ||
-		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_EXIT2 )
+		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_EXIT2 ||
+		m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_EXITSMALL )
 	{
 		//tell current button to go back to normal/unselected state
 		m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
@@ -226,12 +216,13 @@ void RacerApp::processMenuSelection( )
 					break;
 					
 				case GUI_BTN_UNPAUSE:
-					g_pGame->unpauseGame( );
+					Emit( EUnpauseGame );
 					m_AppState = APP_RENDER_GAME; 
 					break;
 				
 				case GUI_BTN_MAINMENU:
 					m_AppState = APP_STARTUP; 
+					m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
 					break;
 
 				case GUI_BTN_GAMERULES:
@@ -298,7 +289,7 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 	HRESULT hr;
 	
 	// Clear the render target and the zbuffer 
-	V( device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 255, 0,0,0 ), 1.0f, 0 ) );
+	V( device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 255,0,0,0 ), 1.0f, 0 ) );
 
 	// Render the scene
 	if( SUCCEEDED( device->BeginScene() ) )
@@ -427,9 +418,9 @@ long WINAPI RacerApp::startGame( long lParam )
 	//Leave the critical section -- other threads can now EnterCriticalSection() 
    // LeaveCriticalSection(&m_CriticalSection);
 
+
 	m_bGameIsReady = true;
-	//m_bIsLoading = false;
-	//m_AppState = APP_RENDER_GAME;
+	InitEmitter( g_pGame );
 
 	return 0;
 }
@@ -474,18 +465,16 @@ RacerApp::RacerApp()
 	//Initialize the critical section before entering multi-threaded context.
 	InitializeCriticalSection(&m_CriticalSection);
 
-	g_pGame = NULL;
-	m_AppState = APP_STARTUP;
-	m_iCurrentBall = 0;
+	g_pGame			  = NULL;
+	m_AppState		  = APP_STARTUP;
+	m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
+	m_iCurrentBall	  = 0;
+	m_fCheckTime	  = 0.0f;
+	m_Renderer		  = new Renderer( );
+	m_bIsLoading	  = false;
 
 	// Set up the audio
 	HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, SE_WAVEBANK_FILE, BG_SETTINGS_FILE, BG_SOUNDBANK_FILE );
-
-	//The currently highlighted button
-	m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
-	m_fCheckTime = 0.0f;
-	m_Renderer  = new Renderer( );
-	m_bIsLoading = false;
 }
 
 

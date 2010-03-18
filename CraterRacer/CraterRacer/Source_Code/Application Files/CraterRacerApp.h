@@ -86,7 +86,7 @@ public:
 	static SceneLoader*			m_SceneLoader;		// used to load the game
 	static float				m_fCheckTime;
 	static bool					m_bIsLoading;
-	
+
 	// ball animation on loading screen
 	static int					m_iCurrentBall;
 	static UINT_PTR				m_AnimationID;
@@ -96,7 +96,6 @@ public:
 	static DWORD				m_dwThreadID;
 	static bool					m_bGameIsReady;
 	static CRITICAL_SECTION		m_CriticalSection; // used for multithreading
-	
 };
 
 extern GameObj *g_pGame; //Our global instantiation of the game which will be used by the RacerApp class

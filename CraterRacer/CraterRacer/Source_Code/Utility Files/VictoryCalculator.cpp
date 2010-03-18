@@ -1,5 +1,7 @@
 
 #include "VictoryCalculator.h"
+#include "MessageManager.h"
+
 using namespace std;
 
 VictoryCalculator::VictoryCalculator() {
@@ -45,8 +47,8 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 			}
 		}
 
-		laps[index] = myAI->getRemainingLaps();
-		wrongWay[index] = myAI->isGoingWrongWay();
+		//laps[index] = myAI->getRemainingLaps();
+		//wrongWay[index] = myAI->isGoingWrongWay();
 		ranks[index] = rank;
 	}
 }
@@ -62,7 +64,7 @@ void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles) {
 		ranks.resize (vehicles.size(), 1);
 		laps.resize (vehicles.size(), 1);
 		finished.resize (vehicles.size(), false);
-		wrongWay.resize (vehicles.size(), false);
+		//wrongWay.resize (vehicles.size(), false);
 	}
 
 	for (int i=0; i<vehicles.size(); i++)
@@ -125,12 +127,12 @@ bool VictoryCalculator::isFinished (int index) {
 // Player 1 has index 0, Player 2 has index 1, etc...
 //------------------------------------------------------
 
-bool VictoryCalculator::isGoingWrongWay (int index) {
-	if (index >= wrongWay.size())
-		return false;
-	else
-		return wrongWay[index];
-}
+//bool VictoryCalculator::isGoingWrongWay (int index) {
+//	if (index >= wrongWay.size())
+//		return false;
+//	else
+//		return wrongWay[index];
+//}
 
 wstring VictoryCalculator::getFormattedString (int index) {
 	if (index >= finished.size())

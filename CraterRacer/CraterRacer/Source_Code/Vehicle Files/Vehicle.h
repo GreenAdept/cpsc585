@@ -77,6 +77,7 @@ public:
 
 	bool isReversing	( );
 	void setReverse		( bool r );
+	void setPlayerNum	( int num );
 
 	Wheel m_Wheels[4];
 
@@ -91,6 +92,7 @@ protected:
 	float		m_fRunningTime;
 	float		m_fRunningDistance;
 	float		m_fSpeed;
+	int			m_iPlayerNumber;
 };
 
 

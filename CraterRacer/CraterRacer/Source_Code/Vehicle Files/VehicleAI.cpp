@@ -3,6 +3,7 @@
 */
 #include "VehicleAI.h"
 #include "EntityManager.h"
+#include "MessageManager.h"
 #include <math.h>
 
 
@@ -40,6 +41,12 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 
 		if (destination == 0) {
 			laps--;
+
+			//let the message manager know this player has finished a lap.
+			//but only emit if it is a player vehicle
+			if( m_iPlayerNum >= 0 )
+				Emit( Events::ELapFinished, m_iPlayerNum, laps );
+
 			if (laps == 0)
 				state = AI::STOPPED;
 			else
@@ -54,9 +61,15 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 
 		float cosTheta = D3DXVec3Dot (&currentDir, &desiredDir);
 		if (cosTheta < 0)
+		{
+			Emit( Events::EWrongWay, m_iPlayerNum );
 			wrongWay = true;
-		else
+		}
+		else if( wrongWay )
+		{
+			Emit( Events::EWrongWayCancel, m_iPlayerNum );
 			wrongWay = false;
+		}
 	}
 }
 

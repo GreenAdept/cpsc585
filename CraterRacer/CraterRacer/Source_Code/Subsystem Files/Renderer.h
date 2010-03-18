@@ -45,6 +45,8 @@ public:
 	void adjustClockImages	( string time );
 	void adjustSpeedImage	( float speed );
 	void adjustVictoryRank	( vector<int>& ranks );
+	void adjustWrongWay		( int playerNum, bool drawWrongWay );
+	void adjustLapImage		( int playerNum, int lapNum );
 
 
 	// Drawing functions
@@ -67,6 +69,8 @@ private:
 	//Date Members ---------------------------------------
 
 	ID3DXFont*          m_pFont;								//font used to render FPS
+	ID3DXFont*          m_pFontVictoryBig;							//
+	ID3DXFont*          m_pFontVictorySmall;					
 	ID3DXSprite*        m_pTextSprite;							//text sprite used to render FPS
 	ID3DXSprite*		m_pImageSprite;							//used in rendering all images
 	RECT				m_PauseRECT;							//the pause menu rectangle
@@ -83,7 +87,11 @@ private:
 	Dialog				m_GameScreen;							//HUD and pause screen are rendered to this
 	ResourceManager		m_ResourceManager;						
 	float				m_fSpeedRotation;						//degree in radians to rotate speedometer wand image
-	string				m_sVictoryRanks[ 4 ];
+	LPCWSTR				m_sVictoryRanks[ NUM_PLAYERS ];
+	LPCWSTR				m_sVictoryTimes[ NUM_PLAYERS ];
+	RECT				m_VictoryRecs[ NUM_PLAYERS*2 ];
+	bool				m_bDrawWrongWay[ NUM_PLAYERS ];
+	int					m_iLapImages[ NUM_PLAYERS ];
 };
 
 #endif

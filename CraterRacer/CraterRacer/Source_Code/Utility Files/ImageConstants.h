@@ -23,6 +23,9 @@
 #define SECOND_IMAGE_FILE				"Media\\Images\\Numbers\\Second.png"
 #define THIRD_IMAGE_FILE				"Media\\Images\\Numbers\\Third.png"
 #define FOURTH_IMAGE_FILE				"Media\\Images\\Numbers\\Fourth.png"
+#define LAPONE_IMAGE_FILE				"Media\\Images\\LapOne.png"
+#define LAPTWO_IMAGE_FILE				"Media\\Images\\LapTwo.png"
+#define WRONGWAY_IMAGE_FILE				"Media\\Images\\WrongWay.png"
 
 //Number image files
 #define ZERO_IMAGE_FILE					"Media\\Images\\Numbers\\Zero.png"
@@ -74,7 +77,8 @@
 
 #define NUM_BUTTONS				10
 #define NUM_LOADING_BALLS		5
-#define NUM_IMAGES				46
+#define NUM_IMAGES				49
+#define NUM_PLAYERS				4
 
 enum ImageNames{	MENU_IMAGE, CONTROLS_IMAGE, GAMERULES_INFO_IMAGE, 
 					LOADING_IMAGE, LOADING_SMALLBALL_IMAGE, LOADING_BIGBALL_IMAGE,
@@ -84,7 +88,8 @@ enum ImageNames{	MENU_IMAGE, CONTROLS_IMAGE, GAMERULES_INFO_IMAGE,
 					EXIT_SMALL_IMAGE, EXIT_SMALL_ACTIVE_IMAGE,
 					
 					SPEEDOMETER_IMAGE, SPEEDWAND_IMAGE, MINIMAP_IMAGE, 
-					FIRST_IMAGE, SECOND_IMAGE, THIRD_IMAGE, FOURTH_IMAGE,
+					FIRST_IMAGE, SECOND_IMAGE, THIRD_IMAGE, FOURTH_IMAGE, WRONGWAY_IMAGE,
+					LAPONE_IMAGE, LAPTWO_IMAGE,
 
 					ZERO_IMAGE, ONE_IMAGE, TWO_IMAGE, THREE_IMAGE, FOUR_IMAGE, FIVE_IMAGE,
 					SIX_IMAGE, SEVEN_IMAGE, EIGHT_IMAGE, NINE_IMAGE, COLON_IMAGE,

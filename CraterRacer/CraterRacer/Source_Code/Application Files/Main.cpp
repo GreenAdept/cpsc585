@@ -3,6 +3,7 @@
 #define NOMINMAX
 #include "DXUT.h"
 #include "CraterRacerApp.h"
+#include "MessageManager.h"
 
 //--------------------------------------------------------------------------------------
 // Initialize everything and go into a render loop
@@ -15,6 +16,8 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 #endif
 
 	RacerApp* pApp = new RacerApp(); //The application managing the game and gui
+
+	InitEmitter( pApp );
 
 	//turn off cursor
 	ShowCursor( false );
@@ -43,6 +46,9 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
     DXUTMainLoop();
 	
 	delete pApp;
+	
+	MessageManager::deleteManager( );
+
 	CleanupXACT();
 
     return DXUTGetExitCode();	

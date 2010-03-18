@@ -2,6 +2,7 @@
 // File: GameObj.cpp
 //--------------------------------------------------------------------------------------
 #include "GameObj.h"
+#include "MessageManager.h"
 
 
 //--------------------------------------------------------------------------------------
@@ -43,22 +44,12 @@ GameObj::~GameObj( )
 
 
 //--------------------------------------------------------------------------------------
-// Function: startClock
-// Start the game clock.
-//--------------------------------------------------------------------------------------
-void GameObj::startClock()
-{
-	m_clock.start();
-}
-
-
-//--------------------------------------------------------------------------------------
 // Function: getTime
 // Returns the game clock in the format mm:ss:msms
 //--------------------------------------------------------------------------------------
 string GameObj::getTime()
 {
-	return m_clock.getFormattedTime();
+	return m_Clock.getFormattedTime();
 }
 
 
@@ -93,28 +84,6 @@ void GameObj::setSceneObjects( SceneObjects& objs )
 
 
 //--------------------------------------------------------------------------------------
-// Function:  pause
-// This function pauses the game simulation and game clock.
-//--------------------------------------------------------------------------------------
-void GameObj::pauseGame()
-{
-	bool pause = m_clock.togglePause();
-	return m_Simulator->pause( true );
-}
-
-
-//--------------------------------------------------------------------------------------
-// Function:  unpause
-// This function unpauses the game simulation and game clock.
-//--------------------------------------------------------------------------------------
-void GameObj::unpauseGame()
-{
-	bool pause = m_clock.togglePause();
-	return m_Simulator->pause( false );
-}
-
-
-//--------------------------------------------------------------------------------------
 // Function: isPaused
 //--------------------------------------------------------------------------------------
 bool GameObj::isPaused( )
@@ -123,13 +92,14 @@ bool GameObj::isPaused( )
 }
 
 
-//--------------------------------------------------------------------------------------
-// Function: isFinished
-//--------------------------------------------------------------------------------------
-bool GameObj::isFinished( )
-{
-	return m_bIsFinished;
-}
+////--------------------------------------------------------------------------------------
+//// Function: isFinished
+////--------------------------------------------------------------------------------------
+//bool GameObj::isFinished( )
+//{
+//	return m_bIsFinished;
+//}
+
 
 //--------------------------------------------------------------------------------------
 // Function: getVehicleSpeed
@@ -159,7 +129,6 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 		break;
 	case VK_UP:
 		//add forward force to player vehicle
-		//debug.writeToFile("jldsajflkdwjfoijewojta;lsjg");
 		v->setDir(Input::Arrow::UP, isKeyDown);
 		break;
 	case VK_RIGHT:
@@ -210,11 +179,11 @@ void GameObj::think ()
 
 
 	m_Victory.calculateRanks(m_Entities->getVehicles());
-	m_Victory.recordTime(m_clock.getTotalTimeInMS());
+	//m_Victory.recordTime( m_Clock.getTotalTimeInMS() );
 
 	//check if a player is done and set the flag to make the victory screen load
 	//(we will eventually want to start a finishing animation here)
-	m_bIsFinished = m_Victory.isGameFinished( );
+	//m_bIsFinished = m_Victory.isGameFinished( );
 }
 
 
@@ -278,7 +247,7 @@ void GameObj::processInput( float fElapsedTime )
 			}
 			if (m_Controllers[i]->Start.WasPressed())
 			{
-				pauseGame( );
+				Emit( EPauseGame );//pauseGame( );
 			}
 
 			if (m_Controllers[i]->Back.WasPressed())
