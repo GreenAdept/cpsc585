@@ -93,4 +93,34 @@ protected:
 	float		m_fSpeed;
 };
 
+
+
+//---------------------------------------------------------
+//		CLASS: PlayerVehicle
+//
+//		This represents a vehicle object that is controlled
+//		by a player.
+//---------------------------------------------------------
+
+class PlayerVehicle: public Vehicle {
+
+public:
+	PlayerVehicle( void ) { mind = new VehicleAI(); }
+};
+
+
+
+//---------------------------------------------------------
+//		CLASS: AIVehicle
+//
+//		This represents a vehicle object that is controlled
+//		by our game algorithms.
+//---------------------------------------------------------
+
+class AIVehicle: public Vehicle {
+
+public:
+	AIVehicle( void ) { mind = new CompVehicleAI(); }
+};
+
 #endif //VEHICLE_H

@@ -3,8 +3,7 @@
 
 
 #include <vector>
-#include "PlayerVehicle.h"
-#include "AIVehicle.h"
+#include "Vehicle.h"
 #include "Meteor.h"
 #include "Crater.h"
 #include "Prop.h"
