@@ -33,7 +33,7 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 
   //Check if the destination has been reached
 	Vec3 destPos = destination->getPosition();
-	if (distSquared (myPos, destPos) < 1600.0f) {
+	if (distSquared (myPos, destPos) < 900.0f) {
 		lastPassedWaypoint = destPos;
 		passedWPs++;
 		destination = destination->getRandomNext();
