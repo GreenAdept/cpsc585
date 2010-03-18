@@ -254,7 +254,7 @@ void GameObj::processInput( float fElapsedTime )
 			if (m_Controllers[i]->RightTrigger.WasPressedOrHeld())
 			{
 				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::RT_BUTTON);
-				v->setPressure(m_Controllers[i]->LeftTrigger.GetValue());
+				v->setPressure(m_Controllers[i]->RightTrigger.GetValue());
 
 				//Increase vehicle RPM for sound
 				g_audioState.nRPM += 15.0f;

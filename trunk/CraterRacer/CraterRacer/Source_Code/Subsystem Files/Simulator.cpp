@@ -16,8 +16,8 @@ Simulator::Simulator()
 	m_vDefaultGravity		= NxVec3(0,-10,0);
 	m_rRestitution			= NxReal(0.0);
 	m_rStaticFriction		= NxReal(0.4);
-	m_rDynamicFriction		= NxReal(0.0);
-	m_rBrakingFriction		= NxReal(1.0);
+	m_rDynamicFriction		= NxReal(0.25);
+	m_rBrakingFriction		= NxReal(0.5);
 	m_rMaxAngularVelocity	= NxReal(2);
 	m_rVehicleMass			= 10.0;
 	m_rWheelRestLength		= 0.5;
@@ -227,14 +227,14 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				if (reversing || (actor->getLinearVelocity().magnitude() < 1))
 				{
 					vehicle->setReverse(true);
-					localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5);// * (0.5+pressure) );
-					localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5);// * (0.5+pressure) );
+					localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) );
+					localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) );
 					noInput = false;
 					break;
 				}
 				//else brake
 				else {
-					friction = friction + m_rBrakingFriction;
+					friction = friction + m_rBrakingFriction * pressure;
 					break;
 				}
 			}
@@ -244,7 +244,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				float pressure = input->getPressure();
 				if (vehicle->isReversing())
 				{
-					friction = friction + m_rBrakingFriction;// * (0.5+pressure);
+					friction = friction + m_rBrakingFriction * pressure;
 					vehicle->setReverse(false);
 					g_audioState.reverse = -1;
 					break;
@@ -252,8 +252,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				//else, accelerate
 				velocity = actor->getLinearVelocity();
 				if(velocity.magnitude() < MAX_VELOCITY){
-					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength);// * (0.5+pressure) );
-					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength);// * (0.5+pressure) );
+					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );
+					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );
 				}
 				noInput = false;
 				g_audioState.acceleration = 1;
@@ -266,7 +266,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				break;
 			}
 			default:
+			{
 				g_audioState.acceleration = 0;
+			}
 		}
 	}
 
