@@ -311,6 +311,8 @@ void SceneLoader::processPlayerVehicles( ifstream& file, LPCWSTR meshL, int numP
 		//create vehicle in entity manager
 		pv = m_Objs.entityManager->makePlayer( m_Device, pos, meshL, toLPCWSTR(effect).c_str() ); 
 	
+		pv->setPlayerNum( i );
+
 		//create a camera to go along with this player
 		m_Objs.gameCameras.push_back( new GameCamera() );
 		m_Objs.gameCameras[i]->updateWindow( m_BackSurface );
@@ -348,6 +350,8 @@ void SceneLoader::processComputerVehicles( ifstream& file, LPCWSTR meshL, int nu
 		//create in Entity Manager
 		av = m_Objs.entityManager->makeComputer( m_Device, pos, meshL, toLPCWSTR(effect).c_str() ); 
 		
+		av->setPlayerNum( -1 + -i );
+
 		//add to simulator
 		m_Objs.simulator->createVehicle( av );
 	}

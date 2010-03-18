@@ -4,6 +4,7 @@
 */
 
 #include "Renderer.h"
+#include "MessageManager.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////////		
 // 
@@ -43,10 +44,19 @@ Renderer::Renderer( )
 	m_iTimeImages[2] = COLON_IMAGE;
 	m_iTimeImages[5] = COLON_IMAGE;
 
-	m_iPlayerOneRank = FIRST_IMAGE;
-	m_iPlayerOneImage = FIRST_IMAGE;
-	m_iClockImage = ZERO_IMAGE;
-	m_fSpeedRotation = 0;
+	m_iPlayerOneRank	= FIRST_IMAGE;
+	m_iPlayerOneImage	= FIRST_IMAGE;
+	m_iClockImage		= ZERO_IMAGE;
+	m_fSpeedRotation	= 0;
+	
+	for( int i=0; i < NUM_PLAYERS; i++ )
+	{
+		m_bDrawWrongWay[i] = false;
+		m_iLapImages[ i ] = LAPONE_IMAGE;
+		m_sVictoryTimes[ i ] = L"TIME:\n00:00:00";
+		m_sVictoryRanks[ i ] = L"PLAYER #1";
+	}
+	m_sVictoryTimes[ 0 ] = L"TIME: 00:00:00";
 
 	//initialize the resource manager to keep track of all our screens and HUD
     m_GameScreen.Init( &m_ResourceManager );
@@ -93,6 +103,12 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 	if( m_pFont )
        V_RETURN( m_pFont->OnResetDevice() );
 
+	if( m_pFontVictoryBig )
+       V_RETURN( m_pFontVictoryBig->OnResetDevice() );
+
+	if( m_pFontVictorySmall )
+       V_RETURN( m_pFontVictorySmall->OnResetDevice() );
+
 	// Load all images used in the game as textures
 	loadImages( device, width, height );
 }
@@ -114,6 +130,15 @@ HRESULT Renderer::OnCreate( Device* device )
     V_RETURN( D3DXCreateFont( device, 24, 0, FW_BOLD, 1, FALSE, DEFAULT_CHARSET,
                           OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE,
                           L"Arial", &m_pFont ));
+
+    V_RETURN( D3DXCreateFont( device, 30, 10, FW_BOLD, 1, FALSE, DEFAULT_CHARSET,
+                      OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE,
+                      L"Comic Sans MS", &m_pFontVictoryBig ) );
+
+	V_RETURN( D3DXCreateFont( device, 20, 10, FW_BOLD, 1, FALSE, DEFAULT_CHARSET,
+                   OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE,
+                   TEXT("Comic Sans MS"), &m_pFontVictorySmall ) );
+	
 }
 
 
@@ -127,6 +152,12 @@ void Renderer::OnLost( )
 
 	if( m_pFont )
         m_pFont->OnLostDevice();
+
+	if( m_pFontVictoryBig )
+		m_pFontVictoryBig->OnLostDevice( );
+
+	if( m_pFontVictorySmall )
+		m_pFontVictorySmall->OnResetDevice( );
 
     SAFE_RELEASE( m_pTextSprite );
 	SAFE_RELEASE( m_pImageSprite );
@@ -143,6 +174,8 @@ void Renderer::OnDestroy( )
 	m_ResourceManager.OnD3D9DestroyDevice( );
 
 	SAFE_RELEASE( m_pFont );
+	SAFE_RELEASE( m_pFontVictoryBig );
+	SAFE_RELEASE( m_pFontVictorySmall );
 }
 
 
@@ -250,6 +283,16 @@ void Renderer::drawHUD( )
 		image = m_iTimeImages[ i ];
 		V( m_pImageSprite->Draw( m_Images[ image ], NULL, NULL, &m_TimeLocations[i], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	}
+
+	//draw wrong way message if applicable
+	m_pImageSprite->Flush();
+	if( m_bDrawWrongWay[ PLAYER1 ] )
+		V( m_pImageSprite->Draw( m_Images[ WRONGWAY_IMAGE ], NULL, NULL, &m_ImageLocations[ WRONGWAY_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+
+	// draw lap counter
+	image = m_iLapImages[ PLAYER1 ];
+	V( m_pImageSprite->Draw( m_Images[ image ], NULL, NULL, &m_ImageLocations[ image ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+
 	m_pImageSprite->Flush();
 	m_pImageSprite->End( );
 }
@@ -277,6 +320,7 @@ void Renderer::drawStartupMenu( )
 		image = m_iButtonImages[ i ];
 		V( m_pImageSprite->Draw( m_Images[ image ], NULL, NULL, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	}
+
 	m_pImageSprite->Flush();
 	m_pImageSprite->End( );
 }
@@ -338,7 +382,7 @@ void Renderer::renderFPS( )
     CDXUTTextHelper txtHelper( m_pFont, m_pTextSprite, 15 );
 
     txtHelper.Begin();
-    txtHelper.SetInsertionPos( 10, 10 );
+    txtHelper.SetInsertionPos( 10, 100 );
 	txtHelper.SetForegroundColor( D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
 	LPCWSTR stats = DXUTGetFrameStats( true );
 
@@ -373,8 +417,18 @@ void Renderer::drawVictoryScreen( )
 		V( m_pImageSprite->Draw( m_Images[ image ], NULL, NULL, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	}
 
-	//here is where I'll draw the rankings overtop the stars on the victory screen
-	//(I'll just do it with DirectX text, not images)
+	//Draw rankings and times as text
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sVictoryRanks[0], -1, &m_VictoryRecs[0], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sVictoryTimes[0], -1, &m_VictoryRecs[4], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[1], -1, &m_VictoryRecs[1], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[1], -1, &m_VictoryRecs[5], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[2], -1, &m_VictoryRecs[2], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[2], -1, &m_VictoryRecs[6], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[3], -1, &m_VictoryRecs[3], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[3], -1, &m_VictoryRecs[7], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
 	m_pImageSprite->Flush();
 	m_pImageSprite->End( );
@@ -556,8 +610,43 @@ void Renderer::adjustVictoryRank( vector<int>& ranks )
 {
 	for( int i=0; i < ranks.size(); i++ )
 	{
-		m_sVictoryRanks[ ranks[i] ] =  "PLAYER #" + i;
+		m_sVictoryRanks[ ranks[i] ] =  L"PLAYER #" + i;
 	}
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: adjustWrongWay
+// This function sets the flag that tells the renderer to draw the Wrong Way message.
+// INPUTS:  int playerNum - the player number to set the wrong way image for (Player 1 = 0)
+//			bool drawWrongWay -  TRUE = draw the message, FALSE = don't draw it.
+//--------------------------------------------------------------------------------------
+void Renderer::adjustWrongWay( int playerNum, bool drawWrongWay )
+{
+	if( playerNum >= NUM_PLAYERS || playerNum < 0 )
+		return;
+
+	m_bDrawWrongWay[playerNum] = drawWrongWay;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: adjustLapImage
+// This function sets the lap image for the specified player.  There are only images
+// for one lap and two laps...This can easily be changed if we decide there should
+// be more laps.
+// INPUTS:  int playerNum - the player number to set the lap image for (Player 1 = 0)
+//			int lapNum	  - the lap number (1 or 2 are the only valid arguments)
+//--------------------------------------------------------------------------------------
+void Renderer::adjustLapImage( int playerNum, int lapNum )
+{
+	if( playerNum >= NUM_PLAYERS || playerNum < 0 )
+		return;
+
+	if( lapNum == 1 )
+		m_iLapImages[ playerNum ] = LAPONE_IMAGE;
+	else if( lapNum == 2 )
+		m_iLapImages[ playerNum ] = LAPTWO_IMAGE;
 }
 
 
@@ -594,6 +683,9 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	createTexture( m_Images[ SECOND_IMAGE ], SECOND_IMAGE_FILE, device );
 	createTexture( m_Images[ THIRD_IMAGE ], THIRD_IMAGE_FILE, device );
 	createTexture( m_Images[ FOURTH_IMAGE ], FOURTH_IMAGE_FILE, device );
+	createTexture( m_Images[ WRONGWAY_IMAGE ], WRONGWAY_IMAGE_FILE, device );
+	createTexture( m_Images[ LAPONE_IMAGE ], LAPONE_IMAGE_FILE, device );
+	createTexture( m_Images[ LAPTWO_IMAGE ], LAPTWO_IMAGE_FILE, device );
 
 	//Number images
 	createTexture( m_Images[ ZERO_IMAGE ], ZERO_IMAGE_FILE, device );
@@ -705,6 +797,9 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	m_ImageLocations[SECOND_IMAGE] = Vec3( width-160, 10, 0 );
 	m_ImageLocations[THIRD_IMAGE] = Vec3( width-160, 10, 0 );
 	m_ImageLocations[FOURTH_IMAGE] = Vec3( width-160, 10, 0 );
+	m_ImageLocations[WRONGWAY_IMAGE] = Vec3( (width-400)/2, 10, 0 );
+	m_ImageLocations[LAPONE_IMAGE] = Vec3( 10, 10, 0 );
+	m_ImageLocations[LAPTWO_IMAGE] = Vec3( 10, 10, 0 );
 
 	//Position number images
 	w = ( width - 160 ); if( w<0 ) w=0;
@@ -718,6 +813,33 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	w = ( width - 800 ) / 2; if( w<0 ) w=0;
 	h = ( height - 700 ) / 2; if( h<0 ) h=0;
 	m_ImageLocations[VICTORY_IMAGE] = Vec3( w, h, 0 );
+
+	//Position the victory screen text
+	RECT temp;
+	//Winner
+	temp.left = w+305;  temp.right= temp.left+200; temp.top=h+215;  temp.bottom=temp.top+40;
+	m_VictoryRecs[0] = RECT(temp);
+	temp.left = w+305;  temp.right= temp.left+200; temp.top=h+260;  temp.bottom=temp.top+40;
+	m_VictoryRecs[NUM_PLAYERS] = RECT(temp);
+
+	//2nd Place
+	temp.left = w+70;  temp.right=temp.left+140; temp.top=h+420;  temp.bottom=temp.top+20;
+	m_VictoryRecs[1] = RECT(temp);
+	temp.left = w+100;  temp.right= temp.left+90; temp.top=h+450;  temp.bottom=temp.top+60;
+	m_VictoryRecs[NUM_PLAYERS+1] = RECT(temp);
+
+	//3rd Place
+	temp.left = w+340;  temp.right=temp.left+140; temp.top=h+420;  temp.bottom=temp.top+20;
+	m_VictoryRecs[2] = RECT(temp);
+	temp.left = w+365;  temp.right= temp.left+90; temp.top=h+450;  temp.bottom=temp.top+60;
+	m_VictoryRecs[NUM_PLAYERS+2] = RECT(temp);
+
+	//4th Place
+	temp.left = w+600;  temp.right=temp.left+140; temp.top=h+420;  temp.bottom=temp.top+20;
+	m_VictoryRecs[3] = RECT(temp);
+	temp.left = w+625;  temp.right= temp.left+90; temp.top=h+450;  temp.bottom=temp.top+60;
+	m_VictoryRecs[NUM_PLAYERS+3] = RECT(temp);
+
 
 	w = width - 300; if( w<0 ) w=0;
 	h = height - 100;  if( h<0 ) h=0;

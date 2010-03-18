@@ -1,5 +1,5 @@
 #include "Simulator.h"
-
+#include "MessageManager.h"
 
 //--------------------------------------------------------------------------------------
 // Function:  Constructor

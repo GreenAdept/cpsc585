@@ -34,14 +34,11 @@ public:
 	~GameObj( );
 
 	void think           ( void );
-	void pauseGame		 ( );
-	void unpauseGame	 ( );
 	bool isPaused		 ( );
 	void processInput	 ( float fElapsedTime );
 	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );
 	void simulate		 ( float fElapsedTime );
 	void render			 ( Device* device, Renderer* renderer );
-	void startClock		 ( );
 	void processCallback ( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
 	
 	//Getter's and setter's
@@ -52,18 +49,17 @@ public:
 	bool		 isFinished			( );
 
 	VictoryCalculator           m_Victory;
+	EntityManager*				m_Entities;		// collection of all entities
+	Simulator*					m_Simulator;
+	Clock						m_Clock;
 
 private:
 	//Date Members ---------------------------------------
 
-	EntityManager*				m_Entities;		// collection of all entities
-	Simulator*					m_Simulator;
 	DebugWriter*				m_Debugger;
 	VarLoader*					m_VarLoader;
 	vector<GameCamera*>			m_Cameras;		// main camera to follow behind vehicle
 	vector<XBox360Controller*>	m_Controllers;	//first player controller will have id# 0
-
-	Clock						m_clock;
 	bool						m_bIsFinished;
 };
 
