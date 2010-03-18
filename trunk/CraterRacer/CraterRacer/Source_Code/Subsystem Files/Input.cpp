@@ -57,10 +57,10 @@ bool* Input::getButtons()
 {
 	if (!xBoxController)
 	{
-		buttons[Button::A_BUTTON] = inputs[Arrow::UP];
-		buttons[Button::B_BUTTON] = inputs[Arrow::DOWN];
-		buttons[Button::LT_BUTTON] = keys[Key::S_KEY];
-		buttons[Button::RT_BUTTON] = keys[Key::D_KEY];
+		buttons[Button::RT_BUTTON] = inputs[Arrow::UP];
+		buttons[Button::LT_BUTTON] = inputs[Arrow::DOWN];
+		buttons[Button::BACK_BUTTON] = keys[Key::D_KEY];
+		setPressure(1.0f);
 	}
 
 	return buttons;
@@ -151,7 +151,7 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 			}
 		case (Arrow::UP):
 			{
-				buttons[Button::A_BUTTON] = isKeyDown;
+				buttons[Button::RT_BUTTON] = isKeyDown;
 				break;
 			}
 		case (Arrow::RIGHT):
@@ -160,12 +160,14 @@ void Input::setDir(Input::Arrow dir, bool isKeyDown)
 			}
 		case (Arrow::DOWN):
 			{
-				buttons[Button::B_BUTTON] = isKeyDown;
+				buttons[Button::LT_BUTTON] = isKeyDown;
 				break;
 			}
 		default:
 			break;
 	}
+
+	setPressure(1.0f);
 }
 
 void Input::setKey(Input::Key key, bool isKeyDown)

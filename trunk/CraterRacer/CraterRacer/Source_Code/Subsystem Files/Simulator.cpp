@@ -127,7 +127,6 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 		//else if (dot > (3.1415/2))
 		//	m_Debugger.writeToFile("tilted > 90");
 
-
 		float height = vehicles[i]->getBoundingBox().m_fHeight;
 		Matrix mat;
 		D3DXMatrixIdentity( &mat );
