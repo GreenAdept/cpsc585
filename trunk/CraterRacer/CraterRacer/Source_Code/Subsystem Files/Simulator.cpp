@@ -181,12 +181,13 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 	NxVec3 localWheelForce[4];
 	NxVec3 globalWheelForce[4];
 
-	for (int i = 0; i < 4; i++) 
+	for (int i = 0; i < 4; i++) {
 		localWheelForce[i] = globalWheelForce[i] = NxVec3(0, 0, 0);
+	}
 	
 	Input* input = vehicle->getInputObj();
 	bool* buttons = input->getButtons();
-	NxVec3 velocity;
+	const NxVec3 velocity = actor->getLinearVelocity();;
 	NxReal friction = m_rDynamicFriction;
 	boolean noInput = true;
 
@@ -226,7 +227,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				if (reversing || (actor->getLinearVelocity().magnitude() < 1))
 				{
 					vehicle->setReverse(true);
-					velocity = actor->getLinearVelocity();
 					if(velocity.magnitude() < MAX_BACKWARD_VELOCITY){
 						localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) );
 						localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) );
@@ -236,7 +236,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				}
 				//else brake
 				else {
-					friction = friction + m_rBrakingFriction * pressure;
+					friction += m_rBrakingFriction * pressure;
 					break;
 				}
 			}
@@ -252,7 +252,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 					break;
 				}
 				//else, accelerate
-				velocity = actor->getLinearVelocity();
 				if(velocity.magnitude() < MAX_FORWARD_VELOCITY){
 					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );
 					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );
@@ -287,13 +286,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 	BoundingBox BB = vehicle->getBoundingBox();
 
 	//Friction (dynamic friction and breaking)
-	velocity = actor->getLinearVelocity();
-
 	if (velocity.magnitude() > 1) 
 	{
-		velocity = normalize(velocity);
+		NxVec3 velocityDir = normalize(velocity);
 	
-		NxVec3 frictionForce = velocity * ( -m_rVehicleMass * m_rForceStrength * friction);
+		NxVec3 frictionForce = velocityDir * ( -m_rVehicleMass * m_rForceStrength * friction);
 
 		globalWheelForce[0] += frictionForce;
 		globalWheelForce[1] += frictionForce;
@@ -328,6 +325,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 	vehicle->m_Wheels[1].setAngle(angle);
 
 	bool inAir = true;
+	bool onGround = true;
 
 	//SUSPENSION
 	for (int i = 0; i < 4 /*number of wheels*/; i++) 
@@ -351,11 +349,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 		//NEW STEERING
 		NxMat33 localOrientation;
 		actor->getGlobalOrientation().getInverse(localOrientation);
-		velocity = localOrientation * actor->getLocalPointVelocity(w->getChassisPt());
+		NxVec3 pointVelocity = localOrientation * actor->getLocalPointVelocity(w->getChassisPt());
 
 		NxVec3 normal = rotate(w->getWheelLateral(), w->getAngle());
 
-		NxVec3 applied = (velocity.dot(normal) / normal.dot(normal))*normal;
+		NxVec3 applied = (pointVelocity.dot(normal) / normal.dot(normal))*normal;
 		applied = -applied*m_rSteeringPower;
 		
 		localWheelForce[i] += applied;
@@ -390,6 +388,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 		}
 		else
 		{
+			onGround = false;
+
 			//set maximum translation for renderer
 			float maxWheelSpeed = 7;
 			w->setDisplacement(min((float)m_rMaxWheelDisplacement, (w->getDisplacement() + maxWheelSpeed * (float)time)));
@@ -398,6 +398,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 
 	//Try to keep the vehicle level
 	if (inAir) {
+		
+	}
+	//Try to keep the vehicle from sticking to walls
+	if (onGround) {
 		
 	}
 
