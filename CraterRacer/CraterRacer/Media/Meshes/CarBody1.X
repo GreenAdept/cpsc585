@@ -101,7 +101,7 @@ Material Material__79_19_-_DefaultSub0 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "CB_SKIN.bmp";
+  "VehicleOne.bmp";
  }
 }
 
@@ -112,7 +112,7 @@ Material Material__79_23_-_DefaultSub1 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "GLASS.bmp";
+  "GLASS1.bmp";
  }
 }
 
@@ -189,7 +189,7 @@ Material Material__57_19_-_DefaultSub1 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "CB_SKIN.bmp";
+  "VehicleOne.bmp";
  }
 }
 
@@ -211,7 +211,7 @@ Material Material__46_19_-_DefaultSub1 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "CB_SKIN.bmp";
+  "VehicleOne.bmp";
  }
 }
 
@@ -233,7 +233,7 @@ Material PDX19_-_Default {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "CB_SKIN.bmp";
+  "VehicleOne.bmp";
  }
 }
 
@@ -244,7 +244,7 @@ Material Material__35_19_-_DefaultSub0 {
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "CB_SKIN.bmp";
+  "VehicleOne.bmp";
  }
 }
 
