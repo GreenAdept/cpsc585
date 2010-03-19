@@ -73,8 +73,8 @@ public:
 private:
 
 	wstring toLPCWSTR				( std::string& s );
-	void	processComputerVehicles ( ifstream& file, LPCWSTR meshL, int num );
-	void	processPlayerVehicles	( ifstream& file, LPCWSTR meshL, int num );
+	void	processComputerVehicles ( ifstream& file, int num );
+	void	processPlayerVehicles	( ifstream& file, int num );
 
 	//Date Members ---------------------------------------
 

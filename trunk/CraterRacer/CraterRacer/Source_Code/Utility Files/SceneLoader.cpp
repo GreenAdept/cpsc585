@@ -277,14 +277,13 @@ void SceneLoader::processVehicleInfo( ifstream& file )
 	int numComputers;
 	
 	file >> flush >> flush;
-	if( flush != "MESH_FILENAME" ) return;
-	file >> mesh >> flush;
-
+	if( flush != "NUM_PLAYERS" ) return;
+	
 	file >> numPlayers >> flush;
 	file >> numComputers;
 
-	processPlayerVehicles( file, toLPCWSTR(mesh).c_str(), numPlayers );
-	processComputerVehicles( file, toLPCWSTR(mesh).c_str(), numComputers );
+	processPlayerVehicles( file, numPlayers );
+	processComputerVehicles( file, numComputers );
 }
 
 
@@ -292,9 +291,9 @@ void SceneLoader::processVehicleInfo( ifstream& file )
 // Function:  processPlayerVehicles
 // Creates and adds vehicles to game based on information loaded from the specified file.
 //--------------------------------------------------------------------------------------
-void SceneLoader::processPlayerVehicles( ifstream& file, LPCWSTR meshL, int numPlayers )
+void SceneLoader::processPlayerVehicles( ifstream& file, int numPlayers )
 {
-	string flush, effect;
+	string flush, effect, mesh;
 	Vec3 pos;
 
 	file >> flush;
@@ -306,10 +305,11 @@ void SceneLoader::processPlayerVehicles( ifstream& file, LPCWSTR meshL, int numP
 	{
 		//load effect filename and position from file
 		file >> flush >> effect >> flush;
+		file >> mesh >> flush;
 		file >> pos.x >> pos.y >> pos.z;
 
 		//create vehicle in entity manager
-		pv = m_Objs.entityManager->makePlayer( m_Device, pos, meshL, toLPCWSTR(effect).c_str() ); 
+		pv = m_Objs.entityManager->makePlayer( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
 	
 		pv->setPlayerNum( i );
 
@@ -331,9 +331,9 @@ void SceneLoader::processPlayerVehicles( ifstream& file, LPCWSTR meshL, int numP
 // Function:  processComputerVehicles
 // Creates computer vehicles from file information and adds them to game.
 //--------------------------------------------------------------------------------------
-void SceneLoader::processComputerVehicles( ifstream& file, LPCWSTR meshL, int numComputers )
+void SceneLoader::processComputerVehicles( ifstream& file, int numComputers )
 {
-	string flush, effect;
+	string flush, effect, mesh;
 	Vec3 pos;
 
 	file >> flush;
@@ -345,10 +345,11 @@ void SceneLoader::processComputerVehicles( ifstream& file, LPCWSTR meshL, int nu
 	{
 		//load effect filename and position from file
 		file >> flush >> effect >> flush;
+		file >> mesh >> flush;
 		file >> pos.x >> pos.y >> pos.z;
 
 		//create in Entity Manager
-		av = m_Objs.entityManager->makeComputer( m_Device, pos, meshL, toLPCWSTR(effect).c_str() ); 
+		av = m_Objs.entityManager->makeComputer( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
 		
 		av->setPlayerNum( -1 + -i );
 
