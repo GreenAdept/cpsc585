@@ -5,6 +5,8 @@
 using namespace std;
 
 VictoryCalculator::VictoryCalculator() {
+	for( int i=0; i < 4; i++ )
+		finishTimes.push_back( "00:00:00" );
 	recorded = false;
 }
 
@@ -186,8 +188,27 @@ void VictoryCalculator::recordTime(int milliseconds) {
 	recorded = true;
 }
 
-// This function returns true when at least one player is finished
+// This function returns true when one player is finished
 bool VictoryCalculator::isGameFinished( )
 {
 	return finished[ PLAYER1 ];
+}
+
+//--------------------------------------------------------------------------------------
+// Function: setFinishTime
+// This function sets the finish time for a player.  
+//--------------------------------------------------------------------------------------
+void VictoryCalculator::setFinishTime(int playerNum, string time)
+{
+	if( playerNum < 0 || playerNum > 3 )
+		return;
+	finishTimes[ playerNum ] = time;
+}
+
+//--------------------------------------------------------------------------------------
+// Function: getFinishTimes
+//--------------------------------------------------------------------------------------
+vector<string> VictoryCalculator::getFinishTimes( )
+{
+	return finishTimes;
 }

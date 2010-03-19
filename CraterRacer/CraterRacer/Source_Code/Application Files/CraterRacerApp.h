@@ -27,7 +27,7 @@
 
 enum ApplicationState { APP_STARTUP, APP_RENDER_GAME, APP_PAUSED, 
 						APP_GAME_LOADING, APP_SHOW_GAMERULES, APP_SHOW_GAMERULES2,
-						APP_VICTORY };
+						APP_VICTORY, APP_SHOWTIMES };
 
 //--------------------------------------------------------
 //		CLASS: RacerApp

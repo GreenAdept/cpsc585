@@ -33,6 +33,10 @@ Renderer::Renderer( )
 	m_iButtonImages[ GUI_BTN_MAINMENU ] = MAINMENU_ACTIVE_IMAGE;
 	m_iButtonImages[ GUI_BTN_EXITSMALL ] = EXIT_SMALL_IMAGE;
 
+	//times screen buttons
+	m_iButtonImages[ GUI_BTN_MAINMENU2 ] = MAINMENU2_ACTIVE_IMAGE;
+	m_iButtonImages[ GUI_BTN_EXITSMALL2 ] = EXITSMALL2_IMAGE;
+
 	//Set up ball animation images for loading screen
 	for( int i=0; i < NUM_LOADING_BALLS; i++ )
 		m_iBallImages[i] = LOADING_SMALLBALL_IMAGE;
@@ -57,6 +61,9 @@ Renderer::Renderer( )
 		m_sVictoryRanks[ i ] = L"PLAYER #1";
 	}
 	m_sVictoryTimes[ 0 ] = L"TIME: 00:00:00";
+
+	for( int i=0; i < 5; i++ )
+		m_sBestTimes[i] = L"PLAYER 1             00:00:00";
 
 	//initialize the resource manager to keep track of all our screens and HUD
     m_GameScreen.Init( &m_ResourceManager );
@@ -436,6 +443,41 @@ void Renderer::drawVictoryScreen( )
 
 
 //--------------------------------------------------------------------------------------
+// Function:  drawTimesScreen
+// This function renders the times screen. 
+//--------------------------------------------------------------------------------------
+void Renderer::drawTimesScreen( )
+{
+	HRESULT hr;
+	int image = 0;
+
+	//render the game menu
+	m_pImageSprite->Begin( D3DXSPRITE_ALPHABLEND );
+	
+	m_pImageSprite->Flush();
+	V( m_pImageSprite->Draw( m_Images[ TIMES_IMAGE ], NULL, NULL, &m_ImageLocations[ TIMES_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+
+	//draw the times buttons
+	for( int i=GUI_BTN_MAINMENU2; i <= GUI_BTN_EXITSMALL2; i++ )
+	{
+		m_pImageSprite->Flush();
+		image = m_iButtonImages[ i ];
+		V( m_pImageSprite->Draw( m_Images[ image ], NULL, NULL, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	}
+
+	//Draw best times as text
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[0], -1, &m_BestTimesRecs[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[1], -1, &m_BestTimesRecs[1], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[2], -1, &m_BestTimesRecs[2], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[3], -1, &m_BestTimesRecs[3], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[4], -1, &m_BestTimesRecs[4], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+
+	m_pImageSprite->Flush();
+	m_pImageSprite->End( );
+}
+
+
+//--------------------------------------------------------------------------------------
 // Function: renderGame
 // Draws game objects to the specified device.  The renderables of these objects 
 // are passed to this function and contain all the rendering-specific information needed
@@ -606,11 +648,23 @@ void Renderer::adjustSpeedImage( float speed )
 // This function formats the strings that will display on the victory screen.  The 
 // strings will reflect the ranking of players when the game is over.
 //--------------------------------------------------------------------------------------
-void Renderer::adjustVictoryRank( vector<int>& ranks )
+void Renderer::adjustVictoryRank( vector<int>& ranks, vector<string>& times )
 {
+	wstring temp;
+	std::wstringstream rankStream, timeStream;
+
+	//set rank text
 	for( int i=0; i < ranks.size(); i++ )
 	{
-		m_sVictoryRanks[ ranks[i] ] =  L"PLAYER #" + i;
+		rankStream.clear();
+		rankStream << "PLAYER #";
+		rankStream << (i+1);
+		m_sVictoryRanks[ ranks[i] ] =  rankStream.str().c_str();
+
+		timeStream.clear();
+		timeStream << "TIME:\n";
+		timeStream << times[i].c_str();
+		m_sVictoryTimes[ ranks[i] ] =  timeStream.str().c_str();
 	}
 }
 
@@ -627,6 +681,27 @@ void Renderer::adjustWrongWay( int playerNum, bool drawWrongWay )
 		return;
 
 	m_bDrawWrongWay[playerNum] = drawWrongWay;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Function: adjustBestTimes
+//--------------------------------------------------------------------------------------
+void Renderer::adjustBestTimes( vector<string>& bestTimeEntries )
+{
+	if( bestTimeEntries.size() != 5 )
+		return;
+
+	wstring temp;
+	std::wstringstream timeStream;
+
+	//set rank text
+	for( int i=0; i < 5; i++ )
+	{
+		timeStream.clear();
+		timeStream << bestTimeEntries[i].c_str();
+		m_sBestTimes[i] = timeStream.str().c_str();
+	}
 }
 
 
@@ -674,6 +749,13 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	createTexture( m_Images[ CONTROLS_IMAGE ], CONTROLS_IMAGE_FILE, device );
 	createTexture( m_Images[ GAMERULES_INFO_IMAGE ], GAMERULES_INFO_IMAGE_FILE, device );
 	createTexture( m_Images[ GAMERULES_INFO_SMALL_IMAGE ], GAMERULES_INFO_SMALL_IMAGE_FILE, device );
+	
+	//Times screen
+	createTexture( m_Images[ TIMES_IMAGE ], TIMES_IMAGE_FILE, device );
+	createTexture( m_Images[ MAINMENU2_IMAGE ], MAINMENU_IMAGE_FILE, device );
+	createTexture( m_Images[ MAINMENU2_ACTIVE_IMAGE ], MAINMENU_ACTIVE_IMAGE_FILE, device );
+	createTexture( m_Images[ EXITSMALL2_IMAGE ], EXIT_SMALL_IMAGE_FILE, device );
+	createTexture( m_Images[ EXITSMALL2_ACTIVE_IMAGE ], EXIT_SMALL_ACTIVE_IMAGE_FILE, device );
 	
 	//HUD images
 	createTexture( m_Images[ SPEEDOMETER_IMAGE ], SPEEDOMETER_IMAGE_FILE, device );
@@ -840,14 +922,41 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	temp.left = w+625;  temp.right= temp.left+90; temp.top=h+450;  temp.bottom=temp.top+60;
 	m_VictoryRecs[NUM_PLAYERS+3] = RECT(temp);
 
+	w = ( width - 800 ) / 2; if( w<0 ) w=0;
+	h = ( height - 700 ) / 2; if( h<0 ) h=0;
+	m_ImageLocations[TIMES_IMAGE] = Vec3( w, h, 0 );
 
 	w = width - 300; if( w<0 ) w=0;
 	h = height - 100;  if( h<0 ) h=0;
 	m_ImageLocations[MAINMENU_IMAGE] = Vec3( w, h, 0 );
 	m_ImageLocations[MAINMENU_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[MAINMENU2_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[MAINMENU2_ACTIVE_IMAGE] = Vec3( w, h, 0 );
 	h += 40;
 	m_ImageLocations[EXIT_SMALL_IMAGE] = Vec3( w, h, 0 );
 	m_ImageLocations[EXIT_SMALL_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[EXITSMALL2_IMAGE] = Vec3( w, h, 0 );
+	m_ImageLocations[EXITSMALL2_ACTIVE_IMAGE] = Vec3( w, h, 0 );
+
+	//Position best times text
+	w = ( width - 800 ) / 2; if( w<0 ) w=0;
+	h = ( height - 700 ) / 2; if( h<0 ) h=0;
+	
+	//1.
+	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+210;  temp.bottom=temp.top+40;
+	m_BestTimesRecs[0] = RECT(temp);
+	//2.
+	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+272;  temp.bottom=temp.top+40;
+	m_BestTimesRecs[1] = RECT(temp);
+	//3.
+	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+335;  temp.bottom=temp.top+40;
+	m_BestTimesRecs[2] = RECT(temp);
+	//4.
+	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+395;  temp.bottom=temp.top+40;
+	m_BestTimesRecs[3] = RECT(temp);
+	//5.
+	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+460;  temp.bottom=temp.top+40;
+	m_BestTimesRecs[4] = RECT(temp);
 }
 
 

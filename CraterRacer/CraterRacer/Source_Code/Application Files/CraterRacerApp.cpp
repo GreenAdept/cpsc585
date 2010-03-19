@@ -157,7 +157,8 @@ void RacerApp::moveMenuUp( )
 {
 	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_SINGLE_PLAYER ||
 		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_UNPAUSE ||
-		m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_MAINMENU )
+		m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_MAINMENU ||
+		m_AppState == APP_SHOWTIMES && m_uiCurrentButton != GUI_BTN_MAINMENU2 )
 	{
 		//send message to current button to go back to normal state
 		m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
@@ -175,7 +176,8 @@ void RacerApp::moveMenuDown( )
 {
 	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_EXIT ||
 		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_EXIT2 ||
-		m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_EXITSMALL )
+		m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_EXITSMALL ||
+		m_AppState == APP_SHOWTIMES && m_uiCurrentButton != GUI_BTN_EXITSMALL2 )
 	{
 		//tell current button to go back to normal/unselected state
 		m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
@@ -221,6 +223,7 @@ void RacerApp::processMenuSelection( )
 					break;
 				
 				case GUI_BTN_MAINMENU:
+				case GUI_BTN_MAINMENU2:
 					m_AppState = APP_STARTUP; 
 					m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
 					break;
@@ -239,6 +242,7 @@ void RacerApp::processMenuSelection( )
 				//or exit 
 				case GUI_BTN_EXIT:
 				case GUI_BTN_EXITSMALL:
+				case GUI_BTN_EXITSMALL2:
 				case GUI_BTN_EXIT2:
 					DXUTShutdown();
 					break;
@@ -316,6 +320,11 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 			case APP_VICTORY:
 
 				m_Renderer->drawVictoryScreen( );
+				break;
+
+			case APP_SHOWTIMES:
+
+				m_Renderer->drawTimesScreen( );
 				break;
 
 			case APP_RENDER_GAME:
