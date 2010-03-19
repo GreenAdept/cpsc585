@@ -35,6 +35,9 @@ MessageManager* MessageManager::Inst( )
 void MessageManager::ProcessMessage( int message, long param )
 {
 	int playerNum;
+	string temp;
+	vector<int> ranks;
+	vector<string> times;
 
 	switch( message )
 	{
@@ -46,6 +49,18 @@ void MessageManager::ProcessMessage( int message, long param )
 	case EWrongWayCancel:
 		playerNum = param;
 		m_Renderer->adjustWrongWay( playerNum, false );
+		break;
+
+	case EPlayerFinished:
+		playerNum = param;
+		temp = m_Clock->getFormattedTime();
+		m_VictoryCalculator->setFinishTime( playerNum, temp );
+		break;
+
+	case EGameFinished:
+		ranks = *((vector<int>*)param);
+		times = m_VictoryCalculator->getFinishTimes( );
+		m_Renderer->adjustVictoryRank( ranks, times );
 		break;
 	}
 }
@@ -61,6 +76,7 @@ void MessageManager::ProcessMessage( int message, long param )
 void MessageManager::ProcessMessage( int message, long param1, long param2 )
 {
 	int playerNum, lapNum;
+	string temp;
 
 	switch( message )
 	{

@@ -44,9 +44,10 @@ public:
 	void adjustRankImage	( int rank );
 	void adjustClockImages	( string time );
 	void adjustSpeedImage	( float speed );
-	void adjustVictoryRank	( vector<int>& ranks );
+	void adjustVictoryRank	( vector<int>& ranks, vector<string>& times );
 	void adjustWrongWay		( int playerNum, bool drawWrongWay );
 	void adjustLapImage		( int playerNum, int lapNum );
+	void adjustBestTimes	( vector<string>& bestTimeEntries );
 
 
 	// Drawing functions
@@ -59,6 +60,7 @@ public:
 	void drawGameRules		( );
 	void renderFPS			( );
 	void drawVictoryScreen	( );
+	void drawTimesScreen	( );
 
 private:
 
@@ -87,11 +89,13 @@ private:
 	Dialog				m_GameScreen;							//HUD and pause screen are rendered to this
 	ResourceManager		m_ResourceManager;						
 	float				m_fSpeedRotation;						//degree in radians to rotate speedometer wand image
-	LPCWSTR				m_sVictoryRanks[ NUM_PLAYERS ];
-	LPCWSTR				m_sVictoryTimes[ NUM_PLAYERS ];
+	LPCTSTR				m_sVictoryRanks[ NUM_PLAYERS ];
+	LPCTSTR				m_sVictoryTimes[ NUM_PLAYERS ];
 	RECT				m_VictoryRecs[ NUM_PLAYERS*2 ];
 	bool				m_bDrawWrongWay[ NUM_PLAYERS ];
 	int					m_iLapImages[ NUM_PLAYERS ];
+	LPCTSTR				m_sBestTimes[ 5 ];
+	RECT				m_BestTimesRecs[ 5 ];
 };
 
 #endif

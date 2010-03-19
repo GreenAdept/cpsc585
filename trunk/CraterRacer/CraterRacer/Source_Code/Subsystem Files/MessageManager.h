@@ -16,12 +16,13 @@
 #include "CraterRacerApp.h"
 #include "Renderer.h"
 #include "Clock.h"
+#include <vector>
 
 //event ids
 enum Events {	EWrongWay, EWrongWayCancel, EPauseGame, EUnpauseGame, EStartClock, 
-				EGameFinished, ELapFinished };
+				EGameFinished, ELapFinished, EPlayerFinished };
 
-
+using namespace std;
 //--------------------------------------------------------
 //		CLASS: MessageManager
 //		
