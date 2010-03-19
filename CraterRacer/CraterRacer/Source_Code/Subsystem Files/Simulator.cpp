@@ -226,8 +226,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				if (reversing || (actor->getLinearVelocity().magnitude() < 1))
 				{
 					vehicle->setReverse(true);
-					localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) );
-					localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) );
+					velocity = actor->getLinearVelocity();
+					if(velocity.magnitude() < MAX_BACKWARD_VELOCITY){
+						localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) );
+						localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) );
+					}
 					noInput = false;
 					break;
 				}
@@ -250,7 +253,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				}
 				//else, accelerate
 				velocity = actor->getLinearVelocity();
-				if(velocity.magnitude() < MAX_VELOCITY){
+				if(velocity.magnitude() < MAX_FORWARD_VELOCITY){
 					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );
 					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );
 				}
