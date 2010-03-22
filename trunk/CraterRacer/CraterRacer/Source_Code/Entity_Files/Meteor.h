@@ -37,12 +37,15 @@ public:
 	Meteor ();
 	~Meteor ();
 
-	AI* getAI ();
-	Vec3 getTarget ();
-	void setTarget (Vec3 t);
-	void setCraterToSpawn (Crater* c);
-	void informOfCollision ();
-	void informOfTrigger ();
+	AI*     getAI ();
+
+	Vec3    getTarget ();
+	void    setTarget (Vec3 t);
+	Crater* getCraterToSpawn ();
+	void    setCraterToSpawn (Crater* c);
+
+	void    informOfCollision ();
+	void    informOfTrigger ();
 };
 
 

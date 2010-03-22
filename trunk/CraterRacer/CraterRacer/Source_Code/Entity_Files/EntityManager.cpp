@@ -128,14 +128,17 @@ vector<Entity*> EntityManager::getObstacles () {
 	int playerSize = entities[PLAYERS].size();
 	int compSize = entities[COMPUTERS].size();
 	int propSize = entities[PROPS].size();
+	int craterSize = entities[CRATERS].size();
 
-	vector<Entity*> result (playerSize + compSize + propSize);
+	vector<Entity*> result (playerSize + compSize + propSize + craterSize);
 	for (int i=0; i<playerSize; i++)
 		result[index++] = entities[PLAYERS][i];
 	for (int i=0; i<compSize; i++)
 		result[index++] = entities[COMPUTERS][i];
 	for (int i=0; i<propSize; i++)
 		result[index++] = entities[PROPS][i];
+	for (int i=0; i<craterSize; i++)
+		result[index++] = entities[CRATERS][i];
 	return result;
 }
 
