@@ -12,6 +12,7 @@
 #include "Vehicle.h"
 #include "Meteor.h"
 #include "MeteorGroup.h"
+#include "Crater.h"
 #include "Terrain.h"
 #include "DebugWriter.h"
 #include "Sound.h"
@@ -66,6 +67,7 @@ public:
 private:
 
 	void addTerrainFromX( Terrain* terrain );
+	void addCrater( Crater* crater );
 
 	NxActor* createLittleBox( NxVec3 pos );
 

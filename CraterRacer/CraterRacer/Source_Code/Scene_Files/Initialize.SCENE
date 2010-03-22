@@ -75,10 +75,10 @@ NUM_WAYPOINTS			59
 
 NUM_CRATERS				2
 
-MESH_FILENAME			Media\\Meshes\\CarBox.x
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBox.x
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
 
@@ -93,8 +93,8 @@ METEOR_GROUP			1
 POSITION				-60 0 416
 RADIUS					50
 NUM_METEORS				2
--73.8526 30 416			-73.8526 15 416				0
--65 30 416				-60 15 416					1
+-73.8526 30 416			-73.8526 12 416				0
+-65 30 416				-60 12 416					1
 
 
 **PROP_INFORMATION ------------------------------------------------

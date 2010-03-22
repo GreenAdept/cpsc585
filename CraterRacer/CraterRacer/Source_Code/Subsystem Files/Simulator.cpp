@@ -520,6 +520,7 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time) {
 		if (travelled >= toTravel) {
 			currentPos = target;
 			m->informOfCollision();
+			addCrater (m->getCraterToSpawn());
 		}
 		else {
 			direction /= toTravel;
@@ -584,6 +585,28 @@ void Simulator::addTerrainFromX( Terrain* terrain )
 
 	NxActor* pActor = m_Scene->createActor( actorDesc );
 	terrain->setPhysicsObj( pActor );
+	m_Actors.push_back( pActor );
+}
+
+//--------------------------------------------------------------------------------------
+// Function:  addCrater
+// Adds a crater actor to the physics simulator.
+//--------------------------------------------------------------------------------------
+void Simulator::addCrater( Crater* crater )
+{
+	Mesh*  mesh = crater->getRenderable()->m_pMesh;
+	Vec3   p = crater->getPosition();
+	NxVec3 pos (p.x, p.y, p.z);
+
+	NxTriangleMeshShapeDesc ShapeDesc = createTriMeshShape( mesh );
+
+	// Create terrain and add to scene
+	NxActorDesc actorDesc;
+	actorDesc.shapes.pushBack( &ShapeDesc );
+	actorDesc.globalPose.t = pos;
+
+	NxActor* pActor = m_Scene->createActor( actorDesc );
+	crater->setPhysicsObj( pActor );
 	m_Actors.push_back( pActor );
 }
 

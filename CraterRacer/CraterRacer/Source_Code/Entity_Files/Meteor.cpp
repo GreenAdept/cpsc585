@@ -96,6 +96,10 @@ void Meteor::setTarget (Vec3 t) {
 	target = t;
 }
 
+Crater* Meteor::getCraterToSpawn () {
+	return toSpawn;
+}
+
 void Meteor::setCraterToSpawn (Crater* c) {
 	toSpawn = c;
 }
