@@ -33,11 +33,11 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	}
 
   //Check if the destination has been reached
-	Vec3 destPos = destination->getPosition();
-	if (distSquared (myPos, destPos) < 900.0f) {
+	Vec3 destPos = destination->getClosestPosition (myPos);
+	while (destination->getDistanceSquaredToWP (myPos) < 900.0f) {
 		lastPassedWaypoint = destPos;
 		passedWPs++;
-		destination = destination->getRandomNext();
+		destination = destination->getNext();
 
 		if (destination == 0) {
 			laps--;
@@ -47,8 +47,11 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 			if( m_iPlayerNum >= 0 )
 				Emit( Events::ELapFinished, m_iPlayerNum, laps );
 
-			if (laps == 0)
+			if (laps == 0) {
 				state = AI::STOPPED;
+				wrongWay = false;
+				return;
+			}
 			else
 				destination = em->getTerrain()->getTrackStart();
 		}
@@ -73,18 +76,18 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	}
 }
 
-Vec3 VehicleAI::getNextWaypoint() {
-	if (destination != 0)
-		return destination->getPosition();
+Vec3 VehicleAI::getNextWaypoint (Vec3 myPos) {
+	if (destination == 0)
+		return Vec3 (0, 0, 0);
 	else
-		return Vec3(0, 0, 0);
+		return destination->getClosestPosition (myPos);
 }
 
 float VehicleAI::getDistanceToNextWP (Vec3 myPos) {
 	if (destination == 0)
 		return 0;
 	else
-		return sqrt (distSquared (myPos, destination->getPosition()));
+		return sqrt (destination->getDistanceSquaredToWP (myPos));
 }
 
 

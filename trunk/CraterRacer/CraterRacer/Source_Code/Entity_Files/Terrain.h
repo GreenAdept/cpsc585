@@ -16,21 +16,21 @@
 //---------------------------------------------------------
 
 class Waypoint {
-	Vec3 position;
-	vector<Waypoint*> next;
+	std::vector<Vec3> position;
+	Waypoint* next;
 
 public:
-	Waypoint (Vec3 p) : position (p) {}
-	Waypoint (float x, float y, float z) : position (x, y, z) {}
+	Waypoint (Vec3 p) : next (0) { position.push_back (p); }
+	Waypoint (float x, float y, float z) : next (0) { position.push_back (Vec3 (x, y, z)); }
 	~Waypoint ();
 
-	Vec3&    getPosition () { return position; }
-	Vec3     getDirectionToWP (Vec3 p);
-	Waypoint *addNext (Vec3 p);
-	Waypoint *addNext (float x, float y, float z);
-	Waypoint *addNext (Waypoint* wp);
-	Waypoint *getRandomNext ();
-	Waypoint *getNext (int index) { return next[index]; }
+	void      addPosition (Vec3 p) { position.push_back (p); }
+	Vec3      getClosestPosition (Vec3 p);
+	Vec3      getDirectionToWP (Vec3 p);
+	float     getDistanceSquaredToWP (Vec3 p);
+	Waypoint* setNext (Vec3 p);
+	Waypoint* setNext (Waypoint* wp);
+	Waypoint* getNext () { return next; }
 };
 
 
@@ -44,11 +44,10 @@ public:
 	Terrain () { trackStart = 0; laps = 1; }
 	~Terrain () { delete trackStart; }
 
-	int       getNumberOfLaps ()      { return laps; }
-	void      setNumberOfLaps (int l) { if (l > 0) laps = l; }
-	Waypoint* getTrackStart   ()      { return trackStart; }
-	void      buildTrack      (Vec3* path, int size);		//builds a linear track
-	//void      buildTrack (Vec3* mainPath, Vec3* sidePath, int size);	//builds a track with forks
+	int       getNumberOfLaps ()             { return laps; }
+	void      setNumberOfLaps (int l)        { if (l > 0) laps = l; }
+	Waypoint* getTrackStart   ()             { return trackStart; }
+	void      setTrackStart   (Waypoint* ts) { trackStart = ts; }
 	
 private:
 	//Data Members ----------------------------------------

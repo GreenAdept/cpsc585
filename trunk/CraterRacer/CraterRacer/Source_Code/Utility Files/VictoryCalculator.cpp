@@ -34,16 +34,16 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 		ranks[index] = rank;
 	}
 	else {
-		int passedWPs = myAI->getNumberofPassedWaypoints();
+		int passedWPs = myAI->getNumberofPassedWPs();
 		float dist = myAI->getDistanceToNextWP (v->getPosition());
 
 		for (int i=0; i<vehicles.size(); i++) {
 			if (i == index) continue;
 			VehicleAI* enemyAI = (VehicleAI*) vehicles[i]->getAI();
 
-			if (passedWPs < enemyAI->getNumberofPassedWaypoints())
+			if (passedWPs < enemyAI->getNumberofPassedWPs())
 				rank++;
-			if (passedWPs == enemyAI->getNumberofPassedWaypoints()) {
+			if (passedWPs == enemyAI->getNumberofPassedWPs()) {
 				if (dist > enemyAI->getDistanceToNextWP (vehicles[i]->getPosition()))
 					rank++;
 			}

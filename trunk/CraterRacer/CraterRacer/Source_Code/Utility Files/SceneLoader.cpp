@@ -107,6 +107,7 @@ void SceneLoader::processTerrainInfo( ifstream& file )
 	string	terrainFile, 
 			terrainEffectFile,
 			flush;
+	int		laps;
 
 	file >> flush >> terrainFile;
 	if( terrainFile != "MESH_FILENAME" ) return;
@@ -135,13 +136,24 @@ void SceneLoader::processPathInfo( ifstream& file )
 	if( str != "NUM_WAYPOINTS" ) return;
 	file >> num_waypoints;
 
-	Vec3* waypoints = new Vec3 [num_waypoints];
+	Waypoint* wp = 0;
 	for (int i=0; i<num_waypoints; i++) {
-		file >> waypoints[i].x >> waypoints[i].y >> waypoints[i].z;
-	}
+		file >> x >> y >> z;
 
-	m_Objs.entityManager->getTerrain()->buildTrack (waypoints, num_waypoints);
-	delete[] waypoints;
+		Waypoint* newWP = new Waypoint (x, y, z);
+		if (wp != 0)
+			wp->setNext (newWP);
+		else
+			m_Objs.entityManager->getTerrain()->setTrackStart (newWP);
+		wp = newWP;
+
+		file >> str;
+		while (str != "DONE") {
+			file >> x >> y >> z;
+			wp->addPosition (Vec3 (x, y, z));
+			file >> str;
+		}
+	}
 }
 
 //--------------------------------------------------------------------------------------
@@ -275,15 +287,23 @@ void SceneLoader::processVehicleInfo( ifstream& file )
 	string flush;
 	int numPlayers;
 	int numComputers;
+	int numLaps;
 	
 	file >> flush >> flush;
 	if( flush != "NUM_PLAYERS" ) return;
-	
-	file >> numPlayers >> flush;
+	file >> numPlayers;
+
+	file >> flush;
+	if( flush != "NUM_COMPUTERS" ) return;
 	file >> numComputers;
+
+	file >> flush;
+	if( flush != "NUM_LAPS" ) return;
+	file >> numLaps;
 
 	processPlayerVehicles( file, numPlayers );
 	processComputerVehicles( file, numComputers );
+	m_Objs.entityManager->getTerrain()->setNumberOfLaps( numLaps );
 }
 
 

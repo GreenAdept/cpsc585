@@ -722,6 +722,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source_Code\Subsystem Files\MessageManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Subsystem Files\MessageManager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Source_Code\Subsystem Files\Renderable.cpp"
 				>
 			</File>

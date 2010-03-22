@@ -75,7 +75,7 @@ Vec3 Vehicle::lastPassedWP ()
 Vec3 Vehicle::nextWP ()
 {
 	if (mind != 0)
-		return mind->getNextWaypoint();
+		return mind->getNextWaypoint (m_vPosition);
 	else
 		return Vec3 (0, 0, 0);
 }

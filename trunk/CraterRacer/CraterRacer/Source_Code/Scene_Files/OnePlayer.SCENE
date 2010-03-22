@@ -2,6 +2,7 @@
 
 NUM_PLAYERS				1
 NUM_COMPUTERS			3
+NUM_LAPS				2
 
 
 **PLAYER_VEHICLES ------------------------------------------------
