@@ -27,12 +27,12 @@ public:
 
 	virtual void think (EntityManager *em, int myList, int myIndex);
 	Vec3         getLastPassedWaypoint () { return lastPassedWaypoint; }
-	Vec3		 getNextWaypoint ();
-	float        getDistanceToNextWP (Vec3 myPos);
-	int          getNumberofPassedWaypoints () { return passedWPs; }
-	int          getRemainingLaps () { return laps; }
-	bool         isFinished () { return laps == 0; }
-	bool         isGoingWrongWay () { return wrongWay; }
+	Vec3		 getNextWaypoint       (Vec3 myPos);
+	float        getDistanceToNextWP   (Vec3 myPos);
+	int          getNumberofPassedWPs  () { return passedWPs; }
+	int          getRemainingLaps      () { return laps; }
+	bool         isFinished            () { return laps == 0; }
+	bool         isGoingWrongWay       () { return wrongWay; }
 	void		 setPlayerNum( int num ) { m_iPlayerNum = num; }
 };
 
