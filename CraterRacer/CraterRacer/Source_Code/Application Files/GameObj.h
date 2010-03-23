@@ -38,7 +38,7 @@ public:
 	void processInput	 ( float fElapsedTime );
 	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );
 	void simulate		 ( float fElapsedTime );
-	void render			 ( Device* device, Renderer* renderer );
+	void render			 ( Device* device, Renderer* renderer, int playerID );
 	void processCallback ( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
 	
 	//Getter's and setter's

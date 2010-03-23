@@ -70,6 +70,8 @@ public:
 	static void moveMenuUp			 ( );
 	static void moveMenuDown		 ( );
 	static void doLoadScreen		 ( );
+	static void renderTwoPlayer		 ( Device* device );
+
 
 	// Other Functions ---------------------------------------
 
@@ -87,6 +89,9 @@ public:
 	static float				m_fCheckTime;
 	static bool					m_bIsLoading;
 
+	static int					m_iBackWidth;
+	static int					m_iBackHeight;
+
 	// ball animation on loading screen
 	static int					m_iCurrentBall;
 	static UINT_PTR				m_AnimationID;
@@ -96,6 +101,8 @@ public:
 	static DWORD				m_dwThreadID;
 	static bool					m_bGameIsReady;
 	static CRITICAL_SECTION		m_CriticalSection; // used for multithreading
+	static bool					m_bIsTwoPlayer;
+	static string				m_sGameFilename;
 };
 
 extern GameObj *g_pGame; //Our global instantiation of the game which will be used by the RacerApp class

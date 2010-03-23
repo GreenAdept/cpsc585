@@ -1,0 +1,26 @@
+**VEHICLE_INFORMATION -------------------------------------------
+
+NUM_PLAYERS				2
+NUM_COMPUTERS			2
+NUM_LAPS				2
+
+
+**PLAYER_VEHICLES ------------------------------------------------
+
+EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
+MESH_FILENAME:		Media\\Meshes\\CarBody1.x
+POSITION:			-235 30 20
+
+EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
+MESH_FILENAME:		Media\\Meshes\\CarBody2.x
+POSITION:			-250 30 50
+
+
+**COMPUTER_VEHICLES ----------------------------------------------
+
+EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
+MESH_FILENAME:		Media\\Meshes\\CarBody3.x
+POSITION:			-235 30 40
+EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
+MESH_FILENAME:		Media\\Meshes\\CarBody4.x
+POSITION:			-250 30 30

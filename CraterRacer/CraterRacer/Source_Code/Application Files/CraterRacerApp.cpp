@@ -22,6 +22,10 @@ float					RacerApp::m_fCheckTime;
 ApplicationState		RacerApp::m_iPreviousAppState;
 Renderer*				RacerApp::m_Renderer;			// rendering subsystem
 bool					RacerApp::m_bIsLoading;
+int						RacerApp::m_iBackWidth;
+int						RacerApp::m_iBackHeight;
+bool					RacerApp::m_bIsTwoPlayer;
+string					RacerApp::m_sGameFilename;
 
 //--------------------------------------------------------------------------------------
 // Function:  OnUpdateGame
@@ -204,28 +208,51 @@ void RacerApp::processMenuSelection( )
 			switch( m_uiCurrentButton )
 			{
 				//start the game
-				case GUI_BTN_SINGLE_PLAYER:
 				case GUI_BTN_TWO_PLAYER:
+					m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
+					m_sGameFilename = TWO_PLAYER_SCENE_FILE;
+					m_AppState = APP_GAME_LOADING;
+					m_Renderer->adjustTwoPlayer( true, m_iBackWidth, m_iBackHeight );
+					m_bIsTwoPlayer = true;
+					break;
+
 				case GUI_BTN_TIMETRIAL:
+				case GUI_BTN_SINGLE_PLAYER:
+					m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
+					m_Renderer->adjustTwoPlayer( false, m_iBackWidth, m_iBackHeight );
+					m_sGameFilename = ONE_PLAYER_SCENE_FILE;
+					m_AppState = APP_GAME_LOADING;
+					break;
 
 					//start loading game in a separate thread
-					m_AppState = APP_GAME_LOADING;
+					//m_AppState = APP_GAME_LOADING;
 					//m_hThread = CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)startGame,NULL,0,&m_dwThreadID);
 
 					//start ball loading animation
 					//fWindow = FindWindow(NULL, L"Crater Racer");
 					//SetTimer( fWindow, m_AnimationID, 500, (TIMERPROC)animateBall);
-					break;
+					//break;
 					
 				case GUI_BTN_UNPAUSE:
 					Emit( EUnpauseGame );
 					m_AppState = APP_RENDER_GAME; 
 					break;
 				
+				case GUI_BTN_PAUSE_MAINMENU:
+
+					m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
+					m_Renderer->adjustButtonImage( UNPAUSE_IMAGE, +1 );
+					m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
+					m_Renderer->adjustButtonImage( m_uiCurrentButton, +1 );
+					m_bIsLoading = false;
+					m_bGameIsReady = false;
+
 				case GUI_BTN_MAINMENU:
 				case GUI_BTN_MAINMENU2:
+				
 					m_AppState = APP_STARTUP; 
-					m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
+					m_bIsTwoPlayer = false;
+					m_Renderer->adjustTwoPlayer( false, m_iBackWidth, m_iBackHeight );
 					break;
 
 				case GUI_BTN_GAMERULES:
@@ -265,6 +292,9 @@ HRESULT CALLBACK RacerApp::OnResetDevice( IDirect3DDevice9* device, const D3DSUR
 
 	m_Renderer->OnReset( device, pBackBufferSurfaceDesc );
 
+	m_iBackWidth = pBackBufferSurfaceDesc->Width;
+	m_iBackHeight = pBackBufferSurfaceDesc->Height;
+
 	return S_OK;
 }
 
@@ -282,6 +312,63 @@ void CALLBACK RacerApp::OnLostDevice(void* pUserContext )
 	m_Renderer->OnLost( );
 }
 
+
+//--------------------------------------------------------------------------------------
+// Function: renderTwoPlayer
+// This function renders the game and HUD for the first player (in top of screen) and
+// second player (in bottom of screen) using viewports.
+//--------------------------------------------------------------------------------------
+void RacerApp::renderTwoPlayer( Device* device )
+{
+	// Render first player in top half of screen
+    D3DVIEWPORT9 topViewPort;
+
+    topViewPort.X      = 0;
+    topViewPort.Y      = 0;
+    topViewPort.Width  = m_iBackWidth;
+    topViewPort.Height = m_iBackHeight / 2;
+    topViewPort.MinZ   = 0.0f;
+    topViewPort.MaxZ   = 1.0f;
+
+    device->SetViewport( &topViewPort );
+    device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_COLORVALUE( 0.0f, 0.0f, 0.0f, 1.0f ), 1.0f, 0 );
+
+	//get the game to render all of its components
+	g_pGame->render( device, m_Renderer, PLAYER1 );
+
+	m_Renderer->renderFPS( );
+	m_Renderer->drawHUD( PLAYER1 );
+
+    device->EndScene();
+ 
+    // Render second player to the bottom half of the screen
+    D3DVIEWPORT9 bottomViewPort;
+
+    bottomViewPort.X      = 0;
+    bottomViewPort.Y      = m_iBackHeight / 2;
+    bottomViewPort.Width  = m_iBackWidth;
+    bottomViewPort.Height = m_iBackHeight/2;
+    bottomViewPort.MinZ   = 0.0f;
+    bottomViewPort.MaxZ   = 1.0f;
+
+    device->SetViewport( &bottomViewPort );
+    device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_COLORVALUE( 0.0f, 0.0f, 0.0f, 1.0f ), 1.0f, 0 );
+
+    device->BeginScene();
+    {
+		//get the game to render all of its components
+		g_pGame->render( device, m_Renderer, PLAYER2 );
+		m_Renderer->drawHUD( PLAYER2 );
+    }
+	D3DVIEWPORT9 resetViewPort;
+	resetViewPort.X      = 0;
+    resetViewPort.Y      = 0;
+    resetViewPort.Width  = m_iBackWidth;
+    resetViewPort.Height = m_iBackHeight;
+    resetViewPort.MinZ   = 0.0f;
+    resetViewPort.MaxZ   = 1.0f;
+	device->SetViewport( &resetViewPort );
+}
 
 
 //--------------------------------------------------------------------------------------
@@ -302,7 +389,6 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 		{
 			case APP_STARTUP:
 				
-				//m_Renderer->drawVictoryScreen( );
 				m_Renderer->drawStartupMenu( );
 				break;
 
@@ -313,7 +399,6 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 			case APP_GAME_LOADING:
 
 				m_Renderer->drawLoadingScreen( );
-				
 				m_bIsLoading = m_bIsLoading ? false : true;
 				break;
 
@@ -334,15 +419,27 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 				if( g_pGame )
 				{
 					//Adjust all HUD images to reflect current state
-					m_Renderer->adjustRankImage( g_pGame->m_Victory.getRank( PLAYER1 ) );
-					m_Renderer->adjustClockImages( g_pGame->getTime() );
-					m_Renderer->adjustSpeedImage( g_pGame->getVehicleSpeed( PLAYER1 ) );
+					m_Renderer->adjustRankImage( g_pGame->m_Victory.getRank( PLAYER1 ), PLAYER1 );
+					m_Renderer->adjustClockImages( g_pGame->getTime(), PLAYER1 );
+					m_Renderer->adjustSpeedImage( g_pGame->getVehicleSpeed( PLAYER1 ), PLAYER1 );
 
-					//get the game to render all of its components
-					g_pGame->render( device, m_Renderer );
+					if( m_bIsTwoPlayer )
+					{
+						m_Renderer->adjustRankImage( g_pGame->m_Victory.getRank( PLAYER2 ), PLAYER2 );
+						m_Renderer->adjustClockImages( g_pGame->getTime(), PLAYER2 );
+						m_Renderer->adjustSpeedImage( g_pGame->getVehicleSpeed( PLAYER2 ), PLAYER2 );
+					}
 
-					m_Renderer->renderFPS( );
-					m_Renderer->drawHUD( );
+					if( m_bIsTwoPlayer )
+						renderTwoPlayer( device );
+					else
+					{
+						//get the game to render all of its components
+						g_pGame->render( device, m_Renderer, PLAYER1 );
+
+						m_Renderer->renderFPS( );
+						m_Renderer->drawHUD( PLAYER1 );
+					}
 				}
 
 				if( m_AppState == APP_PAUSED )
@@ -422,7 +519,7 @@ long WINAPI RacerApp::startGame( long lParam )
  
 	m_SceneLoader->initScene( &g_pGame );
 
-	m_SceneLoader->startGame( ONE_PLAYER_SCENE_FILE ); //load one player game
+	m_SceneLoader->startGame( m_sGameFilename ); //load one player game
 
 	//Leave the critical section -- other threads can now EnterCriticalSection() 
    // LeaveCriticalSection(&m_CriticalSection);
@@ -472,7 +569,7 @@ RacerApp::RacerApp()
 	m_SceneLoader = new SceneLoader( );
 
 	//Initialize the critical section before entering multi-threaded context.
-	InitializeCriticalSection(&m_CriticalSection);
+	//InitializeCriticalSection(&m_CriticalSection);
 
 	g_pGame			  = NULL;
 	m_AppState		  = APP_STARTUP;
@@ -481,6 +578,8 @@ RacerApp::RacerApp()
 	m_fCheckTime	  = 0.0f;
 	m_Renderer		  = new Renderer( );
 	m_bIsLoading	  = false;
+	m_bIsTwoPlayer	  = false;
+	m_sGameFilename	  = ONE_PLAYER_SCENE_FILE;
 
 	// Set up the audio
 	HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, SE_WAVEBANK_FILE, BG_SETTINGS_FILE, BG_SOUNDBANK_FILE );
@@ -522,5 +621,5 @@ void RacerApp::cleanupAll( )
 			CloseHandle( m_hThread );
 
 	// Release system object when all finished 
-	DeleteCriticalSection(&m_CriticalSection);
+	//DeleteCriticalSection(&m_CriticalSection);
 }

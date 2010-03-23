@@ -54,7 +54,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;Source_Code\Vehicle Files&quot;;&quot;Source_Code\Subsystem Files&quot;;&quot;Source_Code\Utility Files&quot;;PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;&quot;Source_Code\Application Files&quot;;Source_Code\Entity_Files;&quot;Source_Code\Resource Files&quot;;&quot;$(DXSDK_DIR)\Include&quot;;Headers"
+				AdditionalIncludeDirectories="&quot;Source_Code\Application Files&quot;;&quot;Source_Code\Vehicle Files&quot;;&quot;Source_Code\Subsystem Files&quot;;&quot;Source_Code\Utility Files&quot;;PhysX\Foundation\include;PhysX\PhysXLoader\include;PhysX\Physics\include;PhysX\NxCharacter\include;PhysX\Cooking\include;Source_Code\Entity_Files;&quot;Source_Code\Resource Files&quot;;&quot;$(DXSDK_DIR)\Include&quot;;Headers"
 				PreprocessorDefinitions="WIN32;_DEBUG;DEBUG;PROFILE;_WINDOWS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="0"
@@ -778,6 +778,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source_Code\Utility Files\ImageConstants.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Source_Code\Utility Files\SceneLoader.cpp"
 				>
 			</File>
@@ -819,10 +823,6 @@
 			>
 			<File
 				RelativePath=".\Source_Code\Effect_Files\Scene.fx"
-				>
-			</File>
-			<File
-				RelativePath=".\Source_Code\Effect_Files\Terrain.FX"
 				>
 			</File>
 		</Filter>
@@ -867,6 +867,14 @@
 			</File>
 			<File
 				RelativePath=".\Source_Code\Scene_Files\OnePlayer.SCENE"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Scene_Files\TimeTrial.SCENE"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Scene_Files\TwoPlayer.SCENE"
 				>
 			</File>
 		</Filter>

@@ -104,6 +104,7 @@ void MessageManager::ProcessMessage( int message )
 		m_Simulator->pause( true );
 		m_App->m_AppState = APP_PAUSED;
 		m_App->m_uiCurrentButton = GUI_BTN_UNPAUSE;
+		m_Renderer->adjustButtonImage( GUI_BTN_UNPAUSE, +1 );
 		break;
 
 	case EUnpauseGame:
