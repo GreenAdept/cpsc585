@@ -17,14 +17,21 @@
 
 //HUD image files
 #define SPEEDOMETER_IMAGE_FILE			"Media\\Images\\Speedometer.png"
+#define SPEEDOMETER2_IMAGE_FILE			"Media\\Images\\Speedometer2.png"
 #define SPEEDWAND_IMAGE_FILE			"Media\\Images\\Speedwand.png"
 #define MINIMAP_IMAGE_FILE				"Media\\Images\\MiniMap.png"
 #define FIRST_IMAGE_FILE				"Media\\Images\\Numbers\\First.png"
 #define SECOND_IMAGE_FILE				"Media\\Images\\Numbers\\Second.png"
 #define THIRD_IMAGE_FILE				"Media\\Images\\Numbers\\Third.png"
 #define FOURTH_IMAGE_FILE				"Media\\Images\\Numbers\\Fourth.png"
+#define FIRST2_IMAGE_FILE				"Media\\Images\\Numbers\\First2.png"
+#define SECOND2_IMAGE_FILE				"Media\\Images\\Numbers\\Second2.png"
+#define THIRD2_IMAGE_FILE				"Media\\Images\\Numbers\\Third2.png"
+#define FOURTH2_IMAGE_FILE				"Media\\Images\\Numbers\\Fourth2.png"
 #define LAPONE_IMAGE_FILE				"Media\\Images\\LapOne.png"
 #define LAPTWO_IMAGE_FILE				"Media\\Images\\LapTwo.png"
+#define LAPONE2_IMAGE_FILE				"Media\\Images\\LapOne2.png"
+#define LAPTWO2_IMAGE_FILE				"Media\\Images\\LapTwo2.png"
 #define WRONGWAY_IMAGE_FILE				"Media\\Images\\WrongWay.png"
 
 //Number image files
@@ -39,6 +46,17 @@
 #define EIGHT_IMAGE_FILE				"Media\\Images\\Numbers\\Eight.png"
 #define NINE_IMAGE_FILE					"Media\\Images\\Numbers\\Nine.png"
 #define COLON_IMAGE_FILE				"Media\\Images\\Numbers\\Colon.png"
+#define ZERO2_IMAGE_FILE				"Media\\Images\\Numbers\\Zero2.png"
+#define ONE2_IMAGE_FILE					"Media\\Images\\Numbers\\One2.png"
+#define TWO2_IMAGE_FILE					"Media\\Images\\Numbers\\Two2.png"
+#define THREE2_IMAGE_FILE				"Media\\Images\\Numbers\\Three2.png"
+#define FOUR2_IMAGE_FILE				"Media\\Images\\Numbers\\Four2.png"
+#define FIVE2_IMAGE_FILE				"Media\\Images\\Numbers\\Five2.png"
+#define SIX2_IMAGE_FILE					"Media\\Images\\Numbers\\Six2.png"
+#define SEVEN2_IMAGE_FILE				"Media\\Images\\Numbers\\Seven2.png"
+#define EIGHT2_IMAGE_FILE				"Media\\Images\\Numbers\\Eight2.png"
+#define NINE2_IMAGE_FILE				"Media\\Images\\Numbers\\Nine2.png"
+#define COLON2_IMAGE_FILE				"Media\\Images\\Numbers\\Colon2.png"
 
 //Startup screen image files
 #define MENU_IMAGE_FILE					"Media\\Images\\Logo.png"
@@ -78,10 +96,18 @@
 #define TIMES_IMAGE_FILE				"Media\\Images\\TimesScreen.png"
 
 
-#define NUM_BUTTONS				12
+#define NUM_BUTTONS				13
 #define NUM_LOADING_BALLS		5
-#define NUM_IMAGES				54
+#define NUM_IMAGES				35
+#define NUM_HUD_IMAGES			21
 #define NUM_PLAYERS				4
+
+enum HUDImageNames{	SPEEDOMETER_IMAGE, SPEEDWAND_IMAGE, MINIMAP_IMAGE, 
+					FIRST_IMAGE, SECOND_IMAGE, THIRD_IMAGE, FOURTH_IMAGE, WRONGWAY_IMAGE,
+					LAPONE_IMAGE, LAPTWO_IMAGE,
+
+					ZERO_IMAGE, ONE_IMAGE, TWO_IMAGE, THREE_IMAGE, FOUR_IMAGE, FIVE_IMAGE,
+					SIX_IMAGE, SEVEN_IMAGE, EIGHT_IMAGE, NINE_IMAGE, COLON_IMAGE };
 
 enum ImageNames{	MENU_IMAGE, CONTROLS_IMAGE, GAMERULES_INFO_IMAGE, 
 					LOADING_IMAGE, LOADING_SMALLBALL_IMAGE, LOADING_BIGBALL_IMAGE,
@@ -92,13 +118,6 @@ enum ImageNames{	MENU_IMAGE, CONTROLS_IMAGE, GAMERULES_INFO_IMAGE,
 					
 					VICTORY_IMAGE, MAINMENU_IMAGE, MAINMENU_ACTIVE_IMAGE,
 					EXIT_SMALL_IMAGE, EXIT_SMALL_ACTIVE_IMAGE,
-					
-					SPEEDOMETER_IMAGE, SPEEDWAND_IMAGE, MINIMAP_IMAGE, 
-					FIRST_IMAGE, SECOND_IMAGE, THIRD_IMAGE, FOURTH_IMAGE, WRONGWAY_IMAGE,
-					LAPONE_IMAGE, LAPTWO_IMAGE,
-
-					ZERO_IMAGE, ONE_IMAGE, TWO_IMAGE, THREE_IMAGE, FOUR_IMAGE, FIVE_IMAGE,
-					SIX_IMAGE, SEVEN_IMAGE, EIGHT_IMAGE, NINE_IMAGE, COLON_IMAGE,
 
 					ONEPLAYER_NOTACTIVE_IMAGE, ONEPLAYER_ACTIVE_IMAGE, 
 					TWOPLAYER_IMAGE, TWOPLAYER_ACTIVE_IMAGE,
@@ -108,12 +127,13 @@ enum ImageNames{	MENU_IMAGE, CONTROLS_IMAGE, GAMERULES_INFO_IMAGE,
 
 					UNPAUSE_IMAGE, UNPAUSE_ACTIVE_IMAGE,
 					GAMERULES2_IMAGE, GAMERULES2_ACTIVE_IMAGE,
+					MAINMENU_PAUSE_IMAGE, MAINMENU_PAUSE_ACTIVE_IMAGE,
 					EXIT2_NOTACTIVE_IMAGE, EXIT2_ACTIVE_IMAGE };
 
 
 enum GuiControls{	GUI_BTN_SINGLE_PLAYER, GUI_BTN_TWO_PLAYER, GUI_BTN_TIMETRIAL,
 					GUI_BTN_GAMERULES, GUI_BTN_EXIT, 
-					GUI_BTN_UNPAUSE, GUI_BTN_GAMERULES2, GUI_BTN_EXIT2,
+					GUI_BTN_UNPAUSE, GUI_BTN_GAMERULES2, GUI_BTN_PAUSE_MAINMENU, GUI_BTN_EXIT2,
 					GUI_BTN_MAINMENU, GUI_BTN_EXITSMALL,
 					GUI_BTN_MAINMENU2, GUI_BTN_EXITSMALL2 };
 

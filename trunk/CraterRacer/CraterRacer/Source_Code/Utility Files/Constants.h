@@ -34,6 +34,7 @@ enum Player				{ PLAYER1 = 0, PLAYER2 };
 //		TYPEDEFS
 //--------------------------------------------------------
 
+typedef D3DXVECTOR2					Vec2;
 typedef D3DXVECTOR3					Vec3;
 typedef D3DXVECTOR4					Vec4;
 typedef CDXUTDialog					Dialog;
