@@ -9,7 +9,8 @@ GameObj* g_pGame = NULL;	//global game used by the RacerApp class
 
 //instatiating all the static member variables used by RacerApp
 ApplicationState		RacerApp::m_AppState;
-XBox360Controller*		RacerApp::m_MenuController;
+//XBox360Controller*		RacerApp::m_MenuController;
+XBox360Controller*   	RacerApp::m_Controllers [2];
 UINT					RacerApp::m_uiCurrentButton;
 SceneLoader*			RacerApp::m_SceneLoader;
 HANDLE					RacerApp::m_hThread;
@@ -26,6 +27,8 @@ int						RacerApp::m_iBackWidth;
 int						RacerApp::m_iBackHeight;
 bool					RacerApp::m_bIsTwoPlayer;
 string					RacerApp::m_sGameFilename;
+
+//XBox360Controller
 
 //--------------------------------------------------------------------------------------
 // Function:  OnUpdateGame
@@ -88,19 +91,22 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 		m_fCheckTime += fElapsedTime;
 		if( doControllerProcessing && m_fCheckTime > 0.18 )
 		{
-			m_MenuController->Update( m_fCheckTime );
-			//move menu up
-			if( m_MenuController->LeftThumbstick.GetY() > 0.2  )
-				moveMenuUp( );
-			//move menu down
-			else if( m_MenuController->LeftThumbstick.GetY() < -0.2 )
-				moveMenuDown( );
-			
-			//A selection was made using the A button
-			if( m_MenuController->A.WasPressed() )
-				processMenuSelection( );
+			for (int i = 0; i < 2; i++)
+				if (m_Controllers[i]->IsConnected()) {
+					m_Controllers[i]->Update( m_fCheckTime );
+					//move menu up
+					if( m_Controllers[i]->LeftThumbstick.GetY() > 0.2  )
+						moveMenuUp( );
+					//move menu down
+					else if( m_Controllers[i]->LeftThumbstick.GetY() < -0.2 )
+						moveMenuDown( );
+					
+					//A selection was made using the A button
+					if( m_Controllers[i]->A.WasPressed() )
+						processMenuSelection( );
 
-			m_fCheckTime = 0.0f;
+					m_fCheckTime = 0.0f;
+				}
 		}
 	}
 }
@@ -565,8 +571,11 @@ void RacerApp::doLoadScreen( )
 //--------------------------------------------------------------------------------------
 RacerApp::RacerApp()
 {
-	m_MenuController = new XBox360Controller(0);
+	//m_MenuController = new XBox360Controller(0);
 	m_SceneLoader = new SceneLoader( );
+
+	m_Controllers[0] = new XBox360Controller(0);
+	m_Controllers[1] = new XBox360Controller(1);
 
 	//Initialize the critical section before entering multi-threaded context.
 	//InitializeCriticalSection(&m_CriticalSection);
@@ -608,8 +617,10 @@ void RacerApp::cleanupAll( )
 		delete g_pGame;
 		g_pGame = NULL;
 	}
-	if( m_MenuController )
-		delete m_MenuController;
+	if( m_Controllers ) {
+		delete m_Controllers[0];
+		delete m_Controllers[1];
+	}
 
 	if( m_Renderer )
 		delete m_Renderer;
