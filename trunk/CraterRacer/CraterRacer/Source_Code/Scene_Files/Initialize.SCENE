@@ -75,8 +75,46 @@ NUM_WAYPOINTS			61
 
 **CRATER_INFORMATION ----------------------------------------------
 
-NUM_CRATERS				2
+NUM_CRATERS				14
 
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\CarBody4.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
 MESH_FILENAME			Media\\Meshes\\CarBody4.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
@@ -89,14 +127,37 @@ POSITION				0 -100 0
 
 MESH_FILENAME			Media\\Meshes\\Wheel1.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-NUM_METEOR_GROUPS		1
+NUM_METEOR_GROUPS		3
 
 METEOR_GROUP			1
-POSITION				-60 0 416
+POSITION				-270.886 2.0144 336.306
 RADIUS					50
-NUM_METEORS				2
--73.8526 30 416			-73.8526 12 416				0
--65 30 416				-60 12 416					1
+NUM_METEORS				4
+-217.494 100 389		-223.951 1.48063 394.918			0
+-166.697 120 405		-181.194 4.22865 397.423			1
+-141.777 150 404.747	-141.777 7.3708 404.747				2
+-101.661 120 420.609	-101.661 10.1149 420.609			3
+
+METEOR_GROUP			2
+POSITION				130.258 13.2133 -17.142
+RADIUS					50
+NUM_METEORS				5
+110.547 100 8.87092		110.547 -1.89353 8.87092			4
+84.1893 130 60.16		84.1893 -5.784374 60.16				5
+63.8392 125 115.9		63.8392 -1.22146 115.9				6
+44.2541 137 150.508		44.2541 7.8831 150.508				7
+32.1764 160 196.61		32.1764 17.9632 196.61				8
+
+METEOR_GROUP			3
+POSITION				132.966 24.09 185.59
+RADIUS					50
+NUM_METEORS				5
+177.472 100 165.094		177.472 4.26181 165.094				9
+188.163 120 139.662		188.163 1.62027 139.662				10
+231.375 125 121.277		231.375 -3.6447 121.277				11
+258.845 160 111.354		258.845 1.98295 111.354				12
+284.409 145 80.5322		284.409 11.2091 80.5322				13
+
 
 
 **PROP_INFORMATION ------------------------------------------------
