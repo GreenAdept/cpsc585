@@ -63,7 +63,7 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 		Vec3 desiredDir = destination->getDirectionToWP (myPos);
 
 		float cosTheta = D3DXVec3Dot (&currentDir, &desiredDir);
-		if (cosTheta < 0)
+		if (cosTheta < -0.707f)
 		{
 			Emit( Events::EWrongWay, m_iPlayerNum );
 			wrongWay = true;
@@ -169,7 +169,7 @@ bool CompVehicleAI::avoid (Vec3& currentDir, Vec3& dirOfObstacle, Input* input) 
 	float cosTheta = D3DXVec3Dot (&currentDir, &dirOfObstacle);
 
   //Set input based on angle
-	if (cosTheta >= 0.707f) {
+	if (cosTheta >= 0.866f) {
 		input->setInput (Input::UP, true);
 		if (temp.y < 0.0) input->setInput (Input::RIGHT, true);
 		else              input->setInput (Input::LEFT, true);

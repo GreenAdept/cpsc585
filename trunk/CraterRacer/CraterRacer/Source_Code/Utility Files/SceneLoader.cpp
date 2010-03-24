@@ -371,7 +371,7 @@ void SceneLoader::processComputerVehicles( ifstream& file, int numComputers )
 		//create in Entity Manager
 		av = m_Objs.entityManager->makeComputer( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
 		
-		av->setPlayerNum( -1 + -i );
+		av->setPlayerNum( -1 - i );
 
 		//add to simulator
 		m_Objs.simulator->createVehicle( av );

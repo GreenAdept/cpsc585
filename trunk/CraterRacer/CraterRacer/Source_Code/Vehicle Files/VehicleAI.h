@@ -33,7 +33,7 @@ public:
 	int          getRemainingLaps      () { return laps; }
 	bool         isFinished            () { return laps == 0; }
 	bool         isGoingWrongWay       () { return wrongWay; }
-	void		 setPlayerNum( int num ) { m_iPlayerNum = num; }
+	void		 setPlayerNum          (int num) { m_iPlayerNum = num; }
 };
 
 
