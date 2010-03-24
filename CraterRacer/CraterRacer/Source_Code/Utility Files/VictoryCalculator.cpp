@@ -147,13 +147,13 @@ wstring VictoryCalculator::getFormattedString (int index) {
 }
 
 
-void VictoryCalculator::recordTime(int milliseconds) {
+void VictoryCalculator::recordTime(string time) {
 	//if the player is not finished, or we have already recorded the time, return
 	if (!finished[0]) return;
 	if (recorded) return;
 
 	int numberOfRecordedTimes = 5;
-	int *times = new int[numberOfRecordedTimes];
+	string *times = new string[numberOfRecordedTimes];
 
 	//get the current recordings from file
 	ifstream fin("times.txt");
@@ -162,7 +162,7 @@ void VictoryCalculator::recordTime(int milliseconds) {
 			fin >> times[i]; //read the time from file
 		}
 		else {
-			times[i] = 500000; //a really big constant
+			times[i] = "59:59:99"; //a really big constant
 		}
 	}
 	fin.close();
@@ -172,8 +172,8 @@ void VictoryCalculator::recordTime(int milliseconds) {
 	//insert the new times, and all but one of the old times
 	bool inserted = false;
 	for (int i = 0; i < numberOfRecordedTimes-1; i++) {
-		if (milliseconds < times[i] && !inserted) {
-			fout << milliseconds << endl;;
+		if ((time.compare(times[i]) < 0) && !inserted) {
+			fout << time << endl;;
 			inserted = true;
 		}
 

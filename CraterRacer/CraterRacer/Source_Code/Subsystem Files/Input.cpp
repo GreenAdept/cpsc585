@@ -129,10 +129,9 @@ void Input::setDir(float x)
 // Called when an xBox button is pushed, sets the corresponding button to true, and
 // updates the thumbstick.
 //--------------------------------------------------------------------------------------
-void Input::setDir(float x, Input::Button button)
+void Input::setDir(Input::Button button)
 {
 	buttons[button] = true;
-	setThumbstick(x);
 }
 
 //--------------------------------------------------------------------------------------

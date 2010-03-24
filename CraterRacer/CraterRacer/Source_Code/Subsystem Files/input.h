@@ -26,7 +26,7 @@ public:
 	float getThumbstick();
 	void reset();
 
-	void setDir(float x, Input::Button button);
+	void setDir(Input::Button button);
 	void setDir(float x);
 	void setDir(Input::Arrow, bool isKeyDown);
 	void setPressure(float p);

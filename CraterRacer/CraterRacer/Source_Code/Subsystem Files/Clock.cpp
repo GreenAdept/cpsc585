@@ -106,33 +106,38 @@ string Clock::getFormattedTime()
 	stringstream ss;
 	getTotalTimeInMS();
 
-	int minutes = totalTimeMS/60000;
-	int remaining = totalTimeMS - (minutes * 60000); //number of ms left
-	int seconds = remaining/1000;
-	remaining = remaining - (seconds * 1000); //number of ms left
-	int ten_milliseconds = remaining/10;
-	
-	ss << ten_milliseconds;
-	string ms = ss.str();
-	ss.str("");
-	if (ten_milliseconds < 10)
-		ms = "0" + ms;
+	if (totalTimeMS >= 3600000)
+		s = "59:59:99";
+	else {
+		int minutes = totalTimeMS/60000;
+		int remaining = totalTimeMS - (minutes * 60000); //number of ms left
+		int seconds = remaining/1000;
+		remaining = remaining - (seconds * 1000); //number of ms left
+		int ten_milliseconds = remaining/10;
+		
+		ss << ten_milliseconds;
+		string ms = ss.str();
+		ss.str("");
+		if (ten_milliseconds < 10)
+			ms = "0" + ms;
 
-	ss << seconds;
-	string sec = ss.str();
-	ss.str("");
-	if (seconds < 10)
-		sec = "0" + sec;
+		ss << seconds;
+		string sec = ss.str();
+		ss.str("");
+		if (seconds < 10)
+			sec = "0" + sec;
 
-	ss << minutes;
-	string mins = ss.str();
-	ss.str("");
-	if (minutes < 10)
-		mins = "0" + mins;
+		ss << minutes;
+		string mins = ss.str();
+		ss.str("");
+		if (minutes < 10)
+			mins = "0" + mins;
 
-	//ss << minutes << ":" << seconds << ":" << ten_milliseconds;
-	//s = ss.str();
-	ss << mins << ":" << sec << ":" << ms;
-	s = ss.str();
+		//ss << minutes << ":" << seconds << ":" << ten_milliseconds;
+		//s = ss.str();
+		ss << mins << ":" << sec << ":" << ms;
+		s = ss.str();
+	}
+
 	return s;
 }
