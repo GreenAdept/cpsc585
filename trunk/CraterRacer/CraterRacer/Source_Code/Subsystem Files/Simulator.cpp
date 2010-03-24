@@ -401,10 +401,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 	}
 	//Try to keep the vehicle from sticking to walls
 	if (onGround) {
-		
+
 	}
 
-	vehicle->getInputObj()->reset();
+	input->reset();
 
 	//Check to see if the vehicle is falling
 	if (actor->getGlobalPosition().y < -40) {
