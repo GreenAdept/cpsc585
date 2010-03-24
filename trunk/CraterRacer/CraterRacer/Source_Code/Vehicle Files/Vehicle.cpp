@@ -152,6 +152,7 @@ void  Vehicle::setTimeElapsed( float time )
 {
 	m_fTimeElapsed = time;
 	m_fRunningTime += time;
+	mind->timeElapsed (time);
 }
 
 

@@ -28,6 +28,7 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 		destination = terrain->getTrackStart();
 		if (destination == 0) return;
 
+		elapsed = 0.0f;
 		lastPassedWaypoint = myPos;
 		state = AI::MOVING;
 	}
@@ -35,6 +36,7 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
   //Check if the destination has been reached
 	Vec3 destPos = destination->getClosestPosition (myPos);
 	while (destination->getDistanceSquaredToWP (myPos) < 900.0f) {
+		elapsed = 0.0f;
 		lastPassedWaypoint = destPos;
 		passedWPs++;
 		destination = destination->getNext();
@@ -151,6 +153,12 @@ void CompVehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
 		input->setDir (Input::DOWN, true);
 		if (temp.y > 0.0) input->setInput (Input::LEFT, true);
 		else              input->setInput (Input::RIGHT, true);
+	}
+
+	//respawn if 7 seconds have passed since the last waypoint was passed
+	if (elapsed > 7.0f) {
+		elapsed = 0.0f;
+		input->setKey (Input::D_KEY, true);
 	}
 }
 
