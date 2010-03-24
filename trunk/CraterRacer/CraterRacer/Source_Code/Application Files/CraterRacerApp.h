@@ -84,7 +84,8 @@ public:
 	static UINT					m_uiCurrentButton;
 	static ApplicationState		m_iPreviousAppState;
 	static Renderer*			m_Renderer;			// rendering subsystem
-	static XBox360Controller*	m_MenuController;
+	//static XBox360Controller*	m_MenuController;
+	static XBox360Controller*   m_Controllers [2];
 	static SceneLoader*			m_SceneLoader;		// used to load the game
 	static float				m_fCheckTime;
 	static bool					m_bIsLoading;
