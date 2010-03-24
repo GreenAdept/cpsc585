@@ -22,6 +22,8 @@ protected:
 	bool      wrongWay;
 	int		  m_iPlayerNum;
 
+	float     elapsed;
+
 public:
 	VehicleAI () { destination = 0; laps = 2; passedWPs = 0; wrongWay = false; }
 
@@ -34,6 +36,8 @@ public:
 	bool         isFinished            () { return laps == 0; }
 	bool         isGoingWrongWay       () { return wrongWay; }
 	void		 setPlayerNum          (int num) { m_iPlayerNum = num; }
+
+	void         timeElapsed           (float seconds) { elapsed += seconds; }
 };
 
 
