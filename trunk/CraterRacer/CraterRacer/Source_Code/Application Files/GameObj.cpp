@@ -92,9 +92,9 @@ bool GameObj::isPaused( )
 }
 
 
-////--------------------------------------------------------------------------------------
-//// Function: isFinished
-////--------------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------------
+// Function: isFinished
+//--------------------------------------------------------------------------------------
 //bool GameObj::isFinished( )
 //{
 //	return m_bIsFinished;
@@ -111,6 +111,9 @@ float GameObj::getVehicleSpeed( int playerNum )
 	return vehicles[ playerNum ]->getSpeed( );
 }
 
+void GameObj::recordTime() {
+	m_Victory.recordTime( m_Clock.getFormattedTime() );
+}
 
 //--------------------------------------------------------------------------------------
 // Function: addInput
@@ -178,8 +181,8 @@ void GameObj::think ()
 		minds[i]->think( m_Entities, METEORGROUPS, i );
 
 
-	m_Victory.calculateRanks(m_Entities->getVehicles());
-	//m_Victory.recordTime( m_Clock.getTotalTimeInMS() );
+	//m_Victory.calculateRanks(m_Entities->getVehicles());
+	//m_Victory.recordTime( m_Clock.getFormattedTime() );
 
 	//check if a player is done and set the flag to make the victory screen load
 	//(we will eventually want to start a finishing animation here)
@@ -201,28 +204,27 @@ void GameObj::processInput( float fElapsedTime )
 			
 			v->setDir(m_Controllers[i]->LeftThumbstick.GetX());
 
-			
 			if (m_Controllers[i]->A.WasPressedOrHeld())
 			{
-				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::A_BUTTON);
+				v->setDir(Input::A_BUTTON);
 			}
 			if (m_Controllers[i]->B.WasPressedOrHeld())
 			{
-				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::B_BUTTON);
+				v->setDir(Input::B_BUTTON);
 			}
 			if (m_Controllers[i]->Y.WasPressed())
 			{
-				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::Y_BUTTON);
+				v->setDir(Input::Y_BUTTON);
 			}
 			if (m_Controllers[i]->X.WasPressedOrHeld())
 			{
-				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::X_BUTTON);
+				v->setDir(Input::X_BUTTON);
 			}
 
 			//Check for acceleration
 			if (m_Controllers[i]->RightTrigger.WasPressedOrHeld())
 			{
-				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::RT_BUTTON);
+				v->setDir(Input::RT_BUTTON);
 				v->setPressure(m_Controllers[i]->RightTrigger.GetValue());
 
 				//Increase vehicle RPM for sound
@@ -235,7 +237,7 @@ void GameObj::processInput( float fElapsedTime )
 			//Check for braking
 			if (m_Controllers[i]->LeftTrigger.WasPressedOrHeld())
 			{
-				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::LT_BUTTON);
+				v->setDir(Input::LT_BUTTON);
 				v->setPressure(m_Controllers[i]->LeftTrigger.GetValue());
 				if(g_audioState.nRPM > 0)
 					g_audioState.nRPM -= 50.0f;
@@ -253,7 +255,7 @@ void GameObj::processInput( float fElapsedTime )
 			if (m_Controllers[i]->Back.WasPressed())
 			{
 				//respawn car
-				v->setDir(m_Controllers[i]->LeftThumbstick.GetX(), Input::BACK_BUTTON);
+				v->setDir(Input::BACK_BUTTON);
 			}
 
 			//rear view mirror: while right shoulder is pressed, looking at rear view, else

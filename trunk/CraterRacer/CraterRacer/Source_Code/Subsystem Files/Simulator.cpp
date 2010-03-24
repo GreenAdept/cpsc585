@@ -117,16 +117,6 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 		NxVec3 vec = m_Vehicle->getGlobalPosition();
 		m_Vehicle->getGlobalPose().getColumnMajor44( m );
 
-		//NxVec3 upVec = m_Vehicle->getGlobalOrientation().getRow(1);
-		//double dot = upVec.dot(NxVec3(0, 1, 0));
-		//dot = acos(dot);
-		//m_Debugger.writeToFile(dot*180/3.1415);
-		//if (dot < -(3.1415/2))
-		//	//apply force to make it upright again
-		//	m_Debugger.writeToFile("tilted < -90");
-		//else if (dot > (3.1415/2))
-		//	m_Debugger.writeToFile("tilted > 90");
-
 		float height = vehicles[i]->getBoundingBox().m_fHeight;
 		Matrix mat;
 		D3DXMatrixIdentity( &mat );
@@ -390,6 +380,15 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 		{
 			onGround = false;
 
+			//add an additional force downwards, make sure it's not too big of a force or 
+			//else vehicles can't get over the craters
+			double downwardForce;
+			if (hit.distance < 20) // if not over a crater then give it a big force down
+				downwardForce = hit.distance*70;
+			else //over craters we want to float more
+				downwardForce = 50;
+			actor->addLocalForce(NxVec3(0, -downwardForce, 0));
+
 			//set maximum translation for renderer
 			float maxWheelSpeed = 7;
 			w->setDisplacement(min((float)m_rMaxWheelDisplacement, (w->getDisplacement() + maxWheelSpeed * (float)time)));
@@ -409,7 +408,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 
 	//Check to see if the vehicle is falling
 	if (actor->getGlobalPosition().y < -40) {
-		vehicle->getInputObj()->setDir(0, Input::BACK_BUTTON);
+		vehicle->getInputObj()->setDir(Input::BACK_BUTTON);
 	}
 }
 

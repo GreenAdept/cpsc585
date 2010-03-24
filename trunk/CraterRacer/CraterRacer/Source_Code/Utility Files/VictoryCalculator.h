@@ -29,7 +29,7 @@ public:
 	bool    isFinished         (int index);
 	//bool    isGoingWrongWay    (int index);
 	wstring getFormattedString (int index);
-	void	recordTime		   (int milliseconds);
+	void	recordTime		   (string time);
 	bool	isGameFinished	   ( );
 	void	setFinishTime	   (int playerNum, string time);
 	vector<string> getFinishTimes( );

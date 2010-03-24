@@ -862,10 +862,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\Old track waypoints.txt"
-				>
-			</File>
-			<File
 				RelativePath=".\Source_Code\Scene_Files\OnePlayer.SCENE"
 				>
 			</File>
