@@ -16,7 +16,6 @@
 #include "CraterRacerApp.h"
 #include "Renderer.h"
 #include "Clock.h"
-#include <vector>
 
 //event ids
 enum Events {	EWrongWay, EWrongWayCancel, EPauseGame, EUnpauseGame, EStartClock, 
@@ -40,7 +39,6 @@ using namespace std;
 //			header in the object's .cpp file, not .h file.)
 //		4.  Use "Emit( yourID, a_parameter )"
 //--------------------------------------------------------
-#include <string>
 using namespace std;
 
 

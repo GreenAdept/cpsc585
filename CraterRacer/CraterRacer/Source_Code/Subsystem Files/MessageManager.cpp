@@ -82,7 +82,7 @@ void MessageManager::ProcessMessage( int message, long param1, long param2 )
 	{
 	case ELapFinished:
 		playerNum = param1;
-		lapNum = 2 - param2 + 1;
+		lapNum = param2;
 		m_Renderer->adjustLapImage( playerNum, lapNum );
 		break;
 

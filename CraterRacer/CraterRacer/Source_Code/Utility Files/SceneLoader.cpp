@@ -136,21 +136,15 @@ void SceneLoader::processPathInfo( ifstream& file )
 	if( str != "NUM_WAYPOINTS" ) return;
 	file >> num_waypoints;
 
-	Waypoint* wp = 0;
+	AIPath* path = m_Objs.entityManager->getTerrain()->getTrack();
 	for (int i=0; i<num_waypoints; i++) {
 		file >> x >> y >> z;
-
-		Waypoint* newWP = new Waypoint (x, y, z);
-		if (wp != 0)
-			wp->setNext (newWP);
-		else
-			m_Objs.entityManager->getTerrain()->setTrackStart (newWP);
-		wp = newWP;
+		path->addWaypoint (x, y, z);
 
 		file >> str;
 		while (str != "DONE") {
 			file >> x >> y >> z;
-			wp->addPosition (Vec3 (x, y, z));
+			path->addPositionToLastWP (x, y, z);
 			file >> str;
 		}
 	}
@@ -161,7 +155,6 @@ void SceneLoader::processPathInfo( ifstream& file )
 //--------------------------------------------------------------------------------------
 void SceneLoader::processMeteorInfo( ifstream& file )
 {
-	//DebugWriter debug;
 	string	str, flush;
 	string	mesh, effect;
 	int		numMeteorGroups, meteorGroupID, numMeteors, craterIndex;
@@ -170,22 +163,14 @@ void SceneLoader::processMeteorInfo( ifstream& file )
 	file >> flush >> str;
 	if( str != "MESH_FILENAME" ) return;
 	file >> mesh;
-	/*debug.writeToFile("mesh file name works");
-	debug.writeToFile(mesh);*/
 
 	file >> str;
 	if( str != "EFFECT_FILENAME" ) return;
 	file >> effect;
 
-	/*debug.writeToFile("effect file name works");
-	debug.writeToFile(effect);*/
-
 	file >> str;
 	if( str != "NUM_METEOR_GROUPS" ) return;
 	file >> numMeteorGroups;
-
-	/*debug.writeToFile("num meteor groups works");
-	debug.writeToFile(numMeteorGroups);*/
 
 	for (int i = 0; i < numMeteorGroups; i++) {
 		file >> str;

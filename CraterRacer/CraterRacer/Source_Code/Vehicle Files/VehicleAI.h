@@ -5,7 +5,7 @@
 #include "Constants.h"
 
 class Input;
-class Waypoint;
+class AIPath;
 
 //-----------------------------------------
 // Class: VehicleAI
@@ -16,24 +16,23 @@ class Waypoint;
 
 class VehicleAI : public AI {
 protected:
-	Waypoint* destination;
-	Vec3      lastPassedWaypoint;
-	int       laps, passedWPs;
+	AIPath*   path;
+	int       passedWPs;
+	int       currentLap;
 	bool      wrongWay;
 	int		  m_iPlayerNum;
 
 	float     elapsed;
 
 public:
-	VehicleAI () { destination = 0; laps = 2; passedWPs = 0; wrongWay = false; }
+	VehicleAI () { path = 0; currentLap = 1; passedWPs = 0; wrongWay = false; }
 
 	virtual void think (EntityManager *em, int myList, int myIndex);
-	Vec3         getLastPassedWaypoint () { return lastPassedWaypoint; }
+	Vec3         getLastPassedWaypoint (Vec3 myPos);
 	Vec3		 getNextWaypoint       (Vec3 myPos);
 	float        getDistanceToNextWP   (Vec3 myPos);
 	int          getNumberofPassedWPs  () { return passedWPs; }
-	int          getRemainingLaps      () { return laps; }
-	bool         isFinished            () { return laps == 0; }
+	bool         isFinished            () { return state == AI::STOPPED; }
 	bool         isGoingWrongWay       () { return wrongWay; }
 	void		 setPlayerNum          (int num) { m_iPlayerNum = num; }
 
