@@ -30,6 +30,9 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	}
 
   //Check if the destination has been reached
+	while (path->reachedWaypoint (myPos, passedWPs-1, 30)) {
+		passedWPs--;
+	}
 	while (path->reachedWaypoint (myPos, passedWPs+1, 30)) {
 		elapsed = 0.0f;
 		passedWPs++;
@@ -39,6 +42,9 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	int newLap = path->findCurrentLap (passedWPs);
 	if (newLap > path->getNumberOfLaps()) {
 		state = AI::STOPPED;
+		if (m_iPlayerNum >= 0)
+			Emit (Events::EPlayerFinished, m_iPlayerNum);
+		return;
 	}
 	if (newLap > currentLap) {
 		currentLap = newLap;
@@ -46,24 +52,17 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 			Emit (Events::ELapFinished, m_iPlayerNum, newLap);
 	}
 
-	/*
-	if (myList == PLAYERS && destination != 0) {
+	
+	if (myList == PLAYERS) {
 		Vec3 currentDir = myEntity->getDirection ();
-		Vec3 desiredDir = destination->getDirectionToWP (myPos);
+		Vec3 forwards   = path->getDirectionToWP (myPos, passedWPs+1);
+		Vec3 backwards  = path->getDirectionToWP (myPos, passedWPs-1);
 
-		float cosTheta = D3DXVec3Dot (&currentDir, &desiredDir);
-		if (cosTheta < -0.707f)
-		{
+		if (D3DXVec3Dot (&currentDir, &backwards) > D3DXVec3Dot (&currentDir, &forwards))
 			Emit( Events::EWrongWay, m_iPlayerNum );
-			wrongWay = true;
-		}
-		else if( wrongWay )
-		{
+		else
 			Emit( Events::EWrongWayCancel, m_iPlayerNum );
-			wrongWay = false;
-		}
 	}
-	*/
 }
 
 Vec3 VehicleAI::getLastPassedWaypoint (Vec3 myPos) {

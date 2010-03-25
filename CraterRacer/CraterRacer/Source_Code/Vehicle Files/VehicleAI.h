@@ -19,13 +19,12 @@ protected:
 	AIPath*   path;
 	int       passedWPs;
 	int       currentLap;
-	bool      wrongWay;
 	int		  m_iPlayerNum;
 
 	float     elapsed;
 
 public:
-	VehicleAI () { path = 0; currentLap = 1; passedWPs = 0; wrongWay = false; }
+	VehicleAI () { path = 0; currentLap = 1; passedWPs = 0; }
 
 	virtual void think (EntityManager *em, int myList, int myIndex);
 	Vec3         getLastPassedWaypoint (Vec3 myPos);
@@ -33,7 +32,6 @@ public:
 	float        getDistanceToNextWP   (Vec3 myPos);
 	int          getNumberofPassedWPs  () { return passedWPs; }
 	bool         isFinished            () { return state == AI::STOPPED; }
-	bool         isGoingWrongWay       () { return wrongWay; }
 	void		 setPlayerNum          (int num) { m_iPlayerNum = num; }
 
 	void         timeElapsed           (float seconds) { elapsed += seconds; }
