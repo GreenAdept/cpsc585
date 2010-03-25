@@ -30,7 +30,7 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 				rank++;
 
 		finished[index] = true;
-		laps[index] = 0;
+		//laps[index] = 0;
 		ranks[index] = rank;
 	}
 	else {
@@ -64,7 +64,7 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles) {
 	if (ranks.size() != vehicles.size()) {
 		ranks.resize (vehicles.size(), 1);
-		laps.resize (vehicles.size(), 1);
+		//laps.resize (vehicles.size(), 1);
 		finished.resize (vehicles.size(), false);
 		//wrongWay.resize (vehicles.size(), false);
 	}
@@ -81,14 +81,14 @@ void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles) {
 //
 // Player 1 has index 0, Player 2 has index 1, etc...
 //------------------------------------------------------
-
+/*
 int VictoryCalculator::getRemainingLaps (int index) {
 	if (index >= laps.size())
 		return -1;
 	else
 		return laps[index];
 }
-
+*/
 //------------------------------------------------------
 // Function: getRank
 // Returns the ranking of the vehicle (player or

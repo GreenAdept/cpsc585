@@ -4,7 +4,7 @@
 #include "VehicleAI.h"
 #include "EntityManager.h"
 #include "MessageManager.h"
-#include <math.h>
+#include <cmath>
 
 
 //------------------------------------------------------
@@ -24,42 +24,29 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 		Terrain* terrain = em->getTerrain();
 		if (terrain == 0) return;
 
-		laps = terrain->getNumberOfLaps();
-		destination = terrain->getTrackStart();
-		if (destination == 0) return;
-
+		path = terrain->getTrack();
 		elapsed = 0.0f;
-		lastPassedWaypoint = myPos;
 		state = AI::MOVING;
 	}
 
   //Check if the destination has been reached
-	Vec3 destPos = destination->getClosestPosition (myPos);
-	while (destination->getDistanceSquaredToWP (myPos) < 900.0f) {
+	while (path->reachedWaypoint (myPos, passedWPs+1, 30)) {
 		elapsed = 0.0f;
-		lastPassedWaypoint = destPos;
 		passedWPs++;
-		destination = destination->getNext();
-
-		if (destination == 0) {
-			laps--;
-
-			//let the message manager know this player has finished a lap.
-			//but only emit if it is a player vehicle
-			if( m_iPlayerNum >= 0 )
-				Emit( Events::ELapFinished, m_iPlayerNum, laps );
-
-			if (laps == 0) {
-				state = AI::STOPPED;
-				wrongWay = false;
-				return;
-			}
-			else
-				destination = em->getTerrain()->getTrackStart();
-		}
 	}
 
+  //Modify count of remaining laps, if needed
+	int newLap = path->findCurrentLap (passedWPs);
+	if (newLap > path->getNumberOfLaps()) {
+		state = AI::STOPPED;
+	}
+	if (newLap > currentLap) {
+		currentLap = newLap;
+		if (m_iPlayerNum >= 0)
+			Emit (Events::ELapFinished, m_iPlayerNum, newLap);
+	}
 
+	/*
 	if (myList == PLAYERS && destination != 0) {
 		Vec3 currentDir = myEntity->getDirection ();
 		Vec3 desiredDir = destination->getDirectionToWP (myPos);
@@ -76,20 +63,28 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 			wrongWay = false;
 		}
 	}
+	*/
+}
+
+Vec3 VehicleAI::getLastPassedWaypoint (Vec3 myPos) {
+	if (path == 0)
+		return Vec3 (0, 0, 0);
+	else
+		return path->getPositionOfWP (myPos, passedWPs);
 }
 
 Vec3 VehicleAI::getNextWaypoint (Vec3 myPos) {
-	if (destination == 0)
+	if (path == 0)
 		return Vec3 (0, 0, 0);
 	else
-		return destination->getClosestPosition (myPos);
+		return path->getPositionOfWP (myPos, passedWPs+1);
 }
 
 float VehicleAI::getDistanceToNextWP (Vec3 myPos) {
-	if (destination == 0)
+	if (path == 0)
 		return 0;
 	else
-		return sqrt (destination->getDistanceSquaredToWP (myPos));
+		return sqrt (path->getDistanceSquaredToWP (myPos, passedWPs+1));
 }
 
 
@@ -124,7 +119,7 @@ void CompVehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	}
 
   //Find the desired direction of travel and steer there
-	Vec3 desiredDir = destination->getDirectionToWP (myPos);
+	Vec3 desiredDir = path->getDirectionToWP (myPos, passedWPs+1);
 	steer (currentDir, desiredDir, input);
 }
 

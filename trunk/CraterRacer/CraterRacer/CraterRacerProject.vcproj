@@ -830,6 +830,14 @@
 			Name="Vehicle Files"
 			>
 			<File
+				RelativePath=".\Source_Code\Vehicle Files\AIPath.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Vehicle Files\AIPath.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Source_Code\Vehicle Files\Vehicle.cpp"
 				>
 			</File>
