@@ -36,8 +36,6 @@ void MessageManager::ProcessMessage( int message, long param )
 {
 	int playerNum;
 	string temp;
-	vector<int> ranks;
-	vector<string> times;
 
 	switch( message )
 	{
@@ -55,12 +53,6 @@ void MessageManager::ProcessMessage( int message, long param )
 		playerNum = param;
 		temp = m_Clock->getFormattedTime();
 		m_VictoryCalculator->setFinishTime( playerNum, temp );
-		break;
-
-	case EGameFinished:
-		ranks = *((vector<int>*)param);
-		times = m_VictoryCalculator->getFinishTimes( );
-		m_Renderer->adjustVictoryRank( ranks, times );
 		break;
 	}
 }
@@ -117,9 +109,9 @@ void MessageManager::ProcessMessage( int message )
 		break;
 
 	case EGameFinished:
+		m_Renderer->adjustVictoryRank (m_VictoryCalculator->getRanks(), m_VictoryCalculator->getFinishTimes());
 		m_App->m_AppState = APP_VICTORY;
 		break;
-
 	}
 }
 

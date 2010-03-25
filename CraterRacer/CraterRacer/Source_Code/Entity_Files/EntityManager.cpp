@@ -241,6 +241,15 @@ int EntityManager::getSize () {
 	return result;
 }
 
+//------------------------------------------------------
+// Function: getNumberOfPlayers
+// Returns the number of player entities.
+//------------------------------------------------------
+
+int EntityManager::getNumberOfPlayers () {
+	return entities[PLAYERS].size();
+}
+
 
 
 //------------------------------------------------------

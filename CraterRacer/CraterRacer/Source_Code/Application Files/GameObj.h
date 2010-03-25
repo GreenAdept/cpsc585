@@ -35,7 +35,7 @@ public:
 
 	void think           ( void );
 	bool isPaused		 ( );
-	void recordTime		 ( );
+	//void recordTime		 ( );
 	void processInput	 ( float fElapsedTime );
 	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );
 	void simulate		 ( float fElapsedTime );
