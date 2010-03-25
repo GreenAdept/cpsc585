@@ -111,9 +111,11 @@ float GameObj::getVehicleSpeed( int playerNum )
 	return vehicles[ playerNum ]->getSpeed( );
 }
 
+/*
 void GameObj::recordTime() {
 	m_Victory.recordTime( m_Clock.getFormattedTime() );
 }
+*/
 
 //--------------------------------------------------------------------------------------
 // Function: addInput
@@ -181,12 +183,11 @@ void GameObj::think ()
 		minds[i]->think( m_Entities, METEORGROUPS, i );
 
 
-	//m_Victory.calculateRanks(m_Entities->getVehicles());
-	//m_Victory.recordTime( m_Clock.getFormattedTime() );
+	m_Victory.calculateRanks (m_Entities->getVehicles(), m_Entities->getNumberOfPlayers());
 
 	//check if a player is done and set the flag to make the victory screen load
 	//(we will eventually want to start a finishing animation here)
-	//m_bIsFinished = m_Victory.isGameFinished( );
+	m_bIsFinished = m_Victory.isGameFinished( );
 }
 
 

@@ -5,9 +5,9 @@
 using namespace std;
 
 VictoryCalculator::VictoryCalculator() {
-	for( int i=0; i < 4; i++ )
-		finishTimes.push_back( "00:00:00" );
-	recorded = false;
+	gameFinished = false;
+	for (int i=0; i < 4; i++)
+		finishTimes.push_back ("00:00:00");
 }
 
 //------------------------------------------------------
@@ -18,11 +18,9 @@ VictoryCalculator::VictoryCalculator() {
 //------------------------------------------------------
 
 void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
-	if (finished[index]) return;
-
-	Vehicle* v = vehicles[index];
+	Vehicle*   v = vehicles[index];
 	VehicleAI* myAI = (VehicleAI*) v->getAI();
-	int rank = 1;
+	int        rank = 1;
 
 	if (myAI->isFinished()) {
 		for (int i=0; i<finished.size(); i++)
@@ -30,7 +28,6 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 				rank++;
 
 		finished[index] = true;
-		//laps[index] = 0;
 		ranks[index] = rank;
 	}
 	else {
@@ -49,8 +46,6 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 			}
 		}
 
-		//laps[index] = myAI->getRemainingLaps();
-		//wrongWay[index] = myAI->isGoingWrongWay();
 		ranks[index] = rank;
 	}
 }
@@ -61,34 +56,26 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 // Vehicles in the provided vector/list.
 //------------------------------------------------------
 
-void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles) {
+void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles, int numPlayers) {
 	if (ranks.size() != vehicles.size()) {
 		ranks.resize (vehicles.size(), 1);
-		//laps.resize (vehicles.size(), 1);
 		finished.resize (vehicles.size(), false);
-		//wrongWay.resize (vehicles.size(), false);
 	}
 
-	for (int i=0; i<vehicles.size(); i++)
-		calculateRank (vehicles, i);
+	gameFinished = true;
+	for (int i=0; i<vehicles.size(); i++) {
+		if (!finished[i]) {
+			calculateRank (vehicles, i);
+			if (i < numPlayers)
+				gameFinished = false;
+		}
+	}
+
+	if (gameFinished)
+		Emit (Events::EGameFinished);
 }
 
-//------------------------------------------------------
-// Function: getRemainingLaps
-// Returns the number of laps remaining for the vehicle
-// (player or computer-controlled) with the specified
-// index.
-//
-// Player 1 has index 0, Player 2 has index 1, etc...
-//------------------------------------------------------
-/*
-int VictoryCalculator::getRemainingLaps (int index) {
-	if (index >= laps.size())
-		return -1;
-	else
-		return laps[index];
-}
-*/
+
 //------------------------------------------------------
 // Function: getRank
 // Returns the ranking of the vehicle (player or
@@ -102,6 +89,10 @@ int VictoryCalculator::getRank (int index) {
 		return 0;
 	else
 		return ranks[index];
+}
+
+vector<int> VictoryCalculator::getRanks () {
+	return ranks;
 }
 
 //------------------------------------------------------
@@ -120,22 +111,7 @@ bool VictoryCalculator::isFinished (int index) {
 		return finished[index];
 }
 
-//------------------------------------------------------
-// Function: isGoingWrongWay
-// Returns true if the player vehicle with the specified
-// index is going the wrong way, false otherwise. AI
-// vehicles always return false.
-//
-// Player 1 has index 0, Player 2 has index 1, etc...
-//------------------------------------------------------
-
-//bool VictoryCalculator::isGoingWrongWay (int index) {
-//	if (index >= wrongWay.size())
-//		return false;
-//	else
-//		return wrongWay[index];
-//}
-
+/*
 wstring VictoryCalculator::getFormattedString (int index) {
 	if (index >= finished.size())
 		return L"%i";
@@ -187,28 +163,27 @@ void VictoryCalculator::recordTime(string time) {
 
 	recorded = true;
 }
+*/
 
-// This function returns true when one player is finished
-bool VictoryCalculator::isGameFinished( )
-{
-	return finished[ PLAYER1 ];
+
+bool VictoryCalculator::isGameFinished () {
+	return gameFinished;
 }
+
 
 //--------------------------------------------------------------------------------------
 // Function: setFinishTime
 // This function sets the finish time for a player.  
 //--------------------------------------------------------------------------------------
-void VictoryCalculator::setFinishTime(int playerNum, string time)
-{
+void VictoryCalculator::setFinishTime (int playerNum, string time) {
 	if( playerNum < 0 || playerNum > 3 )
 		return;
-	finishTimes[ playerNum ] = time;
+	finishTimes [playerNum] = time;
 }
 
 //--------------------------------------------------------------------------------------
 // Function: getFinishTimes
 //--------------------------------------------------------------------------------------
-vector<string> VictoryCalculator::getFinishTimes( )
-{
+vector<string> VictoryCalculator::getFinishTimes () {
 	return finishTimes;
 }

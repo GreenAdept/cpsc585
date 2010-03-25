@@ -40,15 +40,15 @@ public:
 	EntityManager () {}
 	~EntityManager ();
 
-	std::vector<Entity*>     getEntities ();
-	std::vector<Vehicle*>    getVehicles ();
-	std::vector<Meteor*>     getMeteors ();
+	std::vector<Entity*>      getEntities ();
+	std::vector<Vehicle*>     getVehicles ();
+	std::vector<Meteor*>      getMeteors ();
 	std::vector<MeteorGroup*> getMeteorGroups ();
-	std::vector<Renderable*> getRenderables ();
-	std::vector<Entity*>     getObstacles ();
-	std::vector<AI*>         getAIs (int list);
-	Terrain*                 getTerrain ();
-	Crater*                  getCrater (int index);
+	std::vector<Renderable*>  getRenderables ();
+	std::vector<Entity*>      getObstacles ();
+	std::vector<AI*>          getAIs (int list);
+	Terrain*                  getTerrain ();
+	Crater*                   getCrater (int index);
 	
 	Vec3   getPosition         (int list, int index);
 	Input* getPlayerInputObj   (int index);
@@ -64,8 +64,9 @@ public:
 	MeteorGroup*   makeMeteorGroup (Vec3 pos, int id, int numMeteors, float radius);
 
 	std::vector<Entity*> & operator[] (int i) { return entities[i]; }
-	void clear ();
-	int getSize ();
+	void clear              ();
+	int  getSize            ();
+	int  getNumberOfPlayers ();
 };
 
 
