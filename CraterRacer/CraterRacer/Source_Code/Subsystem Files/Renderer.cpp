@@ -654,15 +654,17 @@ void Renderer::adjustVictoryRank( vector<int>& ranks, vector<string>& times )
 	//set rank text
 	for( int i=0; i < ranks.size(); i++ )
 	{
-		rankStream.clear();
-		rankStream << "PLAYER #";
-		rankStream << (i+1);
-		m_sVictoryRanks[ ranks[i] ] =  rankStream.str().c_str();
+		//rankStream.clear();
+		//rankStream << "PLAYER #";
+		//rankStream << (i+1);
+		//m_sVictoryRanks[ ranks[i] ] =  rankStream.str().c_str();
+		m_sVictoryRanks[ ranks[i] ] = L"Player #";
 
-		timeStream.clear();
-		timeStream << "TIME:\n";
-		timeStream << times[i].c_str();
-		m_sVictoryTimes[ ranks[i] ] =  timeStream.str().c_str();
+		//timeStream.clear();
+		//timeStream << "TIME:\n";
+		//timeStream << times[i].c_str();
+		//m_sVictoryTimes[ ranks[i] ] =  timeStream.str().c_str();
+		m_sVictoryTimes[ ranks[i] ] = L"Time:";
 	}
 }
 

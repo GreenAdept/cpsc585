@@ -30,12 +30,25 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	}
 
   //Check if the destination has been reached
-	while (path->reachedWaypoint (myPos, passedWPs-1, 30)) {
-		passedWPs--;
+	if (path->reachedWaypoint (myPos, passedWPsLB-1, 30)) {
+		while (path->reachedWaypoint (myPos, passedWPsLB-1, 30)) {
+			passedWPsLB--;
+		}
+		passedWPs = passedWPsLB;
+		while (path->reachedWaypoint (myPos, passedWPs+1, 30)) {
+			elapsed = 0.0f;
+			passedWPs++;
+		}
 	}
-	while (path->reachedWaypoint (myPos, passedWPs+1, 30)) {
-		elapsed = 0.0f;
-		passedWPs++;
+	else if (path->reachedWaypoint (myPos, passedWPs+1, 30)) {
+		while (path->reachedWaypoint (myPos, passedWPs+1, 30)) {
+			elapsed = 0.0f;
+			passedWPs++;
+		}
+		passedWPsLB = passedWPs;
+		while (path->reachedWaypoint (myPos, passedWPsLB-1, 30)) {
+			passedWPsLB--;
+		}
 	}
 
   //Modify count of remaining laps, if needed
@@ -82,7 +95,7 @@ float VehicleAI::getDistanceToNextWP (Vec3 myPos) {
 	if (path == 0)
 		return 0;
 	else
-		return sqrt (path->getDistanceSquaredToWP (myPos, passedWPs+1));
+		return path->getDistanceToWP (myPos, passedWPs+1);
 }
 
 

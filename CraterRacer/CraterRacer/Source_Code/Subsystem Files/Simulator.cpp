@@ -398,7 +398,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				downwardForce = hit.distance*70;
 			else //over craters we want to float more
 				downwardForce = 50;
-			actor->addLocalForce(NxVec3(0, -downwardForce, 0));
+			actor->addForce(NxVec3(0, -downwardForce, 0));
 
 			//set maximum translation for renderer
 			float maxWheelSpeed = 7;
