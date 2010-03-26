@@ -55,10 +55,9 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	
 	if (myList == PLAYERS) {
 		Vec3 currentDir = myEntity->getDirection ();
-		Vec3 forwards   = path->getDirectionToWP (myPos, passedWPs+1);
-		Vec3 backwards  = path->getDirectionToWP (myPos, passedWPs-1);
+		bool wrongway = path->goingWrongWay (myPos, currentDir, passedWPs);
 
-		if (D3DXVec3Dot (&currentDir, &backwards) > D3DXVec3Dot (&currentDir, &forwards))
+		if (wrongway)
 			Emit( Events::EWrongWay, m_iPlayerNum );
 		else
 			Emit( Events::EWrongWayCancel, m_iPlayerNum );

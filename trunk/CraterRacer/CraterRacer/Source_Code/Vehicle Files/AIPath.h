@@ -15,9 +15,11 @@ public:
 
 	void      addPosition            (Vec3 p) { positions.push_back (p); }
 	Vec3      getClosestPosition     (Vec3 p);
-	Vec3      getDirectionToWP       (Vec3 p);
 	float     getDistanceSquaredToWP (Vec3 p);
 	float     getDistanceToWP        (Vec3 p);
+
+	Vec3      getDirectionToWP_ClosestToGivenPos (Vec3 p);
+	Vec3      getDirectionToWP_ClosestToGivenDir (Vec3 p, Vec3 d);
 };
 
 
@@ -41,6 +43,7 @@ public:
 	Vec3  getDirectionToWP       (Vec3 p, int waypntIndex);
 	float getDistanceSquaredToWP (Vec3 p, int waypntIndex);
 	bool  reachedWaypoint        (Vec3 p, int waypntIndex, float waypntRadius);
+	bool  goingWrongWay          (Vec3 p, Vec3 d, int waypntIndex);
 	int   findCurrentLap         (int passedWPs);
 };
 
