@@ -1069,7 +1069,11 @@ void Renderer::drawAHUD( Sprite* images, Vec3* locations, int playerID )
 	drawTransformedSprite( 0.0, locations[SPEEDOMETER_IMAGE], Vec2(0,0), images[ SPEEDOMETER_IMAGE ] );
 	
 	//rotate the speedometer wand image to correct position
-	drawTransformedSprite( m_fSpeedRotations[ playerID ], locations[SPEEDWAND_IMAGE], Vec2(64,11), images[ SPEEDWAND_IMAGE ] );
+		//rotate the speedometer wand image to correct position
+	if( m_bIsTwoPlayer )
+		drawTransformedSprite( m_fSpeedRotations[ playerID ], locations[SPEEDWAND_IMAGE], Vec2(64,11), images[ SPEEDWAND_IMAGE ] );
+	else
+		drawTransformedSprite( m_fSpeedRotations[ playerID ], locations[SPEEDWAND_IMAGE], Vec2(84,15), images[ SPEEDWAND_IMAGE ] );
 	
 	//draw the minimap
 	//drawTransformedSprite( 0.0, locations[MINIMAP_IMAGE], Vec2(0,0), images[ MINIMAP_IMAGE ] );
