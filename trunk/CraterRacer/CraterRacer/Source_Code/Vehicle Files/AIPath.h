@@ -41,7 +41,7 @@ public:
 
 	Vec3  getPositionOfWP        (Vec3 p, int waypntIndex);
 	Vec3  getDirectionToWP       (Vec3 p, int waypntIndex);
-	float getDistanceSquaredToWP (Vec3 p, int waypntIndex);
+	float getDistanceToWP        (Vec3 p, int waypntIndex);
 	bool  reachedWaypoint        (Vec3 p, int waypntIndex, float waypntRadius);
 	bool  goingWrongWay          (Vec3 p, Vec3 d, int waypntIndex);
 	int   findCurrentLap         (int passedWPs);

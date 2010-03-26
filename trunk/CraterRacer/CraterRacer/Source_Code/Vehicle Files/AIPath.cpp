@@ -88,8 +88,8 @@ Vec3 AIPath::getDirectionToWP (Vec3 p, int waypntIndex) {
 	return wps[waypntIndex % wps.size()].getDirectionToWP_ClosestToGivenPos (p);
 }
 
-float AIPath::getDistanceSquaredToWP (Vec3 p, int waypntIndex) {
-	return wps[waypntIndex % wps.size()].getDistanceSquaredToWP (p);
+float AIPath::getDistanceToWP (Vec3 p, int waypntIndex) {
+	return wps[waypntIndex % wps.size()].getDistanceToWP (p);
 }
 
 bool AIPath::reachedWaypoint (Vec3 p, int waypntIndex, float waypntRadius) {
@@ -103,5 +103,8 @@ bool AIPath::goingWrongWay (Vec3 p, Vec3 d, int waypntIndex) {
 }
 
 int AIPath::findCurrentLap (int passedWPs) {
-	return (passedWPs / wps.size()) + 1;
+	if (passedWPs < 0)
+		return 1;
+	else
+		return (passedWPs / wps.size()) + 1;
 }

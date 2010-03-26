@@ -17,14 +17,14 @@ class AIPath;
 class VehicleAI : public AI {
 protected:
 	AIPath*   path;
-	int       passedWPs;
+	int       passedWPs, passedWPsLB;   //upper bound and lower bounds on number of passed waypoints
 	int       currentLap;
 	int		  m_iPlayerNum;
 
 	float     elapsed;
 
 public:
-	VehicleAI () { path = 0; currentLap = 1; passedWPs = 0; }
+	VehicleAI () { path = 0; currentLap = 1; passedWPs = 0; passedWPsLB; }
 
 	virtual void think (EntityManager *em, int myList, int myIndex);
 	Vec3         getLastPassedWaypoint (Vec3 myPos);
