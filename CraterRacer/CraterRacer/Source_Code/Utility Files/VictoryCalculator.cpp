@@ -7,8 +7,6 @@ using namespace std;
 VictoryCalculator::VictoryCalculator() {
 	gameFinished = false;
 	recorded = false;
-	for (int i=0; i < 4; i++)
-		finishTimes.push_back ("00:00:00");
 }
 
 //------------------------------------------------------
@@ -61,6 +59,7 @@ void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles, int numPlayer
 	if (ranks.size() != vehicles.size()) {
 		ranks.resize (vehicles.size(), 1);
 		finished.resize (vehicles.size(), false);
+		finishTimes.resize (vehicles.size(), "00:00:00");
 	}
 
 	gameFinished = true;
