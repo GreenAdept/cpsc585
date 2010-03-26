@@ -15,6 +15,7 @@ class VictoryCalculator {
 	std::vector<bool>   finished;
 	std::vector<string> finishTimes;
 	bool                gameFinished;
+	bool				recorded;
 
 	void           calculateRank  (std::vector<Vehicle*>& vehicles, int index);
 
@@ -28,6 +29,7 @@ public:
 	bool	       isGameFinished ();
 	void	       setFinishTime  (int playerNum, string time);
 	vector<string> getFinishTimes ();
+	void		   recordTime	  (string time);
 };
 
 

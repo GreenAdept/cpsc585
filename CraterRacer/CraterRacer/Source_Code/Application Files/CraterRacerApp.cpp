@@ -104,9 +104,8 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 					//A selection was made using the A button
 					if( m_Controllers[i]->A.WasPressed() )
 						processMenuSelection( );
-
-					m_fCheckTime = 0.0f;
 				}
+			m_fCheckTime = 0.0f;
 		}
 	}
 }
