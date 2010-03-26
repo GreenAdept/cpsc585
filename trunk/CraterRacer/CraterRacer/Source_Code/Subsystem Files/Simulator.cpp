@@ -402,11 +402,13 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 
 	//Try to keep the vehicle level
 	if (inAir) {
+		//get global orientation, second row for y axis
+		//NxVec3 upVec = actor->getGlobalOrientation()->getRow(1);
 		
 	}
 	//Try to keep the vehicle from sticking to walls
 	if (onGround) {
-
+		
 	}
 
 	input->reset();

@@ -6,6 +6,7 @@ using namespace std;
 
 VictoryCalculator::VictoryCalculator() {
 	gameFinished = false;
+	recorded = false;
 	for (int i=0; i < 4; i++)
 		finishTimes.push_back ("00:00:00");
 }
@@ -122,48 +123,49 @@ wstring VictoryCalculator::getFormattedString (int index) {
 		return L"You are in %i place";
 }
 
-
+*/
 void VictoryCalculator::recordTime(string time) {
 	//if the player is not finished, or we have already recorded the time, return
 	if (!finished[0]) return;
 	if (recorded) return;
 
 	int numberOfRecordedTimes = 5;
-	string *times = new string[numberOfRecordedTimes];
+	vector<string> times;
 
 	//get the current recordings from file
 	ifstream fin("times.txt");
 	for (int i = 0; i < numberOfRecordedTimes; i++) {
 		if (!fin.eof()) {
-			fin >> times[i]; //read the time from file
+			string s;
+			fin >> s; //read the time from file
+			times.push_back(s);
 		}
 		else {
-			times[i] = "59:59:99"; //a really big constant
+			times.push_back("59:59:99"); //a really big constant
 		}
 	}
 	fin.close();
 
 	ofstream fout("times.txt");
-
 	//insert the new times, and all but one of the old times
-	bool inserted = false;
-	for (int i = 0; i < numberOfRecordedTimes-1; i++) {
-		if ((time.compare(times[i]) < 0) && !inserted) {
-			fout << time << endl;;
-			inserted = true;
-		}
-
-		fout << times[i];
-		if (i != numberOfRecordedTimes-2) {
-			fout << endl;
+	vector<string>::iterator it;
+	for (it = times.begin(); it < times.end(); it++){
+		if (time.compare(*it) < 0) {
+			times.insert(it, time);
+			break;
 		}
 	}
+
+	for (int i = 0; i < numberOfRecordedTimes; i++) {
+		fout << times[i];
+		if (i != numberOfRecordedTimes-1)
+			fout << endl;
+	}
 	fout.close();
-	delete[] times;
 
 	recorded = true;
 }
-*/
+
 
 
 bool VictoryCalculator::isGameFinished () {
