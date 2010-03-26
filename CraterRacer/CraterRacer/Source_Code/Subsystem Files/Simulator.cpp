@@ -188,7 +188,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 
 		switch( i )
 		{
-			case 0: //A_BUTTON - accelerate
+			case 0: //A_BUTTON - nothing
 			{
 				break;
 			}
@@ -196,10 +196,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			{
 				break;
 			}
-			case 2: //X_BUTTON - reverse
+			case 2: //X_BUTTON - braking
 			{
-				actor->setLinearVelocity(NxVec3(0, 0, 0));
-				actor->setAngularVelocity(NxVec3(0, 0, 0));
+				float pressure = input->getPressure();
+				friction += m_rBrakingFriction * pressure;
 				break;
 			}
 			case 3: //Y_BUTTON - print waypoint for now
@@ -208,7 +208,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				m_Debugger.writeToFile(Vec3(v.x, v.y, v.z));
 				break;
 			}
-			case 4: //LT_BUTTON - braking
+			case 4: //LT_BUTTON - reversing/braking
 			{
 				// if velocity is less than 1m/s when pressing LT_BUTTON, reverse
 				bool reversing = vehicle->isReversing();
