@@ -366,14 +366,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			susForce = -1 * m_rSpringScale * m_rSpringK * ( hit.distance - wheelRadius - m_rWheelRestLength );
 
 			//if the car is close to bottoming out, add a force
-
 			if (w->getDisplacement()/m_rMaxWheelDisplacement <= -0.85) {
 				susForce = susForce * 7;
-				m_Debugger.writeToFile(susForce);
 			}
 			else if (w->getDisplacement()/m_rMaxWheelDisplacement <= -0.70) {
 				susForce = susForce * 5;
-				m_Debugger.writeToFile(susForce);
 			}
 
 			//calculate the damping force
