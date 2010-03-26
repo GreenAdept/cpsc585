@@ -31,18 +31,19 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 
   //Check if the destination has been reached
 	if (path->reachedWaypoint (myPos, passedWPsLB-1, 30)) {
+		passedWPsLB--;
 		while (path->reachedWaypoint (myPos, passedWPsLB-1, 30)) {
 			passedWPsLB--;
 		}
 		passedWPs = passedWPsLB;
 		while (path->reachedWaypoint (myPos, passedWPs+1, 30)) {
-			elapsed = 0.0f;
 			passedWPs++;
 		}
 	}
 	else if (path->reachedWaypoint (myPos, passedWPs+1, 30)) {
+		elapsed = 0.0f;
+		passedWPs++;
 		while (path->reachedWaypoint (myPos, passedWPs+1, 30)) {
-			elapsed = 0.0f;
 			passedWPs++;
 		}
 		passedWPsLB = passedWPs;
