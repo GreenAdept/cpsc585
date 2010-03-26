@@ -192,14 +192,14 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			{
 				break;
 			}
-			case 1: //B_BUTTON - stop simulation
+			case 1: //B_BUTTON - nothing
 			{
 				break;
 			}
-			case 2: //X_BUTTON - braking
+			case 2: //X_BUTTON - freeze car (should be commented out when submitting)
 			{
-				float pressure = input->getPressure();
-				friction += m_rBrakingFriction * pressure;
+				actor->setAngularVelocity(NxVec3(0, 0, 0));
+				actor->setLinearVelocity(NxVec3(0, 0, 0));
 				break;
 			}
 			case 3: //Y_BUTTON - print waypoint for now
@@ -334,7 +334,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 		//Raycast to ground to find distance
 		NxRay ray( wheelPos, susAxis );
 		NxRaycastHit hit;
-		m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
+		NxShape* hitObject;
+		hitObject = m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
 
 		//NEW STEERING
 		NxMat33 localOrientation;
@@ -353,6 +354,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 		if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 
 		{
 			inAir = false;
+
+			/*if (hitObject == wall) {
+				apply force downwards on wheel
+			}*/
 
 			//set the translation distance for the renderer
 			w->setDisplacement( hit.distance - wheelRadius*2 );
