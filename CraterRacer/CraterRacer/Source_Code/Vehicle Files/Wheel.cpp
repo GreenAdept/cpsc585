@@ -41,7 +41,7 @@ void Wheel::update( Matrix mat )
 	D3DXMatrixTranslation( &translate, sus.x, sus.y, sus.z );
 	D3DXMatrixMultiply( &m, &mat, &translate );
 
-	Entity::update( mat );
+	Entity::update( m );
 }
 
 

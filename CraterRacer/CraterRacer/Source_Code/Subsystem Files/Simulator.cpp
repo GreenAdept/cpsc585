@@ -777,8 +777,8 @@ void Simulator::setGravity(Vec3 gravity)
 		scene->setGravity( m_vDefaultGravity );
 	}
 
-	m_rSpringK	= ( -m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
-	m_rSpringC	= 2 * sqrt( m_rSpringK * m_rVehicleMass );
+	//m_rSpringK	= ( -m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
+	//m_rSpringC	= 2 * sqrt( m_rSpringK * m_rVehicleMass );
 }
 
 void Simulator::setRestitution(double res)
@@ -830,8 +830,8 @@ void Simulator::setVehicleMass( double mass )
 {
 	m_rVehicleMass = mass;
 
-	m_rSpringK	= ( -m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
-	m_rSpringC	= 2 * sqrt( m_rSpringK * m_rVehicleMass );
+	//m_rSpringK	= ( -m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
+	//m_rSpringC	= 2 * sqrt( m_rSpringK * m_rVehicleMass );
 
 	for( int i=0; i<m_Actors.size(); i++ )
 		m_Actors[i]->setMass( mass );
