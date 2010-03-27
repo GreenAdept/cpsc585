@@ -133,31 +133,31 @@ void VictoryCalculator::recordTime(string time) {
 
 	//get the current recordings from file
 	ifstream fin("times.txt");
-	for (int i = 0; i < numberOfRecordedTimes; i++) {
-		if (!fin.eof()) {
-			string s;
-			fin >> s; //read the time from file
-			times.push_back(s);
-		}
-		else {
-			times.push_back("59:59:99"); //a really big constant
-		}
+	while (!fin.eof()) {
+		string s;
+		fin >> s; //read the time from file
+		times.push_back(s);
 	}
 	fin.close();
 
 	ofstream fout("times.txt");
 	//insert the new times, and all but one of the old times
+	bool inserted = false;
 	vector<string>::iterator it;
 	for (it = times.begin(); it < times.end(); it++){
 		if (time.compare(*it) < 0) {
 			times.insert(it, time);
+			inserted = true;
 			break;
 		}
 	}
 
-	for (int i = 0; i < numberOfRecordedTimes; i++) {
+	if (!inserted && (times.size() < numberOfRecordedTimes))
+		times.push_back(time);
+
+	for (int i = 0; i < times.size(); i++) {
 		fout << times[i];
-		if (i != numberOfRecordedTimes-1)
+		if (i != (times.size() -1))
 			fout << endl;
 	}
 	fout.close();

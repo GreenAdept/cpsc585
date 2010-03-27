@@ -49,6 +49,7 @@ public:
 	void adjustLapImage		( int playerNum, int lapNum );
 	void adjustBestTimes	( vector<string>& bestTimeEntries );
 	void adjustTwoPlayer	( bool isTwoPlayer, int width, int height );
+	void adjustTimeTrial	( );
 
 	// Drawing functions
 	void renderGame			( Device* device, vector<Renderable*>, vector<GameCamera*> cameras, int playerID );
@@ -109,6 +110,7 @@ private:
 	LPCTSTR				m_sBestTimes		[ 5 ];
 	RECT				m_BestTimesRecs		[ 5 ];
 	bool				m_bIsTwoPlayer;
+	bool				m_bIsTimeTrial;
 	Vec2				m_ScaleVal;
 };
 

@@ -77,6 +77,7 @@ Renderer::Renderer( )
 		m_sBestTimes[i] = L"PLAYER 1             00:00:00";
 
 	m_bIsTwoPlayer = false;
+	m_bIsTimeTrial = false;
 	m_ScaleVal = Vec2( 1.0, 1.0 );
 
 	//initialize the resource manager to keep track of all our screens and HUD
@@ -738,8 +739,18 @@ void Renderer::adjustTwoPlayer( bool isTwoPlayer, int width, int height )
 	m_bIsTwoPlayer = isTwoPlayer;
 	m_ScaleVal = (m_bIsTwoPlayer) ? Vec2(0.75,0.75) : Vec2(1.0,1.0);
 	positionHUDImages( width, height );
+	m_bIsTimeTrial = false;
 }
 
+//--------------------------------------------------------------------------------------
+// Function: adjustTimeTrial
+// Call this function when running the time trial, to set the time trial flag.
+//--------------------------------------------------------------------------------------
+void Renderer::adjustTimeTrial( )
+{
+	m_bIsTimeTrial = true;
+	m_bIsTwoPlayer = false;
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////		
@@ -1080,9 +1091,11 @@ void Renderer::drawAHUD( Sprite* images, Vec3* locations, int playerID )
 	//draw the minimap
 	//drawTransformedSprite( 0.0, locations[MINIMAP_IMAGE], Vec2(0,0), images[ MINIMAP_IMAGE ] );
 
-	//draw the ranking
-	int iRank = playerID == PLAYER1 ? m_iPlayerOneRank : m_iPlayerTwoRank;
-	drawTransformedSprite( 0.0, locations[ iRank ], Vec2(0,0), images[ iRank ]);
+	//draw the ranking if it's not time trial
+	if (!m_bIsTimeTrial) {
+		int iRank = playerID == PLAYER1 ? m_iPlayerOneRank : m_iPlayerTwoRank;
+		drawTransformedSprite( 0.0, locations[ iRank ], Vec2(0,0), images[ iRank ]);
+	}
 
 	//draw wrong way message if applicable
 	if( m_bDrawWrongWay[ playerID ] )

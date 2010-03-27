@@ -103,6 +103,7 @@ public:
 	static bool					m_bGameIsReady;
 	static CRITICAL_SECTION		m_CriticalSection; // used for multithreading
 	static bool					m_bIsTwoPlayer;
+	static bool					m_bIsTimeTrial;
 	static string				m_sGameFilename;
 };
 

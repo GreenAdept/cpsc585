@@ -109,7 +109,7 @@ void MessageManager::ProcessMessage( int message )
 		break;
 
 	case EGameFinished:
-		if (!m_App->m_bIsTwoPlayer)
+		if (m_App->m_bIsTimeTrial)
 			m_VictoryCalculator->recordTime(m_Clock->getFormattedTime());
 		m_Renderer->adjustVictoryRank (m_VictoryCalculator->getRanks(), m_VictoryCalculator->getFinishTimes());
 		m_App->m_AppState = APP_VICTORY;
