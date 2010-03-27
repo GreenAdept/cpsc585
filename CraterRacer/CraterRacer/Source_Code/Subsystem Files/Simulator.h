@@ -20,7 +20,7 @@
 #define PI						3.14159265
 #define MAX_FORWARD_VELOCITY	65.0
 #define MAX_BACKWARD_VELOCITY	35.0
-#define MIN_VELOCITY			0.5
+#define	MIN_VELOCITY			0.5
 
 #include <iostream>
 using namespace std;
@@ -63,6 +63,7 @@ public:
 
 	void printVariables();
 	void setSuspensionFlag(bool flag);
+	void startOrStopRace(bool race);
 
 private:
 
@@ -115,6 +116,7 @@ private:
 	//Debugging
 	DebugWriter			m_Debugger;
 	bool				forward;
+	bool				m_bStartRace;
 
 };
 
