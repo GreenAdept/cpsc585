@@ -33,13 +33,23 @@ void Wheel::initialize( Device* device, LPCWSTR filename, Vec3 pt, LPCWSTR effec
 //--------------------------------------------------------------------------------------
 void Wheel::update( Matrix mat )
 {
-	Matrix m;
-	Matrix translate;
+	Matrix m, m2;
+	Matrix translate, rotate;
 	Vec3 sus = getSuspensionAxis() * m_fDisplacement;
 
+
+	//DebugWriter debug;
+	//debug.writeToFile(m_fAngle);
+
 	D3DXMatrixIdentity( &translate );
+	D3DXMatrixIdentity( &rotate );
+
 	D3DXMatrixTranslation( &translate, sus.x, sus.y, sus.z );
-	D3DXMatrixMultiply( &m, &mat, &translate );
+	D3DXMatrixRotationY( &rotate, -m_fAngle*(D3DX_PI/180));
+	D3DXMatrixMultiply( &m2, &translate, &rotate);
+	//D3DXMatrixMultiply( &m2, &rotate, &translate);
+	//D3DXMatrixMultiply( &m, &mat, &m2 );
+	D3DXMatrixMultiply( &m, &m2, &mat );
 
 	Entity::update( m );
 }
