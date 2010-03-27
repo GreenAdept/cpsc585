@@ -124,8 +124,6 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 //--------------------------------------------------------------------------------------
 void RacerApp::countDown( ) {
 	int nowTime = m_Clock->getTotalTimeInMS();
-	DebugWriter writer;
-	writer.writeToFile(nowTime-m_iLastTime);
 	int waitTime = 1500;
 	if ( m_iCount == 3)
 		waitTime = 2500;
