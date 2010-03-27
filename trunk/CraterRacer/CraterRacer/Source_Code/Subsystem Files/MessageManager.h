@@ -19,7 +19,7 @@
 
 //event ids
 enum Events {	EWrongWay, EWrongWayCancel, EPauseGame, EUnpauseGame, EStartClock, 
-				EGameFinished, ELapFinished, EPlayerFinished };
+				EGameFinished, ELapFinished, EPlayerFinished, EVibrate };
 
 using namespace std;
 //--------------------------------------------------------
