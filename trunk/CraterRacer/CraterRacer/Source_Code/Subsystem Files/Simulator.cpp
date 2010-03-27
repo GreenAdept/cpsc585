@@ -30,6 +30,7 @@ Simulator::Simulator()
 	m_rSpringScale			= 20.0;
 	m_rDamperScale			= 0.6;
 	m_rSteeringPower		= 5;
+	m_bStartRace			= false;
 
 	forward = false;
 }
@@ -214,7 +215,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 				bool reversing = vehicle->isReversing();
 				float pressure = input->getPressure();
 				g_audioState.reverse = true;
-				if (reversing || (actor->getLinearVelocity().magnitude() < 1))
+				if ((reversing || (actor->getLinearVelocity().magnitude() < 1)) && m_bStartRace)
 				{
 					vehicle->setReverse(true);
 					if(velocity.magnitude() < MAX_BACKWARD_VELOCITY){
@@ -242,7 +243,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 					break;
 				}
 				//else, accelerate
-				if(velocity.magnitude() < MAX_FORWARD_VELOCITY){
+				if((velocity.magnitude() < MAX_FORWARD_VELOCITY) && m_bStartRace)
+				{
 					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );
 					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );
 				}
@@ -881,4 +883,9 @@ void Simulator::printVariables()
 	m_Debugger.writeToFile((double)m_rDynamicFriction);
 	m_Debugger.writeToFile((double)m_rMaxAngularVelocity);
 	m_Debugger.writeToFile(m_rMaxWheelAngle);
+}
+
+void Simulator::startOrStopRace(bool race)
+{
+	m_bStartRace = race;
 }

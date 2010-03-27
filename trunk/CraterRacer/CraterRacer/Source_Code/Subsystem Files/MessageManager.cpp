@@ -54,6 +54,12 @@ void MessageManager::ProcessMessage( int message, long param )
 		temp = m_Clock->getFormattedTime();
 		m_VictoryCalculator->setFinishTime( playerNum, temp );
 		break;
+	case EStartOrStopRace:
+		//if param != 1, start race, else stop race
+		if (param == 1)
+			m_Simulator->startOrStopRace(true);
+		else
+			m_Simulator->startOrStopRace(false);
 	}
 }
 
