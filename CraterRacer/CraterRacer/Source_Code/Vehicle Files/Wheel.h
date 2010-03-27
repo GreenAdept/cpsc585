@@ -34,6 +34,9 @@ public:
 	NxVec3	getChassisPt	 ( );
 	void	setChassisPt	 ( Vec3 pt );
 
+	NxVec3	getGlobalChassisPt	 ( );
+	void	setGlobalChassisPt	 ( Vec3 pt );
+
 	Vec3	getSuspensionAxis( );
 	void	setSuspensionAxis( NxVec3 sus );
 	void	setWheelLateral	 ( NxVec3 lateral);
@@ -51,6 +54,7 @@ private:
 	float		m_fDiameter;		//meters
 	float		m_fDisplacement;	//meters
 	NxVec3		m_vChassisPt;
+	NxVec3		m_vGlobalChassisPt;
 	NxVec3	    m_vSuspensionAxis;
 	NxVec3		m_vWheelLateral;
 

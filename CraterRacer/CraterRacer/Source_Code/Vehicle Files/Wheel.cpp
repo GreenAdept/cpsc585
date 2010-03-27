@@ -44,11 +44,33 @@ void Wheel::update( Matrix mat )
 	D3DXMatrixIdentity( &translate );
 	D3DXMatrixIdentity( &rotate );
 
-	D3DXMatrixTranslation( &translate, sus.x, sus.y, sus.z );
+	/*D3DXMatrixTranslation( &translate, sus.x, sus.y, sus.z );
 	D3DXMatrixRotationY( &rotate, -m_fAngle*(D3DX_PI/180));
 	D3DXMatrixMultiply( &m2, &translate, &rotate);
 	//D3DXMatrixMultiply( &m2, &rotate, &translate);
 	//D3DXMatrixMultiply( &m, &mat, &m2 );
+	D3DXMatrixMultiply( &m, &m2, &mat );*/
+
+	//negative chassis
+	Matrix negChassis;
+	D3DXMatrixIdentity(&negChassis);
+	D3DXMatrixTranslation( &negChassis, -m_vGlobalChassisPt.x, -m_vGlobalChassisPt.y, -m_vGlobalChassisPt.z);
+
+	//rotate
+	D3DXMatrixRotationY( &rotate, -m_fAngle*(D3DX_PI/180));
+	D3DXMatrixMultiply( &rotate, &rotate, &negChassis);
+	
+	//combine rotate and negChasis
+	//D3DXMatrixMultiply( &rotate, &rotate, &negChassis);
+
+	//regular translation
+	D3DXMatrixTranslation( &translate, sus.x+m_vGlobalChassisPt.x, sus.y+m_vGlobalChassisPt.y, sus.z+m_vGlobalChassisPt.z);
+	//D3DXMatrixTranslation( &translate, sus.x, sus.y, sus.z);
+
+	//combine rotation and translation
+	D3DXMatrixMultiply( &m2, &translate, &rotate);
+
+	//combine result and input
 	D3DXMatrixMultiply( &m, &m2, &mat );
 
 	Entity::update( m );
@@ -95,6 +117,16 @@ NxVec3 Wheel::getChassisPt()
 void Wheel::setChassisPt( Vec3 pt )
 {
 	m_vChassisPt = NxVec3( pt.x, pt.y, pt.z );
+}
+
+NxVec3 Wheel::getGlobalChassisPt()
+{
+	return m_vGlobalChassisPt;
+}
+
+void Wheel::setGlobalChassisPt( Vec3 pt )
+{
+	m_vGlobalChassisPt = NxVec3( pt.x, pt.y, pt.z );
 }
 
 float Wheel::getWheelWidth( )

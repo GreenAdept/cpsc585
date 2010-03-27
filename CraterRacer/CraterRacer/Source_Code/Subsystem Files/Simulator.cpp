@@ -331,6 +331,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 		susAxis = normalize( orient * NxVec3(0,-1,0) );
 		w->setSuspensionAxis( susAxis );
 
+		NxVec3 globalChassisPt = orient * w->getChassisPt();
+		w->setGlobalChassisPt(Vec3(globalChassisPt.x, globalChassisPt.y, globalChassisPt.z));
+
 		//Raycast to ground to find distance
 		NxRay ray( wheelPos, susAxis );
 		NxRaycastHit hit;
