@@ -380,6 +380,34 @@ void Renderer::renderFPS( )
 	txtHelper.End();
 }
 
+//--------------------------------------------------------------------------------------
+// Function:  renderCountDown
+// This function renders the count down. Needs to be rendered nicely!
+//--------------------------------------------------------------------------------------
+void Renderer::renderCountDown( int count )
+{
+	m_pTextSprite->Flush();
+    CDXUTTextHelper txtHelper( m_pFont, m_pTextSprite, 15 );
+
+    txtHelper.Begin();
+    txtHelper.SetInsertionPos( 10, 150 );
+	txtHelper.SetForegroundColor( D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
+	//LPCWSTR stats = DXUTGetFrameStats( true );
+	if (count != 0) {
+		WCHAR number[10];
+		_itow(count, number, 10) ;
+		//wstring str( stats ), fps;
+		//fps = str.substr( 5, 10 );
+		txtHelper.DrawTextLine( number ); // Show FPS
+	}
+	else
+	{
+		wstring go = L"GO!";
+		txtHelper.DrawTextLine( go.c_str() );
+	}
+
+	txtHelper.End();
+}
 
 //--------------------------------------------------------------------------------------
 // Function:  drawVictoryScreen

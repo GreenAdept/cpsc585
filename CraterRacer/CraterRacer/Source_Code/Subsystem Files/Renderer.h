@@ -60,6 +60,7 @@ public:
 	void drawPauseGameRules ( );
 	void drawGameRules		( );
 	void renderFPS			( );
+	void renderCountDown	( int count );
 	void drawVictoryScreen	( );
 	void drawTimesScreen	( );
 
