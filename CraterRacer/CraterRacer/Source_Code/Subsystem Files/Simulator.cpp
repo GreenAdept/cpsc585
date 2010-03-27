@@ -403,6 +403,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			//set maximum translation for renderer
 			float maxWheelSpeed = 7;
 			w->setDisplacement(min((float)m_rMaxWheelDisplacement, (w->getDisplacement() + maxWheelSpeed * (float)time)));
+
+			//apply all accumulated forces to current wheel
+			actor->addLocalForceAtLocalPos(localWheelForce[i]*0.2, w->getChassisPt() - NxVec3(0, 1, 0));
+			actor->addForceAtLocalPos(globalWheelForce[i]*0.2, w->getChassisPt() - NxVec3(0, 1, 0));
 		}
 	}
 

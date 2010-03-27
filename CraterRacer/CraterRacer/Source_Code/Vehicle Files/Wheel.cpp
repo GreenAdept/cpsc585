@@ -44,15 +44,15 @@ void Wheel::update( Matrix mat )
 	D3DXMatrixIdentity( &translate );
 	D3DXMatrixIdentity( &rotate );
 
-	/*D3DXMatrixTranslation( &translate, sus.x, sus.y, sus.z );
+	D3DXMatrixTranslation( &translate, sus.x, sus.y, sus.z );
 	D3DXMatrixRotationY( &rotate, -m_fAngle*(D3DX_PI/180));
 	D3DXMatrixMultiply( &m2, &translate, &rotate);
 	//D3DXMatrixMultiply( &m2, &rotate, &translate);
 	//D3DXMatrixMultiply( &m, &mat, &m2 );
-	D3DXMatrixMultiply( &m, &m2, &mat );*/
+	D3DXMatrixMultiply( &m, &m2, &mat );
 
 	//negative chassis
-	Matrix negChassis;
+	/*Matrix negChassis;
 	D3DXMatrixIdentity(&negChassis);
 	D3DXMatrixTranslation( &negChassis, -m_vGlobalChassisPt.x, -m_vGlobalChassisPt.y, -m_vGlobalChassisPt.z);
 
@@ -71,7 +71,7 @@ void Wheel::update( Matrix mat )
 	D3DXMatrixMultiply( &m2, &translate, &rotate);
 
 	//combine result and input
-	D3DXMatrixMultiply( &m, &m2, &mat );
+	D3DXMatrixMultiply( &m, &m2, &mat );*/
 
 	Entity::update( m );
 }
