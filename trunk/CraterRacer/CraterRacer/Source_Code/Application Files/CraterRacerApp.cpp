@@ -28,6 +28,9 @@ int						RacerApp::m_iBackHeight;
 bool					RacerApp::m_bIsTwoPlayer;
 bool					RacerApp::m_bIsTimeTrial;
 string					RacerApp::m_sGameFilename;
+int						RacerApp::m_iCount;
+Clock*					RacerApp::m_Clock;
+int						RacerApp::m_iLastTime;
 
 //XBox360Controller
 
@@ -82,6 +85,9 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 
 				//start game
 				Emit( EStartClock );//g_pGame->startClock();
+				m_Clock->start();
+				m_iLastTime = m_Clock->getTotalTimeInMS();
+				m_iCount = 3;
 				m_AppState = APP_RENDER_GAME;
 			}
 		}
@@ -111,6 +117,23 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 	}
 }
 
+//--------------------------------------------------------------------------------------
+// Function: countDown
+// Starts the count down (3, 2, 1, GO!) 2 seconds after getting called.
+//--------------------------------------------------------------------------------------
+void RacerApp::countDown( ) {
+	int nowTime = m_Clock->getTotalTimeInMS();
+	DebugWriter writer;
+	writer.writeToFile(nowTime-m_iLastTime);
+	int waitTime = 1500;
+	if ( m_iCount == 3)
+		waitTime = 2500;
+	if ((nowTime - m_iLastTime) >= waitTime)
+	{
+		m_iLastTime = nowTime;
+		m_iCount--;
+	}
+}
 
 //--------------------------------------------------------------------------------------
 // Function: OnKeyboard
@@ -270,6 +293,7 @@ void RacerApp::processMenuSelection( )
 				
 					m_AppState = APP_STARTUP; 
 					m_bIsTwoPlayer = false;
+					m_bIsTimeTrial= false;
 					m_Renderer->adjustTwoPlayer( false, m_iBackWidth, m_iBackHeight );
 					break;
 
@@ -429,7 +453,7 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 
 				m_Renderer->drawTimesScreen( );
 				break;
-
+				
 			case APP_RENDER_GAME:
 			case APP_SHOW_GAMERULES2:
 			case APP_PAUSED:
@@ -458,6 +482,13 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 
 						m_Renderer->renderFPS( );
 						m_Renderer->drawHUD( PLAYER1 );
+						if (m_iCount >= 0) {
+							m_Renderer->renderCountDown(m_iCount);
+							countDown();
+							//after count down, switch to normal rendering game mode
+						//	if (m_iCount < 0)
+						//		m_AppState = APP_RENDER_GAME;
+						}
 					}
 				}
 
@@ -603,6 +634,8 @@ RacerApp::RacerApp()
 	m_bIsTwoPlayer	  = false;
 	m_bIsTimeTrial	  = false;
 	m_sGameFilename	  = ONE_PLAYER_SCENE_FILE;
+	m_iCount		  = 3;
+	m_Clock			  = new Clock();
 
 	// Set up the audio
 	HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, SE_WAVEBANK_FILE, BG_SETTINGS_FILE, BG_SOUNDBANK_FILE );
@@ -643,8 +676,10 @@ void RacerApp::cleanupAll( )
 		delete m_SceneLoader;
 
 	if( m_hThread )
-			CloseHandle( m_hThread );
+		CloseHandle( m_hThread );
 
+	if ( m_Clock )
+		delete m_Clock;
 	// Release system object when all finished 
 	//DeleteCriticalSection(&m_CriticalSection);
 }

@@ -10,6 +10,8 @@
 #include "Constants.h"
 #include "ImageConstants.h"
 #include "SceneLoader.h"
+#include "Clock.h"
+#include "DebugWriter.h"
 #include <string>
 
 #define ONE_PLAYER_SCENE_FILE	"Source_Code\\Scene_Files\\OnePlayer.SCENE"
@@ -71,6 +73,7 @@ public:
 	static void moveMenuDown		 ( );
 	static void doLoadScreen		 ( );
 	static void renderTwoPlayer		 ( Device* device );
+	static void countDown			 ( );
 
 
 	// Other Functions ---------------------------------------
@@ -105,6 +108,11 @@ public:
 	static bool					m_bIsTwoPlayer;
 	static bool					m_bIsTimeTrial;
 	static string				m_sGameFilename;
+	
+	//for count down
+	static int					m_iCount; //counter for the count down
+	static Clock*				m_Clock;
+	static int					m_iLastTime; //the time since last number was drawn
 };
 
 extern GameObj *g_pGame; //Our global instantiation of the game which will be used by the RacerApp class

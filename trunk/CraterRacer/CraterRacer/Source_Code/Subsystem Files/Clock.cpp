@@ -16,6 +16,11 @@ void Clock::start()
 	startPausedMS = 0;
 }
 
+int Clock::getStartTimeInMS()
+{
+	return startTimeMS;
+}
+
 //--------------------------------------------------------------------------------------
 // function: isPaused
 // Returns true if clock is currently paused, else returns false.
@@ -79,10 +84,10 @@ int Clock::getTotalTimeInSec() //returns the elapsed time in seconds
 //--------------------------------------------------------------------------------------
 int Clock::getElapsedTimeInMS()
 {
-	int time = getTotalTimeInMS();
+	int nowTime = getTotalTimeInMS();
 	//elapsed time is total time now - last time retrieved
-	int elapsedTimeMS = elapsedTimeMS - lastTimeMS; 
-	lastTimeMS = time;
+	int elapsedTimeMS = nowTime - lastTimeMS; 
+	lastTimeMS = nowTime;
 	return elapsedTimeMS;
 }
 
