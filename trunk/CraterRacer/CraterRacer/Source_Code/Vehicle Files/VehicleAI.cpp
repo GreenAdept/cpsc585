@@ -163,7 +163,7 @@ void CompVehicleAI::steer (Vec3& currentDir, Vec3& desiredDir, Input* input) {
 	}
 
 	//respawn if 7 seconds have passed since the last waypoint was passed
-	if (elapsed > 9.0f) {
+	if (elapsed > 10.0f) {
 		elapsed = 0.0f;
 		input->setKey (Input::D_KEY, true);
 	}
