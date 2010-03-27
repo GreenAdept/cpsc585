@@ -26,6 +26,7 @@ bool					RacerApp::m_bIsLoading;
 int						RacerApp::m_iBackWidth;
 int						RacerApp::m_iBackHeight;
 bool					RacerApp::m_bIsTwoPlayer;
+bool					RacerApp::m_bIsTimeTrial;
 string					RacerApp::m_sGameFilename;
 
 //XBox360Controller
@@ -219,14 +220,26 @@ void RacerApp::processMenuSelection( )
 					m_AppState = APP_GAME_LOADING;
 					m_Renderer->adjustTwoPlayer( true, m_iBackWidth, m_iBackHeight );
 					m_bIsTwoPlayer = true;
+					m_bIsTimeTrial = false;
 					break;
 
 				case GUI_BTN_TIMETRIAL:
+					m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
+					m_Renderer->adjustTwoPlayer( false, m_iBackWidth, m_iBackHeight );
+					m_sGameFilename = TIME_TRIAL_SCENE_FILE;
+					m_AppState = APP_GAME_LOADING;
+					m_Renderer->adjustTimeTrial( );
+					m_bIsTwoPlayer = false;
+					m_bIsTimeTrial = true;
+					break;
+
 				case GUI_BTN_SINGLE_PLAYER:
 					m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
 					m_Renderer->adjustTwoPlayer( false, m_iBackWidth, m_iBackHeight );
 					m_sGameFilename = ONE_PLAYER_SCENE_FILE;
 					m_AppState = APP_GAME_LOADING;
+					m_bIsTwoPlayer = false;
+					m_bIsTimeTrial = false;
 					break;
 
 					//start loading game in a separate thread
@@ -424,7 +437,8 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 				if( g_pGame )
 				{
 					//Adjust all HUD images to reflect current state
-					m_Renderer->adjustRankImage( g_pGame->m_Victory.getRank( PLAYER1 ), PLAYER1 );
+					if (!m_bIsTimeTrial)
+						m_Renderer->adjustRankImage( g_pGame->m_Victory.getRank( PLAYER1 ), PLAYER1 );
 					m_Renderer->adjustClockImages( g_pGame->getTime(), PLAYER1 );
 					m_Renderer->adjustSpeedImage( g_pGame->getVehicleSpeed( PLAYER1 ), PLAYER1 );
 
@@ -587,6 +601,7 @@ RacerApp::RacerApp()
 	m_Renderer		  = new Renderer( );
 	m_bIsLoading	  = false;
 	m_bIsTwoPlayer	  = false;
+	m_bIsTimeTrial	  = false;
 	m_sGameFilename	  = ONE_PLAYER_SCENE_FILE;
 
 	// Set up the audio
