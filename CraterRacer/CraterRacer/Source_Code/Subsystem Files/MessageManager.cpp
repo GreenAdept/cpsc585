@@ -77,7 +77,10 @@ void MessageManager::ProcessMessage( int message, long param1, long param2 )
 		lapNum = param2;
 		m_Renderer->adjustLapImage( playerNum, lapNum );
 		break;
-
+	case EVibrate:
+		//param1 = controller id to vibrate, param2 = intensity
+		m_Game->vibrate(param1, param2);
+		break;
 	}
 }
 

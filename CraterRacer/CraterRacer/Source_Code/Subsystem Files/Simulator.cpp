@@ -525,9 +525,28 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time) {
 		Vec3 direction = target - currentPos;
 		float travelled = speed * time;
 		float toTravel = D3DXVec3Length (&direction);
+		//collided with the ground
 		if (travelled >= toTravel) {
 			currentPos = target;
 			m->informOfCollision();
+
+			//if distance of collision and player vehicle is within a certain distance, vibrate that controller
+			NxVec3 meteorPos(currentPos.x, currentPos.y, currentPos.z);
+			NxVec3 distance = meteorPos - m_Actors[0]->getGlobalPosition();
+			if (distance.magnitude() < 450) {
+				Emit (Events::EVibrate, 0, 1);
+			}
+			else if (distance.magnitude() < 750) {
+				Emit (Events::EVibrate, 0, 0.5);
+			}
+			distance = meteorPos - m_Actors[1]->getGlobalPosition();
+			if (distance.magnitude() < 450) {
+				Emit (Events::EVibrate, 1, 1);
+			}
+			else if (distance.magnitude() < 750) {
+				Emit (Events::EVibrate, 1, 0.5);
+			}
+
 			addCrater (m->getCraterToSpawn());
 		}
 		else {
