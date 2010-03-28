@@ -870,6 +870,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source_Code\Scene_Files\Initialize2.SCENE"
+				>
+			</File>
+			<File
 				RelativePath=".\Source_Code\Scene_Files\OnePlayer.SCENE"
 				>
 			</File>

@@ -56,28 +56,32 @@ public:
 	Vehicle( void )     { mind = 0; }
 	~Vehicle( void )    { delete mind; }
 
-	void update			( Vec3 newPosition, Vec3 velocity, Matrix matBody );
-	void update			( Vec3 pos, Vec3 vel, Matrix body, Matrix w0, Matrix w1, Matrix w2, Matrix w3 );
-	void initialize		( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename );
-	Vec3 lastPassedWP   ( );
-	Vec3 nextWP			( );
+	void	update			( Vec3 newPosition, Vec3 velocity, Matrix matBody );
+	void	update			( Vec3 pos, Vec3 vel, Matrix body, Matrix w0, Matrix w1, Matrix w2, Matrix w3 );
+	void	initialize		( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename );
+	Vec3	lastPassedWP    ( );
+	Vec3	nextWP			( );
 
 	// Setter's
-	void  setMass		( int mass );
-	void  setVelocity	( Vec3 velocity );
-	void  setTimeElapsed( float time );
+	void	setMass			( int mass );
+	void	setVelocity		( Vec3 velocity );
+	void	setTimeElapsed	( float time );
 
 	// Getter's
-	int	  getMass		( );
-	Vec3  getVelocity	( );
-	Input *getInputObj  ( );
-	Vec3  getDirection	( );
-	AI*   getAI         ( );
-	float getSpeed		( );
+	int		getMass			( );
+	Vec3	getVelocity		( );
+	Input	*getInputObj	( );
+	Vec3	getDirection	( );
+	AI*		getAI			( );
+	float	getSpeed		( );
 
-	bool isReversing	( );
-	void setReverse		( bool r );
-	void setPlayerNum	( int num );
+	bool	isReversing		( );
+	void	setReverse		( bool r );
+	void	setPlayerNum	( int num );
+
+	int		getRank			( );
+	void	setRank			( int rank );
+	bool	isPlayer		( );
 
 	Wheel m_Wheels[4];
 
@@ -93,6 +97,8 @@ protected:
 	float		m_fRunningDistance;
 	float		m_fSpeed;
 	int			m_iPlayerNumber;
+	int			m_iRank;
+	bool		m_bIsPlayer;
 };
 
 
@@ -107,7 +113,12 @@ protected:
 class PlayerVehicle: public Vehicle {
 
 public:
-	PlayerVehicle( void ) { mind = new VehicleAI(); }
+	PlayerVehicle( void ) 
+	{
+		mind = new VehicleAI();
+		m_iRank = -1;
+		m_bIsPlayer = true;
+	}
 };
 
 
@@ -122,7 +133,12 @@ public:
 class AIVehicle: public Vehicle {
 
 public:
-	AIVehicle( void ) { mind = new CompVehicleAI(); }
+	AIVehicle( void )
+	{
+		mind = new CompVehicleAI(); 
+		m_iRank = -1;
+		m_bIsPlayer = false;
+	}
 };
 
 #endif //VEHICLE_H
