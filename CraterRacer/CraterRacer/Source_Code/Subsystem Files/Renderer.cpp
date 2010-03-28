@@ -819,6 +819,10 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	createTexture( m_HUDImages[ SECOND_IMAGE ], SECOND_IMAGE_FILE, device );
 	createTexture( m_HUDImages[ THIRD_IMAGE ], THIRD_IMAGE_FILE, device );
 	createTexture( m_HUDImages[ FOURTH_IMAGE ], FOURTH_IMAGE_FILE, device );
+	createTexture( m_HUDImages[ FIFTH_IMAGE ], FIFTH_IMAGE_FILE, device );
+	createTexture( m_HUDImages[ SIXTH_IMAGE ], SIXTH_IMAGE_FILE, device );
+	createTexture( m_HUDImages[ SEVENTH_IMAGE ], SEVENTH_IMAGE_FILE, device );
+	createTexture( m_HUDImages[ EIGTH_IMAGE ], EIGTH_IMAGE_FILE, device );
 	createTexture( m_HUDImages[ WRONGWAY_IMAGE ], WRONGWAY_IMAGE_FILE, device );
 	createTexture( m_HUDImages[ LAPONE_IMAGE ], LAPONE_IMAGE_FILE, device );
 	createTexture( m_HUDImages[ LAPTWO_IMAGE ], LAPTWO_IMAGE_FILE, device );
@@ -831,6 +835,10 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	createTexture( m_HUDImages2[ SECOND_IMAGE ], SECOND2_IMAGE_FILE, device );
 	createTexture( m_HUDImages2[ THIRD_IMAGE ], THIRD2_IMAGE_FILE, device );
 	createTexture( m_HUDImages2[ FOURTH_IMAGE ], FOURTH2_IMAGE_FILE, device );
+	createTexture( m_HUDImages2[ FIFTH_IMAGE ], FIFTH2_IMAGE_FILE, device );
+	createTexture( m_HUDImages2[ SIXTH_IMAGE ], SIXTH2_IMAGE_FILE, device );
+	createTexture( m_HUDImages2[ SEVENTH_IMAGE ], SEVENTH2_IMAGE_FILE, device );
+	createTexture( m_HUDImages2[ EIGTH_IMAGE ], EIGTH2_IMAGE_FILE, device );
 	createTexture( m_HUDImages2[ WRONGWAY_IMAGE ], WRONGWAY_IMAGE_FILE, device );
 	createTexture( m_HUDImages2[ LAPONE_IMAGE ], LAPONE2_IMAGE_FILE, device );
 	createTexture( m_HUDImages2[ LAPTWO_IMAGE ], LAPTWO2_IMAGE_FILE, device );
@@ -1169,6 +1177,10 @@ void Renderer::positionHUDImages( int width, int height )
 		m_HUDImageLocations[SECOND_IMAGE] = Vec3( width-120, 10, 0 );
 		m_HUDImageLocations[THIRD_IMAGE] = Vec3( width-120, 10, 0 );
 		m_HUDImageLocations[FOURTH_IMAGE] = Vec3( width-120, 10, 0 );
+		m_HUDImageLocations[FIFTH_IMAGE] = Vec3( width-120, 10, 0 );
+		m_HUDImageLocations[SIXTH_IMAGE] = Vec3( width-120, 10, 0 );
+		m_HUDImageLocations[SEVENTH_IMAGE] = Vec3( width-120, 10, 0 );
+		m_HUDImageLocations[EIGTH_IMAGE] = Vec3( width-120, 10, 0 );
 		m_HUDImageLocations[WRONGWAY_IMAGE] = Vec3( (width-300)/2, 10, 0 );
 		m_HUDImageLocations[LAPONE_IMAGE] = Vec3( 10, 10, 0 );
 		m_HUDImageLocations[LAPTWO_IMAGE] = Vec3( 10, 10, 0 );
@@ -1181,6 +1193,10 @@ void Renderer::positionHUDImages( int width, int height )
 		m_HUDImageLocations2[SECOND_IMAGE] = Vec3( width-120, Height+10, 0 );
 		m_HUDImageLocations2[THIRD_IMAGE] = Vec3( width-120, Height+10, 0 );
 		m_HUDImageLocations2[FOURTH_IMAGE] = Vec3( width-120, Height+10, 0 );
+		m_HUDImageLocations2[FIFTH_IMAGE] = Vec3( width-120, Height+10, 0 );
+		m_HUDImageLocations2[SIXTH_IMAGE] = Vec3( width-120, Height+10, 0 );
+		m_HUDImageLocations2[SEVENTH_IMAGE] = Vec3( width-120, Height+10, 0 );
+		m_HUDImageLocations2[EIGTH_IMAGE] = Vec3( width-120, Height+10, 0 );
 		m_HUDImageLocations2[WRONGWAY_IMAGE] = Vec3( (width-300)/2, Height+10, 0 );
 		m_HUDImageLocations2[LAPONE_IMAGE] = Vec3( 10, Height+10, 0 );
 		m_HUDImageLocations2[LAPTWO_IMAGE] = Vec3( 10, Height+10, 0 );
@@ -1213,6 +1229,10 @@ void Renderer::positionHUDImages( int width, int height )
 		m_HUDImageLocations[SECOND_IMAGE] = Vec3( width-160, 10, 0 );
 		m_HUDImageLocations[THIRD_IMAGE] = Vec3( width-160, 10, 0 );
 		m_HUDImageLocations[FOURTH_IMAGE] = Vec3( width-160, 10, 0 );
+		m_HUDImageLocations[FIFTH_IMAGE] = Vec3( width-160, 10, 0 );
+		m_HUDImageLocations[SIXTH_IMAGE] = Vec3( width-160, 10, 0 );
+		m_HUDImageLocations[SEVENTH_IMAGE] = Vec3( width-160, 10, 0 );
+		m_HUDImageLocations[EIGTH_IMAGE] = Vec3( width-160, 10, 0 );
 		m_HUDImageLocations[WRONGWAY_IMAGE] = Vec3( (width-400)/2, 10, 0 );
 		m_HUDImageLocations[LAPONE_IMAGE] = Vec3( 10, 10, 0 );
 		m_HUDImageLocations[LAPTWO_IMAGE] = Vec3( 10, 10, 0 );
