@@ -135,7 +135,6 @@ void RacerApp::countDown( ) {
 	}
 	if (m_iCount == 0) {
 		Emit(Events::EStartOrStopRace, 1);
-		//Emit( EStartClock );//g_pGame->startClock();
 	}
 }
 
@@ -155,12 +154,7 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 		switch( nChar ) 
 		{
 			case  VK_SPACE:
-				//pause game here
-				Emit( EPauseGame );
-
-				//g_pGame->pauseGame();
-				m_uiCurrentButton = GUI_BTN_UNPAUSE;
-				m_AppState = APP_PAUSED;
+					Emit( EPauseGame );
 				break;
 
 			default:

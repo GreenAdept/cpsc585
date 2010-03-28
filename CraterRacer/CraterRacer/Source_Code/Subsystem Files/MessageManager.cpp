@@ -102,12 +102,13 @@ void MessageManager::ProcessMessage( int message )
 	switch( message )
 	{
 	case EPauseGame:
-
-		m_Clock->togglePause();
-		m_Simulator->pause( true );
-		m_App->m_AppState = APP_PAUSED;
-		m_App->m_uiCurrentButton = GUI_BTN_UNPAUSE;
-		m_Renderer->adjustButtonImage( GUI_BTN_UNPAUSE, +1 );
+		if ( m_App->m_iCount < 0 ) {
+			m_Clock->togglePause();
+			m_Simulator->pause( true );
+			m_App->m_AppState = APP_PAUSED;
+			m_App->m_uiCurrentButton = GUI_BTN_UNPAUSE;
+			m_Renderer->adjustButtonImage( GUI_BTN_UNPAUSE, +1 );
+		}
 		break;
 
 	case EUnpauseGame:
