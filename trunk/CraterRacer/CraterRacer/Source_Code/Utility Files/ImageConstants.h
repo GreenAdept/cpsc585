@@ -24,10 +24,18 @@
 #define SECOND_IMAGE_FILE				"Media\\Images\\Numbers\\Second.png"
 #define THIRD_IMAGE_FILE				"Media\\Images\\Numbers\\Third.png"
 #define FOURTH_IMAGE_FILE				"Media\\Images\\Numbers\\Fourth.png"
+#define FIFTH_IMAGE_FILE				"Media\\Images\\Numbers\\Fifth.png"
+#define SIXTH_IMAGE_FILE				"Media\\Images\\Numbers\\Sixth.png"
+#define SEVENTH_IMAGE_FILE				"Media\\Images\\Numbers\\Seventh.png"
+#define EIGTH_IMAGE_FILE				"Media\\Images\\Numbers\\Eigth.png"
 #define FIRST2_IMAGE_FILE				"Media\\Images\\Numbers\\First2.png"
 #define SECOND2_IMAGE_FILE				"Media\\Images\\Numbers\\Second2.png"
 #define THIRD2_IMAGE_FILE				"Media\\Images\\Numbers\\Third2.png"
 #define FOURTH2_IMAGE_FILE				"Media\\Images\\Numbers\\Fourth2.png"
+#define FIFTH2_IMAGE_FILE				"Media\\Images\\Numbers\\Fifth2.png"
+#define SIXTH2_IMAGE_FILE				"Media\\Images\\Numbers\\Sixth2.png"
+#define SEVENTH2_IMAGE_FILE				"Media\\Images\\Numbers\\Seventh2.png"
+#define EIGTH2_IMAGE_FILE				"Media\\Images\\Numbers\\Eigth2.png"
 #define LAPONE_IMAGE_FILE				"Media\\Images\\LapOne.png"
 #define LAPTWO_IMAGE_FILE				"Media\\Images\\LapTwo.png"
 #define LAPONE2_IMAGE_FILE				"Media\\Images\\LapOne2.png"
@@ -99,11 +107,12 @@
 #define NUM_BUTTONS				13
 #define NUM_LOADING_BALLS		5
 #define NUM_IMAGES				35
-#define NUM_HUD_IMAGES			21
-#define NUM_PLAYERS				4
+#define NUM_HUD_IMAGES			25
+#define NUM_PLAYERS				8
 
 enum HUDImageNames{	SPEEDOMETER_IMAGE, SPEEDWAND_IMAGE, MINIMAP_IMAGE, 
-					FIRST_IMAGE, SECOND_IMAGE, THIRD_IMAGE, FOURTH_IMAGE, WRONGWAY_IMAGE,
+					FIRST_IMAGE, SECOND_IMAGE, THIRD_IMAGE, FOURTH_IMAGE, FIFTH_IMAGE,
+					SIXTH_IMAGE, SEVENTH_IMAGE, EIGTH_IMAGE, WRONGWAY_IMAGE,
 					LAPONE_IMAGE, LAPTWO_IMAGE,
 
 					ZERO_IMAGE, ONE_IMAGE, TWO_IMAGE, THREE_IMAGE, FOUR_IMAGE, FIVE_IMAGE,

@@ -428,7 +428,6 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 		switch( m_AppState )
 		{
 			case APP_STARTUP:
-				
 				m_Renderer->drawStartupMenu( );
 				break;
 
@@ -568,7 +567,6 @@ long WINAPI RacerApp::startGame( long lParam )
 
 	//Leave the critical section -- other threads can now EnterCriticalSection() 
    // LeaveCriticalSection(&m_CriticalSection);
-
 
 	m_bGameIsReady = true;
 	InitEmitter( g_pGame );
