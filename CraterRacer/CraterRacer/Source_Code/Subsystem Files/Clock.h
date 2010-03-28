@@ -11,6 +11,7 @@ using namespace std;
 
 class Clock{
 public:
+	Clock();
 	void start(); //to start or reset the clock
 	bool isPaused(); //returns true if clock is currently paused
 	bool togglePause(); //change from paused to resume, and vice versa
@@ -28,6 +29,7 @@ private:
 	int totalPausedTimeMS;
 	int startPausedMS;
 	bool paused;
+	bool started;
 };
 
 #endif

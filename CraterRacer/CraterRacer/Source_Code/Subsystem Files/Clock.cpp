@@ -1,6 +1,17 @@
 #include "Clock.h"
 #include "MessageManager.h"
 
+Clock::Clock()
+{
+	startTimeMS = 0;
+	lastTimeMS = 0;
+
+	totalTimeMS = 0;
+	totalPausedTimeMS = 0;
+	startPausedMS = 0;
+	started = false;
+}
+
 //--------------------------------------------------------------------------------------
 // function: start
 // Sets all time counters to 0, and sets start time to now. Pause is set to false.
@@ -14,6 +25,7 @@ void Clock::start()
 	totalTimeMS = 0;
 	totalPausedTimeMS = 0;
 	startPausedMS = 0;
+	started = true;
 }
 
 int Clock::getStartTimeInMS()
@@ -111,7 +123,9 @@ string Clock::getFormattedTime()
 	stringstream ss;
 	getTotalTimeInMS();
 
-	if (totalTimeMS >= 3600000)
+	if (!started)
+		s = "00:00:00";
+	else if (totalTimeMS >= 3600000)
 		s = "59:59:99";
 	else {
 		int minutes = totalTimeMS/60000;

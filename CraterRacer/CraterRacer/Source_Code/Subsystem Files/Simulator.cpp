@@ -265,6 +265,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 		}
 	}
 
+	if (!m_bStartRace)
+		noInput = true;
+
 	Wheel*	w; 
 	NxVec3	wheelPos,
 			upVec,
