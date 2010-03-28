@@ -191,3 +191,18 @@ void Vehicle::setReverse(bool r)
 {
 	reversing = r;
 }
+
+int Vehicle::getRank()
+{
+	return m_iRank;
+}
+
+void Vehicle::setRank(int rank)
+{
+	m_iRank = rank;
+}
+
+bool Vehicle::isPlayer()
+{
+	return m_bIsPlayer;
+}

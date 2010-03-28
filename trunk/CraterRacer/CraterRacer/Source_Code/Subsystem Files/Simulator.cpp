@@ -243,7 +243,12 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 					break;
 				}
 				//else, accelerate
-				if((velocity.magnitude() < MAX_FORWARD_VELOCITY) && m_bStartRace)
+				double maxVelocity = MAX_FORWARD_VELOCITY;
+				if (vehicle->getRank() == 8)
+					maxVelocity *= 1.2;
+				if ((vehicle->getRank() == 1) && (!vehicle->isPlayer()))
+					maxVelocity *= 0.9;
+				if((velocity.magnitude() < maxVelocity) && m_bStartRace)
 				{
 					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );
 					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );

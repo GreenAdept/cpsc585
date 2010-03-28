@@ -46,6 +46,7 @@ void VictoryCalculator::calculateRank (vector<Vehicle*>& vehicles, int index) {
 		}
 
 		ranks[index] = rank;
+		v->setRank(rank);
 	}
 }
 
@@ -141,6 +142,10 @@ void VictoryCalculator::recordTime(string time) {
 	}
 	fin.close();
 
+	if (times.size() < 5)
+		for (int i = 0; i < 5-times.size(); i++)
+			times.push_back("59:59:99");
+
 	//insert the new times, and all but one of the old times
 	bool inserted = false;
 	vector<string>::iterator it;
@@ -156,10 +161,11 @@ void VictoryCalculator::recordTime(string time) {
 		times.push_back(time);
 
 	ofstream fout("times.txt");
-	for (int i = 0; i < times.size(); i++) {
+	for (int i = 0; i < 5; i++) {
 		fout << times[i] << endl;
 	}
-	for (int i = 0; i < 5-times.size(); i++)
+	if (times.size() < 5)
+		for (int i = 0; i < 5-times.size(); i++)
 			fout << "59:59:99" << endl;
 
 	fout.close();
