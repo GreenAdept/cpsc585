@@ -401,7 +401,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			//add an additional force downwards, make sure it's not too big of a force or 
 			//else vehicles can't get over the craters
 			double downwardForce;
-			if (hit.distance < 20) // if not over a crater then give it a big force down
+			if (hit.distance < 25) // if not over a crater then give it a big force down
 				downwardForce = hit.distance * 40;
 			else //over craters we want to float more
 				downwardForce = 50;
