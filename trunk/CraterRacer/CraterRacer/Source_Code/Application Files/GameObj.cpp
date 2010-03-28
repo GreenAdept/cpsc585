@@ -111,12 +111,6 @@ float GameObj::getVehicleSpeed( int playerNum )
 	return vehicles[ playerNum ]->getSpeed( );
 }
 
-/*
-void GameObj::recordTime() {
-	m_Victory.recordTime( m_Clock.getFormattedTime() );
-}
-*/
-
 //--------------------------------------------------------------------------------------
 // Function: addInput
 //--------------------------------------------------------------------------------------

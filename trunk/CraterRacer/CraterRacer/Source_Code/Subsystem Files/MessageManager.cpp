@@ -56,8 +56,10 @@ void MessageManager::ProcessMessage( int message, long param )
 		break;
 	case EStartOrStopRace:
 		//if param != 1, start race, else stop race
-		if (param == 1)
+		if (param == 1) {
 			m_Simulator->startOrStopRace(true);
+			m_Clock->start();
+		}
 		else
 			m_Simulator->startOrStopRace(false);
 	}

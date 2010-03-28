@@ -84,7 +84,6 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 				}
 
 				//start game
-				Emit( EStartClock );//g_pGame->startClock();
 				m_Clock->start();
 				m_iLastTime = m_Clock->getTotalTimeInMS();
 				m_iCount = 3;
@@ -127,13 +126,17 @@ void RacerApp::countDown( ) {
 	int waitTime = 1500;
 	if ( m_iCount == 3)
 		waitTime = 2500;
+	if ( m_iCount == 0)
+		waitTime = 1000;
 	if ((nowTime - m_iLastTime) >= waitTime)
 	{
 		m_iLastTime = nowTime;
 		m_iCount--;
 	}
-	if (m_iCount == -1)
+	if (m_iCount == 0) {
 		Emit(Events::EStartOrStopRace, 1);
+		//Emit( EStartClock );//g_pGame->startClock();
+	}
 }
 
 //--------------------------------------------------------------------------------------
@@ -483,13 +486,10 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 
 						m_Renderer->renderFPS( );
 						m_Renderer->drawHUD( PLAYER1 );
-						if (m_iCount >= 0) {
-							m_Renderer->renderCountDown(m_iCount);
-							countDown();
-							//after count down, switch to normal rendering game mode
-						//	if (m_iCount < 0)
-						//		m_AppState = APP_RENDER_GAME;
-						}
+					}
+					if (m_iCount >= 0) {
+						m_Renderer->renderCountDown(m_iCount);
+						countDown();
 					}
 				}
 
