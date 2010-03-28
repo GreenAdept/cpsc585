@@ -78,55 +78,55 @@ NUM_WAYPOINTS			62
 
 NUM_CRATERS				14
 
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
+MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
+MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
+MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
-EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-POSITION				0 -100 0
-
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
-EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
-EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
-EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
-EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
+MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
 
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
+MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
+MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
+MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
+MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
-MESH_FILENAME			Media\\Meshes\\CarBody4.x
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
 
 
 **METEOR_INFORMATION ----------------------------------------------
 
-MESH_FILENAME			Media\\Meshes\\Wheel1.x
+MESH_FILENAME			Media\\Meshes\\Meteor.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 NUM_METEOR_GROUPS		3
 

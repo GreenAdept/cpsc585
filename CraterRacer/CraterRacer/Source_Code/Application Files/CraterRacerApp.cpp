@@ -88,6 +88,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 				m_iLastTime = m_Clock->getTotalTimeInMS();
 				m_iCount = 3;
 				Emit(Events::EStartOrStopRace, 0);
+				//Emit(Events::EGameFinished);
 				m_AppState = APP_RENDER_GAME;
 			}
 		}
