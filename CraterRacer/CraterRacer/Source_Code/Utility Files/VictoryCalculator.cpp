@@ -128,19 +128,19 @@ void VictoryCalculator::recordTime(string time) {
 	if (!finished[0]) return;
 	if (recorded) return;
 
+	times.clear();
 	int numberOfRecordedTimes = 5;
-	vector<string> times;
 
 	//get the current recordings from file
 	ifstream fin("times.txt");
 	while (!fin.eof()) {
 		string s;
 		fin >> s; //read the time from file
-		times.push_back(s);
+		if (s != "")
+			times.push_back(s);
 	}
 	fin.close();
 
-	ofstream fout("times.txt");
 	//insert the new times, and all but one of the old times
 	bool inserted = false;
 	vector<string>::iterator it;
@@ -155,16 +155,22 @@ void VictoryCalculator::recordTime(string time) {
 	if (!inserted && (times.size() < numberOfRecordedTimes))
 		times.push_back(time);
 
+	ofstream fout("times.txt");
 	for (int i = 0; i < times.size(); i++) {
-		fout << times[i];
-		if (i != (times.size() -1))
-			fout << endl;
+		fout << times[i] << endl;
 	}
+	for (int i = 0; i < 5-times.size(); i++)
+			fout << "59:59:99" << endl;
+
 	fout.close();
 
 	recorded = true;
 }
 
+vector<string> VictoryCalculator::getRecordedTimes()
+{
+	return times;
+}
 
 
 bool VictoryCalculator::isGameFinished () {

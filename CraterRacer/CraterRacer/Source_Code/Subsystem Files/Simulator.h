@@ -41,7 +41,7 @@ public:
 	void simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteorGroups, double elapsedTime );
 	void createVehicle( Vehicle* vehicle );
 	void createMeteorGroup(MeteorGroup *mg);
-	void simulateMeteorGroup(MeteorGroup* mg, double time);
+	void simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle*> vehicles);
 	void removeFromSimulation( Entity* entity );
 
 	NxTriangleMeshShapeDesc createTriMeshShape( Mesh* mesh );
