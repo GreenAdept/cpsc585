@@ -36,11 +36,6 @@ void MeteorGroupAI::think(EntityManager *em, int myList, int myIndex) {
 	}
 }
 
-
-
-
-
-
 MeteorGroup::MeteorGroup (int id, int numMeteors, float radius) {
 	this->id = id;
 	this->numMeteors = numMeteors;
@@ -48,6 +43,7 @@ MeteorGroup::MeteorGroup (int id, int numMeteors, float radius) {
 
 	mind = new MeteorGroupAI (radius);
 }
+
 MeteorGroup::~MeteorGroup () {
 	delete[] meteors;
 	delete mind;

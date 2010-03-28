@@ -142,7 +142,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 		}
 		else if (meteorGroups[i]->getAI()->getState() == AI::MOVING) {
 			//simulate the meteors for the group
-			simulateMeteorGroup(meteorGroups[i], elapsedTime);
+			simulateMeteorGroup(meteorGroups[i], elapsedTime, vehicles);
 		}
 	}
 }
@@ -254,8 +254,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			}
 			case 6: //BACK_BUTTON - respawn
 			{
-				respawn(actor, vehicle);
-				noInput = false;
+				if (m_bStartRace) {
+					respawn(actor, vehicle);
+					noInput = false;
+				}
 				break;
 			}
 			default:
@@ -524,7 +526,7 @@ void Simulator::createMeteorGroup(MeteorGroup* mg) {
 	}
 }
 
-void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time) {
+void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle*> vehicles) {
 	for (int i = 0; i < mg->numMeteors; i++) {
 		Meteor* m = mg->meteors[i];
 		if (m->getAI()->getState() != AI::MOVING)
@@ -544,19 +546,31 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time) {
 
 			//if distance of collision and player vehicle is within a certain distance, vibrate that controller
 			NxVec3 meteorPos(currentPos.x, currentPos.y, currentPos.z);
-			NxVec3 distance = meteorPos - m_Actors[0]->getGlobalPosition();
-			if (distance.magnitude() < 450) {
-				Emit (Events::EVibrate, 0, 1);
+			NxActor* v1 = vehicles[0]->getPhysicsObj();
+			NxVec3 distance = meteorPos - v1->getGlobalPosition();
+			double d = distance.magnitude();
+			if (d < 350) {
+				if (d != 0)
+					Emit (Events::EVibrate, 0, (350 - d)/d);
+				else
+					Emit (Events::EVibrate, 0, 1);
 			}
-			else if (distance.magnitude() < 750) {
-				Emit (Events::EVibrate, 0, 0.5);
-			}
-			distance = meteorPos - m_Actors[1]->getGlobalPosition();
-			if (distance.magnitude() < 450) {
-				Emit (Events::EVibrate, 1, 1);
-			}
-			else if (distance.magnitude() < 750) {
-				Emit (Events::EVibrate, 1, 0.5);
+			//else if (distance.magnitude() < 250) {
+			//	Emit (Events::EVibrate, 0, 0.5);
+			//}
+			if (vehicles.size() > 1) {
+				NxActor* v2 = vehicles[1]->getPhysicsObj();
+				distance = meteorPos - v2->getGlobalPosition();
+				double d = distance.magnitude();
+				if (d < 350) {
+					if (d!=0)
+						Emit (Events::EVibrate, 1, (350 - d)/d);
+					else
+						Emit (Events::EVibrate, 1, 1);
+				}
+				/*else if (distance.magnitude() < 750) {
+					Emit (Events::EVibrate, 1, 0.5);
+				}*/
 			}
 
 			addCrater (m->getCraterToSpawn());

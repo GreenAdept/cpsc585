@@ -726,7 +726,7 @@ void Renderer::adjustBestTimes( vector<string>& bestTimeEntries )
 	for( int i=0; i < 5; i++ )
 	{
 		timeStream.clear();
-		timeStream << bestTimeEntries[i].c_str();
+		timeStream << "PLAYER 1             " << bestTimeEntries[i].c_str();
 		m_sBestTimes[i] = timeStream.str().c_str();
 	}
 }
