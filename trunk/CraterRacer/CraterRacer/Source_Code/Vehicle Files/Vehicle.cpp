@@ -132,8 +132,6 @@ int Vehicle::getMass()
 //--------------------------------------------------------------------------------------
 float Vehicle::getSpeed( )
 {
-	DebugWriter debug;
-	debug.writeToFile((float)sqrt(velocity.x*velocity.x + velocity.y*velocity.y + velocity.z*velocity.z));
 	return (float)sqrt(velocity.x*velocity.x + velocity.y*velocity.y + velocity.z*velocity.z);
 }
 
