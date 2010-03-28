@@ -655,13 +655,11 @@ void Renderer::adjustClockImages( string time, int playerID )
 //--------------------------------------------------------------------------------------
 void Renderer::adjustSpeedImage( float speed, int playerID )
 {
-	float maxSpeed = 85; // m/s
+	float maxSpeed = 80; // m/s
 	float maxRadians = 4.41238898; //max rotation (where the 85 m/s mark on the speedometer would be)
 
 	if( playerID < PLAYER1 || playerID > PLAYER2 )
 		return;
-
-	speed = speed / (MAX_SPEED_TIME_ELAPSED+0.1) * maxSpeed;
 
 	if( speed > maxSpeed )
 		speed = maxSpeed;

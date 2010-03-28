@@ -21,8 +21,6 @@
 #define WHEEL2_FILE		L"Media\\Meshes\\Wheel2.x"
 #define WHEEL3_FILE		L"Media\\Meshes\\Wheel3.x"
 
-#define MAX_SPEED_TIME_ELAPSED 0.2
-
 enum ProcessType		{ ON_LOST, ON_RESET, ON_DESTROY };
 enum Directions			{ LEFT, FORWARD, RIGHT, BACKWARD }; 
 enum Wheels				{ WHEEL0, WHEEL1, WHEEL2, WHEEL3 };

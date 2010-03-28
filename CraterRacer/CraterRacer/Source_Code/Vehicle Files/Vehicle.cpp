@@ -132,16 +132,9 @@ int Vehicle::getMass()
 //--------------------------------------------------------------------------------------
 float Vehicle::getSpeed( )
 {
-	Vec3 d = m_vPosition - m_vPreviousPosition;
-	m_fRunningDistance += sqrt(d.x*d.x + d.y*d.y + d.z*d.z);
-
-	if( m_fRunningTime >= MAX_SPEED_TIME_ELAPSED )
-	{
-		m_fSpeed = m_fRunningDistance * m_fTimeElapsed;
-		m_fRunningTime = 0.0;
-		m_fRunningDistance = 0.0;
-	}
-	return m_fSpeed;
+	DebugWriter debug;
+	debug.writeToFile((float)sqrt(velocity.x*velocity.x + velocity.y*velocity.y + velocity.z*velocity.z));
+	return (float)sqrt(velocity.x*velocity.x + velocity.y*velocity.y + velocity.z*velocity.z);
 }
 
 
