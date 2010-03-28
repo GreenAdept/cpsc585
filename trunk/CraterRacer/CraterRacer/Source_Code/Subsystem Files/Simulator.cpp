@@ -549,28 +549,22 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 			NxActor* v1 = vehicles[0]->getPhysicsObj();
 			NxVec3 distance = meteorPos - v1->getGlobalPosition();
 			double d = distance.magnitude();
-			if (d < 350) {
+			if (d < 250) {
 				if (d != 0)
-					Emit (Events::EVibrate, 0, (350 - d)/d);
+					Emit (Events::EVibrate, 0, (250 - d)/d);
 				else
 					Emit (Events::EVibrate, 0, 1);
 			}
-			//else if (distance.magnitude() < 250) {
-			//	Emit (Events::EVibrate, 0, 0.5);
-			//}
 			if (vehicles.size() > 1) {
 				NxActor* v2 = vehicles[1]->getPhysicsObj();
 				distance = meteorPos - v2->getGlobalPosition();
 				double d = distance.magnitude();
-				if (d < 350) {
+				if (d < 250) {
 					if (d!=0)
-						Emit (Events::EVibrate, 1, (350 - d)/d);
+						Emit (Events::EVibrate, 1, (250 - d)/d);
 					else
 						Emit (Events::EVibrate, 1, 1);
 				}
-				/*else if (distance.magnitude() < 750) {
-					Emit (Events::EVibrate, 1, 0.5);
-				}*/
 			}
 
 			addCrater (m->getCraterToSpawn());
