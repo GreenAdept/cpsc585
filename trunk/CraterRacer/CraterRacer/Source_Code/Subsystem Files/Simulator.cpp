@@ -33,6 +33,11 @@ Simulator::Simulator()
 	m_bStartRace			= false;
 
 	forward = false;
+
+	//init contact report
+	
+	//m_Scene->setGroupCollisionFlag(1,0,true);
+	
 }
 
 //--------------------------------------------------------------------------------------
@@ -689,6 +694,20 @@ void Simulator::createVehicle( Vehicle* vehicle )
 	//Add the vehicle to global list of all vehicles
 	vehicle->setPhysicsObj( pActor );
 	m_Actors.push_back( pActor );
+
+	//put all vehicles in collision group 1
+	setActorGroup(pActor, 1);
+}
+
+void Simulator::setActorGroup(NxActor *actor, NxCollisionGroup group)
+{
+    NxU32 nbShapes = actor->getNbShapes();
+    NxShape*const* shapes = actor->getShapes();
+
+    while (nbShapes--)
+    {
+        shapes[nbShapes]->setGroup(group);
+    }
 }
 
 void Simulator::createMeteorGroup(MeteorGroup* mg) {
@@ -730,7 +749,7 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 			double d = distance.magnitude();
 			if (d < 250) {
 				if (d != 0)
-					Emit (Events::EVibrate, 0, (250 - d)/d);
+					Emit (Events::EVibrate, 0, ((250 - d)/d)*100);
 				else
 					Emit (Events::EVibrate, 0, 1);
 			}
@@ -740,7 +759,7 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 				double d = distance.magnitude();
 				if (d < 250) {
 					if (d!=0)
-						Emit (Events::EVibrate, 1, (250 - d)/d);
+						Emit (Events::EVibrate, 1, ((250 - d)/d)*100);
 					else
 						Emit (Events::EVibrate, 1, 1);
 				}

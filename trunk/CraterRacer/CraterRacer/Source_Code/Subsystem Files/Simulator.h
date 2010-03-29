@@ -16,6 +16,7 @@
 #include "Terrain.h"
 #include "DebugWriter.h"
 #include "Sound.h"
+//#include "ContactReport.h"
 
 #define PI						3.14159265
 #define MAX_FORWARD_VELOCITY	70.0
@@ -61,6 +62,8 @@ public:
 	void setSteeringPower(double steeringPower);
 	void setBrakingFriction(double friction);
 	void setVehicleMass(double mass);
+
+	void setActorGroup(NxActor *actor, NxCollisionGroup group);
 
 	void printVariables();
 	void setSuspensionFlag(bool flag);
