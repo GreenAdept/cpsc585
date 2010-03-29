@@ -152,7 +152,7 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 HRESULT Renderer::OnCreate( Device* device )
 {
 	HRESULT hr;
-	D3DXCreateTextureFromFile(LPDIRECT3DDEVICE9 pDevice,LPCTSTR pSrcFile, LPDIRECT3DTEXTURE9 *ppTexture )
+	D3DXCreateTextureFromFile( device, L"Media//Images//Logo.png", &skybox );
 	//initialize the resource manager for our HUD and Pause Screen.
 	V_RETURN( m_ResourceManager.OnD3D9CreateDevice( device ) );
 
