@@ -72,11 +72,12 @@
 -----------------------------------------------------------------------
 
  The menu screen is loaded first.  Here is where you will see the option
- for "Single Player", "Two Player", "Time Trial" or "Exit".
+ for "Single Player", "Two Player", "Time Trial" or "Exit".  Currently, 
+ "Time Trial" doesn't work.
 
  New to this milestone are the "Two Player" and "Time Trial" options.
- In time trial, you race by yourself against the clock.  If your time is
- within the top 5, it is recorded in times.txt.
+ While time trial was working, you race by yourself against the clock.  
+ If your time is within the top 5, it is recorded in times.txt.
 
  When the game loads, there are eight cars loaded.  One car will be
  controlled by you, the other are AI vehicles that follows the
@@ -120,3 +121,19 @@
  - Victory screen doesn't show correct ranking or times
  - Shadows are not present
  - Need to fix spedometer to show km/hr rather than m/s
+ - Fix time trial
+ - Optimize to increase frame rate
+
+-----------------------------------------------------------------------
+			For Next Milestone
+-----------------------------------------------------------------------
+
+ - Shadows
+ - Boost ramps
+ - Props
+ - Fix time trial
+ - Spawn meteors more randomly
+ - Respawning if off the track for too long
+ - Sound effects for vehicle collisions
+ - Sound tweaking
+ - Particle effects
