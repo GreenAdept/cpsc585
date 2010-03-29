@@ -131,6 +131,132 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 
 		//set elapsed time in vehicles for speed calculation later
 		vehicles[i]->setTimeElapsed( elapsedTime );
+
+		/*Matrix m2;
+		D3DXMatrixIdentity( &mat );
+		D3DXMatrixIdentity( &m2 );
+		m_Vehicle->getGlobalPose().getColumnMajor44( m );
+		D3DXMatrixIdentity( &rotate );
+		D3DXMatrixRotationY( &rotate, -vehicles[i]->m_Wheels[0].getAngle()*(D3DX_PI/180));
+		D3DXMatrixTranslation( &mat, 0, height/2, 0 );
+		D3DXMatrixMultiply( &mat, &rotate, &mat);
+		D3DXMatrixMultiply( &m, &mat, &m);
+
+		vehicles[i]->m_Wheels[0].update(m);
+		vehicles[i]->m_Wheels[1].update(m);*/
+
+		NxVec3 heading = vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(0, 0, 1);
+
+		float angleX = findAngle(NxVec3(1, 0, 0), vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(1, 0, 0));
+		if (heading.x < 0) {
+			angleX = -angleX;
+		}
+
+		float angleY = findAngle(NxVec3(0, 1, 0), vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(0, 1, 0));
+		if (heading.y > 0) {
+			angleY = -angleY;
+		}
+
+		float angleY2 = findAngle(NxVec3(0, 1, 0), vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(0, 1, 0));
+
+		if (i ==0) {
+		//m_Debugger.writeToFile(Vec3(heading.x, heading.y, heading.z));
+			//m_Debugger.writeToFile(angleY2);
+		}
+
+		float angleZ = findAngle(NxVec3(0, 0, 1), vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(0, 0, 1));
+		if (heading.z >= 0 && heading.y >= 0 && heading.x >= 0) {
+			angleY2 = -angleY2;
+		}
+		else if (heading.z >= 0 && heading.y >= 0 && heading.x < 0) {
+			angleY2 = angleY2;
+		}
+		else if (heading.z >= 0 && heading.y < 0 && heading.x >= 0) {
+			angleY2 = -angleY2;
+		}
+		else if (heading.z >= 0 && heading.y < 0 && heading.x < 0) {
+			angleY2 = angleY2;
+		}
+		else if (heading.z < 0 && heading.y >= 0 && heading.x >= 0) {
+			angleY2 = -angleY2;
+		}
+		else if (heading.z < 0 && heading.y >= 0 && heading.x < 0) {
+			angleY2 = -angleY2;
+		}
+		else if (heading.z < 0 && heading.y < 0 && heading.x >= 0) {
+			angleY2 = -angleY2;
+		}
+		else if (heading.z < 0 && heading.y < 0 && heading.x < 0) {
+			angleY2 = -angleY2;
+		}
+
+
+		Matrix translate, translate2, transform;
+		Matrix mX, mY, mZ;
+
+		//negative chassis
+		Matrix negChassis, rot, test, test2, chassis;
+		D3DXMatrixIdentity(&negChassis);
+		D3DXMatrixIdentity(&rot);
+		D3DXMatrixIdentity(&chassis);
+		D3DXMatrixTranslation( &negChassis, -vehicles[i]->m_Wheels[0].getChassisPt().x, -vehicles[i]->m_Wheels[0].getChassisPt().y, -vehicles[i]->m_Wheels[0].getChassisPt().z);
+		D3DXMatrixTranslation( &chassis, vehicles[i]->m_Wheels[0].getChassisPt().x, vehicles[i]->m_Wheels[0].getChassisPt().y, vehicles[i]->m_Wheels[0].getChassisPt().z);
+		D3DXMatrixRotationY(&rot, vehicles[i]->m_Wheels[0].getAngle()*(D3DX_PI/180));
+
+		test = rot * negChassis;
+		test2 = chassis * rot;
+
+		Matrix test3;
+		D3DXMatrixIdentity( &test3 );
+		D3DXMatrixRotationY( &test3, vehicles[i]->m_Wheels[0].getAngle()*(D3DX_PI/180));
+
+
+
+		D3DXMatrixIdentity( &translate );
+		D3DXMatrixIdentity( &translate2 );
+		D3DXMatrixIdentity( &mX );
+		D3DXMatrixIdentity( &mY);
+		D3DXMatrixIdentity( &mZ);
+
+		D3DXMatrixRotationX( &mX, angleY*(D3DX_PI/180));
+		D3DXMatrixRotationY( &mY, angleX*(D3DX_PI/180));
+		D3DXMatrixRotationZ( &mZ, angleY2*(D3DX_PI/180));
+
+		D3DXMatrixTranslation( &translate, vec.x, vec.y, vec.z);
+
+		transform = ((mZ * mX * (test3 * mY)) * translate);
+
+		D3DXMatrixTranslation( &translate2, 0, -height/2, 0 );
+		D3DXMatrixMultiply( &transform, &transform, &translate2 );
+
+		//vehicles[i]->m_Wheels[0].update(transform);
+		//vehicles[i]->m_Wheels[1].update(transform);
+		vehicles[i]->m_Wheels[0].update(negChassis * translate);
+		vehicles[i]->m_Wheels[1].update(negChassis * translate);
+
+		/////////////////////////////////////
+
+		D3DXMatrixIdentity( &translate );
+		D3DXMatrixIdentity( &translate2 );
+		D3DXMatrixIdentity( &mX );
+		D3DXMatrixIdentity( &mY);
+		D3DXMatrixIdentity( &mZ);
+
+		D3DXMatrixRotationX( &mX, angleY*(D3DX_PI/180));
+		D3DXMatrixRotationY( &mY, angleX*(D3DX_PI/180));
+		D3DXMatrixRotationZ( &mZ, angleY2*(D3DX_PI/180));
+
+		D3DXMatrixTranslation( &translate, vec.x, vec.y, vec.z);
+
+		transform = (mZ * mX * mY) * translate;
+
+		D3DXMatrixTranslation( &translate2, 0, -height/2, 0 );
+		D3DXMatrixMultiply( &transform, &transform, &translate2 );
+
+		vehicles[i]->m_Wheels[2].update(transform);
+		vehicles[i]->m_Wheels[3].update(transform);
+
+
 	}
 
 	//Initialize the meteors and update all the meteor positions
@@ -145,6 +271,10 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 			simulateMeteorGroup(meteorGroups[i], elapsedTime, vehicles);
 		}
 	}
+}
+
+float Simulator::findAngle(NxVec3 a, NxVec3 b) {
+	return acos(a.dot(b)/(a.magnitude() * b.magnitude()))*(180/PI);
 }
 
 void Simulator::respawn(NxActor* actor, Vehicle* vehicle)
@@ -328,6 +458,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 
 	bool inAir = true;
 	bool onGround = true;
+	float angleX, angleY, angleZ;
 
 	//SUSPENSION
 	for (int i = 0; i < 4 /*number of wheels*/; i++) 
@@ -356,6 +487,22 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 		NxMat33 localOrientation;
 		actor->getGlobalOrientation().getInverse(localOrientation);
 		NxVec3 pointVelocity = localOrientation * actor->getLocalPointVelocity(w->getChassisPt());
+
+		/*angleX = findAngle(NxVec3(1, 0, 0), localOrientation * NxVec3(1, 0, 0));
+		angleY = findAngle(NxVec3(0, 1, 0), localOrientation * NxVec3(0, 1, 0));
+		angleZ = findAngle(NxVec3(0, 0, 1), localOrientation * NxVec3(0, 0, 1));
+
+		Matrix translate;
+		Matrix mX, mY, mZ;
+		D3DXMatrixRotationX( &mX, 0);
+		D3DXMatrixRotationY( &mY,0);
+		D3DXMatrixRotationZ( &mZ, 0);
+
+		D3DXMatrixTranslation( &translate, wheelPos.x, wheelPos.y, wheelPos.z);
+
+		Matrix transform = (mZ * mX * mY) * translate;
+
+		w->update(transform);*/
 
 		NxVec3 normal = rotate(w->getWheelLateral(), w->getAngle());
 
