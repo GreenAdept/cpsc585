@@ -13,26 +13,26 @@ POSITION:			-235 30 20
 
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody2.x
-POSITION:			-250 30 30
+POSITION:			-250 30 20
 
 
 **COMPUTER_VEHICLES ----------------------------------------------
 
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody3.x
-POSITION:			-235 30 40
+POSITION:			-220 30 30
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody4.x
-POSITION:			-250 30 50
+POSITION:			-235 30 30
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody5.x
-POSITION:			-240 30 30
+POSITION:			-235 30 40
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody6.x
-POSITION:			-245 30 40
+POSITION:			-250 30 40
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody7.x
-POSITION:			-240 30 50
+POSITION:			-220 30 50
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody8.x
-POSITION:			-255 30 40
+POSITION:			-235 30 50
