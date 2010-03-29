@@ -33,45 +33,19 @@ void Wheel::initialize( Device* device, LPCWSTR filename, Vec3 pt, LPCWSTR effec
 //--------------------------------------------------------------------------------------
 void Wheel::update( Matrix mat )
 {
-	Matrix m, m2;
+	Matrix m;
 	Matrix translate, rotate;
 	Vec3 sus = getSuspensionAxis() * m_fDisplacement;
 
 
-	//DebugWriter debug;
-	//debug.writeToFile(m_fAngle);
-
-	D3DXMatrixIdentity( &translate );
-	//D3DXMatrixIdentity( &rotate );
-
-	D3DXMatrixTranslation( &translate, sus.x, sus.y, sus.z );
-	//D3DXMatrixRotationY( &rotate, -m_fAngle*(D3DX_PI/180));
-	//D3DXMatrixMultiply( &m2, &translate, &rotate);
-	//D3DXMatrixMultiply( &m2, &rotate, &translate);
-	//D3DXMatrixMultiply( &m, &mat, &m2 );
-	D3DXMatrixMultiply( &m, &translate, &mat );
-
-	//negative chassis
-	/*Matrix negChassis;
-	D3DXMatrixIdentity(&negChassis);
-	D3DXMatrixTranslation( &negChassis, -m_vGlobalChassisPt.x, -m_vGlobalChassisPt.y, -m_vGlobalChassisPt.z);
-
-	//rotate
+	D3DXMatrixTranslation( &translate, -m_vChassisPt.x, -m_vChassisPt.y, -m_vChassisPt.z );
 	D3DXMatrixRotationY( &rotate, -m_fAngle*(D3DX_PI/180));
-	D3DXMatrixMultiply( &rotate, &rotate, &negChassis);
-	
-	//combine rotate and negChasis
-	//D3DXMatrixMultiply( &rotate, &rotate, &negChassis);
+	D3DXMatrixMultiply( &m, &translate, &rotate );
 
-	//regular translation
-	D3DXMatrixTranslation( &translate, sus.x+m_vGlobalChassisPt.x, sus.y+m_vGlobalChassisPt.y, sus.z+m_vGlobalChassisPt.z);
-	//D3DXMatrixTranslation( &translate, sus.x, sus.y, sus.z);
+	D3DXMatrixTranslation( &translate, m_vChassisPt.x + sus.x, m_vChassisPt.y + sus.y, m_vChassisPt.z + sus.z );
+	D3DXMatrixMultiply( &m, &m, &translate );
+	D3DXMatrixMultiply( &m, &m, &mat );
 
-	//combine rotation and translation
-	D3DXMatrixMultiply( &m2, &translate, &rotate);
-
-	//combine result and input
-	D3DXMatrixMultiply( &m, &m2, &mat );*/
 
 	Entity::update( m );
 }
