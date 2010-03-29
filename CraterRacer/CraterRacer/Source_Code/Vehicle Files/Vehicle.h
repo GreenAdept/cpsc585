@@ -37,6 +37,7 @@ Wheel angle (degrees):
 #include "VehicleAI.h"
 #include "Input.h"
 #include "Wheel.h"
+#include "Clock.h"
 
 using namespace std;
 
@@ -84,6 +85,7 @@ public:
 	bool	isPlayer		( );
 
 	Wheel m_Wheels[4];
+	Clock clock;
 
 protected:
 	Input		input;

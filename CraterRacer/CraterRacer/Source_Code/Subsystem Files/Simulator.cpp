@@ -596,10 +596,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		globalWheelForce[2] += frictionForce;
 		globalWheelForce[3] += frictionForce;
 		if (index == 0) {
-			Emit (Events::EVibrate, 0, 1);
+			Emit (Events::EVibrate, 0, 30);
 		}
 		else if (index == 1) {
-			Emit (Events::EVibrate, 1, 1);
+			Emit (Events::EVibrate, 1, 30);
 		}
 
 	}
