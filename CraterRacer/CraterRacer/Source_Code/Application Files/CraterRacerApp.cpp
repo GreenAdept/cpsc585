@@ -47,7 +47,8 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 {
 	bool doControllerProcessing = false;
 	DWORD dwReturnVal;
-
+	
+	UpdateAudio(m_AppState);
 	if( m_bIsLoading )
 		startGame( 0 );
 
@@ -59,7 +60,6 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 			g_pGame->processInput( fElapsedTime );
 			g_pGame->simulate( fElapsedTime );
 			g_pGame->think( );
-			UpdateAudio();
 		}
 
 		else if( g_pGame && m_AppState == APP_GAME_LOADING )
@@ -75,13 +75,6 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 
 				//stop loading animation
 				//KillTimer( fWindow, m_AnimationID );
-
-				//start background music
-				if( g_audioState.pSoundBank )
-				{
-					g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
-					g_audioState.pSoundBank->Play(g_audioState.iEngine, 0, 0, NULL);
-				}
 
 				//start game
 				m_Clock->start();
@@ -444,6 +437,7 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 	// Render the scene
 	if( SUCCEEDED( device->BeginScene() ) )
 	{
+		g_audioState.gameState = m_AppState;
 		switch( m_AppState )
 		{
 			case APP_STARTUP:
@@ -508,9 +502,9 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 				if( m_AppState == APP_PAUSED )
 					m_Renderer->drawPauseScreen( );
 
+
 				if( m_AppState == APP_SHOW_GAMERULES2 )
 					m_Renderer->drawPauseGameRules( );
-				
 				break;
 		}
 	}
@@ -579,7 +573,6 @@ long WINAPI RacerApp::startGame( long lParam )
 {
 	//Enter the critical section -- other threads are locked out
     //EnterCriticalSection(&m_CriticalSection);
- 
 	m_SceneLoader->initScene( &g_pGame );
 
 	m_SceneLoader->startGame( m_sGameFilename ); //load one player game

@@ -9,18 +9,23 @@
 #include <strsafe.h>
 #pragma warning( default : 4996 )
 #include "Constants.h"
-#include "Sound.h"
+#include "ApplicationState.h"
+
 
 //-----------------------------------------------------------------------------
 // Forward declaration
 //-----------------------------------------------------------------------------
 HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgSettingsFile, LPCWSTR bgSoundbankFile );
-void UpdateAudio();
+void UpdateAudio(ApplicationState appState);
 VOID CleanupXACT();
 void WINAPI XACTNotificationCallback( const XACT_NOTIFICATION* pNotification );
+void playVictory();
+void playStartMenu();
+void playPauseMenu();
+void pauseMusic();
 HRESULT FindMediaFileCch( WCHAR* strDestPath, int cchDest, LPCWSTR strFilename );
-bool DoesCommandLineContainAuditionSwitch();
 
+extern enum ApplicationState;
 //-----------------------------------------------------------------------------
 // Struct to hold audio game state
 //-----------------------------------------------------------------------------
@@ -28,19 +33,24 @@ struct AUDIO_STATE
 {
     XACTINDEX iApplicationStart;
     XACTINDEX iGameStart;
+	XACTINDEX iStartMenu;
+	XACTINDEX iPauseMenu;
+	XACTINDEX iVictoryMusic;
 	XACTINDEX iEngine;
 	XACTINDEX iImpact;
 
 	XACTCATEGORY iMusicCategory;
-    XACTCATEGORY iGlobalCategory;
+    XACTCATEGORY iEffectCategory;
     XACTVARIABLEINDEX iRPMVariable;
     XACTVARIABLEVALUE nRPM;
 
 	float fMusicVolume;
-	float fGlobalVolume;
+	float fEffectVolume;
 
 	int acceleration;
 	bool reverse;
+
+	ApplicationState gameState;
 
     IXACT3Engine* pEngine;
     IXACT3SoundBank* pSoundBank;

@@ -12,7 +12,9 @@
 #include "SceneLoader.h"
 #include "Clock.h"
 #include "DebugWriter.h"
+#include "Sound.h"
 #include <string>
+#include "ApplicationState.h"
 
 #define ONE_PLAYER_SCENE_FILE	"Source_Code\\Scene_Files\\OnePlayer.SCENE"
 #define TWO_PLAYER_SCENE_FILE	"Source_Code\\Scene_Files\\TwoPlayer.SCENE"
@@ -26,10 +28,6 @@
 #define SE_WAVEBANK_FILE		L"Media\\Audio\\Win\\SoundEffectWaveBank.xwb"
 #define BG_SOUNDBANK_FILE		L"Media\\Audio\\Win\\MainSoundBank.xsb"
 #define BG_SETTINGS_FILE		L"Media\\Audio\\Win\\BGMusic.xgs"
-
-enum ApplicationState { APP_STARTUP, APP_RENDER_GAME, APP_PAUSED, 
-						APP_GAME_LOADING, APP_SHOW_GAMERULES, APP_SHOW_GAMERULES2,
-						APP_VICTORY, APP_SHOWTIMES };
 
 //--------------------------------------------------------
 //		CLASS: RacerApp
