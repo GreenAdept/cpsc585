@@ -366,7 +366,7 @@ bool CALLBACK RacerApp::ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSetting
                             &caps ) );
 
     // Turn vsync off
-    pDeviceSettings->d3d9.pp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+    //pDeviceSettings->d3d9.pp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 
     return true;
 }
