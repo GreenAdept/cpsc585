@@ -104,21 +104,25 @@ void SceneLoader::startGame( string filename )
 //--------------------------------------------------------------------------------------
 void SceneLoader::processTerrainInfo( ifstream& file )
 {
-	string	terrainFile, 
+	string	terrainFile1, terrainFile2, 
 			terrainEffectFile,
 			flush;
 	int		laps;
 
-	file >> flush >> terrainFile;
-	if( terrainFile != "MESH_FILENAME" ) return;
-	file >> terrainFile;
+	file >> flush >> terrainFile1;
+	if( terrainFile1 != "MESH_FILENAME1" ) return;
+	file >> terrainFile1;
+	
+	file >> terrainFile2;
+	if( terrainFile2 != "MESH_FILENAME2" ) return;
+	file >> terrainFile2;
 
 	file >> terrainEffectFile;
 	if( terrainEffectFile != "EFFECT_FILENAME" ) return;
 	file >> terrainEffectFile;
 
 	// Create the terrain in the Entity Manager
-	m_Objs.entityManager->makeTerrain( m_Device, Vec3(0, 0, 0), toLPCWSTR(terrainFile).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
+	m_Objs.entityManager->makeTerrain( m_Device, Vec3(0, 0, 0), toLPCWSTR(terrainFile1).c_str(), toLPCWSTR(terrainFile2).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
 }
 
 
@@ -136,7 +140,7 @@ void SceneLoader::processPathInfo( ifstream& file )
 	if( str != "NUM_WAYPOINTS" ) return;
 	file >> num_waypoints;
 
-	AIPath* path = m_Objs.entityManager->getTerrain()->getTrack();
+	AIPath* path = m_Objs.entityManager->getTerrain(0)->getTrack();
 	for (int i=0; i<num_waypoints; i++) {
 		file >> x >> y >> z;
 		path->addWaypoint (x, y, z);
@@ -288,7 +292,7 @@ void SceneLoader::processVehicleInfo( ifstream& file )
 
 	processPlayerVehicles( file, numPlayers );
 	processComputerVehicles( file, numComputers );
-	m_Objs.entityManager->getTerrain()->setNumberOfLaps( numLaps );
+	m_Objs.entityManager->getTerrain(0)->setNumberOfLaps( numLaps );
 }
 
 
@@ -375,10 +379,10 @@ void SceneLoader::initializeSimulator( )
 	m_Objs.varLoader->loadVars( m_Objs.simulator );
 
 	//initialize simulator with terrain
-	Terrain* terrain = m_Objs.entityManager->getTerrain();
-	if( !terrain ) return;
+	vector<Terrain*> terrains = m_Objs.entityManager->getTerrain();
+	if( terrains.size() <= 0 ) return;
 
-	m_Objs.simulator->InitNx( terrain );
+	m_Objs.simulator->InitNx( terrains );
 }
 
 //--------------------------------------------------------------------------------------

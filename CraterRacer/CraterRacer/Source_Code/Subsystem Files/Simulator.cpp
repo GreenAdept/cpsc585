@@ -39,7 +39,7 @@ Simulator::Simulator()
 // Function:  InitNx
 // Initializes the PhysX engine as well as some other fundamental elements
 //--------------------------------------------------------------------------------------
-void Simulator::InitNx( Terrain* terrain ) 
+void Simulator::InitNx( vector<Terrain*> terrains ) 
 {
 	//Create the Phyics SDK
 	m_PhysicsSDK = NxCreatePhysicsSDK( NX_PHYSICS_SDK_VERSION );
@@ -68,7 +68,8 @@ void Simulator::InitNx( Terrain* terrain )
 	defaultMaterial->setDynamicFriction(m_rDynamicFriction);
 
 	//Create the ground
-	addTerrainFromX( terrain );
+	addTerrainFromX( terrains[0], 0 );
+	addTerrainFromX( terrains[1], 1 );
 	
 	m_PhysicsSDK->getFoundationSDK().getRemoteDebugger()->connect ("localhost", 5425);
 }
@@ -769,13 +770,18 @@ NxActor* Simulator::createLittleBox( NxVec3 pos )
 //--------------------------------------------------------------------------------------
 // Function:  addTerrainFromX
 //--------------------------------------------------------------------------------------
-void Simulator::addTerrainFromX( Terrain* terrain )
+void Simulator::addTerrainFromX( Terrain* terrain, int id )
 {
 	Mesh*  mesh = terrain->getRenderable()->m_pMesh;
 	Vec3   p = terrain->getPosition();
 	NxVec3 pos (p.x, p.y, p.z);
 
 	NxTriangleMeshShapeDesc ShapeDesc = this->createTriMeshShape( mesh );
+
+	if(id)
+		ShapeDesc.userData = "OuterTerrain";
+	else
+		ShapeDesc.userData = "InnerTerrain";
 
 	// Create terrain and add to scene
 	NxActorDesc actorDesc;

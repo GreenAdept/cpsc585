@@ -1,6 +1,7 @@
 **TERRAIN_INFORMATION -------------------------------------------
 
-MESH_FILENAME			Media\\Meshes\\Track.x
+MESH_FILENAME1			Media\\Meshes\\Track_Inner.x
+MESH_FILENAME2			Media\\Meshes\\Track_Outer.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 
 
