@@ -97,6 +97,7 @@ private:
 	int					m_iLapImages		[ 2 ];
 	bool				m_bDrawWrongWay		[ 2 ];
 	float				m_fSpeedRotations[2];						//degree in radians to rotate speedometer wand image
+	LPDIRECT3DTEXTURE9	skybox;
 
 	Vec3				m_BallLocations		[ NUM_LOADING_BALLS ];	//ball image locations
 	int					m_iButtonImages		[ NUM_BUTTONS ];		//current button images (index into m_Images)

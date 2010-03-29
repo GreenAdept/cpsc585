@@ -14,6 +14,7 @@
 #define TERRAIN_EFFECT_FILE				L"Source Code\\Effect Files\\Terrain.fx"
 
 //Image files
+#define SKYBOX_FILE						L"Media\\Images\\Stars.dds"
 
 //HUD image files
 #define SPEEDOMETER_IMAGE_FILE			"Media\\Images\\Speedometer.png"

@@ -24,17 +24,11 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgS
     ZeroMemory( &g_audioState, sizeof( AUDIO_STATE ) );
 	InitializeCriticalSection( &g_audioState.cs );
 
-    hr = CoInitializeEx( NULL, COINIT_MULTITHREADED );  // COINIT_APARTMENTTHREADED will work too
+	// Initialize the audio engine
+    hr = CoInitializeEx( NULL, COINIT_MULTITHREADED );
     if( SUCCEEDED( hr ) )
     {
-        // Switch to auditioning mode based on command line.  Change if desired
-        bool bAuditionMode = DoesCommandLineContainAuditionSwitch();
-        bool bDebugMode = false;
-
-        DWORD dwCreationFlags = 0;
-        if( bAuditionMode ) dwCreationFlags |= XACT_FLAG_API_AUDITION_MODE;
-        if( bDebugMode ) dwCreationFlags |= XACT_FLAG_API_DEBUG_MODE;
-
+        DWORD dwCreationFlags = XACT_FLAG_API_AUDITION_MODE;
         hr = XACT3CreateEngine( dwCreationFlags, &g_audioState.pEngine );
     }
     if( FAILED( hr ) || g_audioState.pEngine == NULL )
@@ -94,7 +88,7 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgS
     desc.type = XACTNOTIFICATIONTYPE_WAVEBANKPREPARED;
     g_audioState.pEngine->RegisterNotification( &desc );
 
-    // The "sound bank destroyed" notification will let the app know when it is save to use
+    // The "sound bank destroyed" notification will let the app know when it is no longer safe to
     // play cues that reference streaming wave data.
     desc.flags = XACT_FLAG_NOTIFICATION_PERSIST;
     desc.type = XACTNOTIFICATIONTYPE_SOUNDBANKDESTROYED;
@@ -116,13 +110,7 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgS
 
     
     //-----------------------------------------------------------------------------------------
-    // Create a streaming XACT wave bank file.  
-    // Take note of the following:
-    // 1) This wave bank in the XACT project file must marked as a streaming wave bank 
-    //    This is set inside the XACT authoring tool)
-    // 2) Use FILE_FLAG_OVERLAPPED | FILE_FLAG_NO_BUFFERING flags when opening the file 
-    // 3) To use cues that reference this streaming wave bank, you must wait for the 
-    //    wave bank to prepared first or the playing the cue will fail
+    // Create a streaming XACT wave bank file for the background music.
     //-----------------------------------------------------------------------------------------
     if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, bgWavebankFile ) ) )
         return hr;
@@ -146,8 +134,11 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgS
 	
 	if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, seWavebankFile ) ) )
         return hr;
-
+	
+	//----------------------------------------------------------------------------------------
     // Create an "in memory" XACT wave bank file using memory mapped file IO
+	// for sound effects.
+	//----------------------------------------------------------------------------------------
     hr = E_FAIL; // assume failure
     hFile = CreateFile( str, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL );
     if( hFile != INVALID_HANDLE_VALUE )
@@ -164,16 +155,18 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgS
                     hr = g_audioState.pEngine->CreateInMemoryWaveBank( g_audioState.pbSoundEffectWaveBank, dwFileSize, 0,
                                                                        0, &g_audioState.pSoundEffectWaveBank );
                 }
-                CloseHandle( hMapFile ); // pbWaveBank maintains a handle on the file so close this unneeded handle
+                CloseHandle( hMapFile ); // pbSoundEffectWaveBank maintains a handle on the file so close this unneeded handle
             }
         }
-        CloseHandle( hFile ); // pbWaveBank maintains a handle on the file so close this unneeded handle
+        CloseHandle( hFile ); // pbSoundEffectWaveBank maintains a handle on the file so close this unneeded handle
     }
     if( FAILED( hr ) )
         return E_FAIL; // CleanupXACT() will cleanup state before exiting
 
+	//-------------------------------------------------------------------------------------------------
     // Read and register the sound bank file with XACT.  Do not use memory mapped file IO because the 
     // memory needs to be read/write and the working set of sound banks are small.
+	//-------------------------------------------------------------------------------------------------
     if( FAILED( hr = FindMediaFileCch( str, MAX_PATH, bgSoundbankFile ) ) )
         return hr;
     hr = E_FAIL; // assume failure
@@ -204,8 +197,11 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgS
     // Note that if the cue does not exist in the sound bank, the index will be XACTINDEX_INVALID
     // however this is ok especially during development.  The Play or Prepare call will just fail.
 	g_audioState.iGameStart = g_audioState.pSoundBank->GetCueIndex( "GameStart" );
+	g_audioState.iStartMenu = g_audioState.pSoundBank->GetCueIndex( "StartMenu" );
+	g_audioState.iPauseMenu = g_audioState.pSoundBank->GetCueIndex( "PauseMenu" );
 	g_audioState.iEngine = g_audioState.pSoundBank->GetCueIndex( "Engine" );
 	g_audioState.iImpact = g_audioState.pSoundBank->GetCueIndex( "MeteorImpact" );
+	g_audioState.iVictoryMusic = g_audioState.pSoundBank->GetCueIndex( "VictoryMusic" );
 
 	// Get indices to XACT categories 
     g_audioState.iMusicCategory = g_audioState.pEngine->GetCategory( "Music" );
@@ -216,34 +212,21 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgS
 
 	// Set the music volume
 	g_audioState.fMusicVolume = 0.3f;
-	g_audioState.fGlobalVolume = 0.7f;
+	g_audioState.fEffectVolume = 0.9f;
 	g_audioState.pEngine->SetVolume( g_audioState.iMusicCategory, g_audioState.fMusicVolume );
-	g_audioState.pEngine->SetVolume( g_audioState.iGlobalCategory, g_audioState.fGlobalVolume );
+	g_audioState.pEngine->SetVolume( g_audioState.iEffectCategory, g_audioState.fEffectVolume );
     return S_OK;
 }
 
 //-----------------------------------------------------------------------------------------
 // This is the callback for handling XACT notifications.  This callback can be executed on a 
 // different thread than the app thread so shared data must be thread safe.  The game 
-// also needs to minimize the amount of time spent in this callbacks to avoid glitching, 
+// also needs to minimize the amount of time spent in this callback to avoid glitching, 
 // and a limited subset of XACT API can be called from inside the callback so 
 // it is sometimes necessary to handle the notification outside of this callback.
 //-----------------------------------------------------------------------------------------
 void WINAPI XACTNotificationCallback( const XACT_NOTIFICATION* pNotification )
 {
-    // Use the critical section properly to make shared data thread safe while avoiding deadlocks.  
-    //
-    // To do this follow this advice:
-    // 1) Use a specific CS only to protect the specific shared data structures between the callback and the app thread.
-    // 2) Don’t make any API calls while holding the CS. Use it to access the shared data, make a local copy of the data, release the CS and then make the API call.
-    // 3) Spend minimal amount of time in the CS (to prevent the callback thread from waiting too long causing a glitch).   
-    // 
-    // Instead of using a CS, you can also use a non-blocking queues to keep track of notifications meaning 
-    // callback will push never pop only push and the app thread will only pop never push
-
-    // In this simple tutorial, we will respond to a cue stop notification for the song 
-    // cues by simply playing another song but its ultimately it's up the application 
-    // and sound designer to decide what to do when a notification is received. 
     if( pNotification->type == XACTNOTIFICATIONTYPE_CUESTOP )
     {
         // The previous background song ended, so pick and new song to play it
@@ -276,35 +259,67 @@ void WINAPI XACTNotificationCallback( const XACT_NOTIFICATION* pNotification )
 //-----------------------------------------------------------------------------------------
 // Handle these notifications outside of the callback and call pEngine->DoWork()
 //-----------------------------------------------------------------------------------------
-void UpdateAudio()
+void UpdateAudio(ApplicationState appState)
 {
-
 	EnterCriticalSection( &g_audioState.cs );
     bool bHandleStreamingWaveBankPrepared = g_audioState.bHandleStreamingWaveBankPrepared;
 	LeaveCriticalSection( &g_audioState.cs );
 
-	if( bHandleStreamingWaveBankPrepared )
-    {
-        EnterCriticalSection( &g_audioState.cs );
-        g_audioState.bHandleStreamingWaveBankPrepared = false;
-        LeaveCriticalSection( &g_audioState.cs );
+	EnterCriticalSection( &g_audioState.cs );
+	appState = g_audioState.gameState;
+	LeaveCriticalSection( &g_audioState.cs );
 
-        // Starting playing background music after the streaming wave bank 
-        // has been prepared but no sooner.  The background music does not need to be 
-        // zero-latency so the cues do not need to be prepared first
-        g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
-    }
+	if(appState == APP_STARTUP){
+		g_audioState.pSoundBank->Stop(g_audioState.iEngine, 0);
+		g_audioState.pSoundBank->Stop(g_audioState.iPauseMenu, 0);
+		g_audioState.pSoundBank->Stop(g_audioState.iGameStart, 0);
+		g_audioState.pSoundBank->Play(g_audioState.iStartMenu, 0, 0, NULL);
+	}
+	else if(appState == APP_GAME_LOADING){
+		g_audioState.pSoundBank->Stop(g_audioState.iStartMenu, 0);
+	}
+	else if(appState == APP_RENDER_GAME){
+		g_audioState.pSoundBank->Stop(g_audioState.iPauseMenu, 0);
+		g_audioState.fMusicVolume = 0.3f;
+		g_audioState.fEffectVolume = 0.9f;
+		g_audioState.pEngine->SetVolume( g_audioState.iMusicCategory, g_audioState.fMusicVolume );
+		g_audioState.pEngine->SetVolume( g_audioState.iEffectCategory, g_audioState.fEffectVolume );
+		g_audioState.pSoundBank->Play(g_audioState.iEngine, 0, 0, NULL);
+		if( bHandleStreamingWaveBankPrepared )
+			{
+				EnterCriticalSection( &g_audioState.cs );
+				g_audioState.bHandleStreamingWaveBankPrepared = false;
+				LeaveCriticalSection( &g_audioState.cs );
 
-    if( g_audioState.bHandleSongStopped )
-    {
-        EnterCriticalSection( &g_audioState.cs );
-        g_audioState.bHandleSongStopped = false;
-        LeaveCriticalSection( &g_audioState.cs );
+				// Starting playing background music after the streaming wave bank 
+				// has been prepared but no sooner.  The background music does not need to be 
+				// zero-latency so the cues do not need to be prepared first
+				g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
+			}
 
-        g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
-    }
+			if( g_audioState.bHandleSongStopped )
+			{
+				EnterCriticalSection( &g_audioState.cs );
+				g_audioState.bHandleSongStopped = false;
+				LeaveCriticalSection( &g_audioState.cs );
 
-
+				g_audioState.pSoundBank->Play(g_audioState.iGameStart, 0, 0, NULL);
+			}
+	}
+	else if(appState == APP_PAUSED){
+		g_audioState.pSoundBank->Stop(g_audioState.iGameStart, 0);
+		g_audioState.fMusicVolume = 0.8f;
+		g_audioState.fEffectVolume = 0.3f;
+		g_audioState.pEngine->SetVolume( g_audioState.iMusicCategory, g_audioState.fMusicVolume );
+		g_audioState.pEngine->SetVolume( g_audioState.iEffectCategory, g_audioState.fEffectVolume );
+		g_audioState.pSoundBank->Play(g_audioState.iPauseMenu, 0, 0, NULL);
+	}
+	else if(appState == APP_VICTORY || appState == APP_SHOWTIMES){
+		g_audioState.pSoundBank->Stop(g_audioState.iGameStart, 0);
+		g_audioState.pSoundBank->Stop(g_audioState.iEngine, 0);
+		g_audioState.pSoundBank->Stop(g_audioState.iPauseMenu, 0);
+		g_audioState.pSoundBank->Play(g_audioState.iVictoryMusic, 0, 0, NULL);
+	}
     // It is important to allow XACT to do periodic work by calling pEngine->DoWork().  
     // However this must function be call often enough.  If you call it too infrequently, 
     // streaming will suffer and resources will not be managed promptly.  On the other hand 
@@ -320,13 +335,6 @@ void UpdateAudio()
 VOID CleanupXACT()
 {
     // Shutdown XACT
-    //
-    // Note that pEngine->ShutDown is synchronous and will take some time to complete 
-    // if there are still playing cues.  Also pEngine->ShutDown() is generally only 
-    // called when a game exits and is not the preferred method of changing audio 
-    // resources. To know when it is safe to free wave/sound bank data without 
-    // shutting down the XACT engine, use the XACTNOTIFICATIONTYPE_SOUNDBANKDESTROYED 
-    // or XACTNOTIFICATIONTYPE_WAVEBANKDESTROYED notifications 
     if( g_audioState.pEngine )
     {
         g_audioState.pEngine->ShutDown();
@@ -421,24 +429,4 @@ HRESULT FindMediaFileCch( WCHAR* strDestPath, int cchDest, LPCWSTR strFilename )
     StringCchCopy( strDestPath, cchDest, strFilename );
 
     return HRESULT_FROM_WIN32( ERROR_FILE_NOT_FOUND );
-}
-
-//--------------------------------------------------------------------------------------
-bool DoesCommandLineContainAuditionSwitch()
-{
-    const WCHAR* strAuditioning = L"-audition"; size_t nArgLen; int nNumArgs;
-    LPWSTR* pstrArgList = CommandLineToArgvW( GetCommandLine(), &nNumArgs );
-    for( int iArg = 1; iArg < nNumArgs; iArg++ )
-    {
-        StringCchLength( pstrArgList[iArg], 256, &nArgLen );
-        if( _wcsnicmp( pstrArgList[iArg], strAuditioning, nArgLen ) == 0 && nArgLen == 9 )
-            return true;
-    }
-    LocalFree( pstrArgList );
-    return false;
-}
-
-//--------------------------------------------------------
-void CalculateRPM(){
-	
 }
