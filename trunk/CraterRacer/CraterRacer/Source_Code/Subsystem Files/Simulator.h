@@ -20,6 +20,7 @@
 #define PI						3.14159265
 #define MAX_FORWARD_VELOCITY	70.0
 #define MAX_BACKWARD_VELOCITY	40.0
+#define MAX_OFFTRACK_VELOCITY	15.0
 #define	MIN_VELOCITY			0.5
 
 #include <iostream>
@@ -76,7 +77,7 @@ private:
 	void startPhysics(void);
 	void getPhysicsResults(void);
 	void respawn(NxActor* actor, Vehicle* vehicle);
-	void processForceKeys(NxActor* actor, Vehicle* vehicle, double time);
+	void processForceKeys(NxActor* actor, Vehicle* vehicle, int index, double time);
 	NxVec3 normalize(NxVec3 vec);
 	NxVec3 rotate(NxVec3 lateral, float angle);
 	
