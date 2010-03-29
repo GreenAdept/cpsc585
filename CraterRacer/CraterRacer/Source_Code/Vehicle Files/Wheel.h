@@ -19,7 +19,7 @@ public:
 	~Wheel();
 
 	void	initialize( Device* device, LPCWSTR filename, Vec3 pt, LPCWSTR effectFilename );
-	void	update( Matrix mat );
+	void	update( Matrix mat, float speed );
 
 	float	getDiameter		 ( );
 	float	getWheelWidth	 ( );
@@ -50,6 +50,7 @@ private:
 	NxReal		m_rDynamicFriction;
 
 	float		m_fAngle;			//degrees
+	float		m_fSpinAngle;		//angle of wheel spin, in degrees
 	float		m_fDiameter;		//meters
 	float		m_fDisplacement;	//meters
 	NxVec3		m_vChassisPt;
