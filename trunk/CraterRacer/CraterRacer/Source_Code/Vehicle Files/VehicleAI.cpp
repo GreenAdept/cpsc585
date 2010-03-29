@@ -21,7 +21,7 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	Vec3     myPos = myEntity->getPosition ();
 
 	if (state == AI::WAITING) {
-		Terrain* terrain = em->getTerrain();
+		Terrain* terrain = em->getTerrain( 0 );
 		if (terrain == 0) return;
 
 		path = terrain->getTrack();

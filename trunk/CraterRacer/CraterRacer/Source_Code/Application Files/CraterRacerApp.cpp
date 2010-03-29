@@ -353,6 +353,24 @@ void CALLBACK RacerApp::OnLostDevice(void* pUserContext )
 	m_Renderer->OnLost( );
 }
 
+bool CALLBACK RacerApp::ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext )
+{
+    assert( DXUT_D3D9_DEVICE == pDeviceSettings->ver );
+
+    HRESULT hr;
+    IDirect3D9* pD3D = DXUTGetD3D9Object();
+    D3DCAPS9 caps;
+
+    V( pD3D->GetDeviceCaps( pDeviceSettings->d3d9.AdapterOrdinal,
+                            pDeviceSettings->d3d9.DeviceType,
+                            &caps ) );
+
+    // Turn vsync off
+    pDeviceSettings->d3d9.pp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
+
+    return true;
+}
+
 
 //--------------------------------------------------------------------------------------
 // Function: renderTwoPlayer

@@ -47,7 +47,8 @@ public:
 	std::vector<Renderable*>  getRenderables ();
 	std::vector<Entity*>      getObstacles ();
 	std::vector<AI*>          getAIs (int list);
-	Terrain*                  getTerrain ();
+	std::vector<Terrain*>     getTerrain ();
+	Terrain*				  getTerrain (int);
 	Crater*                   getCrater (int index);
 	
 	Vec3   getPosition         (int list, int index);
@@ -60,7 +61,7 @@ public:
 	Meteor*        makeMeteor   (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
 	Crater*        makeCrater   (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
 	Prop*          makeProp     (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
-	Terrain*       makeTerrain  (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
+	Terrain*       makeTerrain  (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR filename2, LPCWSTR effectFilename);
 	MeteorGroup*   makeMeteorGroup (Vec3 pos, int id, int numMeteors, float radius);
 
 	std::vector<Entity*> & operator[] (int i) { return entities[i]; }

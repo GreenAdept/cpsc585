@@ -31,6 +31,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 	DXUTSetCallbackFrameMove( RacerApp::OnUpdateGame );
 	DXUTSetCallbackKeyboard( RacerApp::OnKeyboard );
 	DXUTSetCallbackD3D9DeviceAcceptable( RacerApp::IsD3D9DeviceAcceptable );
+	DXUTSetCallbackDeviceChanging( RacerApp::ModifyDeviceSettings );
 
     // Initialize DXUT and create the desired Win32 window and Direct3D device for the application
     DXUTInit( true, true );						

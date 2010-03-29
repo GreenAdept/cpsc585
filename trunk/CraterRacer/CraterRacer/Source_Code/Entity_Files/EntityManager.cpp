@@ -164,11 +164,18 @@ vector<AI*> EntityManager::getAIs (int list) {
 // Returns a pointer to the terrain entity.
 //------------------------------------------------------
 
-Terrain* EntityManager::getTerrain () {
-	if (entities[TERRAIN].empty())
+vector<Terrain*> EntityManager::getTerrain () {
+	vector<Terrain*> result( entities[TERRAIN].size() );
+	for (int i=0; i<entities[TERRAIN].size(); i++)
+		result[i] = (Terrain*) entities[TERRAIN][i];
+	return result;
+}
+
+Terrain* EntityManager::getTerrain (int id) {
+	if( id < 0 || id > 1 || entities[TERRAIN].size() <= id )
 		return 0;
 	else
-		return (Terrain*) entities[TERRAIN][0];
+		return (Terrain*) entities[TERRAIN][id];
 }
 
 Crater* EntityManager::getCrater (int index) {
@@ -287,12 +294,16 @@ Prop* EntityManager::makeProp (Device* device, Vec3 pos, LPCWSTR filename, LPCWS
 	Prop* p = new Prop();
 	p->initialize (device, pos, filename, effectFilename);
 	entities[PROPS].push_back (p);
+
 	return p;
 }
-Terrain* EntityManager::makeTerrain (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename ) {
+Terrain* EntityManager::makeTerrain (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR filename2, LPCWSTR effectFilename ) {
 	Terrain* t = new Terrain();
 	t->initialize (device, pos, filename, effectFilename );
 	entities[TERRAIN].push_back( t );
+	Terrain* t2 = new Terrain();
+	t2->initialize (device, pos, filename2, effectFilename );
+	entities[TERRAIN].push_back( t2 );
 	return t;
 }
 MeteorGroup* EntityManager::makeMeteorGroup (Vec3 pos, int id, int numMeteors, float radius) {

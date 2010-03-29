@@ -33,7 +33,7 @@ public:
 	Simulator();
 	~Simulator();
 	
-	void InitNx( Terrain* terrain );
+	void InitNx( vector<Terrain*> terrain );
 
 	void pause( bool pause );
 	bool isPaused( );
@@ -68,7 +68,7 @@ public:
 
 private:
 
-	void addTerrainFromX( Terrain* terrain );
+	void addTerrainFromX( Terrain* terrain, int id  );
 	void addCrater( Crater* crater );
 
 	NxActor* createLittleBox( NxVec3 pos );
