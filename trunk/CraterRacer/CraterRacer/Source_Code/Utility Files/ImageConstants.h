@@ -66,6 +66,11 @@
 #define NINE2_IMAGE_FILE				"Media\\Images\\Numbers\\Nine2.png"
 #define COLON2_IMAGE_FILE				"Media\\Images\\Numbers\\Colon2.png"
 
+#define ZERO_COUNT_IMAGE_FILE				"Media\\Images\\Numbers\\ZeroCount.png"
+#define ONE_COUNT_IMAGE_FILE				"Media\\Images\\Numbers\\OneCount.png"
+#define TWO_COUNT_IMAGE_FILE				"Media\\Images\\Numbers\\TwoCount.png"
+#define THREE_COUNT_IMAGE_FILE				"Media\\Images\\Numbers\\ThreeCount.png"
+
 //Startup screen image files
 #define MENU_IMAGE_FILE					"Media\\Images\\Logo.png"
 #define ONEPLAYER_NOTACTIVE_IMAGE_FILE	"Media\\Images\\OnePlayerNotActive.png"
@@ -106,7 +111,7 @@
 
 #define NUM_BUTTONS				13
 #define NUM_LOADING_BALLS		5
-#define NUM_IMAGES				35
+#define NUM_IMAGES				39
 #define NUM_HUD_IMAGES			25
 #define NUM_PLAYERS				8
 
@@ -137,7 +142,8 @@ enum ImageNames{	MENU_IMAGE, CONTROLS_IMAGE, GAMERULES_INFO_IMAGE,
 					UNPAUSE_IMAGE, UNPAUSE_ACTIVE_IMAGE,
 					GAMERULES2_IMAGE, GAMERULES2_ACTIVE_IMAGE,
 					MAINMENU_PAUSE_IMAGE, MAINMENU_PAUSE_ACTIVE_IMAGE,
-					EXIT2_NOTACTIVE_IMAGE, EXIT2_ACTIVE_IMAGE };
+					EXIT2_NOTACTIVE_IMAGE, EXIT2_ACTIVE_IMAGE,
+					ZERO_COUNT_IMAGE, ONE_COUNT_IMAGE, TWO_COUNT_IMAGE, THREE_COUNT_IMAGE};
 
 
 enum GuiControls{	GUI_BTN_SINGLE_PLAYER, GUI_BTN_TWO_PLAYER, GUI_BTN_TIMETRIAL,

@@ -63,6 +63,7 @@ public:
 	void renderCountDown	( int count );
 	void drawVictoryScreen	( );
 	void drawTimesScreen	( );
+	void drawCountdown		( int num );
 
 private:
 
@@ -115,6 +116,7 @@ private:
 	bool				m_bIsTwoPlayer;
 	bool				m_bIsTimeTrial;
 	Vec2				m_ScaleVal;
+	Vec2				m_CountdownLocation;
 };
 
 
