@@ -112,7 +112,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 	{
 		NxActor* m_Vehicle = vehicles[i]->getPhysicsObj();
 		if (!m_Vehicle) continue;
-		processForceKeys(m_Vehicle, vehicles[i], elapsedTime);
+		processForceKeys(m_Vehicle, vehicles[i], i, elapsedTime);
 
 		//Get the new position of the vehicle in vector and matrix format
 		Matrix m;
@@ -298,7 +298,7 @@ void Simulator::respawn(NxActor* actor, Vehicle* vehicle)
 // Function:  processForceKeys
 // Processes all of the force inputs
 //--------------------------------------------------------------------------------------
-void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time) 
+void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, double time) 
 {
 	NxVec3 localWheelForce[4];
 	NxVec3 globalWheelForce[4];
@@ -459,7 +459,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 
 	bool inAir = true;
 	bool onGround = true;
-	float angleX, angleY, angleZ;
+	bool offTrack = true;
+
+	NxVec3 offset;
+	float effectiveness;
 
 	//SUSPENSION
 	for (int i = 0; i < 4 /*number of wheels*/; i++) 
@@ -485,25 +488,12 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 		hitObject = m_Scene->raycastClosestShape( ray, NX_ALL_SHAPES, hit );
 
 		//NEW STEERING
+		offset = NxVec3(0, -2, 0); //default
+		effectiveness = 1.0; //default
+
 		NxMat33 localOrientation;
 		actor->getGlobalOrientation().getInverse(localOrientation);
 		NxVec3 pointVelocity = localOrientation * actor->getLocalPointVelocity(w->getChassisPt());
-
-		/*angleX = findAngle(NxVec3(1, 0, 0), localOrientation * NxVec3(1, 0, 0));
-		angleY = findAngle(NxVec3(0, 1, 0), localOrientation * NxVec3(0, 1, 0));
-		angleZ = findAngle(NxVec3(0, 0, 1), localOrientation * NxVec3(0, 0, 1));
-
-		Matrix translate;
-		Matrix mX, mY, mZ;
-		D3DXMatrixRotationX( &mX, 0);
-		D3DXMatrixRotationY( &mY,0);
-		D3DXMatrixRotationZ( &mZ, 0);
-
-		D3DXMatrixTranslation( &translate, wheelPos.x, wheelPos.y, wheelPos.z);
-
-		Matrix transform = (mZ * mX * mY) * translate;
-
-		w->update(transform);*/
 
 		NxVec3 normal = rotate(w->getWheelLateral(), w->getAngle());
 
@@ -516,6 +506,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 		//apply forces to wheel if it is on the ground
 		if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 
 		{
+			if (hitObject->userData != "OuterTerrain") {
+				offTrack = false;
+			}
 			inAir = false;
 
 			/*if (hitObject == wall) {
@@ -544,8 +537,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			localWheelForce[i] += NxVec3(0, susForce, 0) + NxVec3(0, damperForce, 0);
 
 			//apply all accumulated forces to current wheel
-			actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() - NxVec3(0, 2, 0));
-			actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() - NxVec3(0, 2, 0));
+			//actor->addLocalForceAtLocalPos(localWheelForce[i], w->getChassisPt() - NxVec3(0, 2, 0));
+			//actor->addForceAtLocalPos(globalWheelForce[i], w->getChassisPt() - NxVec3(0, 2, 0));
 		}
 		else
 		{
@@ -565,9 +558,14 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 			w->setDisplacement(min((float)m_rMaxWheelDisplacement, (w->getDisplacement() + maxWheelSpeed * (float)time)));
 
 			//apply all accumulated forces to current wheel
-			actor->addLocalForceAtLocalPos(localWheelForce[i]*0.2, w->getChassisPt() - NxVec3(0, 1, 0));
-			actor->addForceAtLocalPos(globalWheelForce[i]*0.2, w->getChassisPt() - NxVec3(0, 1, 0));
+			//actor->addLocalForceAtLocalPos(localWheelForce[i]*0.2, w->getChassisPt() - NxVec3(0, 1, 0));
+			//actor->addForceAtLocalPos(globalWheelForce[i]*0.2, w->getChassisPt() - NxVec3(0, 1, 0));
+			effectiveness = 0.2;
+			offset = NxVec3(0, -1, 0);
 		}
+
+		//actor->addLocalForceAtLocalPos(localWheelForce[i]*effectiveness, w->getChassisPt() + offset);
+		//actor->addForceAtLocalPos(globalWheelForce[i]*effectiveness, w->getChassisPt() + offset);
 	}
 
 	//Try to keep the vehicle level
@@ -578,6 +576,34 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, double time)
 	//Try to keep the vehicle from sticking to walls
 	if (onGround) {
 		
+	}
+	//Keep players from driving around on the outside
+	if (offTrack && onGround) {
+		//m_Debugger.writeToFile("here");
+		//effectiveness = 0.2;
+		NxVec3 velocityDir = normalize(velocity);
+		if (velocity.magnitude() > MAX_OFFTRACK_VELOCITY) {
+			actor->setLinearVelocity(velocityDir*MAX_OFFTRACK_VELOCITY);
+		}
+		NxVec3 frictionForce = velocityDir * ( -m_rVehicleMass * m_rForceStrength * 0.5);
+		globalWheelForce[0] += frictionForce;
+		globalWheelForce[1] += frictionForce;
+		globalWheelForce[2] += frictionForce;
+		globalWheelForce[3] += frictionForce;
+		if (index == 0) {
+			Emit (Events::EVibrate, 0, 1);
+		}
+		else if (index == 1) {
+			Emit (Events::EVibrate, 1, 1);
+		}
+
+	}
+
+	//Apply accumulated forces to wheels
+	for (int i = 0; i < 4; i++) {
+		w = &vehicle->m_Wheels[ i ];
+		actor->addLocalForceAtLocalPos(localWheelForce[i]*effectiveness, w->getChassisPt() + offset);
+		actor->addForceAtLocalPos(globalWheelForce[i]*effectiveness, w->getChassisPt() + offset);
 	}
 
 	input->reset();
