@@ -643,7 +643,7 @@ RacerApp::RacerApp()
 	m_Clock			  = new Clock();
 
 	// Set up the audio
-	//HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, SE_WAVEBANK_FILE, BG_SETTINGS_FILE, BG_SOUNDBANK_FILE );
+	HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, SE_WAVEBANK_FILE, BG_SETTINGS_FILE, BG_SOUNDBANK_FILE );
 }
 
 
