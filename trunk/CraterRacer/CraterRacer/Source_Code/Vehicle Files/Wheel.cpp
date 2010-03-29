@@ -11,6 +11,7 @@ Wheel::Wheel()
 	m_rDynamicFriction	= NxReal(0.3);
 
 	m_fAngle			= 0; //degrees
+	m_fSpinAngle		= 0;
 }
 
 
@@ -31,23 +32,31 @@ void Wheel::initialize( Device* device, LPCWSTR filename, Vec3 pt, LPCWSTR effec
 //--------------------------------------------------------------------------------------
 // Function:  initialize
 //--------------------------------------------------------------------------------------
-void Wheel::update( Matrix mat )
+void Wheel::update( Matrix mat, float speed )
 {
-	Matrix m;
+	Matrix m1, m2;
 	Matrix translate, rotate;
+
 	Vec3 sus = getSuspensionAxis() * m_fDisplacement;
+	float yModifier = m_vChassisPt.y + (m_fDiameter/2 + 0.35);
+	float tempAngle = m_fAngle;
+	if (tempAngle >= 180)
+		tempAngle -= 180;
+
+	m_fSpinAngle += speed / 3.14;
+	D3DXMatrixRotationX( &m1, m_fSpinAngle*(D3DX_PI/180));
+	D3DXMatrixRotationY( &m2, -tempAngle*(D3DX_PI/180));
+	D3DXMatrixMultiply( &rotate, &m1, &m2 );
+
+	D3DXMatrixTranslation( &translate, -m_vChassisPt.x, -yModifier, -m_vChassisPt.z );
+	D3DXMatrixMultiply( &m1, &translate, &rotate );
+
+	D3DXMatrixTranslation( &translate, m_vChassisPt.x + sus.x, yModifier + sus.y, m_vChassisPt.z + sus.z );
+	D3DXMatrixMultiply( &m1, &m1, &translate );
+	D3DXMatrixMultiply( &m1, &m1, &mat );
 
 
-	D3DXMatrixTranslation( &translate, -m_vChassisPt.x, -m_vChassisPt.y, -m_vChassisPt.z );
-	D3DXMatrixRotationY( &rotate, -m_fAngle*(D3DX_PI/180));
-	D3DXMatrixMultiply( &m, &translate, &rotate );
-
-	D3DXMatrixTranslation( &translate, m_vChassisPt.x + sus.x, m_vChassisPt.y + sus.y, m_vChassisPt.z + sus.z );
-	D3DXMatrixMultiply( &m, &m, &translate );
-	D3DXMatrixMultiply( &m, &m, &mat );
-
-
-	Entity::update( m );
+	Entity::update( m1 );
 }
 
 

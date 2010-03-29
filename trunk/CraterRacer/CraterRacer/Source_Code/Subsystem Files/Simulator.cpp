@@ -335,8 +335,12 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 			}
 			case 2: //X_BUTTON - freeze car (should be commented out when submitting)
 			{
-				actor->setAngularVelocity(NxVec3(0, 0, 0));
-				actor->setLinearVelocity(NxVec3(0, 0, 0));
+				//actor->setAngularVelocity(NxVec3(0, 0, 0));
+				//actor->setLinearVelocity(NxVec3(0, 0, 0));
+				//break;
+
+				float pressure = input->getPressure();
+				friction += m_rBrakingFriction * pressure;
 				break;
 			}
 			case 3: //Y_BUTTON - print waypoint for now
