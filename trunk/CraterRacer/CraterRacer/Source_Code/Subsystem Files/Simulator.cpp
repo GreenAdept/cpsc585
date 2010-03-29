@@ -146,7 +146,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 		vehicles[i]->m_Wheels[0].update(m);
 		vehicles[i]->m_Wheels[1].update(m);*/
 
-		NxVec3 heading = vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(0, 0, 1);
+		/*NxVec3 heading = vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(0, 0, 1);
 
 		float angleX = findAngle(NxVec3(1, 0, 0), vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(1, 0, 0));
 		if (heading.x < 0) {
@@ -255,7 +255,7 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 		D3DXMatrixMultiply( &transform, &transform, &translate2 );
 
 		vehicles[i]->m_Wheels[2].update(transform);
-		vehicles[i]->m_Wheels[3].update(transform);
+		vehicles[i]->m_Wheels[3].update(transform);*/
 
 
 	}
