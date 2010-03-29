@@ -89,6 +89,11 @@ void MessageManager::ProcessMessage( int message, long param1, long param2 )
 		//param1 = controller id to vibrate, param2 = intensity
 		m_Game->vibrate(param1, param2);
 		break;
+	case EVehicleCollision:
+		//param1 is the id of the first vehicle, param2 is the id of the second vehicle
+		m_Game->vibrate(param1, 70);
+		m_Game->vibrate(param2, 70);
+		break;
 	}
 }
 
@@ -130,6 +135,16 @@ void MessageManager::ProcessMessage( int message )
 			m_Renderer->adjustVictoryRank (m_VictoryCalculator->getRanks(), m_VictoryCalculator->getFinishTimes());
 			m_App->m_AppState = APP_VICTORY;
 		}
+		break;
+	}
+}
+
+void MessageManager::ProcessMessage(int message, NxActor* param1, NxActor* param2)
+{
+	switch(message)
+	{
+	case EVehicleCollision:
+		m_Simulator->vibrateIfPlayer(param1, param2);
 		break;
 	}
 }

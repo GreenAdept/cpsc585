@@ -34,6 +34,8 @@ Simulator::Simulator()
 
 	forward = false;
 
+	m_ContactReport = new ContactReport();
+
 	//init contact report
 	
 	//m_Scene->setGroupCollisionFlag(1,0,true);
@@ -54,6 +56,7 @@ void Simulator::InitNx( vector<Terrain*> terrains )
 	NxSceneDesc sceneDesc;
 	sceneDesc.gravity = m_vDefaultGravity;
 	sceneDesc.simType = NX_SIMULATION_SW;
+	sceneDesc.userContactReport = m_ContactReport;
 	m_Scene = m_PhysicsSDK->createScene( sceneDesc );
 
 	//Set the physics parameters
@@ -77,6 +80,25 @@ void Simulator::InitNx( vector<Terrain*> terrains )
 	addTerrainFromX( terrains[1], 1 );
 	
 	m_PhysicsSDK->getFoundationSDK().getRemoteDebugger()->connect ("localhost", 5425);
+}
+
+void Simulator::setContacts()
+{
+/*	for (int i = 0; i < m_Vehicles.size(); i++) {
+		for (int j = i; j < m_Vehicles.size(); j++) {
+			if (i != j) {
+				m_Scene->setActorPairFlags(*m_Vehicles[i], *m_Vehicles[j], NX_NOTIFY_ON_START_TOUCH |   
+				                                                           NX_NOTIFY_ON_TOUCH | 
+				                                                           NX_NOTIFY_ON_END_TOUCH);
+			}
+		}
+	}
+*/
+
+	for (int i = 0; i < m_Vehicles.size(); i++)
+		for (int j = 0; j < m_Vehicles.size(); j++)
+			m_Scene->setActorPairFlags(*m_Vehicles[0], *m_Vehicles[i], NX_NOTIFY_ON_START_TOUCH |   
+					                                                   NX_NOTIFY_ON_TOUCH);
 }
 
 //--------------------------------------------------------------------------------------
@@ -698,8 +720,10 @@ void Simulator::createVehicle( Vehicle* vehicle )
 	//Add the vehicle to global list of all vehicles
 	vehicle->setPhysicsObj( pActor );
 	m_Actors.push_back( pActor );
+	m_Vehicles.push_back( pActor );
+	pActor->userData = new UserData(m_Vehicles.size()-1);
 
-	//put all vehicles in collision group 1
+	//put vehicles in collision group 1
 	setActorGroup(pActor, 1);
 }
 
@@ -712,6 +736,20 @@ void Simulator::setActorGroup(NxActor *actor, NxCollisionGroup group)
     {
         shapes[nbShapes]->setGroup(group);
     }
+}
+
+void Simulator::setGroupFlags()
+{
+	m_Scene->setGroupCollisionFlag(0,1,true);
+}
+
+void Simulator::vibrateIfPlayer(NxActor* vehicle1, NxActor* vehicle2)
+{
+	//if (vehicle1 == m_Vehicles[0])
+		Emit(Events::EVibrate, 0, 80);
+	if (m_Actors.size() > 1)
+		//if (vehicle2 == m_Vehicles[1])
+			Emit(Events::EVibrate, 1, 80);
 }
 
 void Simulator::createMeteorGroup(MeteorGroup* mg) {
@@ -981,6 +1019,7 @@ Simulator::~Simulator()
 	for( int i=0; i < m_Actors.size(); i++ )
 	{
 		m_Scene->releaseActor( *m_Actors[i] );
+		//delete m_Actors[i]->userData;
 		m_Actors[i] = NULL;
 	}
 
