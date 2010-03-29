@@ -84,7 +84,7 @@ void Simulator::InitNx( vector<Terrain*> terrains )
 
 void Simulator::setContacts()
 {
-/*	for (int i = 0; i < m_Vehicles.size(); i++) {
+	for (int i = 0; i < m_Vehicles.size(); i++) {
 		for (int j = i; j < m_Vehicles.size(); j++) {
 			if (i != j) {
 				m_Scene->setActorPairFlags(*m_Vehicles[i], *m_Vehicles[j], NX_NOTIFY_ON_START_TOUCH |   
@@ -93,12 +93,12 @@ void Simulator::setContacts()
 			}
 		}
 	}
-*/
 
+/*
 	for (int i = 0; i < m_Vehicles.size(); i++)
 		for (int j = 0; j < m_Vehicles.size(); j++)
 			m_Scene->setActorPairFlags(*m_Vehicles[0], *m_Vehicles[i], NX_NOTIFY_ON_START_TOUCH |   
-					                                                   NX_NOTIFY_ON_TOUCH);
+					                                                   NX_NOTIFY_ON_TOUCH);*/
 }
 
 //--------------------------------------------------------------------------------------
