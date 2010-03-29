@@ -237,6 +237,28 @@ void Renderer::drawPauseGameRules( )
 	m_pImageSprite->End();
 }
 
+//--------------------------------------------------------------------------------------
+// Function: 
+// This function draws the game rules screen as an overlay to the game (as a smaller
+// rectangle inside the screen)
+//--------------------------------------------------------------------------------------
+void Renderer::drawCountdown( int num )
+{
+	HRESULT hr;
+	Vec3 center( 0, 0, 0 );
+	int image = 0;
+
+	//render the game rules screen overtop the game in the center of the screen
+	RECT temp;
+	temp.top = 0; temp.right = 650;
+	temp.bottom = 550; temp.left = 0;
+	m_pImageSprite->Begin( NULL );
+	m_pImageSprite->Flush();
+	V( m_pImageSprite->Draw( m_Images[GAMERULES_INFO_SMALL_IMAGE], &temp, &center, 
+			&m_ImageLocations[GAMERULES_INFO_SMALL_IMAGE], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+	m_pImageSprite->End();
+}
+
 
 //--------------------------------------------------------------------------------------
 // Function: drawPauseScreen( )
@@ -386,10 +408,27 @@ void Renderer::renderFPS( )
 //--------------------------------------------------------------------------------------
 void Renderer::renderCountDown( int count )
 {
-	m_pTextSprite->Flush();
-    CDXUTTextHelper txtHelper( m_pFont, m_pTextSprite, 15 );
+	HRESULT hr;
+	Matrix mat;
+	Vec2 trans = Vec2( this->m_CountdownLocation.x, m_CountdownLocation.y );
 
-    txtHelper.Begin();
+	Vec2 scaling( 1.0, 1.0 );
+	int numImage = ZERO_COUNT_IMAGE + count;
+
+	
+	m_pImageSprite->Begin( D3DXSPRITE_ALPHABLEND );
+
+	m_pImageSprite->Flush();
+	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &scaling, NULL, 0.0, &trans );
+	m_pImageSprite->SetTransform( &mat );
+	V( m_pImageSprite->Draw( m_Images[numImage], NULL, NULL, NULL, D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+
+	m_pImageSprite->End();
+
+	//m_pTextSprite->Flush();
+    //CDXUTTextHelper txtHelper( m_pFont, m_pTextSprite, 15 );
+
+    /*txtHelper.Begin();
     txtHelper.SetInsertionPos( 10, 150 );
 	txtHelper.SetForegroundColor( D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
 	//LPCWSTR stats = DXUTGetFrameStats( true );
@@ -406,7 +445,7 @@ void Renderer::renderCountDown( int count )
 		txtHelper.DrawTextLine( go.c_str() );
 	}
 
-	txtHelper.End();
+	txtHelper.End();*/
 }
 
 //--------------------------------------------------------------------------------------
@@ -816,6 +855,11 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 	createTexture( m_Images[ EXITSMALL2_IMAGE ], EXIT_SMALL_IMAGE_FILE, device );
 	createTexture( m_Images[ EXITSMALL2_ACTIVE_IMAGE ], EXIT_SMALL_ACTIVE_IMAGE_FILE, device );
 	
+	createTexture( m_Images[ ZERO_COUNT_IMAGE ], ZERO_COUNT_IMAGE_FILE, device );
+	createTexture( m_Images[ ONE_COUNT_IMAGE ], ONE_COUNT_IMAGE_FILE, device );
+	createTexture( m_Images[ TWO_COUNT_IMAGE ], TWO_COUNT_IMAGE_FILE, device );
+	createTexture( m_Images[ THREE_COUNT_IMAGE ], THREE_COUNT_IMAGE_FILE, device );
+	
 	//HUD images
 	createTexture( m_HUDImages[ SPEEDOMETER_IMAGE ], SPEEDOMETER_IMAGE_FILE, device );
 	createTexture( m_HUDImages[ SPEEDWAND_IMAGE ], SPEEDWAND_IMAGE_FILE, device );
@@ -917,8 +961,15 @@ void Renderer::loadImages( Device* device, UINT width, UINT height )
 void Renderer::positionMainImages( int width, int height )
 {
 	//Position the startup menu buttons and images --------------
-	int w = (width - 400)/2; if( w<0 ) w=0;
-	int h = (height - 430)/2; if( h<0 ) h=0;
+	int w = (width - 200)/2; if( w<0 ) w=0;
+	int h = (height - 200)/2; if( h<0 ) h=0;
+
+	this->m_CountdownLocation.x = w;
+	this->m_CountdownLocation.y = h;
+
+	//Position the startup menu buttons and images --------------
+	 w = (width - 400)/2; if( w<0 ) w=0;
+	 h = (height - 430)/2; if( h<0 ) h=0;
 
 	m_ImageLocations[MENU_IMAGE] = Vec3( w, h, 0 );
 	h += 230;
@@ -1048,6 +1099,8 @@ void Renderer::positionMainImages( int width, int height )
 	//5.
 	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+460;  temp.bottom=temp.top+40;
 	m_BestTimesRecs[4] = RECT(temp);
+
+
 }
 
 
@@ -1095,10 +1148,14 @@ void Renderer::drawTransformedSprite( float rot, Vec3& location, Vec2 center, Sp
 	Matrix mat;
 	Vec2 trans = Vec2( location.x,  location.y );
 
+	m_pImageSprite->Begin( D3DXSPRITE_ALPHABLEND );
+
 	m_pImageSprite->Flush();
 	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &m_ScaleVal, &center, rot, &trans );
 	m_pImageSprite->SetTransform( &mat );
 	V( m_pImageSprite->Draw( image, NULL, NULL, NULL, D3DCOLOR_ARGB( 255,255,255,255 ) ) );
+
+	m_pImageSprite->End();
 }
 
 
