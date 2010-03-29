@@ -365,7 +365,7 @@ void SceneLoader::processComputerVehicles( ifstream& file, int numComputers )
 		//add to simulator
 		m_Objs.simulator->createVehicle( av );
 	}
-
+	m_Objs.simulator->setContacts();
 }
 
 

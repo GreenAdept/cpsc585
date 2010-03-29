@@ -226,7 +226,7 @@ void GameObj::processInput( float fElapsedTime )
 				g_audioState.nRPM += 15.0f;
                 if( g_audioState.nRPM > 3000.0f )
                     g_audioState.nRPM = 3000.0f;
-                g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );
+                //g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );
 			}
 
 			//Check for braking
@@ -240,7 +240,7 @@ void GameObj::processInput( float fElapsedTime )
 					g_audioState.nRPM -= 25.0f;
 				if( g_audioState.nRPM < -3000.0f )
 					g_audioState.nRPM = -3000.0f;
-				g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );
+				//g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );
 			}
 			if (m_Controllers[i]->Start.WasPressed())
 			{
@@ -340,6 +340,6 @@ void GameObj::vibrate(int controllerID, double intensity)
 {
 	if (m_Controllers.size() > controllerID) {
 		intensity = intensity / 100;
-		m_Controllers[controllerID]->Vibrate(intensity*0.75, intensity, 1.0);
+		m_Controllers[controllerID]->Vibrate(intensity*0.75, intensity, 0.5);
 	}
 }

@@ -16,7 +16,8 @@
 #include "Terrain.h"
 #include "DebugWriter.h"
 #include "Sound.h"
-//#include "ContactReport.h"
+#include "ContactReport.h"
+#include "UserData.h"
 
 #define PI						3.14159265
 #define MAX_FORWARD_VELOCITY	70.0
@@ -70,6 +71,10 @@ public:
 	void startOrStopRace(bool race);
 	float findAngle(NxVec3 a, NxVec3 b);
 
+	void setContacts();
+	void setGroupFlags();
+	void vibrateIfPlayer(NxActor* vehicle1, NxActor* vehicle2);
+
 private:
 
 	void addTerrainFromX( Terrain* terrain, int id  );
@@ -117,11 +122,14 @@ private:
 
 	//Actors
 	vector<NxActor*>	m_Actors;
+	vector<NxActor*>	m_Vehicles;
 
 	//Debugging
 	DebugWriter			m_Debugger;
 	bool				forward;
 	bool				m_bStartRace;
+
+	ContactReport*		m_ContactReport;
 
 };
 

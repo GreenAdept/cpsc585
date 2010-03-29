@@ -1,29 +1,20 @@
-// ===============================================================================
-//						  AGEIA PHYSX SDK TRAINING PROGRAMS
-//			                       CONTACT REPORT
-//
-//						    Written by Bob Schade, 5-1-05
-// ===============================================================================
-
 #ifndef CONTACTREPORT_H
 #define CONTACTREPORT_H
+
+//#include "Constants.h"
+#include "NxUserContactReport.h"
 
 class ContactReport : public NxUserContactReport
 {
 public:
-    virtual void onContactNotify(NxContactPair& pair, NxU32 events)
-	{
-		if (pair.actors[0])
-		{
+    virtual void onContactNotify(NxContactPair& pair, NxU32 events);
+//	{
+//		if (pair.actors[0] && pair.actors[1])
+//		{
+//			Emit (Events::EVehicleCollision, pair.actors[0], pair.actors[1]);
 			//ActorUserData* ud = (ActorUserData*)pair.actors[0]->userData;
 			//if (ud)  ud->contactEvents = events;
-		}
-
-		if (pair.actors[1])
-		{
-			//ActorUserData* ud = (ActorUserData*)pair.actors[1]->userData;
-			//if (ud)  ud->contactEvents = events;
-		}
+//		}
 
 //		if(events & NX_NOTIFY_ON_START_TOUCH)	printf("Start touch\n");
 //		if(events & NX_NOTIFY_ON_END_TOUCH)		printf("End touch\n");
@@ -84,9 +75,9 @@ public:
 				}
 			}
 		}*/
-	}
+	//}
 
-} gContactReport;
+};// gContactReport;
 
 #endif  // CONTACTREPORT_H
 
