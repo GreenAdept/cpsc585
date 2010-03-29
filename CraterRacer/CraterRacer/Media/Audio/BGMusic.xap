@@ -16,8 +16,8 @@ Global Settings
     Header File = C:\Users\Rob\Documents\Visual Studio 2008\Projects\trunk\CraterRacer\CraterRacer\Media\Audio\BGMusic.h;
     Exclude Category Names = 0;
     Exclude Variable Names = 0;
-    Last Modified Low = 3197576800;
-    Last Modified High = 30068575;
+    Last Modified Low = 2496686001;
+    Last Modified High = 30068621;
 
     Category
     {
@@ -264,7 +264,7 @@ Global Settings
 
         RPC Curve
         {
-            Name = 1::66e2c7df-afa3-4f52-a38e-fe6aa85079a1;
+            Name = 1::ccbbc965-76f2-440a-8310-9f6f1f808e7d;
             Property = 1;
             Sound = 0;
             Line Color = 4278212278;
@@ -327,7 +327,7 @@ Global Settings
 
         RPC Curve
         {
-            Name = 1::6b5be0a1-b92d-45ed-a9be-47a8249111a1;
+            Name = 1::6498d520-715e-4724-aabd-665430644cbd;
             Property = 0;
             Sound = 0;
             Line Color = 4284373633;
@@ -389,6 +389,8 @@ Wave Bank
     Xbox Bank Last Modified High = 0;
     PC Bank Last Modified Low = 3197646800;
     PC Bank Last Modified High = 30068575;
+    Header Last Modified Low = 0;
+    Header Last Modified High = 0;
     Bank Last Revised Low = 2739296800;
     Bank Last Revised High = 30068575;
 
@@ -695,8 +697,8 @@ Sound Bank
     Windows File = Win\MainSoundBank.xsb;
     Xbox Bank Path Edited = 0;
     Windows Bank Path Edited = 0;
-    Bank Last Modified Low = 3558174912;
-    Bank Last Modified High = 30068578;
+    Bank Last Modified Low = 2496746001;
+    Bank Last Modified High = 30068621;
     Header Last Modified High = 0;
     Header Last Modified Low = 0;
 
@@ -754,13 +756,13 @@ Sound Bank
             RPC Curve Entry
             {
                 RPC Name = RPC Preset;
-                RPC Curve Name = 1::6b5be0a1-b92d-45ed-a9be-47a8249111a1;
+                RPC Curve Name = 1::6498d520-715e-4724-aabd-665430644cbd;
             }
 
             RPC Curve Entry
             {
                 RPC Name = RPC Preset;
-                RPC Curve Name = 1::66e2c7df-afa3-4f52-a38e-fe6aa85079a1;
+                RPC Curve Name = 1::ccbbc965-76f2-440a-8310-9f6f1f808e7d;
             }
         }
     }
