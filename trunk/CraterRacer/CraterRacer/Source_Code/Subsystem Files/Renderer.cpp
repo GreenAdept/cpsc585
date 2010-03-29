@@ -676,23 +676,28 @@ void Renderer::adjustSpeedImage( float speed, int playerID )
 void Renderer::adjustVictoryRank( vector<int>& ranks, vector<string>& times )
 {
 	wstring temp;
-	std::wstringstream rankStream, timeStream;
+	int tempInt;
+	std::wstringstream timeStream;
 
-	//set rank text
-	for( int i=0; i < ranks.size(); i++ )
-	{
-		rankStream.flush();
-		rankStream << "PLAYER #";
-		rankStream << (i+1);
-		m_sVictoryRanks[ ranks[i] ] =  rankStream.str().c_str();
-		//m_sVictoryRanks[ ranks[i] ] = L"Player #";
+	////set rank text
+	//for( int i=0; i < ranks.size(); i++ )
+	//{
+	//	tempInt = i+1;
+	//	stringstream str;
+	//	str << "PLAYER #" << tempInt;
+	//	
+	//	wstring wstr = toLPCWSTR(str.str());
+	//	LPCWSTR lpstr = wstr.c_str();
+	//	m_sVictoryRanks[ ranks[i] ] =  lpstr;
+	//	//m_sVictoryRanks[ ranks[i] ] = L"Player #";
 
-		timeStream.clear();
-		timeStream << "TIME:\n";
-		timeStream << times[i].c_str();
-		m_sVictoryTimes[ ranks[i] ] =  timeStream.str().c_str();
-		//m_sVictoryTimes[ ranks[i] ] = L"Time:";
-	}
+	//	timeStream.flush();
+
+	//	timeStream << L"TIME:\n";
+	//	timeStream << times[i].c_str();
+	//	m_sVictoryTimes[ ranks[i] ] =  timeStream.str().c_str();
+	//	//m_sVictoryTimes[ ranks[i] ] = L"Time:";
+	//}
 }
 
 
@@ -1245,4 +1250,21 @@ void Renderer::positionHUDImages( int width, int height )
 			w += 18;
 		}
 	}
+}
+
+//--------------------------------------------------------------------------------------
+// Function:  toLPCWSTR
+// Converts string to wide byte string
+//--------------------------------------------------------------------------------------
+std::wstring Renderer::toLPCWSTR( std::string& s )
+{
+	 int len;
+	 int slength = (int)s.length() + 1;
+	 len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
+	 wchar_t* buf = new wchar_t[len];
+	 MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
+	 std::wstring r(buf);
+	 delete[] buf;
+
+	 return r; 
 }
