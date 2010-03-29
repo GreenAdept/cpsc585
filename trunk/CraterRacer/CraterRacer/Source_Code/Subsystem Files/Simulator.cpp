@@ -308,17 +308,34 @@ float Simulator::findAngle(NxVec3 a, NxVec3 b) {
 void Simulator::respawn(NxActor* actor, Vehicle* vehicle)
 {
 	Vec3 respawnPoint = vehicle->lastPassedWP();
-	respawnPoint.y += 5;
 	Vec3 nextPoint = vehicle->nextWP();
-	Vec3 difference = nextPoint - respawnPoint;
-	NxVec3 diff = NxVec3(difference.x, difference.y, difference.z);
-	diff = normalize(diff);
 
-	NxMat33 reset(NxVec3(difference.z, 0, difference.x), NxVec3(0, 1, 0), NxVec3(0, 0, 1));
+	Vec3 difference = nextPoint - respawnPoint;
+	difference.y = 0;
+	D3DXVec3Normalize (&difference, &difference);
+
+	Vec3 direction (0, 0, 1);
+
+	Vec3 temp;
+	D3DXVec3Cross (&temp, &difference, &direction);
+	float cosTheta = D3DXVec3Dot (&difference, &direction);
+	float sinTheta = D3DXVec3Length (&temp);
+
+	if (temp.y > 0) {
+		NxMat33 reset (NxVec3 (cosTheta, 0, -sinTheta),
+						NxVec3 (0, 1, 0),
+						NxVec3 (sinTheta, 0, cosTheta));
+		actor->setGlobalOrientation(reset);
+	}
+	else {
+		NxMat33 reset (NxVec3 (cosTheta, 0, sinTheta),
+						NxVec3 (0, 1, 0),
+						NxVec3 (-sinTheta, 0, cosTheta));
+		actor->setGlobalOrientation(reset);
+	}
 	actor->setLinearVelocity(NxVec3(0, 0, 0));
 	actor->setAngularVelocity(NxVec3(0, 0, 0));
-	actor->setGlobalOrientation(reset);
-	actor->setGlobalPosition(NxVec3(respawnPoint.x, respawnPoint.y, respawnPoint.z));
+	actor->setGlobalPosition(NxVec3(respawnPoint.x, respawnPoint.y + 5, respawnPoint.z));
 }
 
 //--------------------------------------------------------------------------------------
