@@ -57,8 +57,8 @@ void Vehicle::initialize( Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR ef
 	//load the wheel meshes for the vehicle
 	m_Wheels[ WHEEL0 ].initialize( device, WHEEL0_FILE, Vec3(-2.5, height, 3.15), effectFilename);
 	m_Wheels[ WHEEL1 ].initialize( device, WHEEL1_FILE, Vec3(2.5, height, 3.15), effectFilename );
-	m_Wheels[ WHEEL2 ].initialize( device, WHEEL2_FILE, Vec3(-2.5, height, -3.6), effectFilename );
-	m_Wheels[ WHEEL3 ].initialize( device, WHEEL3_FILE, Vec3(2.5, height, -3.6), effectFilename );
+	m_Wheels[ WHEEL2 ].initialize( device, WHEEL2_FILE, Vec3(2.5, height, -3.6), effectFilename );
+	m_Wheels[ WHEEL3 ].initialize( device, WHEEL3_FILE, Vec3(-2.5, height, -3.6), effectFilename );
 
 	reversing = false;
 }
