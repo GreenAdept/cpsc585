@@ -64,6 +64,7 @@ public:
 	void printVariables();
 	void setSuspensionFlag(bool flag);
 	void startOrStopRace(bool race);
+	float findAngle(NxVec3 a, NxVec3 b);
 
 private:
 
