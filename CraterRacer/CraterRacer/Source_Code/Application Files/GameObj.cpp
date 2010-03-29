@@ -336,8 +336,10 @@ void GameObj::processCallback( ProcessType type, Device* device, const D3DSURFAC
 	}
 }
 
-void GameObj::vibrate(int controllerID, int intensity)
+void GameObj::vibrate(int controllerID, double intensity)
 {
-	if (m_Controllers.size() > controllerID)
+	if (m_Controllers.size() > controllerID) {
+		intensity = intensity / 100;
 		m_Controllers[controllerID]->Vibrate(intensity*0.75, intensity, 1.0);
+	}
 }

@@ -698,6 +698,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source_Code\Subsystem Files\ContactReport.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Source_Code\Subsystem Files\DebugWriter.cpp"
 				>
 			</File>

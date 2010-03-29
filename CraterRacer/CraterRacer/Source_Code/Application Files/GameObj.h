@@ -41,7 +41,7 @@ public:
 	void simulate		 ( float fElapsedTime );
 	void render			 ( Device* device, Renderer* renderer, int playerID );
 	void processCallback ( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
-	void vibrate		 ( int controllerID, int intensity );
+	void vibrate		 ( int controllerID, double intensity );
 	
 	//Getter's and setter's
 	string		 getTime			( );
