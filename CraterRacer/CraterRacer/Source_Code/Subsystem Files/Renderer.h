@@ -74,6 +74,8 @@ private:
 	void positionHUDImages		( int width, int height );
 	void positionMainImages		( int width, int height );
 
+	wstring toLPCWSTR			( std::string& s );
+
 	//Date Members ---------------------------------------
 
 	ID3DXFont*          m_pFont;									//font used to render FPS
@@ -105,10 +107,10 @@ private:
 	int					m_iClockImage;								//starting image index for zero
 	Dialog				m_GameScreen;								//HUD and pause screen are rendered to this
 	ResourceManager		m_ResourceManager;						
-	LPCTSTR				m_sVictoryRanks		[ NUM_PLAYERS ];
-	LPCTSTR				m_sVictoryTimes		[ NUM_PLAYERS ];
+	LPCWSTR				m_sVictoryRanks		[ NUM_PLAYERS ];
+	LPCWSTR				m_sVictoryTimes		[ NUM_PLAYERS ];
 	RECT				m_VictoryRecs		[ NUM_PLAYERS*2 ];
-	LPCTSTR				m_sBestTimes		[ 5 ];
+	LPCWSTR				m_sBestTimes		[ 5 ];
 	RECT				m_BestTimesRecs		[ 5 ];
 	bool				m_bIsTwoPlayer;
 	bool				m_bIsTimeTrial;
