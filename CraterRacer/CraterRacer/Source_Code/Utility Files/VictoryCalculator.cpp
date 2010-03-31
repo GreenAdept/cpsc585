@@ -126,7 +126,7 @@ wstring VictoryCalculator::getFormattedString (int index) {
 */
 void VictoryCalculator::recordTime(string time) {
 	//if the player is not finished, or we have already recorded the time, return
-	if (!finished[0]) return;
+	if (!isFinished(0)) return;
 	if (recorded) return;
 
 	times.clear();
