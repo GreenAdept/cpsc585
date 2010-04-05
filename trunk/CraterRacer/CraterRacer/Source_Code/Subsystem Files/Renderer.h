@@ -109,8 +109,8 @@ private:
 	int					m_iClockImage;								//starting image index for zero
 	Dialog				m_GameScreen;								//HUD and pause screen are rendered to this
 	ResourceManager		m_ResourceManager;						
-	LPCWSTR				m_sVictoryRanks		[ NUM_PLAYERS ];
-	LPCWSTR				m_sVictoryTimes		[ NUM_PLAYERS ];
+	wstring				m_sVictoryRanks		[ NUM_PLAYERS ];
+	wstring				m_sVictoryTimes		[ NUM_PLAYERS ];
 	RECT				m_VictoryRecs		[ NUM_PLAYERS*2 ];
 	LPCWSTR				m_sBestTimes		[ 5 ];
 	RECT				m_BestTimesRecs		[ 5 ];

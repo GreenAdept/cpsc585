@@ -472,17 +472,17 @@ void Renderer::drawVictoryScreen( )
 	}
 
 	//Draw rankings and times as text
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sVictoryRanks[0], -1, &m_VictoryRecs[0], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sVictoryTimes[0], -1, &m_VictoryRecs[4], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sVictoryRanks[0].c_str(), -1, &m_VictoryRecs[0], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sVictoryTimes[0].c_str(), -1, &m_VictoryRecs[4], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[1], -1, &m_VictoryRecs[1], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[1], -1, &m_VictoryRecs[5], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[1].c_str(), -1, &m_VictoryRecs[1], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[1].c_str(), -1, &m_VictoryRecs[5], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[2], -1, &m_VictoryRecs[2], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[2], -1, &m_VictoryRecs[6], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[2].c_str(), -1, &m_VictoryRecs[2], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[2].c_str(), -1, &m_VictoryRecs[6], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[3], -1, &m_VictoryRecs[3], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[3], -1, &m_VictoryRecs[7], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[3].c_str(), -1, &m_VictoryRecs[3], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[3].c_str(), -1, &m_VictoryRecs[7], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
 	m_pImageSprite->Flush();
 	m_pImageSprite->End( );
@@ -714,29 +714,18 @@ void Renderer::adjustSpeedImage( float speed, int playerID )
 //--------------------------------------------------------------------------------------
 void Renderer::adjustVictoryRank( vector<int>& ranks, vector<string>& times )
 {
-	wstring temp;
-	int tempInt;
-	std::wstringstream timeStream;
+	WCHAR convert = L'0' - '0';
 
-	////set rank text
-	//for( int i=0; i < ranks.size(); i++ )
-	//{
-	//	tempInt = i+1;
-	//	stringstream str;
-	//	str << "PLAYER #" << tempInt;
-	//	
-	//	wstring wstr = toLPCWSTR(str.str());
-	//	LPCWSTR lpstr = wstr.c_str();
-	//	m_sVictoryRanks[ ranks[i] ] =  lpstr;
-	//	//m_sVictoryRanks[ ranks[i] ] = L"Player #";
+	//set rank text
+	for( int i=0; i < ranks.size(); i++ )
+	{
+		m_sVictoryRanks[ ranks[i]-1 ] = L"Player #";
+		m_sVictoryRanks[ ranks[i]-1 ].push_back (L'1' + i);
 
-	//	timeStream.flush();
 
-	//	timeStream << L"TIME:\n";
-	//	timeStream << times[i].c_str();
-	//	m_sVictoryTimes[ ranks[i] ] =  timeStream.str().c_str();
-	//	//m_sVictoryTimes[ ranks[i] ] = L"Time:";
-	//}
+		m_sVictoryTimes[ ranks[i]-1 ] = L"Time: ";
+		//m_sVictoryTimes[ ranks[i]-1 ].push_back ('4' + convert);
+	}
 }
 
 
