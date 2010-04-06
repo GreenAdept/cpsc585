@@ -919,40 +919,6 @@ void Simulator::addCrater( Crater* crater )
 	m_Actors.push_back( pActor );
 }
 
-//--------------------------------------------------------------------------------------
-// Function:  createVehicle
-// Creates a box character in the PhysX scene representing a vehicle.
-//--------------------------------------------------------------------------------------
-/*
-void Simulator::createVehicle( Vec3 pos, BoundingBox b ) 
-{
-	//Add a single shape actor to the scene
-	NxActorDesc actorDesc;
-	NxBodyDesc bodyDesc;
-	bodyDesc.angularDamping	= 0.5f;
-	bodyDesc.mass = m_rVehicleMass;
-
-	//Create a box with the supplied bounding box dimensions
-	NxBoxShapeDesc boxDesc;
-	//boxDesc.mass = 10.0f;
-	boxDesc.dimensions.set( b.m_fWidth, b.m_fHeight, b.m_fLength );
-	actorDesc.shapes.pushBack( &boxDesc );
-
-	//Initialize the vehicle's parameters
-	actorDesc.body = &bodyDesc;
-	//actorDesc.density = m_rVehicleMass / (b.m_fLength * b.m_fHeight * b.m_fWidth);
-	actorDesc.globalPose.t = NxVec3( pos.x, pos.y, pos.z );
-	assert( actorDesc.isValid() );
-
-	//Create the vehicle in the scene
-	NxActor* pActor = m_Scene->createActor( actorDesc );
-	pActor->setMaxAngularVelocity(m_rMaxAngularVelocity);
-	assert( pActor );
-
-	//Add the vehicle to global list of all vehicles
-	m_Vehicles.push_back( pActor );
-}
-*/
 
 //--------------------------------------------------------------------------------------
 // Function:  createTriMeshShape
@@ -1080,9 +1046,6 @@ void Simulator::setGravity(Vec3 gravity)
 		scene = m_PhysicsSDK->getScene( 0 );
 		scene->setGravity( m_vDefaultGravity );
 	}
-
-	//m_rSpringK	= ( -m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
-	//m_rSpringC	= 2 * sqrt( m_rSpringK * m_rVehicleMass );
 }
 
 void Simulator::setRestitution(double res)
@@ -1133,9 +1096,6 @@ void Simulator::setBrakingFriction( double friction )
 void Simulator::setVehicleMass( double mass )
 {
 	m_rVehicleMass = mass;
-
-	//m_rSpringK	= ( -m_vDefaultGravity.y * m_rVehicleMass ) / ( m_rWheelRestLength * 4 );
-	//m_rSpringC	= 2 * sqrt( m_rSpringK * m_rVehicleMass );
 
 	for( int i=0; i<m_Actors.size(); i++ )
 		m_Actors[i]->setMass( mass );
