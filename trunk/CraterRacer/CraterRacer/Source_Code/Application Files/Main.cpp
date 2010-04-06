@@ -1,9 +1,11 @@
-//#include "Main.h"
-
 #define NOMINMAX
 #include "DXUT.h"
 #include "CraterRacerApp.h"
 #include "MessageManager.h"
+
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
 
 //--------------------------------------------------------------------------------------
 // Initialize everything and go into a render loop
@@ -50,7 +52,9 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 	
 	MessageManager::deleteManager( );
 
-	//CleanupXACT();
+	CleanupXACT();
+
+	_CrtDumpMemoryLeaks();
 
     return DXUTGetExitCode();	
 }
