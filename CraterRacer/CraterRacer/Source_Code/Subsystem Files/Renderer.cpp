@@ -100,8 +100,8 @@ Renderer::~Renderer( )
 
 	for( int i=0; i < NUM_HUD_IMAGES; i++ )
 	{
-			SAFE_RELEASE( m_HUDImages[i] );
-			SAFE_RELEASE( m_HUDImages2[i] );
+		SAFE_RELEASE( m_HUDImages[i] );
+		SAFE_RELEASE( m_HUDImages2[i] );
 	}
 }
 
@@ -152,7 +152,8 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 HRESULT Renderer::OnCreate( Device* device )
 {
 	HRESULT hr;
-	D3DXCreateTextureFromFile( device, L"Media//Images//Logo.png", &skybox );
+	//D3DXCreateTextureFromFile( device, L"Media//Images//Logo.png", &m_Skybox );
+
 	//initialize the resource manager for our HUD and Pause Screen.
 	V_RETURN( m_ResourceManager.OnD3D9CreateDevice( device ) );
 
@@ -283,7 +284,6 @@ void Renderer::drawPauseScreen( )
 		image = m_iButtonImages[ i ];
 		V( m_pImageSprite->Draw( m_Images[ image ], NULL, &center, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	}
-	m_pImageSprite->Flush();
 	m_pImageSprite->End( );
 }
 
@@ -329,7 +329,6 @@ void Renderer::drawStartupMenu( )
 		V( m_pImageSprite->Draw( m_Images[ image ], NULL, NULL, &m_ImageLocations[image], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 	}
 
-	m_pImageSprite->Flush();
 	m_pImageSprite->End( );
 }
 
@@ -387,7 +386,6 @@ void Renderer::drawLoadingScreen( )
 //--------------------------------------------------------------------------------------
 void Renderer::renderFPS( )
 {
-	m_pTextSprite->Flush();
     CDXUTTextHelper txtHelper( m_pFont, m_pTextSprite, 15 );
 
     txtHelper.Begin();
@@ -423,28 +421,6 @@ void Renderer::renderCountDown( int count )
 	V( m_pImageSprite->Draw( m_Images[numImage], NULL, NULL, NULL, D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 
 	m_pImageSprite->End();
-
-	//m_pTextSprite->Flush();
-    //CDXUTTextHelper txtHelper( m_pFont, m_pTextSprite, 15 );
-
-    /*txtHelper.Begin();
-    txtHelper.SetInsertionPos( 10, 150 );
-	txtHelper.SetForegroundColor( D3DXCOLOR( 1.0f, 1.0f, 1.0f, 1.0f ) );
-	//LPCWSTR stats = DXUTGetFrameStats( true );
-	if (count != 0) {
-		WCHAR number[10];
-		_itow(count, number, 10) ;
-		//wstring str( stats ), fps;
-		//fps = str.substr( 5, 10 );
-		txtHelper.DrawTextLine( number ); // Show FPS
-	}
-	else
-	{
-		wstring go = L"GO!";
-		txtHelper.DrawTextLine( go.c_str() );
-	}
-
-	txtHelper.End();*/
 }
 
 //--------------------------------------------------------------------------------------
@@ -483,7 +459,6 @@ void Renderer::drawVictoryScreen( )
 	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[3].c_str(), -1, &m_VictoryRecs[3], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[3].c_str(), -1, &m_VictoryRecs[7], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
-	m_pImageSprite->Flush();
 	m_pImageSprite->End( );
 }
 
@@ -518,7 +493,6 @@ void Renderer::drawTimesScreen( )
 	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[3], -1, &m_BestTimesRecs[3], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
 	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[4], -1, &m_BestTimesRecs[4], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
-	m_pImageSprite->Flush();
 	m_pImageSprite->End( );
 }
 
@@ -799,6 +773,7 @@ void Renderer::adjustTwoPlayer( bool isTwoPlayer, int width, int height )
 	positionHUDImages( width, height );
 	m_bIsTimeTrial = false;
 }
+
 
 //--------------------------------------------------------------------------------------
 // Function: adjustTimeTrial
@@ -1136,14 +1111,10 @@ void Renderer::drawTransformedSprite( float rot, Vec3& location, Vec2 center, Sp
 	Matrix mat;
 	Vec2 trans = Vec2( location.x,  location.y );
 
-	m_pImageSprite->Begin( D3DXSPRITE_ALPHABLEND );
-
 	m_pImageSprite->Flush();
 	D3DXMatrixTransformation2D(&mat, NULL, 0.0, &m_ScaleVal, &center, rot, &trans );
 	m_pImageSprite->SetTransform( &mat );
 	V( m_pImageSprite->Draw( image, NULL, NULL, NULL, D3DCOLOR_ARGB( 255,255,255,255 ) ) );
-
-	m_pImageSprite->End();
 }
 
 
@@ -1166,7 +1137,6 @@ void Renderer::drawAHUD( Sprite* images, Vec3* locations, int playerID )
 	drawTransformedSprite( 0.0, locations[SPEEDOMETER_IMAGE], Vec2(0,0), images[ SPEEDOMETER_IMAGE ] );
 	
 	//rotate the speedometer wand image to correct position
-		//rotate the speedometer wand image to correct position
 	if( m_bIsTwoPlayer )
 		drawTransformedSprite( m_fSpeedRotations[ playerID ], locations[SPEEDWAND_IMAGE], Vec2(64,11), images[ SPEEDWAND_IMAGE ] );
 	else
@@ -1200,7 +1170,6 @@ void Renderer::drawAHUD( Sprite* images, Vec3* locations, int playerID )
 	//reset sprite transform matrix so all sprites aren't rotated
 	D3DXMatrixIdentity( &mat );
 	m_pImageSprite->SetTransform( &mat );
-	m_pImageSprite->Flush();
 }
 
 
@@ -1297,19 +1266,3 @@ void Renderer::positionHUDImages( int width, int height )
 	}
 }
 
-//--------------------------------------------------------------------------------------
-// Function:  toLPCWSTR
-// Converts string to wide byte string
-//--------------------------------------------------------------------------------------
-std::wstring Renderer::toLPCWSTR( std::string& s )
-{
-	 int len;
-	 int slength = (int)s.length() + 1;
-	 len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);
-	 wchar_t* buf = new wchar_t[len];
-	 MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, buf, len);
-	 std::wstring r(buf);
-	 delete[] buf;
-
-	 return r; 
-}
