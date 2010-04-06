@@ -130,10 +130,14 @@ void MessageManager::ProcessMessage( int message )
 			m_VictoryCalculator->recordTime(m_Clock->getFormattedTime());
 			m_Renderer->adjustBestTimes( m_VictoryCalculator->getRecordedTimes() );
 			m_App->m_AppState = APP_SHOWTIMES;
+			m_App->m_uiCurrentButton = GUI_BTN_MAINMENU;
+			m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, +1 );
 		}
 		else {
 			m_Renderer->adjustVictoryRank (m_VictoryCalculator->getRanks(), m_VictoryCalculator->getFinishTimes());
 			m_App->m_AppState = APP_VICTORY;
+			m_App->m_uiCurrentButton = GUI_BTN_MAINMENU;
+			m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, +1 );
 		}
 		break;
 	}

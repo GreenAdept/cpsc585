@@ -505,7 +505,7 @@ void Renderer::drawTimesScreen( )
 	V( m_pImageSprite->Draw( m_Images[ TIMES_IMAGE ], NULL, NULL, &m_ImageLocations[ TIMES_IMAGE ], D3DCOLOR_ARGB( 255,255,255,255 ) ) );
 
 	//draw the times buttons
-	for( int i=GUI_BTN_MAINMENU2; i <= GUI_BTN_EXITSMALL2; i++ )
+	for( int i=GUI_BTN_MAINMENU; i <= GUI_BTN_EXITSMALL; i++ )
 	{
 		m_pImageSprite->Flush();
 		image = m_iButtonImages[ i ];

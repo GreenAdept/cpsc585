@@ -48,7 +48,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 	bool doControllerProcessing = false;
 	DWORD dwReturnVal;
 	
-	UpdateAudio(m_AppState);
+	//UpdateAudio(m_AppState);
 	if( m_bIsLoading )
 		startGame( 0 );
 
@@ -81,7 +81,7 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 				m_iLastTime = m_Clock->getTotalTimeInMS();
 				m_iCount = 3;
 				Emit(Events::EStartOrStopRace, 0);
-				Emit(Events::EGameFinished);
+				//Emit(Events::EGameFinished);
 				m_AppState = APP_RENDER_GAME;
 			}
 		}
@@ -183,7 +183,7 @@ void RacerApp::moveMenuUp( )
 	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_SINGLE_PLAYER ||
 		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_UNPAUSE ||
 		m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_MAINMENU ||
-		m_AppState == APP_SHOWTIMES && m_uiCurrentButton != GUI_BTN_MAINMENU2 )
+		m_AppState == APP_SHOWTIMES && m_uiCurrentButton != GUI_BTN_MAINMENU )
 	{
 		//send message to current button to go back to normal state
 		m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
@@ -202,7 +202,7 @@ void RacerApp::moveMenuDown( )
 	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_EXIT ||
 		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_EXIT2 ||
 		m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_EXITSMALL ||
-		m_AppState == APP_SHOWTIMES && m_uiCurrentButton != GUI_BTN_EXITSMALL2 )
+		m_AppState == APP_SHOWTIMES && m_uiCurrentButton != GUI_BTN_EXITSMALL )
 	{
 		//tell current button to go back to normal/unselected state
 		m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
@@ -272,7 +272,6 @@ void RacerApp::processMenuSelection( )
 					break;
 				
 				case GUI_BTN_PAUSE_MAINMENU:
-
 					m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
 					m_Renderer->adjustButtonImage( UNPAUSE_IMAGE, +1 );
 					m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
@@ -282,7 +281,9 @@ void RacerApp::processMenuSelection( )
 
 				case GUI_BTN_MAINMENU:
 				case GUI_BTN_MAINMENU2:
-				
+					m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
+					m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
+					m_Renderer->adjustButtonImage( m_uiCurrentButton, +1 );
 					m_AppState = APP_STARTUP; 
 					m_bIsTwoPlayer = false;
 					m_bIsTimeTrial= false;
