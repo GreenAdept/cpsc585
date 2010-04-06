@@ -9,7 +9,6 @@ GameObj* g_pGame = NULL;	//global game used by the RacerApp class
 
 //instatiating all the static member variables used by RacerApp
 ApplicationState		RacerApp::m_AppState;
-//XBox360Controller*		RacerApp::m_MenuController;
 XBox360Controller*   	RacerApp::m_Controllers [2];
 UINT					RacerApp::m_uiCurrentButton;
 SceneLoader*			RacerApp::m_SceneLoader;
@@ -31,8 +30,6 @@ string					RacerApp::m_sGameFilename;
 int						RacerApp::m_iCount;
 Clock*					RacerApp::m_Clock;
 int						RacerApp::m_iLastTime;
-
-//XBox360Controller
 
 //--------------------------------------------------------------------------------------
 // Function:  OnUpdateGame
@@ -644,7 +641,7 @@ RacerApp::RacerApp()
 	m_Clock			  = new Clock();
 
 	// Set up the audio
-	HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, SE_WAVEBANK_FILE, BG_SETTINGS_FILE, BG_SOUNDBANK_FILE );
+//	HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, SE_WAVEBANK_FILE, BG_SETTINGS_FILE, BG_SOUNDBANK_FILE );
 }
 
 

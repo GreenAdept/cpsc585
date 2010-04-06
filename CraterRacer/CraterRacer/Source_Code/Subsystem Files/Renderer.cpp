@@ -414,7 +414,6 @@ void Renderer::renderCountDown( int count )
 
 	Vec2 scaling( 1.0, 1.0 );
 	int numImage = ZERO_COUNT_IMAGE + count;
-
 	
 	m_pImageSprite->Begin( D3DXSPRITE_ALPHABLEND );
 

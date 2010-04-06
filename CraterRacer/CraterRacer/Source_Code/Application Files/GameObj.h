@@ -51,7 +51,7 @@ public:
 	bool		 isFinished			( );
 
 	VictoryCalculator           m_Victory;
-	EntityManager*				m_Entities;		// collection of all entities
+	EntityManager*				m_Entities;		//collection of all entities
 	Simulator*					m_Simulator;
 	Clock						m_Clock;
 
@@ -60,7 +60,7 @@ private:
 
 	DebugWriter*				m_Debugger;
 	VarLoader*					m_VarLoader;
-	vector<GameCamera*>			m_Cameras;		// main camera to follow behind vehicle
+	vector<GameCamera*>			m_Cameras;		//main camera to follow behind vehicle
 	vector<XBox360Controller*>	m_Controllers;	//first player controller will have id# 0
 	bool						m_bIsFinished;
 };

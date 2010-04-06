@@ -50,7 +50,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 	
 	MessageManager::deleteManager( );
 
-	CleanupXACT();
+	//CleanupXACT();
 
     return DXUTGetExitCode();	
 }
