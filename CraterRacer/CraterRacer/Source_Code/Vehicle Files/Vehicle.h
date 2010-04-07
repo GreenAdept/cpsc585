@@ -85,7 +85,7 @@ public:
 	bool	isPlayer		( );
 
 	Wheel m_Wheels[4];
-	Clock clock;
+	Clock m_clock;
 
 protected:
 	Input		input;
