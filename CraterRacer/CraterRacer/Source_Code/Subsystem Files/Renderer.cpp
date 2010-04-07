@@ -35,8 +35,8 @@ Renderer::Renderer( )
 	m_iButtonImages[ GUI_BTN_EXITSMALL ] = EXIT_SMALL_IMAGE;
 
 	//times screen buttons
-	m_iButtonImages[ GUI_BTN_MAINMENU2 ] = MAINMENU2_ACTIVE_IMAGE;
-	m_iButtonImages[ GUI_BTN_EXITSMALL2 ] = EXITSMALL2_IMAGE;
+	//m_iButtonImages[ GUI_BTN_MAINMENU2 ] = MAINMENU2_ACTIVE_IMAGE;
+	//m_iButtonImages[ GUI_BTN_EXITSMALL2 ] = EXITSMALL2_IMAGE;
 
 	//Set up ball animation images for loading screen
 	for( int i=0; i < NUM_LOADING_BALLS; i++ )

@@ -270,7 +270,6 @@ void RacerApp::processMenuSelection( )
 				
 				case GUI_BTN_PAUSE_MAINMENU:
 				case GUI_BTN_MAINMENU:
-				case GUI_BTN_MAINMENU2:
 					m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
 					m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
 					m_Renderer->adjustButtonImage( m_uiCurrentButton, +1 );
@@ -296,7 +295,6 @@ void RacerApp::processMenuSelection( )
 				//or exit 
 				case GUI_BTN_EXIT:
 				case GUI_BTN_EXITSMALL:
-				case GUI_BTN_EXITSMALL2:
 				case GUI_BTN_EXIT2:
 					DXUTShutdown();
 					break;
