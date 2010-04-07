@@ -616,6 +616,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		//actor->addForceAtLocalPos(globalWheelForce[i]*effectiveness, w->getChassisPt() + offset);
 	}
 
+	//reset the input
+	input->reset();
+
 	//Try to keep the vehicle level
 	if (inAir) {
 		//get global orientation, second row for y axis
@@ -627,8 +630,13 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	}
 	//Keep players from driving around on the outside
 	if (offTrack && onGround) {
-		//m_Debugger.writeToFile("here");
-		//effectiveness = 0.2;
+		if (vehicle->m_clock.getTotalTimeInMS() == 0) {
+			vehicle->m_clock.start();
+		}
+		else if (vehicle->m_clock.getTotalTimeInMS() > 5000) {
+			vehicle->getInputObj()->setDir(Input::BACK_BUTTON);
+		}
+
 		NxVec3 velocityDir = normalize(velocity);
 		if (velocity.magnitude() > MAX_OFFTRACK_VELOCITY) {
 			actor->setLinearVelocity(velocityDir*MAX_OFFTRACK_VELOCITY);
@@ -644,7 +652,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		else if (index == 1) {
 			Emit (Events::EVibrate, 1, 30);
 		}
+	}
 
+	if (!offTrack) {
+		vehicle->m_clock = Clock();
 	}
 
 	//Apply accumulated forces to wheels
@@ -653,8 +664,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		actor->addLocalForceAtLocalPos(localWheelForce[i]*effectiveness, w->getChassisPt() + offset);
 		actor->addForceAtLocalPos(globalWheelForce[i]*effectiveness, w->getChassisPt() + offset);
 	}
-
-	input->reset();
 
 	//Check to see if the vehicle is falling
 	if (actor->getGlobalPosition().y < -40) {
