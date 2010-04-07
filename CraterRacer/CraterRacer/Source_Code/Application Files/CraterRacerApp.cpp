@@ -269,13 +269,6 @@ void RacerApp::processMenuSelection( )
 					break;
 				
 				case GUI_BTN_PAUSE_MAINMENU:
-					m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
-					m_Renderer->adjustButtonImage( UNPAUSE_IMAGE, +1 );
-					m_uiCurrentButton = GUI_BTN_SINGLE_PLAYER;
-					m_Renderer->adjustButtonImage( m_uiCurrentButton, +1 );
-					m_bIsLoading = false;
-					m_bGameIsReady = false;
-
 				case GUI_BTN_MAINMENU:
 				case GUI_BTN_MAINMENU2:
 					m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
@@ -285,6 +278,8 @@ void RacerApp::processMenuSelection( )
 					m_bIsTwoPlayer = false;
 					m_bIsTimeTrial= false;
 					m_Renderer->adjustTwoPlayer( false, m_iBackWidth, m_iBackHeight );
+					m_Renderer->adjustLapImage( PLAYER1, 1 );
+					m_Renderer->adjustLapImage( PLAYER2, 1 );
 					break;
 
 				case GUI_BTN_GAMERULES:
