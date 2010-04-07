@@ -113,6 +113,8 @@ void MessageManager::ProcessMessage( int message )
 			m_App->m_AppState = APP_PAUSED;
 			m_App->m_uiCurrentButton = GUI_BTN_UNPAUSE;
 			m_Renderer->adjustButtonImage( GUI_BTN_UNPAUSE, +1 );
+			m_Game->vibrate(0, 0);
+			m_Game->vibrate(1, 0);
 		}
 		break;
 
@@ -139,6 +141,8 @@ void MessageManager::ProcessMessage( int message )
 			m_App->m_uiCurrentButton = GUI_BTN_MAINMENU;
 			m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, +1 );
 		}
+		m_Game->vibrate(0, 0);
+		m_Game->vibrate(1, 0);
 		break;
 	}
 }
