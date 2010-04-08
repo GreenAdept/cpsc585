@@ -7,9 +7,12 @@
 
 #include <vector>
 
+using namespace std;
+
 class ParticleEmitter {
 public:
 	ParticleEmitter();
+	ParticleEmitter(Vec3 pos);
 	~ParticleEmitter();
 	
 	void update(float deltaTime);
@@ -17,8 +20,8 @@ public:
 private:
 	Vec3 position;
 	float timeElapsed, life, timeBetweenParticles, radius;
-	int maxParticles;
-	vector<Particle> particles;
+	int maxParticles, particlesAdded;
+	vector<Particle*> particles;
 
 };
 
