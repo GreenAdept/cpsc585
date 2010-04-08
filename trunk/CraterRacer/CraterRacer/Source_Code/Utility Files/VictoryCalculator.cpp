@@ -7,6 +7,7 @@ using namespace std;
 VictoryCalculator::VictoryCalculator() {
 	gameFinished = false;
 	recorded = false;
+	hasTimeLimit = false;
 }
 
 //------------------------------------------------------
@@ -69,6 +70,15 @@ void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles, int numPlayer
 			calculateRank (vehicles, i);
 			if (i < numPlayers)
 				gameFinished = false;
+		}
+		else if (hasTimeLimit) { //if the vehicle finished, and there is a time limit
+			if (finishTimes[i].compare(timeLimit) > 0) //if finishedTime is greater than timeLimit
+			{	//set completed course to false
+			}
+			else
+			{
+				//set completed course to true, and record time. Decrease time by 30sec
+			}
 		}
 	}
 
@@ -189,7 +199,7 @@ bool VictoryCalculator::isGameFinished () {
 // This function sets the finish time for a player.  
 //--------------------------------------------------------------------------------------
 void VictoryCalculator::setFinishTime (int playerNum, string time) {
-	if( playerNum < 0 || playerNum > 3 )
+	if( playerNum < 0 || playerNum > 7 )
 		return;
 	finishTimes [playerNum] = time;
 }
@@ -199,4 +209,17 @@ void VictoryCalculator::setFinishTime (int playerNum, string time) {
 //--------------------------------------------------------------------------------------
 vector<string> VictoryCalculator::getFinishTimes () {
 	return finishTimes;
+}
+
+void VictoryCalculator::setTimeLimit(string limit)
+{
+	hasTimeLimit = true;
+	timeLimit = limit;
+}
+
+string VictoryCalculator::getTimeLimit( )
+{
+	if (hasTimeLimit)
+		return timeLimit;
+	return NULL;
 }
