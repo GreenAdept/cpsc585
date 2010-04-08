@@ -51,8 +51,8 @@ class MessageManager
 
 	static void ProcessMessage	( int message, long param );
 	static void ProcessMessage	( int message, long param1, long param2 );
+	static void ProcessMessage  ( int message, long param1, long param2, long param3 );
 	static void ProcessMessage	( int message );
-	static void ProcessMessage  ( int message, NxActor* param1, NxActor* param2 );
 	static void AddEmitter		( RacerApp* app );
 	static void AddEmitter		( GameObj* game );
 	static void deleteManager	( );

@@ -73,7 +73,6 @@ public:
 
 	void setContacts();
 	void setGroupFlags();
-	void vibrateIfPlayer(NxActor* vehicle1, NxActor* vehicle2);
 
 private:
 

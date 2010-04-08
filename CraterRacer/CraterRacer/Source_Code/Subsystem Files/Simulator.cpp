@@ -87,18 +87,10 @@ void Simulator::setContacts()
 	for (int i = 0; i < m_Vehicles.size(); i++) {
 		for (int j = i; j < m_Vehicles.size(); j++) {
 			if (i != j) {
-				m_Scene->setActorPairFlags(*m_Vehicles[i], *m_Vehicles[j], NX_NOTIFY_ON_START_TOUCH |   
-				                                                           NX_NOTIFY_ON_TOUCH | 
-				                                                           NX_NOTIFY_ON_END_TOUCH);
+				m_Scene->setActorPairFlags(*m_Vehicles[i], *m_Vehicles[j], NX_NOTIFY_ON_START_TOUCH);
 			}
 		}
 	}
-
-/*
-	for (int i = 0; i < m_Vehicles.size(); i++)
-		for (int j = 0; j < m_Vehicles.size(); j++)
-			m_Scene->setActorPairFlags(*m_Vehicles[0], *m_Vehicles[i], NX_NOTIFY_ON_START_TOUCH |   
-					                                                   NX_NOTIFY_ON_TOUCH);*/
 }
 
 //--------------------------------------------------------------------------------------
@@ -767,15 +759,6 @@ void Simulator::setActorGroup(NxActor *actor, NxCollisionGroup group)
 void Simulator::setGroupFlags()
 {
 	m_Scene->setGroupCollisionFlag(0,1,true);
-}
-
-void Simulator::vibrateIfPlayer(NxActor* vehicle1, NxActor* vehicle2)
-{
-	//if (vehicle1 == m_Vehicles[0])
-		Emit(Events::EVibrate, 0, 80);
-	if (m_Actors.size() > 1)
-		//if (vehicle2 == m_Vehicles[1])
-			Emit(Events::EVibrate, 1, 80);
 }
 
 void Simulator::createMeteorGroup(MeteorGroup* mg) {

@@ -274,11 +274,18 @@ void SceneLoader::processVehicleInfo( ifstream& file )
 {
 	string mesh;
 	string flush;
+	string timeLimit;
 	int numPlayers;
 	int numComputers;
 	int numLaps;
 	
 	file >> flush >> flush;
+	
+	if ( flush == "TIME_LIMIT" ){
+		file >> timeLimit;
+		file >> flush;
+	}
+
 	if( flush != "NUM_PLAYERS" ) return;
 	file >> numPlayers;
 
@@ -290,6 +297,7 @@ void SceneLoader::processVehicleInfo( ifstream& file )
 	if( flush != "NUM_LAPS" ) return;
 	file >> numLaps;
 
+	//m_Game->
 	processPlayerVehicles( file, numPlayers );
 	processComputerVehicles( file, numComputers );
 	m_Objs.entityManager->getTerrain(0)->setNumberOfLaps( numLaps );
