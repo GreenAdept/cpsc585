@@ -653,8 +653,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	//Apply accumulated forces to wheels
 	for (int i = 0; i < 4; i++) {
 		w = &vehicle->m_Wheels[ i ];
-		actor->addLocalForceAtLocalPos(localWheelForce[i]*effectiveness, w->getChassisPt() + offset);
-		actor->addForceAtLocalPos(globalWheelForce[i]*effectiveness, w->getChassisPt() + offset);
+		int idealFrameRate = 60;
+		actor->addLocalForceAtLocalPos(localWheelForce[i]*effectiveness*(idealFrameRate*time), w->getChassisPt() + offset);
+		actor->addForceAtLocalPos(globalWheelForce[i]*effectiveness*(idealFrameRate*time), w->getChassisPt() + offset);
 	}
 
 	//Check to see if the vehicle is falling
