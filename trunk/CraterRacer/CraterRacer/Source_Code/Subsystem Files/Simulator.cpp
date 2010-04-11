@@ -348,6 +348,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	const NxVec3 velocity = actor->getLinearVelocity();;
 	NxReal friction = m_rDynamicFriction;
 	boolean noInput = true;
+	int idealFrameRate = 60;
 
 	//INPUT
 	for( int i = 0; i < 7; i++ )
@@ -390,8 +391,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 				{
 					vehicle->setReverse(true);
 					if(velocity.magnitude() < MAX_BACKWARD_VELOCITY){
-						localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) );
-						localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) );
+						localWheelForce[2] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) )*(idealFrameRate*time);
+						localWheelForce[3] += NxVec3(0, 0, -m_rVehicleMass * m_rForceStrength * 1.5 * (0.5+pressure) )*(idealFrameRate*time);
 					}
 					noInput = false;
 					break;
@@ -421,8 +422,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 					maxVelocity *= 0.9;
 				if((velocity.magnitude() < maxVelocity) && m_bStartRace)
 				{
-					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );
-					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) );
+					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) )*(idealFrameRate*time);
+					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) )*(idealFrameRate*time);
 				}
 				noInput = false;
 				g_audioState.acceleration = 1;
@@ -540,7 +541,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		NxVec3 applied = (pointVelocity.dot(normal) / normal.dot(normal))*normal;
 		applied = -applied*m_rSteeringPower;
 		
-		localWheelForce[i] += applied;
+		localWheelForce[i] += applied*(idealFrameRate*time);
 		//END NEW STEERING
 		
 		//apply forces to wheel if it is on the ground
@@ -653,9 +654,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	//Apply accumulated forces to wheels
 	for (int i = 0; i < 4; i++) {
 		w = &vehicle->m_Wheels[ i ];
-		int idealFrameRate = 60;
-		actor->addLocalForceAtLocalPos(localWheelForce[i]*effectiveness*(idealFrameRate*time), w->getChassisPt() + offset);
-		actor->addForceAtLocalPos(globalWheelForce[i]*effectiveness*(idealFrameRate*time), w->getChassisPt() + offset);
+		actor->addLocalForceAtLocalPos(localWheelForce[i]*effectiveness, w->getChassisPt() + offset);
+		actor->addForceAtLocalPos(globalWheelForce[i]*effectiveness, w->getChassisPt() + offset);
 	}
 
 	//Check to see if the vehicle is falling
