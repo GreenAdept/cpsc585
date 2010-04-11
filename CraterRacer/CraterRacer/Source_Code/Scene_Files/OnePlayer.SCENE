@@ -9,29 +9,29 @@ NUM_LAPS				2
 
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody1.x
-POSITION:			-235 30 10
+POSITION:			-235 31 10
 
 
 **COMPUTER_VEHICLES ----------------------------------------------
 
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody2.x
-POSITION:			-250 30 20
+POSITION:			-250 31 20
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody3.x
-POSITION:			-220 30 30
+POSITION:			-220 31 30
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody4.x
-POSITION:			-235 30 30
+POSITION:			-235 31 30
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody5.x
-POSITION:			-235 30 40
+POSITION:			-235 31 40
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody6.x
-POSITION:			-250 30 40
+POSITION:			-250 31 40
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody7.x
-POSITION:			-220 30 50
+POSITION:			-220 31 50
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody8.x
-POSITION:			-235 30 50
+POSITION:			-235 31 50
