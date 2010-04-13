@@ -784,7 +784,7 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 
 		Vec3 currentPos = m->getPosition();
 		Vec3 target = m->getTarget();
-		float speed = 70;
+		float speed = 140;
 
 		Vec3 direction = target - currentPos;
 		float travelled = speed * time;
