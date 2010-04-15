@@ -699,11 +699,6 @@ void Renderer::adjustVictoryRank( vector<int>& ranks, vector<string>& times )
 		m_sVictoryRanks[ ranks[i]-1 ] = L"Player #";
 		m_sVictoryRanks[ ranks[i]-1 ].push_back (L'1' + i);
 
-
-		DebugWriter debug;
-		debug.writeToFile(times[i]);
-		debug.writeToFile((int)times.size());
-
 		if (ranks[i] == 1) {
 			m_sVictoryTimes[ ranks[i]-1 ] = L"Time: ";
 		}
@@ -711,30 +706,9 @@ void Renderer::adjustVictoryRank( vector<int>& ranks, vector<string>& times )
 			m_sVictoryTimes[ ranks[i]-1 ] = L"Time:\n";
 		}
 		for (int j = 0; j < 8; j++) {
-			m_sVictoryTimes[ ranks[i]-1 ].push_back ((WCHAR)times[ranks[i]-1].at(j));
+			m_sVictoryTimes[ ranks[i]-1 ].push_back ((WCHAR)times[i].at(j));
 		}
 	}
-
-
-	/*int off = playerID * 8;
-	char temp;
-	//mm
-	temp = time.at(0);
-	m_iTimeImages[0 + off] = m_iClockImage + atoi( &temp );
-	temp = time.at(1);
-	m_iTimeImages[1 + off] = m_iClockImage + atoi( &temp );
-	
-	//ss
-	temp = time.at(3);
-	m_iTimeImages[3 + off] = m_iClockImage + atoi( &temp );
-	temp = time.at(4);
-	m_iTimeImages[4 + off] = m_iClockImage + atoi( &temp );
-
-	//ms ms
-	temp = time.at(6);
-	m_iTimeImages[6 + off] = m_iClockImage + atoi( &temp );
-	temp = time.at(7);
-	m_iTimeImages[7 + off] = m_iClockImage + atoi( &temp );*/
 }
 
 

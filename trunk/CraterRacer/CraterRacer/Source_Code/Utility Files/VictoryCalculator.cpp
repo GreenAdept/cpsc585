@@ -199,9 +199,12 @@ bool VictoryCalculator::isGameFinished () {
 // This function sets the finish time for a player.  
 //--------------------------------------------------------------------------------------
 void VictoryCalculator::setFinishTime (int playerNum, string time) {
-	if( playerNum < 0 || playerNum > 7 )
+	if( playerNum > 7 )
 		return;
-	finishTimes [playerNum] = time;
+	else if (playerNum < 0)
+		finishTimes [-playerNum] = time;
+	else
+		finishTimes [playerNum] = time;
 }
 
 //--------------------------------------------------------------------------------------

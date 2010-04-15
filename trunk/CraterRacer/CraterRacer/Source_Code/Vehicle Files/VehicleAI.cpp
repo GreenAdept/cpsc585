@@ -56,7 +56,7 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	int newLap = path->findCurrentLap (passedWPs);
 	if (newLap > path->getNumberOfLaps()) {
 		state = AI::STOPPED;
-		if (m_iPlayerNum >= 0)
+		//if (m_iPlayerNum >= 0)
 			Emit (Events::EPlayerFinished, m_iPlayerNum);
 		return;
 	}
