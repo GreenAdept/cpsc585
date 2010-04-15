@@ -448,16 +448,16 @@ void Renderer::drawVictoryScreen( )
 
 	//Draw rankings and times as text
 	m_pFontVictoryBig->DrawTextW( NULL, this->m_sVictoryRanks[0].c_str(), -1, &m_VictoryRecs[0], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sVictoryTimes[0].c_str(), -1, &m_VictoryRecs[4], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sVictoryTimes[0].c_str(), -1, &m_VictoryRecs[0+NUM_PLAYERS], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
 	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[1].c_str(), -1, &m_VictoryRecs[1], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[1].c_str(), -1, &m_VictoryRecs[5], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[1].c_str(), -1, &m_VictoryRecs[1+NUM_PLAYERS], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
 	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[2].c_str(), -1, &m_VictoryRecs[2], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[2].c_str(), -1, &m_VictoryRecs[6], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[2].c_str(), -1, &m_VictoryRecs[2+NUM_PLAYERS], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
 	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[3].c_str(), -1, &m_VictoryRecs[3], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[3].c_str(), -1, &m_VictoryRecs[7], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[3].c_str(), -1, &m_VictoryRecs[3+NUM_PLAYERS], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
 	m_pImageSprite->End( );
 }
@@ -689,6 +689,10 @@ void Renderer::adjustVictoryRank( vector<int>& ranks, vector<string>& times )
 {
 	WCHAR convert = L'0' - '0';
 
+	for (int i = 0; i < ranks.size(); i++) {
+		
+	}
+
 	//set rank text
 	for( int i=0; i < ranks.size(); i++ )
 	{
@@ -696,9 +700,41 @@ void Renderer::adjustVictoryRank( vector<int>& ranks, vector<string>& times )
 		m_sVictoryRanks[ ranks[i]-1 ].push_back (L'1' + i);
 
 
-		m_sVictoryTimes[ ranks[i]-1 ] = L"Time: ";
-		//m_sVictoryTimes[ ranks[i]-1 ].push_back ('4' + convert);
+		DebugWriter debug;
+		debug.writeToFile(times[i]);
+		debug.writeToFile((int)times.size());
+
+		if (ranks[i] == 1) {
+			m_sVictoryTimes[ ranks[i]-1 ] = L"Time: ";
+		}
+		else {
+			m_sVictoryTimes[ ranks[i]-1 ] = L"Time:\n";
+		}
+		for (int j = 0; j < 8; j++) {
+			m_sVictoryTimes[ ranks[i]-1 ].push_back ((WCHAR)times[ranks[i]-1].at(j));
+		}
 	}
+
+
+	/*int off = playerID * 8;
+	char temp;
+	//mm
+	temp = time.at(0);
+	m_iTimeImages[0 + off] = m_iClockImage + atoi( &temp );
+	temp = time.at(1);
+	m_iTimeImages[1 + off] = m_iClockImage + atoi( &temp );
+	
+	//ss
+	temp = time.at(3);
+	m_iTimeImages[3 + off] = m_iClockImage + atoi( &temp );
+	temp = time.at(4);
+	m_iTimeImages[4 + off] = m_iClockImage + atoi( &temp );
+
+	//ms ms
+	temp = time.at(6);
+	m_iTimeImages[6 + off] = m_iClockImage + atoi( &temp );
+	temp = time.at(7);
+	m_iTimeImages[7 + off] = m_iClockImage + atoi( &temp );*/
 }
 
 
