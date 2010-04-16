@@ -21,6 +21,7 @@ public:
 	int getElapsedTimeInMS(); //returns the elapsed time since last retrieved in milliseconds
 	int getElapsedTimeInSec(); //returns the elapsed time since last retrieved in seconds
 	string getFormattedTime(); //returns time as minutes:seconds:milliseconds
+	string getFormattedTime(int time); //in milliseconds
 
 private:
 	int startTimeMS;

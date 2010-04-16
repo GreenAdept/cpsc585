@@ -3,6 +3,7 @@
 
 #include "Constants.h"
 #include "Vehicle.h"
+#include "Clock.h"
 #include <vector>
 #include <string>
 
@@ -31,7 +32,7 @@ public:
 	bool           isFinished		(int index);
 	bool	       isGameFinished	( );
 	void	       setFinishTime	(int playerNum, string time);
-	vector<string> getFinishTimes	( );
+	vector<string> getFinishTimes	(std::vector<Vehicle*> vehicles);
 	void		   recordTime		(string time);
 	vector<string> getRecordedTimes	( );
 	void		   setTimeLimit		( string limit );

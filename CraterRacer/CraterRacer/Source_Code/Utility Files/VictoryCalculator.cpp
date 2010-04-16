@@ -217,7 +217,73 @@ void VictoryCalculator::setFinishTime (int playerNum, string time) {
 //--------------------------------------------------------------------------------------
 // Function: getFinishTimes
 //--------------------------------------------------------------------------------------
-vector<string> VictoryCalculator::getFinishTimes () {
+vector<string> VictoryCalculator::getFinishTimes (std::vector<Vehicle*> vehicles) {
+	bool calculated = false;
+	int totalWaypoints = 0;
+	int slowestTimeInMS = 0;
+	for (int i = 0; i < vehicles.size(); i++) {
+		if (finishTimes[i] == "00:00:00") {
+			if (!calculated) {
+				for (int j = 0; j < vehicles.size(); j++) {
+					Vehicle*   v = vehicles[j];
+					VehicleAI* myAI = (VehicleAI*) v->getAI();
+
+					if (myAI->getNumberofPassedWPs() > totalWaypoints) {
+						totalWaypoints = myAI->getNumberofPassedWPs();
+					}
+
+					//delete v;
+					//delete myAI;
+				}
+
+				string slowestTime = "00:00:00";
+				for (int j = 0; j < finishTimes.size(); j++) {
+					if (slowestTime.compare(finishTimes[j]) < 0) {
+						slowestTime = finishTimes[j];
+					}
+				}
+
+				slowestTimeInMS += (atoi(slowestTime.substr(0, 2).c_str()) * 60000); //minutes
+				slowestTimeInMS += (atoi(slowestTime.substr(3, 2).c_str()) * 1000); //seconds
+				slowestTimeInMS += (atoi(slowestTime.substr(6, 2).c_str()) * 10); //milliseconds
+				
+				calculated = true;
+			}
+
+			Vehicle*   v = vehicles[i];
+			VehicleAI* myAI = (VehicleAI*) v->getAI();
+
+			int passedWPs = myAI->getNumberofPassedWPs();
+			float dist = myAI->getDistanceToNextWP (v->getPosition());
+			Vec3 pos = myAI->getNextWaypoint(v->getPosition());
+
+			VehicleAI testAI(true);
+			while (testAI.getNumberofPassedWPs() != passedWPs+1) {
+				testAI.incWP();
+			}
+
+			while (testAI.getNumberofPassedWPs() < totalWaypoints) {
+				dist += testAI.getDistanceToNextWP(pos);
+				pos = testAI.getNextWaypoint(pos);
+				testAI.incWP();
+			}
+
+			float maxSpeed = 70;
+			float time = dist/maxSpeed;
+
+			Clock* tempClock = new Clock();
+			finishTimes[i] = tempClock->getFormattedTime(slowestTimeInMS + (int)(time*1000));
+
+			//delete tempClock;
+			//delete v;
+			//delete myAI;
+		}
+	}
+
+	//for (int i = 0; i < vehicles.size(); i++) {
+	//	delete vehicles[i];
+	//}
+
 	return finishTimes;
 }
 
