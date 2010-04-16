@@ -51,6 +51,7 @@ void MessageManager::ProcessMessage( int message, long param )
 
 	case EPlayerFinished:
 		playerNum = param;
+		m_Game->disableVibrate(playerNum);
 		temp = m_Clock->getFormattedTime();
 		m_VictoryCalculator->setFinishTime( playerNum, temp );
 		break;
@@ -141,13 +142,18 @@ void MessageManager::ProcessMessage( int message )
 			m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, +1 );
 		}
 		else {
-			m_Renderer->adjustVictoryRank (m_VictoryCalculator->getRanks(), m_VictoryCalculator->getFinishTimes(m_EntityManager->getVehicles()));
+			m_Renderer->adjustVictoryRank (m_VictoryCalculator->getRanks(), m_VictoryCalculator->getFinishTimes());
 			m_App->m_AppState = APP_VICTORY;
 			m_App->m_uiCurrentButton = GUI_BTN_MAINMENU;
 			m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, +1 );
 		}
 		m_Game->vibrate(0, 0, 0);
 		m_Game->vibrate(1, 0, 0);
+		break;
+
+	case EVictoryScreenUpdate:
+		m_App->m_AppState = APP_VICTORY;
+		m_Renderer->adjustVictoryRank (m_VictoryCalculator->getRanks(), m_VictoryCalculator->getFinishTimes());
 		break;
 	}
 }

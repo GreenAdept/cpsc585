@@ -839,11 +839,7 @@ void Renderer::adjustSpeedImage( float speed, int playerID )
 //--------------------------------------------------------------------------------------
 void Renderer::adjustVictoryRank( vector<int>& ranks, vector<string>& times )
 {
-	WCHAR convert = L'0' - '0';
-
-	for (int i = 0; i < ranks.size(); i++) {
-		
-	}
+	string default = "--:--:--";
 
 	//set rank text
 	for( int i=0; i < ranks.size(); i++ )
@@ -857,8 +853,15 @@ void Renderer::adjustVictoryRank( vector<int>& ranks, vector<string>& times )
 		else {
 			m_sVictoryTimes[ ranks[i]-1 ] = L"Time:\n";
 		}
-		for (int j = 0; j < times[i].size(); j++) {
-			m_sVictoryTimes[ ranks[i]-1 ].push_back ((WCHAR)times[i].at(j));
+		if (times[i] != "00:00:00") {
+			for (int j = 0; j < times[i].size(); j++) {
+				m_sVictoryTimes[ ranks[i]-1 ].push_back ((WCHAR)times[i].at(j));
+			}
+		}
+		else {
+			for (int j = 0; j < default.size(); j++) {
+				m_sVictoryTimes[ ranks[i]-1 ].push_back ((WCHAR)default.at(j));
+			}
 		}
 	}
 }

@@ -58,7 +58,12 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 			g_pGame->simulate( fElapsedTime );
 			g_pGame->think( );
 		}
-
+		else if (g_pGame && m_AppState == APP_VICTORY) {
+			Emit(Events::EVictoryScreenUpdate);
+			g_pGame->simulate( fElapsedTime );
+			g_pGame->think( );
+			doControllerProcessing = true;
+		}
 		else if( g_pGame && m_AppState == APP_GAME_LOADING )
 		{
 			if( m_bGameIsReady )

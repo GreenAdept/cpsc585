@@ -260,6 +260,8 @@ class XBox360Controller
 		XBox360Button X;
 		XBox360Button Y;
 
+		bool canVibrate;
+
 	private:
 		short unsigned int m_nControllerID;
 		bool m_bTimedVibrationActive;

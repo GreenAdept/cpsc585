@@ -17,6 +17,7 @@ class VictoryCalculator {
 	vector<string> finishTimes;
 	vector<string> times;
 	bool           gameFinished;
+	bool		   emittedGameFinished;
 	bool		   recorded;
 	bool		   hasTimeLimit;
 	string		   timeLimit;
@@ -32,7 +33,7 @@ public:
 	bool           isFinished		(int index);
 	bool	       isGameFinished	( );
 	void	       setFinishTime	(int playerNum, string time);
-	vector<string> getFinishTimes	(std::vector<Vehicle*> vehicles);
+	vector<string> getFinishTimes	();
 	void		   recordTime		(string time);
 	vector<string> getRecordedTimes	( );
 	void		   setTimeLimit		( string limit );
