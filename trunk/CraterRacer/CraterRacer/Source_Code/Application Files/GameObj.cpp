@@ -80,6 +80,9 @@ void GameObj::setSceneObjects( SceneObjects& objs )
 {	
 	m_Cameras = objs.gameCameras;
 	m_Controllers = objs.controllers;
+	for (int i = 0; i < m_Controllers.size(); i++) {
+		m_Controllers.at(i)->canVibrate = true;
+	}
 }
 
 
@@ -335,6 +338,14 @@ void GameObj::vibrate(int controllerID, double intensity, double duration)
 			m_Controllers[controllerID]->StopVibration();
 		}
 		duration = duration / 100;
-		m_Controllers[controllerID]->Vibrate(intensity*0.75, intensity, duration);
+		if (m_Controllers[controllerID]->canVibrate) {
+			m_Controllers[controllerID]->Vibrate(intensity*0.75, intensity, duration);
+		}
+	}
+}
+
+void GameObj::disableVibrate( int controllerID ) {
+	if (controllerID >= 0 && controllerID < m_Controllers.size()) {
+		m_Controllers.at(controllerID)->canVibrate = false;
 	}
 }

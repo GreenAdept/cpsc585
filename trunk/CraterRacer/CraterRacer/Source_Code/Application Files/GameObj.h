@@ -42,6 +42,7 @@ public:
 	void render			 ( Device* device, Renderer* renderer, int playerID );
 	void processCallback ( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
 	void vibrate		 ( int controllerID, double intensity, double duration );
+	void disableVibrate  ( int controllerID );
 	
 	//Getter's and setter's
 	string		 getTime			( );
