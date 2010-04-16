@@ -44,6 +44,7 @@ public:
 	void simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteorGroups, double elapsedTime );
 	void createVehicle( Vehicle* vehicle );
 	void createMeteorGroup(MeteorGroup *mg);
+	void createCrater( Crater* crater );
 	void simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle*> vehicles);
 	void removeFromSimulation( Entity* entity );
 
@@ -77,7 +78,6 @@ public:
 private:
 
 	void addTerrainFromX( Terrain* terrain, int id  );
-	void addCrater( Crater* crater );
 
 	NxActor* createLittleBox( NxVec3 pos );
 
