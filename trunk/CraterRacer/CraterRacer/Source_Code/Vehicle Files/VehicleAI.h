@@ -22,9 +22,10 @@ protected:
 	int		  m_iPlayerNum;
 
 	float     elapsed;
+	bool	  canModify;
 
 public:
-	VehicleAI () { path = 0; currentLap = 1; passedWPs = 0; passedWPsLB; }
+	VehicleAI (bool canModify = false);
 
 	virtual void think (EntityManager *em, int myList, int myIndex);
 	Vec3         getLastPassedWaypoint (Vec3 myPos);
@@ -33,7 +34,7 @@ public:
 	int          getNumberofPassedWPs  () { return passedWPs; }
 	bool         isFinished            () { return state == AI::STOPPED; }
 	void		 setPlayerNum          (int num) { m_iPlayerNum = num; }
-
+	void		 incWP				   ();
 	void         timeElapsed           (float seconds) { elapsed += seconds; }
 };
 

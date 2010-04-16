@@ -117,19 +117,20 @@ int Clock::getElapsedTimeInSec()
 // Returns a string of the current time in the format: minutes:seconds:ten_milliseconds.
 // ten_milliseconds is milliseconds/10.
 //--------------------------------------------------------------------------------------
-string Clock::getFormattedTime()
+string Clock::getFormattedTime() {
+	return getFormattedTime(getTotalTimeInMS());
+}
+
+string Clock::getFormattedTime(int time) //in milliseconds
 {
 	string s;
 	stringstream ss;
-	getTotalTimeInMS();
 
-	if (!started)
-		s = "00:00:00";
-	else if (totalTimeMS >= 3600000)
+	if (time >= 3600000)
 		s = "59:59:99";
 	else {
-		int minutes = totalTimeMS/60000;
-		int remaining = totalTimeMS - (minutes * 60000); //number of ms left
+		int minutes = time/60000;
+		int remaining = time - (minutes * 60000); //number of ms left
 		int seconds = remaining/1000;
 		remaining = remaining - (seconds * 1000); //number of ms left
 		int ten_milliseconds = remaining/10;

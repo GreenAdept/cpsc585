@@ -6,6 +6,13 @@
 #include "MessageManager.h"
 #include <cmath>
 
+VehicleAI::VehicleAI (bool canModify) {
+	this->canModify = canModify;
+	path = 0;
+	currentLap = 1;
+	passedWPs = 0;
+	passedWPsLB;
+}
 
 //------------------------------------------------------
 // Function: think
@@ -192,4 +199,10 @@ bool CompVehicleAI::avoid (Vec3& currentDir, Vec3& dirOfObstacle, Input* input) 
 	}
 	else
 		return false;
+}
+
+void VehicleAI::incWP() {
+	if (canModify) {
+		passedWPs++;
+	}
 }
