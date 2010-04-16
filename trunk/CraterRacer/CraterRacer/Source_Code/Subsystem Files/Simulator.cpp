@@ -84,13 +84,13 @@ void Simulator::InitNx( vector<Terrain*> terrains )
 
 void Simulator::setContacts()
 {
-	for (int i = 0; i < m_Vehicles.size(); i++) {
-		for (int j = i; j < m_Vehicles.size(); j++) {
-			if (i != j) {
-				m_Scene->setActorPairFlags(*m_Vehicles[i], *m_Vehicles[j], NX_NOTIFY_ON_START_TOUCH);
-			}
+	//for (int i = 0; i < m_Vehicles.size(); i++) {
+		for (int j = 0; j < m_Vehicles.size(); j++) {
+			//if (i != j) {
+				m_Scene->setActorPairFlags(*m_Vehicles[0], *m_Vehicles[j], NX_NOTIFY_ON_START_TOUCH);
+			//}
 		}
-	}
+	//}
 }
 
 //--------------------------------------------------------------------------------------
@@ -664,10 +664,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		globalWheelForce[2] += frictionForce;
 		globalWheelForce[3] += frictionForce;
 		if (index == 0) {
-			Emit (Events::EVibrate, 0, 30);
+			Emit (Events::EVibrate, 0, 30, 20);
 		}
 		else if (index == 1) {
-			Emit (Events::EVibrate, 1, 30);
+			Emit (Events::EVibrate, 1, 30, 20);
 		}
 	}
 
@@ -825,9 +825,9 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 			double d = distance.magnitude();
 			if (d < 250) {
 				if (d != 0)
-					Emit (Events::EVibrate, 0, ((250 - d)/d)*100);
+					Emit (Events::EVibrate, 0, ((250 - d)/d)*100, 175);
 				else
-					Emit (Events::EVibrate, 0, 1);
+					Emit (Events::EVibrate, 0, 100, 175);
 			}
 			if (vehicles.size() > 1) {
 				NxActor* v2 = vehicles[1]->getPhysicsObj();
@@ -835,9 +835,9 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 				double d = distance.magnitude();
 				if (d < 250) {
 					if (d!=0)
-						Emit (Events::EVibrate, 1, ((250 - d)/d)*100);
+						Emit (Events::EVibrate, 1, ((250 - d)/d)*100, 175);
 					else
-						Emit (Events::EVibrate, 1, 1);
+						Emit (Events::EVibrate, 1, 100, 175);
 				}
 			}
 

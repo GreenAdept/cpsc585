@@ -97,7 +97,7 @@ void MessageManager::ProcessMessage( int message, long param1, long param2, long
 	{
 	case EVibrate:
 		//param1 is controller id, param2 is intensity (scale from 0-100), param3 is duration in seconds/100
-		m_Game->vibrate((int)param1, param2/100, param3/100);
+		m_Game->vibrate((int)param1, param2, param3);
 		break;
 	}
 }
