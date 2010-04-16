@@ -479,7 +479,23 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	}
 
 	//STEERING
+	float maxAngleSpeed = 180; //in degrees/second
 	float angle = vehicle->getInputObj()->getThumbstick() * m_rMaxWheelAngle; //maximum wheel angle
+
+	//get the current angle of the wheel
+	float tempAngle = vehicle->m_Wheels[0].getAngle();
+	if (tempAngle >= 180)
+		tempAngle -= 180;
+	tempAngle = -tempAngle;
+
+
+	//determine the new angle of the wheel
+	if (angle > tempAngle) {
+		angle = min(angle, tempAngle + (maxAngleSpeed * (float)time));
+	}
+	else {
+		angle = max(angle, tempAngle - (maxAngleSpeed * (float)time));
+	}
 
 	//get the angle of the normal to the wheel direction
 	if (angle > 0) {
