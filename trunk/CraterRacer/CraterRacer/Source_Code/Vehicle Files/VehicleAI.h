@@ -32,6 +32,7 @@ public:
 	Vec3		 getNextWaypoint       (Vec3 myPos);
 	float        getDistanceToNextWP   (Vec3 myPos);
 	int          getNumberofPassedWPs  () { return passedWPs; }
+	int          getCurrentLapNumber   ();
 	bool         isFinished            () { return state == AI::STOPPED; }
 	void		 setPlayerNum          (int num) { m_iPlayerNum = num; }
 	void		 incWP				   ();

@@ -106,6 +106,13 @@ float VehicleAI::getDistanceToNextWP (Vec3 myPos) {
 		return path->getDistanceToWP (myPos, passedWPs+1);
 }
 
+int VehicleAI::getCurrentLapNumber () {
+	if (path == 0)
+		return 1;
+	else
+		return path->findCurrentLap (passedWPs);
+}
+
 
 
 

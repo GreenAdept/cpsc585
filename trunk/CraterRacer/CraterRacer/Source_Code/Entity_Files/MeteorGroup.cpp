@@ -1,8 +1,8 @@
 #include "MeteorGroup.h"
 #include "EntityManager.h"
 
-MeteorGroupAI::MeteorGroupAI (float radius) {
-	trigger = new TriggerCylinder (radius);
+MeteorGroupAI::MeteorGroupAI (float radius, int spawnOnLap) {
+	trigger = new TriggerCylinder (radius, spawnOnLap);
 }
 MeteorGroupAI::~MeteorGroupAI () {
 	delete trigger;
@@ -36,12 +36,12 @@ void MeteorGroupAI::think(EntityManager *em, int myList, int myIndex) {
 	}
 }
 
-MeteorGroup::MeteorGroup (int id, int numMeteors, float radius) {
+MeteorGroup::MeteorGroup (int id, int numMeteors, float radius, int spawnOnLap) {
 	this->id = id;
 	this->numMeteors = numMeteors;
 	meteors = new Meteor* [numMeteors];
 
-	mind = new MeteorGroupAI (radius);
+	mind = new MeteorGroupAI (radius, spawnOnLap);
 }
 
 MeteorGroup::~MeteorGroup () {
