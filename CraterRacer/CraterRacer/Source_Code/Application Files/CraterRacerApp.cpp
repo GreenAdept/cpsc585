@@ -138,6 +138,7 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 	//Terminate game if esc key is pressed (and cleanup all memory first)
 	if( nChar == VK_ESCAPE )
 		DXUTShutdown( 0 );
+	VarLoader* v;
 
 	if( g_pGame && m_AppState == APP_RENDER_GAME && bKeyDown )
 	{
@@ -146,6 +147,12 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 		{
 			case  VK_SPACE:
 					Emit( EPauseGame );
+				break;
+
+			case 0x4C:
+				v = new VarLoader();
+				v->loadVars( m_Renderer );
+				delete v;
 				break;
 
 			default:

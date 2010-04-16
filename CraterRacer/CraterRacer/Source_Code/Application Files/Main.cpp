@@ -4,6 +4,7 @@
 #include "MessageManager.h"
 
 #define _CRTDBG_MAP_ALLOC
+#define _CRTDBG_MAP_ALLOC_NEW
 #include <stdlib.h>
 #include <crtdbg.h>
 
@@ -14,9 +15,10 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 {
     // Enable run-time memory check for debug builds.
 #if defined(DEBUG) | defined(_DEBUG)
-    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 
+	_crtBreakAlloc = 18;
 	RacerApp* pApp = new RacerApp(); //The application managing the game and gui
 
 	InitEmitter( pApp );
@@ -53,8 +55,6 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 	MessageManager::deleteManager( );
 
 	CleanupXACT();
-
-	_CrtDumpMemoryLeaks();
 
     return DXUTGetExitCode();	
 }

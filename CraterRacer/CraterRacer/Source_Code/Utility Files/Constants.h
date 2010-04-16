@@ -42,13 +42,16 @@ typedef CModelViewerCamera			MCamera;	// A model viewing camera
 typedef D3DXHANDLE					Handle;		// Handle to RenderScene technique
 typedef ID3DXEffect					Effect;
 typedef IDirect3DDevice9			Device;
-typedef IDirect3DSurface9			Surface;
+typedef IDirect3DSurface9			ISurface;
 typedef IDirect3DTexture9			Texture;
+typedef LPDIRECT3DSURFACE9			Surface;
 typedef LPDIRECT3DTEXTURE9			Sprite;
-typedef IDirect3DVertexDeclaration9 VDecl;
+typedef IDirect3DVertexDeclaration9 VIDecl;
+typedef LPDIRECT3DVERTEXDECLARATION9 VDecl;
 typedef LPDIRECT3DINDEXBUFFER9		IndexBuffer;
 typedef D3DINDEXBUFFER_DESC			IBufferDesc;
 typedef CDXUTDialogResourceManager	ResourceManager;
+typedef D3DVERTEXELEMENT9			VElement;
 
 
 //--------------------------------------------------------

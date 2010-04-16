@@ -27,14 +27,17 @@
 #include <sstream>
 #include "Constants.h"
 #include "Simulator.h"
+#include "Renderer.h"
 
 using namespace std;
 
 const int NUM_VARIABLES = 14;
+const int NUM_SHADOW_VARIABLES = 2;
 
 class VarLoader {
 public:
 	bool loadVars( Simulator* sim );
+	void loadVars( Renderer* r );
 
 	void parse(string strings[]);
 	Vec3 parseVec(string s);
@@ -57,6 +60,7 @@ public:
 	double steeringPower;
 	double brakingFriction;
 	double vehicleMass;
+
 	
 private:
 	ifstream file;

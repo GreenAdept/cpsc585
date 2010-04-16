@@ -38,6 +38,28 @@ bool VarLoader::loadVars( Simulator* sim )
 	return true;
 }
 
+
+void VarLoader::loadVars( Renderer* r )
+{
+	file.open("ShadowVars.txt", ios::in );
+	if (!file.is_open()) return;
+
+	file.seekg (0, ios::beg);
+
+	//read in the variables from the file
+	string strings[NUM_SHADOW_VARIABLES];
+	for (int i = 0; i < NUM_SHADOW_VARIABLES; i++)
+	{
+		if (!file.eof())
+			getline(file, strings[i]);
+		else
+			return; //there aren't the right number of lines in the file
+	}
+	file.close();
+
+	r->setLightParams( parseVec(strings[0]), parseVec(strings[1]) );
+}
+
 void VarLoader::parse(string strings[])
 {
 	forceVec			= parseVec(strings[0]);
@@ -79,8 +101,6 @@ Vec3 VarLoader::parseVec(string s)
 	Vec3 vec;
 	char str[256];
 	strcpy(str, s.c_str());
-	//char *str = s.c_str();
-	//char str[] ="- This, a sample string.";
 	char * temp;
 	
 	// get x

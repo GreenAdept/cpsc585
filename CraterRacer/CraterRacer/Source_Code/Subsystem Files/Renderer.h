@@ -13,6 +13,7 @@
 #include "Constants.h"
 #include "ImageConstants.h"
 
+#define SHADOWMAP_SIZE 512
 
 //--------------------------------------------------------
 //		CLASS: Renderer
@@ -31,6 +32,8 @@ public:
 
 	Renderer ( );
 	~Renderer( );
+
+	void setLightParams( Vec3& pos, Vec3& lookAt );
 
 	// Device-related functions
 	HRESULT OnReset			( Device* device, const D3DSURFACE_DESC* pBack );
@@ -64,6 +67,12 @@ public:
 	void drawVictoryScreen	( );
 	void drawTimesScreen	( );
 	void drawCountdown		( int num );
+
+	void RenderFrame		( Device* device, vector<Renderable*> renderables, 
+								vector<GameCamera*> cameras, int playerID );
+
+	void RenderScene( Device* pd3dDevice, bool bRenderShadow, const D3DXMATRIX* pmView,
+                  const D3DXMATRIX* pmProj, const D3DXMATRIX* pmWorld, vector<Renderable*> renderables );
 
 private:
 
@@ -110,13 +119,26 @@ private:
 	ResourceManager		m_ResourceManager;						
 	wstring				m_sVictoryRanks		[ NUM_PLAYERS ];
 	wstring				m_sVictoryTimes		[ NUM_PLAYERS ];
-	wstring				m_sBestTimes		[5];
+	wstring				m_sBestTimes		[ 5 ];
 	RECT				m_VictoryRecs		[ NUM_PLAYERS*2 ];
 	RECT				m_BestTimesRecs		[ 5 ];
 	bool				m_bIsTwoPlayer;
 	bool				m_bIsTimeTrial;
 	Vec2				m_ScaleVal;
 	Vec2				m_CountdownLocation;
+
+	//SHADOWS STUFF
+	CFirstPersonCamera	m_LCamera;       // Camera obj to help adjust light
+	VDecl				m_pVertDecl;	 // Vertex decl for the sample
+	Sprite				m_pTexDef;       // Default texture for objects
+	D3DLIGHT9           m_Light;         // The spot light in the scene
+	Sprite				m_pShadowMap;    // Texture to which the shadow map is rendered
+	Surface				m_pDSShadow;     // Depth-stencil buffer for rendering to shadow map
+	float               m_fLightFov;     // FOV of the spot light (in radian)
+	Matrix				m_mShadowProj;   // Projection matrix for shadow map
+	ID3DXEffect*        m_pEffect;
+	Vec3				m_vFromPt;
+	Vec3				m_vLookatPt;
 };
 
 
