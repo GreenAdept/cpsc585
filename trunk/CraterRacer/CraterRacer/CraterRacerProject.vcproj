@@ -813,6 +813,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\times.txt"
+				>
+			</File>
+			<File
 				RelativePath=".\variables.txt"
 				>
 			</File>

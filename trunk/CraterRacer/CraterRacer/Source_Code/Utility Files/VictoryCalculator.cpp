@@ -152,32 +152,39 @@ void VictoryCalculator::recordTime(string time) {
 	}
 	fin.close();
 
-	if (times.size() < 5)
-		for (int i = 0; i < 5-times.size(); i++)
+	//make sure there is the right number of recorded times
+	while (times.size() != numberOfRecordedTimes) {
+		if (times.size() < numberOfRecordedTimes) {
 			times.push_back("59:59:99");
-
-	//insert the new times, and all but one of the old times
-	bool inserted = false;
-	vector<string>::iterator it;
-	for (it = times.begin(); it < times.end(); it++){
-		if (time.compare(*it) < 0) {
-			times.insert(it, time);
-			inserted = true;
-			break;
+		}
+		else {
+			times.pop_back();
 		}
 	}
 
-	if (!inserted && (times.size() < numberOfRecordedTimes))
-		times.push_back(time);
+	//add the new time to the list of recorded times (means there is one more recording than wanted)
+	times.push_back(time);
+	//sort the times
+	int index = numberOfRecordedTimes;
+	while (index > 0) {
+		if (times[index].compare(times[index-1]) < 0) {
+			string temp = times[index];
+			times[index] = times[index-1];
+			times[index-1] = temp;
+			index--;
+		}
+		else {
+			break;
+		}
+	}
+	//remove the slowest time (so that there is the right number of recordings again)
+	times.pop_back();
 
+	//print the times back to the file
 	ofstream fout("times.txt");
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < numberOfRecordedTimes; i++) {
 		fout << times[i] << endl;
 	}
-	if (times.size() < 5)
-		for (int i = 0; i < 5-times.size(); i++)
-			fout << "59:59:99" << endl;
-
 	fout.close();
 
 	recorded = true;
