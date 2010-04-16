@@ -93,15 +93,6 @@ bool GameObj::isPaused( )
 
 
 //--------------------------------------------------------------------------------------
-// Function: isFinished
-//--------------------------------------------------------------------------------------
-//bool GameObj::isFinished( )
-//{
-//	return m_bIsFinished;
-//}
-
-
-//--------------------------------------------------------------------------------------
 // Function: getVehicleSpeed
 //--------------------------------------------------------------------------------------
 float GameObj::getVehicleSpeed( int playerNum )
@@ -282,7 +273,7 @@ void GameObj::render( Device* device, Renderer* renderer, int playerID )
 	int test;
 
 	// pass the renderables off to the renderer to do all the work
-	renderer->renderGame( device, renderables, m_Cameras, playerID );
+	renderer->RenderFrame( device, renderables, m_Cameras, playerID );
 }
 
 
@@ -292,7 +283,6 @@ void GameObj::render( Device* device, Renderer* renderer, int playerID )
 void GameObj::simulate( float fElapsedTime )
 {
 	m_Simulator->simulate( m_Entities->getVehicles(), m_Entities->getMeteorGroups(), fElapsedTime );
-
 }
 
 

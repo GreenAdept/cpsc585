@@ -6,6 +6,22 @@
 #include "Renderer.h"
 #include "MessageManager.h"
 
+VElement g_aVertDecl[] =
+{
+    { 0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
+    { 0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,   0 },
+    { 0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 },
+    D3DDECL_END()
+};
+
+
+void Renderer::setLightParams( Vec3& pos, Vec3& lookAt )
+{
+	m_vFromPt = pos;
+	m_vLookatPt = lookAt;
+	m_LCamera.SetViewParams( &m_vFromPt, &m_vLookatPt );
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////		
 // 
 //	Public Functions
@@ -17,6 +33,31 @@
 //--------------------------------------------------------------------------------------
 Renderer::Renderer( )
 {
+	m_pVertDecl		= NULL;
+	m_pTexDef		= NULL;
+	m_pShadowMap	= NULL;
+	m_pDSShadow		= NULL;
+	m_pEffect		= NULL;
+
+	// Initialize the camera
+    m_vFromPt = Vec3( -220.0f, 300.0f, 10.0f  );
+    m_vLookatPt = Vec3( -219.0f, -1.0f, -1.0f );
+    m_LCamera.SetViewParams( &m_vFromPt, &m_vLookatPt );
+
+    // Initialize the spot light
+    m_fLightFov = D3DX_PI / 1.5f;
+
+    m_Light.Diffuse.r = 1.0f;
+    m_Light.Diffuse.g = 1.0f;
+    m_Light.Diffuse.b = 1.0f;
+    m_Light.Diffuse.a = 1.0f;
+    m_Light.Position = Vec3( -220.0f, 200.0f, 0.0f );
+    m_Light.Direction = Vec3( 0.0f, -1.0f, 0.0f );
+    D3DXVec3Normalize( ( Vec3* )&m_Light.Direction, ( Vec3* )&m_Light.Direction );
+    m_Light.Range = 1000.0f;
+    m_Light.Theta = m_fLightFov / 2.0f;
+    m_Light.Phi = m_fLightFov / 2.0f;
+
 	//startup menu buttons
 	m_iButtonImages[ GUI_BTN_SINGLE_PLAYER ] = ONEPLAYER_ACTIVE_IMAGE;
 	m_iButtonImages[ GUI_BTN_TWO_PLAYER ] = TWOPLAYER_IMAGE;
@@ -34,14 +75,9 @@ Renderer::Renderer( )
 	m_iButtonImages[ GUI_BTN_MAINMENU ] = MAINMENU_ACTIVE_IMAGE;
 	m_iButtonImages[ GUI_BTN_EXITSMALL ] = EXIT_SMALL_IMAGE;
 
-	//times screen buttons
-	//m_iButtonImages[ GUI_BTN_MAINMENU2 ] = MAINMENU2_ACTIVE_IMAGE;
-	//m_iButtonImages[ GUI_BTN_EXITSMALL2 ] = EXITSMALL2_IMAGE;
-
 	//Set up ball animation images for loading screen
 	for( int i=0; i < NUM_LOADING_BALLS; i++ )
 		m_iBallImages[i] = LOADING_SMALLBALL_IMAGE;
-	//m_iBallImages[0] = LOADING_BIGBALL_IMAGE;
 
 	//Set up time images to be zeros
 	for( int i=0; i < 16; i++ )
@@ -131,6 +167,46 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 	// Load all images used in the game as textures
 	loadImages( device, width, height );
 
+	if( m_pEffect )
+        V_RETURN( m_pEffect->OnResetDevice() );
+
+	    // Setup the camera's projection parameters
+    float fAspectRatio = pBack->Width / ( FLOAT )pBack->Height;
+
+    m_LCamera.SetProjParams( D3DX_PI / 4, fAspectRatio, 0.1f, 100.0f );
+
+    // Create the default texture (used when a triangle does not use a texture)
+    V_RETURN( device->CreateTexture( 1, 1, 1, D3DUSAGE_DYNAMIC, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &m_pTexDef, NULL ) );
+    D3DLOCKED_RECT lr;
+    V_RETURN( m_pTexDef->LockRect( 0, &lr, NULL, 0 ) );
+    *( LPDWORD )lr.pBits = D3DCOLOR_RGBA( 255, 255, 255, 255 );
+    V_RETURN( m_pTexDef->UnlockRect( 0 ) );
+
+	
+    // Restore the effect variables
+    V_RETURN( m_pEffect->SetVector( "g_vLightDiffuse", ( D3DXVECTOR4* )&m_Light.Diffuse ) );
+    V_RETURN( m_pEffect->SetFloat( "g_fCosTheta", cosf( m_Light.Theta ) ) );
+
+    // Create the shadow map texture
+    V_RETURN( device->CreateTexture( SHADOWMAP_SIZE, SHADOWMAP_SIZE,
+                                         1, D3DUSAGE_RENDERTARGET,
+                                         D3DFMT_R32F,
+                                         D3DPOOL_DEFAULT,
+                                         &m_pShadowMap,
+                                         NULL ) );
+
+    DXUTDeviceSettings d3dSettings = DXUTGetDeviceSettings();
+    V_RETURN( device->CreateDepthStencilSurface( SHADOWMAP_SIZE,
+                                                     SHADOWMAP_SIZE,
+                                                     d3dSettings.d3d9.pp.AutoDepthStencilFormat,
+                                                     D3DMULTISAMPLE_NONE,
+                                                     0,
+                                                     TRUE,
+                                                     &m_pDSShadow,
+                                                     NULL ) );
+
+    // Initialize the shadow projection matrix
+    D3DXMatrixPerspectiveFovLH( &m_mShadowProj, m_fLightFov, 1, 0.01f, 100.0f );
 }
 
 
@@ -160,6 +236,21 @@ HRESULT Renderer::OnCreate( Device* device )
                    OUT_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE,
                    TEXT("Comic Sans MS"), &m_pFontVictorySmall ) );
 	
+
+	DWORD dwShaderFlags = D3DXFX_NOT_CLONEABLE;
+
+	// If this fails, there should be debug output as to 
+    // they the .fx file failed to compile
+    V_RETURN( D3DXCreateEffectFromFile( device, L"Source_Code\\Effect_Files\\ShadowMap.fx", NULL, NULL, dwShaderFlags,
+                                        NULL, &m_pEffect, NULL ) );
+
+	// Create vertex declaration
+    V_RETURN( device->CreateVertexDeclaration( g_aVertDecl, &m_pVertDecl ) );
+
+	// World transform to identity
+    Matrix mIdent;
+    D3DXMatrixIdentity( &mIdent );
+    V_RETURN( device->SetTransform( D3DTS_WORLD, &mIdent ) );
 }
 
 
@@ -182,6 +273,13 @@ void Renderer::OnLost( )
 
     SAFE_RELEASE( m_pTextSprite );
 	SAFE_RELEASE( m_pImageSprite );
+
+	if( m_pEffect )
+        m_pEffect->OnLostDevice();
+
+    SAFE_RELEASE( m_pDSShadow );
+    SAFE_RELEASE( m_pShadowMap );
+    SAFE_RELEASE( m_pTexDef );
 }
 
 
@@ -197,6 +295,9 @@ void Renderer::OnDestroy( )
 	SAFE_RELEASE( m_pFont );
 	SAFE_RELEASE( m_pFontVictoryBig );
 	SAFE_RELEASE( m_pFontVictorySmall );
+
+    SAFE_RELEASE( m_pEffect );
+    SAFE_RELEASE( m_pVertDecl );
 }
 
 
@@ -488,85 +589,146 @@ void Renderer::drawTimesScreen( )
 
 
 //--------------------------------------------------------------------------------------
-// Function: renderGame
+// Function: RenderScene
 // Draws game objects to the specified device.  The renderables of these objects 
 // are passed to this function and contain all the rendering-specific information needed
-// by the renderer.  The latest cameras are also required.
+// by the renderer.  
 //--------------------------------------------------------------------------------------
-void Renderer::renderGame( Device* device, vector<Renderable*> renderables, vector<GameCamera*> cameras, int playerID ) 
+void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX* pmView,
+                  const D3DXMATRIX* pmProj, const D3DXMATRIX* pmWorld, vector<Renderable*> renderables )
 {
-	HRESULT		hr;	
-	Matrix		mWorld,		
-				mView,
-				mProj,
-				mWorldViewProjection,
-				mMeshWorld,
-				mScale;
+    HRESULT hr;
 	Vec3		vScale( 0.5, 1.0, 0.9 );
+	Matrix		mScale, mView;
 	LPD3DXMESH	tempMesh;
 	Mesh		*dxMesh;	//the DXUT wrapper version of the mesh with helpful functions
 	Renderable	*tempR;		//pointer to current renderable
 	Effect		*pEffect;	//the effect currently being used
-	MCamera		camera = cameras[ playerID ]->getCamera();
 
-	// sort renderables here...perhaps by type and then take out the hidden objects
+    // Set the projection matrix
+    V( m_pEffect->SetMatrix( "g_mProj", pmProj ) );
 
-	// now go through and render each object via its renderable
+    // Get light parameters from the light camera.
+    D3DXVECTOR4 v4;
+    D3DXVec3Transform( &v4, &m_vFromPt, pmView );
+    V( m_pEffect->SetVector( "g_vLightPos", &v4 ) );
+    *( Vec3* )&v4 = *m_LCamera.GetWorldAhead();
+    v4.w = 0.0f;  // Set w 0 so that the translation part doesn't come to play
+    D3DXVec4Transform( &v4, &v4, pmView );  // Direction in view space
+    D3DXVec3Normalize( ( D3DXVECTOR3* )&v4, ( D3DXVECTOR3* )&v4 );
+    V( m_pEffect->SetVector( "g_vLightDir", &v4 ) );
+
+    // Clear the render buffers
+    V( device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
+                          0x00000000, 1.0f, 0L ) );
+
+    if( bRenderShadow )
+        V( m_pEffect->SetTechnique( "RenderShadow" ) );
+
+    if( !bRenderShadow )
+        V( m_pEffect->SetTechnique( "RenderScene" ) );
+
+       // now go through and render each object via its renderable
 	for( unsigned int i = 0; i < renderables.size(); i++ )
 	{
 		// initialize some temporary variables to make things easier
 		tempR = renderables[i];
 		dxMesh = tempR->m_pMesh;
 		tempMesh = dxMesh->GetMesh();
-		pEffect = tempR->m_pEffect;
-		mMeshWorld = tempR->m_matWorld;
    
-		// get the projection & view matrix from the camera class
-		mWorld = *camera.GetWorldMatrix();
-		mProj = *camera.GetProjMatrix();
-		mView = *camera.GetViewMatrix();
-
 		if( m_bIsTwoPlayer )
 		{
 			D3DXMatrixTransformation( &mScale, NULL, NULL, &vScale, NULL, NULL, NULL );
-			D3DXMatrixMultiply( &mView, &mView, &mScale );
+			D3DXMatrixMultiply( &mView, pmView, &mScale );
 		}
+		else 
+			mView = *pmView;
 
 		// create the world view projection matrix
-		mWorldViewProjection = mMeshWorld * mWorld * mView * mProj;
+        Matrix mWorldView = *pmWorld * tempR->m_matWorld;
+        D3DXMatrixMultiply( &mWorldView, &mWorldView, &mView );
+        V( m_pEffect->SetMatrix( "g_mWorldView", &mWorldView ) );
 
-		// set the effect to be used
-		pEffect->SetTechnique( tempR->m_hRenderObj );
+            UINT cPass;
+            V( m_pEffect->Begin( &cPass, 0 ) );
+            for( UINT p = 0; p < cPass; ++p )
+            {
+                V( m_pEffect->BeginPass( p ) );
 
-		// Update the effect's variables.  The SDK examples say it would 
-		// be more efficient to cache a handle to the parameter by calling 
-		// ID3DXEffect::GetParameterByName, so we should eventually implement that
-		V( pEffect->SetMatrix( "g_mWorldViewProjection", &mWorldViewProjection ) );
-		V( pEffect->SetMatrix( "g_mWorld", &mWorld ) );
-
-		// start rendering
-		UINT cPasses;
-        V( pEffect->Begin( &cPasses, 0 ) );
-        for( UINT p = 0; p < cPasses; ++p )
-        {
-            V( pEffect->BeginPass( p ) );
-
-			// set and draw each of the materials in the mesh
-			for( UINT i = 0; i < dxMesh->m_dwNumMaterials; i++ )
-			{
-				V( pEffect->SetVector( "g_vDiffuse", ( Vec4* )&dxMesh->m_pMaterials[i].Diffuse ) );
-				V( pEffect->SetTexture( "g_txScene", dxMesh->m_pTextures[i] ) );
-				V( pEffect->CommitChanges() );
-
-				tempMesh->DrawSubset( i );
-			}
-
-			V( pEffect->EndPass() );
-		}
-        V( pEffect->End() );
-	}
+                for( DWORD i = 0; i < dxMesh->m_dwNumMaterials; ++i )
+                {
+                    D3DXVECTOR4 vDif( dxMesh->m_pMaterials[i].Diffuse.r,
+                                      dxMesh->m_pMaterials[i].Diffuse.g,
+                                      dxMesh->m_pMaterials[i].Diffuse.b,
+                                      dxMesh->m_pMaterials[i].Diffuse.a );
+                    V( m_pEffect->SetVector( "g_vMaterial", &vDif ) );
+                    if( dxMesh->m_pTextures[i] )
+                        V( m_pEffect->SetTexture( "g_txScene", dxMesh->m_pTextures[i] ) )
+                    else
+                        V( m_pEffect->SetTexture( "g_txScene", m_pTexDef ) )
+                    V( m_pEffect->CommitChanges() );
+                    V( tempMesh->DrawSubset( i ) );
+                }
+                V( m_pEffect->EndPass() );
+            }
+            V( m_pEffect->End() );
+        }
 }
 
+//--------------------------------------------------------------------------------------
+// This callback function will be called at the end of every frame to perform all the 
+// rendering calls for the scene, and it will also be called if the window needs to be 
+// repainted. After this function has returned, DXUT will call 
+// IDirect3DDevice9::Present to display the contents of the next buffer in the swap chain
+//--------------------------------------------------------------------------------------
+void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vector<GameCamera*> cameras, int playerID )
+{
+    HRESULT hr;
+	MCamera	camera = cameras[ playerID ]->getCamera();
+  
+    // Compute the view matrix for the light
+    Matrix mLightView = *m_LCamera.GetViewMatrix();
+    
+    // Render the shadow map
+    Surface pOldRT = NULL;
+    V( device->GetRenderTarget( 0, &pOldRT ) );
+    Surface pShadowSurf;
+    if( SUCCEEDED( m_pShadowMap->GetSurfaceLevel( 0, &pShadowSurf ) ) )
+    {
+        device->SetRenderTarget( 0, pShadowSurf );
+        SAFE_RELEASE( pShadowSurf );
+    }
+    Surface pOldDS = NULL;
+    if( SUCCEEDED( device->GetDepthStencilSurface( &pOldDS ) ) )
+        device->SetDepthStencilSurface( m_pDSShadow );
+
+	RenderScene( device, true, &mLightView, &m_mShadowProj, camera.GetWorldMatrix(), renderables );
+
+    if( pOldDS )
+    {
+        device->SetDepthStencilSurface( pOldDS );
+        pOldDS->Release();
+    }
+    device->SetRenderTarget( 0, pOldRT );
+    SAFE_RELEASE( pOldRT );
+
+    // Now that we have the shadow map, render the scene.
+    const D3DXMATRIX* pmView = m_LCamera.GetViewMatrix();
+
+    // Initialize required parameter
+    V( m_pEffect->SetTexture( "g_txShadow", m_pShadowMap ) );
+
+    // Compute the matrix to transform from view space to light projection space.  
+    Matrix mViewToLightProj = *pmView;
+    D3DXMatrixInverse( &mViewToLightProj, NULL, &mViewToLightProj );
+    D3DXMatrixMultiply( &mViewToLightProj, &mViewToLightProj, &mLightView );
+    D3DXMatrixMultiply( &mViewToLightProj, &mViewToLightProj, &m_mShadowProj );
+    V( m_pEffect->SetMatrix( "g_mViewToLightProj", &mViewToLightProj ) );
+    
+	RenderScene( device, false, camera.GetViewMatrix(), camera.GetProjMatrix(), camera.GetWorldMatrix(), renderables );
+    
+    m_pEffect->SetTexture( "g_txShadow", NULL );
+}
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////		
@@ -1264,4 +1426,5 @@ void Renderer::positionHUDImages( int width, int height )
 		}
 	}
 }
+
 
