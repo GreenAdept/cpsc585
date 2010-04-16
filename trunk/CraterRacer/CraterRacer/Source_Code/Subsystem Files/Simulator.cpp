@@ -347,7 +347,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	bool* buttons = input->getButtons();
 	const NxVec3 velocity = actor->getLinearVelocity();;
 	NxReal friction = m_rDynamicFriction;
-	boolean noInput = true;
+	bool noInput = true;
+	bool emergencyBrake = false;
 	int idealFrameRate = 60;
 
 	//INPUT
@@ -357,15 +358,19 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 
 		switch( i )
 		{
-			case 0: //A_BUTTON - nothing
+			case 0: //A_BUTTON - emergency brake
 			{
+				emergencyBrake = true;
+				friction += m_rBrakingFriction;
+				actor->addLocalForceAtLocalPos(NxVec3(-m_rVehicleMass * m_rForceStrength, 0, 0), NxVec3(0, 0, -25));
+				actor->addLocalForceAtLocalPos(NxVec3(-m_rVehicleMass * m_rForceStrength, 0, 0), NxVec3(0, 0, 0));
 				break;
 			}
 			case 1: //B_BUTTON - nothing
 			{
 				break;
 			}
-			case 2: //X_BUTTON - freeze car (should be commented out when submitting)
+			case 2: //X_BUTTON - brake
 			{
 				//actor->setAngularVelocity(NxVec3(0, 0, 0));
 				//actor->setLinearVelocity(NxVec3(0, 0, 0));
@@ -468,8 +473,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 
 		globalWheelForce[0] += frictionForce;
 		globalWheelForce[1] += frictionForce;
-		globalWheelForce[2] += frictionForce;
-		globalWheelForce[3] += frictionForce;
+		if (!emergencyBrake) {
+			globalWheelForce[2] += frictionForce;
+			globalWheelForce[3] += frictionForce;
+		}
 	}
 	else {
 		if (noInput) {
@@ -479,7 +486,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	}
 
 	//STEERING
-	float maxAngleSpeed = 180; //in degrees/second
+	//(m_rMaxWheelAngle*4 means it will take 1/4 of a second for the wheels to go from straight to m_rMaxWheelAngle)
+	float maxAngleSpeed = m_rMaxWheelAngle*4; //in degrees/second
 	float angle = vehicle->getInputObj()->getThumbstick() * m_rMaxWheelAngle; //maximum wheel angle
 
 	//get the current angle of the wheel
