@@ -88,7 +88,7 @@ NUM_WAYPOINTS			76
 
 **CRATER_INFORMATION ----------------------------------------------
 
-NUM_CRATERS				17
+NUM_CRATERS				31
 
 MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
@@ -119,6 +119,50 @@ MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
 
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
+
+MESH_FILENAME			Media\\Meshes\\Crater.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				0 -100 0
 MESH_FILENAME			Media\\Meshes\\Crater.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				0 -100 0
@@ -149,7 +193,7 @@ POSITION				0 -100 0
 
 MESH_FILENAME			Media\\Meshes\\Meteor.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-NUM_METEOR_GROUPS		3
+NUM_METEOR_GROUPS		5
 
 METEOR_GROUP			1
 POSITION				-257.374 3.54326 365.967
@@ -183,6 +227,32 @@ NUM_METEORS				6
 -145.651 300 -289.643		-145.651 -5.19327 -289.643		12
 4.42782 310 -270.08			4.42782 -3.29222 -270.08		13
 -133.739 260 -308.578		-133.739 -5.94961 -308.578		14
+
+METEOR_GROUP			4
+POSITION				90.8626 12.7737 -36.9428
+RADIUS					50
+SPAWN_ON_LAP			2
+NUM_METEORS				5
+166.452 200 41.087			166.452 -2.592928 41.087		15
+182.103 400 73.6564			182.103 -4.81564 73.6564		16
+216.014 250 74.7858			216.014 -8.33947 74.7858		17
+266.5 350 102.142			266.5 -10.35205 102.142			18
+297.267 300 148.763			297.267 -3.68016 148.763		19
+
+METEOR_GROUP			5
+POSITION				502.192 30.2427 114.675
+RADIUS					50
+SPAWN_ON_LAP			2
+NUM_METEORS				9
+568.542 200 -38.0984		568.542 10.0209 -38.0984		20
+552.745 220 -94.0038		552.745 1.15377 -94.0038		21
+587.702 230 -69.8863		587.702 9.2084 -69.8863			22
+560.027 300 -185.796		560.027 1.5027 -185.796			23
+531.837 320 -206.022		531.837 -2.13236 -206.022		24
+505.056 340 -206.482		505.056 -6.55561 -206.482		25
+447.053 400 -258.401		447.053 -8.05755 -258.401		26
+440.317 420 -295.563		440.317 -2.878211 -295.563		27
+446.72 440 -329.462			446.72 7.17002 -329.462			28
 
 
 
