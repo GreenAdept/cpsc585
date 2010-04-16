@@ -66,16 +66,6 @@ Renderer::Renderer( )
 	m_bDrawWrongWay[ 1 ]= false;
 	m_iLapImages[ 1 ]	= LAPONE_IMAGE;
 
-	for( int i=0; i < NUM_PLAYERS; i++ )
-	{
-		m_sVictoryTimes[ i ] = L"TIME:\n00:00:00";
-		m_sVictoryRanks[ i ] = L"PLAYER #1";
-	}
-	m_sVictoryTimes[ 0 ] = L"TIME: 00:00:00";
-
-	for( int i=0; i < 5; i++ )
-		m_sBestTimes[i] = L"PLAYER 1             00:00:00";
-
 	m_bIsTwoPlayer = false;
 	m_bIsTimeTrial = false;
 	m_ScaleVal = Vec2( 1.0, 1.0 );
@@ -487,17 +477,11 @@ void Renderer::drawTimesScreen( )
 	}
 
 	//Draw best times as text
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sTest[0].c_str(), -1, &m_BestTimesRecs[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sTest[1].c_str(), -1, &m_BestTimesRecs[1], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sTest[2].c_str(), -1, &m_BestTimesRecs[2], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sTest[3].c_str(), -1, &m_BestTimesRecs[3], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sTest[4].c_str(), -1, &m_BestTimesRecs[4], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-
-	/*m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[0], -1, &m_BestTimesRecs[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[1], -1, &m_BestTimesRecs[1], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[2], -1, &m_BestTimesRecs[2], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[3], -1, &m_BestTimesRecs[3], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[4], -1, &m_BestTimesRecs[4], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );*/
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[0].c_str(), -1, &m_BestTimesRecs[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[1].c_str(), -1, &m_BestTimesRecs[1], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[2].c_str(), -1, &m_BestTimesRecs[2], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[3].c_str(), -1, &m_BestTimesRecs[3], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[4].c_str(), -1, &m_BestTimesRecs[4], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
 
 	m_pImageSprite->End( );
 }
@@ -741,25 +725,13 @@ void Renderer::adjustBestTimes( vector<string>& bestTimeEntries )
 	if( bestTimeEntries.size() != 5 )
 		return;
 
-	wstring temp;
-	std::wstringstream timeStream;
-
-	//set rank text
+	//set times text
 	for( int i=0; i < 5; i++ )
 	{
-		timeStream.clear();
-		timeStream << "PLAYER 1             " << bestTimeEntries[i].c_str();
-		m_sBestTimes[i] = timeStream.str().c_str();
-		m_sBestTimes[i] = LPCWSTR("PLAYER 1             ");
-	}
-
-	//set rank text
-	for( int i=0; i < 5; i++ )
-	{
-		m_sTest[i] = L"PLAYER 1              ";
+		m_sBestTimes[i] = L"PLAYER 1              ";
 
 		for (int j = 0; j < bestTimeEntries[i].size(); j++) {
-			m_sTest[i].push_back ((WCHAR)bestTimeEntries[i].at(j));
+			m_sBestTimes[i].push_back ((WCHAR)bestTimeEntries[i].at(j));
 		}
 	}
 }
