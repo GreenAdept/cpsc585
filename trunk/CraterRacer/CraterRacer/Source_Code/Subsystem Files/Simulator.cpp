@@ -282,11 +282,13 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 	//Initialize the meteors and update all the meteor positions
 	for( int i=0; i < meteorGroups.size(); i++ )
 	{
+		/*
 		if (meteorGroups[i]->getAI()->getState() == AI::TRIGGERED) {
 			//create the meteors for the group
-			//createMeteorGroup(meteorGroups[i]);
+			createMeteorGroup(meteorGroups[i]);
 		}
-		else if (meteorGroups[i]->getAI()->getState() == AI::MOVING) {
+		*/
+		if (meteorGroups[i]->getAI()->getState() == AI::MOVING) {
 			//simulate the meteors for the group
 			simulateMeteorGroup(meteorGroups[i], elapsedTime, vehicles);
 		}
@@ -813,35 +815,34 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 		Vec3 direction = target - currentPos;
 		float travelled = speed * time;
 		float toTravel = D3DXVec3Length (&direction);
-		//collided with the ground
+
+		//check if collided with the ground
 		if (travelled >= toTravel) {
 			currentPos = target;
 			m->informOfCollision();
 
-			//if distance of collision and player vehicle is within a certain distance, vibrate that controller
 			NxVec3 meteorPos(currentPos.x, currentPos.y, currentPos.z);
-			NxActor* v1 = vehicles[0]->getPhysicsObj();
-			NxVec3 distance = meteorPos - v1->getGlobalPosition();
-			double d = distance.magnitude();
-			if (d < 250) {
-				if (d != 0)
-					Emit (Events::EVibrate, 0, ((250 - d)/d)*100, 175);
-				else
-					Emit (Events::EVibrate, 0, 100, 175);
-			}
-			if (vehicles.size() > 1) {
-				NxActor* v2 = vehicles[1]->getPhysicsObj();
-				distance = meteorPos - v2->getGlobalPosition();
+			for (int i=0; i<vehicles.size(); i++) {
+				NxActor* actor = vehicles[i]->getPhysicsObj();
+				NxVec3 vehiclePos = actor->getGlobalPosition();
+				NxVec3 distance = meteorPos - vehiclePos;
 				double d = distance.magnitude();
-				if (d < 250) {
+
+				//if distance of collision and player vehicle is within a certain distance, vibrate that controller
+				if (d < 250 || vehicles[i]->isPlayer()) {
 					if (d!=0)
-						Emit (Events::EVibrate, 1, ((250 - d)/d)*100, 175);
+						Emit (Events::EVibrate, i, ((250 - d)/d)*100, 175);
 					else
-						Emit (Events::EVibrate, 1, 100, 175);
+						Emit (Events::EVibrate, i, 100, 175);
+				}
+
+				//if distance of collision and vehicle is within a certain distance, make sure the vehicle does not get stuck in the crater
+				if (d < 5) {
+					vehiclePos.y += 10;
+					actor->setGlobalPosition (vehiclePos);
+					actor->addForce (NxVec3 (0, 4000*actor->getMass(), 0));
 				}
 			}
-
-			addCrater (m->getCraterToSpawn());
 		}
 		else {
 			direction /= toTravel;
@@ -918,7 +919,7 @@ void Simulator::addTerrainFromX( Terrain* terrain, int id )
 // Function:  addCrater
 // Adds a crater actor to the physics simulator.
 //--------------------------------------------------------------------------------------
-void Simulator::addCrater( Crater* crater )
+void Simulator::createCrater( Crater* crater )
 {
 	Mesh*  mesh = crater->getRenderable()->m_pMesh;
 	Vec3   p = crater->getPosition();

@@ -82,6 +82,9 @@ void Entity::update( Vec3 newPosition )
 		m_matWorld = m;
 		m_pRenderable->m_matWorld = m;
 	}
+
+	if (m_nxActor != 0)
+		m_nxActor->setGlobalPosition (NxVec3 (newPosition.x, newPosition.y, newPosition.z));
 }
 
 //--------------------------------------------------------------------------------------

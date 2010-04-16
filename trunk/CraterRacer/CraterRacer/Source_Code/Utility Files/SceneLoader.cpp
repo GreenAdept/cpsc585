@@ -60,6 +60,7 @@ void SceneLoader::initScene( GameObj** obj )
 	//load and initialize components that are common to all game modes here
 	file >> str;
 	processTerrainInfo( file );
+	initializeSimulator( );
 	file >> str;
 	processPathInfo( file );
 	file >> str;
@@ -68,8 +69,6 @@ void SceneLoader::initScene( GameObj** obj )
 	processMeteorInfo( file );
 	file >> str;
 	processPropInfo( file );
-	
-	initializeSimulator( );
 
 	file.close();
 }
@@ -238,7 +237,8 @@ void SceneLoader::processCraterInfo( ifstream& file ) {
 		if (str != "POSITION") return;
 		file >> pos.x >> pos.y >> pos.z;
 
-		m_Objs.entityManager->makeCrater( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
+		Crater* c = m_Objs.entityManager->makeCrater( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() );
+		m_Objs.simulator->createCrater( c );
 	}
 }
 void SceneLoader::processPropInfo( ifstream& file ) {
