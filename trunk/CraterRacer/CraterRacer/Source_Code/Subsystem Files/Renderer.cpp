@@ -487,11 +487,17 @@ void Renderer::drawTimesScreen( )
 	}
 
 	//Draw best times as text
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[0], -1, &m_BestTimesRecs[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sTest[0].c_str(), -1, &m_BestTimesRecs[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sTest[1].c_str(), -1, &m_BestTimesRecs[1], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sTest[2].c_str(), -1, &m_BestTimesRecs[2], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sTest[3].c_str(), -1, &m_BestTimesRecs[3], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sTest[4].c_str(), -1, &m_BestTimesRecs[4], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+
+	/*m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[0], -1, &m_BestTimesRecs[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
 	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[1], -1, &m_BestTimesRecs[1], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
 	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[2], -1, &m_BestTimesRecs[2], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
 	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[3], -1, &m_BestTimesRecs[3], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[4], -1, &m_BestTimesRecs[4], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[4], -1, &m_BestTimesRecs[4], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );*/
 
 	m_pImageSprite->End( );
 }
@@ -705,7 +711,7 @@ void Renderer::adjustVictoryRank( vector<int>& ranks, vector<string>& times )
 		else {
 			m_sVictoryTimes[ ranks[i]-1 ] = L"Time:\n";
 		}
-		for (int j = 0; j < 8; j++) {
+		for (int j = 0; j < times[i].size(); j++) {
 			m_sVictoryTimes[ ranks[i]-1 ].push_back ((WCHAR)times[i].at(j));
 		}
 	}
@@ -744,6 +750,17 @@ void Renderer::adjustBestTimes( vector<string>& bestTimeEntries )
 		timeStream.clear();
 		timeStream << "PLAYER 1             " << bestTimeEntries[i].c_str();
 		m_sBestTimes[i] = timeStream.str().c_str();
+		m_sBestTimes[i] = LPCWSTR("PLAYER 1             ");
+	}
+
+	//set rank text
+	for( int i=0; i < 5; i++ )
+	{
+		m_sTest[i] = L"PLAYER 1              ";
+
+		for (int j = 0; j < bestTimeEntries[i].size(); j++) {
+			m_sTest[i].push_back ((WCHAR)bestTimeEntries[i].at(j));
+		}
 	}
 }
 

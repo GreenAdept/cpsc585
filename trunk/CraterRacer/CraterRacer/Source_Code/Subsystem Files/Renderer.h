@@ -110,8 +110,10 @@ private:
 	ResourceManager		m_ResourceManager;						
 	wstring				m_sVictoryRanks		[ NUM_PLAYERS ];
 	wstring				m_sVictoryTimes		[ NUM_PLAYERS ];
+	wstring				m_sTest				[5];
 	RECT				m_VictoryRecs		[ NUM_PLAYERS*2 ];
 	LPCWSTR				m_sBestTimes		[ 5 ];
+	//wstring				m_sBestTimes		[ 5 ];
 	RECT				m_BestTimesRecs		[ 5 ];
 	bool				m_bIsTwoPlayer;
 	bool				m_bIsTimeTrial;
