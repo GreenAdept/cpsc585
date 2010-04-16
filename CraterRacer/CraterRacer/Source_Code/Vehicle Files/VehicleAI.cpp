@@ -21,6 +21,8 @@ VehicleAI::VehicleAI (bool canModify) {
 // lap count.
 //------------------------------------------------------
 
+#define WAYPOINT_RADIUS 60
+
 void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	if (state == AI::STOPPED) return;
 
@@ -37,24 +39,24 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 	}
 
   //Check if the destination has been reached
-	if (path->reachedWaypoint (myPos, passedWPsLB-1, 60)) {
+	if (path->reachedWaypoint (myPos, passedWPsLB-1, WAYPOINT_RADIUS)) {
 		passedWPsLB--;
-		while (path->reachedWaypoint (myPos, passedWPsLB-1, 60)) {
+		while (path->reachedWaypoint (myPos, passedWPsLB-1, WAYPOINT_RADIUS)) {
 			passedWPsLB--;
 		}
 		passedWPs = passedWPsLB;
-		while (path->reachedWaypoint (myPos, passedWPs+1, 60)) {
+		while (path->reachedWaypoint (myPos, passedWPs+1, WAYPOINT_RADIUS)) {
 			passedWPs++;
 		}
 	}
-	else if (path->reachedWaypoint (myPos, passedWPs+1, 60)) {
+	else if (path->reachedWaypoint (myPos, passedWPs+1, WAYPOINT_RADIUS)) {
 		elapsed = 0.0f;
 		passedWPs++;
-		while (path->reachedWaypoint (myPos, passedWPs+1, 60)) {
+		while (path->reachedWaypoint (myPos, passedWPs+1, WAYPOINT_RADIUS)) {
 			passedWPs++;
 		}
 		passedWPsLB = passedWPs;
-		while (path->reachedWaypoint (myPos, passedWPsLB-1, 60)) {
+		while (path->reachedWaypoint (myPos, passedWPsLB-1, WAYPOINT_RADIUS)) {
 			passedWPsLB--;
 		}
 	}
@@ -84,6 +86,7 @@ void VehicleAI::think (EntityManager *em, int myList, int myIndex) {
 			Emit( Events::EWrongWayCancel, m_iPlayerNum );
 	}
 }
+
 
 Vec3 VehicleAI::getLastPassedWaypoint (Vec3 myPos) {
 	if (path == 0)
