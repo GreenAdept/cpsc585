@@ -306,8 +306,8 @@ Terrain* EntityManager::makeTerrain (Device* device, Vec3 pos, LPCWSTR filename,
 	entities[TERRAIN].push_back( t2 );
 	return t;
 }
-MeteorGroup* EntityManager::makeMeteorGroup (Vec3 pos, int id, int numMeteors, float radius) {
-	MeteorGroup* mg = new MeteorGroup (id, numMeteors, radius);
+MeteorGroup* EntityManager::makeMeteorGroup (Vec3 pos, int id, int numMeteors, float radius, int spawnOnLap) {
+	MeteorGroup* mg = new MeteorGroup (id, numMeteors, radius, spawnOnLap);
 	mg->update (pos);
 	entities[METEORGROUPS].push_back (mg);
 	return mg;

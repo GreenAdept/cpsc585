@@ -12,9 +12,10 @@
 
 class TriggerCylinder : public AI {
 	float radius;
+	int minLapToTrigger;  //can only be triggered by vehicles that have reached this lap
 
 public:
-	TriggerCylinder       (float r) { radius = r*r; }
+	TriggerCylinder       (float r, int minLap = 0) { radius = r*r; minLapToTrigger = minLap; }
 	void setTriggerRadius (float r) { radius = r*r; }
 
 	void think (EntityManager *em, int myList, int myIndex);

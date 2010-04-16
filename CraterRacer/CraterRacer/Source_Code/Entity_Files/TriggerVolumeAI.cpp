@@ -17,8 +17,10 @@ void TriggerCylinder::think (EntityManager *em, int myList, int myIndex) {
 	
 	for (int i=0; i<vehicles.size(); i++) {
 		Vec3 pos = vehicles[i]->getPosition();
+		VehicleAI* ai = (VehicleAI*) vehicles[i]->getAI();
+
 		float d = distSquared (pos, center);
-		if (d <= radius) {
+		if (d <= radius && minLapToTrigger <= ai->getCurrentLapNumber()) {
 			state = AI::TRIGGERED;
 			return;
 		}

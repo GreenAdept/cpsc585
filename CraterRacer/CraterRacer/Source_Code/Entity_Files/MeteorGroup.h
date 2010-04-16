@@ -17,7 +17,7 @@ class MeteorGroupAI : public AI {
 	TriggerCylinder* trigger;
 
 public:
-	MeteorGroupAI (float radius);
+	MeteorGroupAI (float radius, int spawnOnLap);
 	~MeteorGroupAI ();
 
 	void think (EntityManager *em, int myList, int myIndex);
@@ -31,7 +31,7 @@ class MeteorGroup: public Entity {
 	MeteorGroupAI* mind;
 
 public:
-	MeteorGroup (int id, int numMeteors, float radius);
+	MeteorGroup (int id, int numMeteors, float radius, int spawnOnLap);
 	~MeteorGroup ();
 
 	AI* getAI ();
