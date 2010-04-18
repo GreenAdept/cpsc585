@@ -805,6 +805,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ShadowVars.txt"
+				>
+			</File>
+			<File
 				RelativePath=".\Source_Code\Utility Files\Stream.cpp"
 				>
 			</File>
@@ -842,6 +846,10 @@
 			>
 			<File
 				RelativePath=".\Source_Code\Effect_Files\Scene.fx"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Effect_Files\ShadowMap.fx"
 				>
 			</File>
 		</Filter>
