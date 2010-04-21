@@ -54,8 +54,8 @@ class Vehicle: public Entity
 public:
 	// Public interface ------------------------------------
 
-	Vehicle( void )     { mind = 0; }
-	~Vehicle( void )    { delete mind; }
+	Vehicle                 ( ) { mind = 0; }
+	virtual ~Vehicle        ( ) { delete mind; }
 
 	void	update			( Vec3 newPosition, Vec3 velocity, Matrix matBody );
 	void	update			( Vec3 pos, Vec3 vel, Matrix body, Matrix w0, Matrix w1, Matrix w2, Matrix w3 );
