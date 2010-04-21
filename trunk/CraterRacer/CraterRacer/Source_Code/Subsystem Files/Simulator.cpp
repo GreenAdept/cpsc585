@@ -1017,10 +1017,13 @@ NxTriangleMeshShapeDesc Simulator::createTriMeshShape( Mesh* mesh )
 //--------------------------------------------------------------------------------------
 Simulator::~Simulator() 
 {
+	for( int i=0; i < m_Vehicles.size(); i++ )
+	{
+		delete m_Vehicles[i]->userData;
+	}
 	for( int i=0; i < m_Actors.size(); i++ )
 	{
 		m_Scene->releaseActor( *m_Actors[i] );
-		//delete m_Actors[i]->userData;
 		m_Actors[i] = NULL;
 	}
 
@@ -1035,6 +1038,8 @@ Simulator::~Simulator()
 		NxReleasePhysicsSDK( m_PhysicsSDK );
 		m_PhysicsSDK = NULL;
 	}
+
+	delete m_ContactReport;
 }
 
 
