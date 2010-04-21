@@ -50,7 +50,7 @@ public:
 	void adjustVictoryRank	( vector<int>& ranks, vector<string>& times );
 	void adjustWrongWay		( int playerNum, bool drawWrongWay );
 	void adjustLapImage		( int playerNum, int lapNum );
-	void adjustBestTimes	( vector<string>& bestTimeEntries, vector<string>& bestNameEntries, int index, int letter );
+	void adjustBestTimes	( vector<string>& bestTimeEntries, vector<string>& bestNameEntries, string time, int index);
 	void adjustTwoPlayer	( bool isTwoPlayer, int width, int height );
 	void adjustTimeTrial	( );
 	void addLetter			(int letter);
@@ -125,15 +125,16 @@ private:
 	wstring				m_sBestNames		[ 5 ];
 	wstring				bestTimesName;
 	string				sBestTimesName;
+	wstring				finishTime;
 	RECT				m_VictoryRecs		[ NUM_PLAYERS*2 ];
 	RECT				m_BestTimesRecs		[ 5 ];
 	RECT				m_BestNamesRecs	[ 5 ];
+	RECT				m_finishTime;
 	bool				m_bIsTwoPlayer;
 	bool				m_bIsTimeTrial;
 	Vec2				m_ScaleVal;
 	Vec2				m_CountdownLocation;
 	int					bestTimesIndex;
-	int					letterIndex;
 
 	//SHADOWS STUFF
 	CFirstPersonCamera	m_LCamera;       // Camera obj to help adjust light

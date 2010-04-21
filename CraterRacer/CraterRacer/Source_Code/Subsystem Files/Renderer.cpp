@@ -75,8 +75,8 @@ Renderer::Renderer( )
 	m_iButtonImages[ GUI_BTN_MAINMENU ] = MAINMENU_ACTIVE_IMAGE;
 	m_iButtonImages[ GUI_BTN_EXITSMALL ] = EXIT_SMALL_IMAGE;
 	bestTimesIndex = 5;
-	letterIndex = 0;
 	bestTimesName = L"";
+	finishTime = L"";
 	sBestTimesName = "";
 
 	//Set up ball animation images for loading screen
@@ -608,6 +608,10 @@ void Renderer::drawTimesScreen(int letter)
 		}
 	}
 
+	if (bestTimesIndex >= 5) {
+		m_pFontVictoryBig->DrawTextW( NULL, finishTime.c_str(), -1, &m_finishTime, DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,255,0 ) );
+	}
+
 	m_pImageSprite->End( );
 }
 
@@ -909,13 +913,13 @@ void Renderer::adjustWrongWay( int playerNum, bool drawWrongWay )
 //--------------------------------------------------------------------------------------
 // Function: adjustBestTimes
 //--------------------------------------------------------------------------------------
-void Renderer::adjustBestTimes( vector<string>& bestTimeEntries, vector<string>& bestNameEntries, int index, int letter )
+void Renderer::adjustBestTimes( vector<string>& bestTimeEntries, vector<string>& bestNameEntries, string time, int index)
 {
 	if( bestTimeEntries.size() != 5 || bestNameEntries.size() != 5 )
 		return;
 
 	bestTimesIndex = index;
-	letterIndex = letter;
+	finishTime = L"Your Time: ";
 
 	//set times text
 	for( int i=0; i < 5; i++ )
@@ -930,6 +934,10 @@ void Renderer::adjustBestTimes( vector<string>& bestTimeEntries, vector<string>&
 		for (int j = 0; j < bestNameEntries[i].size(); j++) {
 			m_sBestNames[i].push_back ((WCHAR)bestNameEntries[i].at(j));
 		}
+	}
+
+	for (int i = 0; i < time.length(); i++) {
+		finishTime.push_back((WCHAR)time.at(i));
 	}
 }
 
@@ -1307,7 +1315,9 @@ void Renderer::positionMainImages( int width, int height )
 	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+460;  temp.bottom=temp.top+40;
 	m_BestNamesRecs[4] = RECT(temp);
 
-
+	//Position the finish time text
+	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+600;  temp.bottom=temp.top+40;
+	m_finishTime = RECT(temp);
 }
 
 
