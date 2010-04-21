@@ -158,7 +158,8 @@ void MessageManager::ProcessMessage( int message )
 
 	case EGameFinished:
 		if (m_App->m_bIsTimeTrial) {
-			int result = m_VictoryCalculator->recordTime(m_Clock->getFormattedTime());
+			string time = m_Clock->getFormattedTime();
+			int result = m_VictoryCalculator->recordTime(time);
 			if (result < 5) {
 				m_Renderer->resetBestName();
 				m_App->m_AppState = APP_ENTERNAME;
@@ -170,7 +171,7 @@ void MessageManager::ProcessMessage( int message )
 				m_App->m_uiCurrentButton = GUI_BTN_MAINMENU;
 				m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, +1 );
 			}
-			m_Renderer->adjustBestTimes( m_VictoryCalculator->getRecordedTimes(), m_VictoryCalculator->getRecordedNames(), result, 0 );
+			m_Renderer->adjustBestTimes( m_VictoryCalculator->getRecordedTimes(), m_VictoryCalculator->getRecordedNames(), time, result);
 		}
 		else {
 			m_Renderer->adjustVictoryRank (m_VictoryCalculator->getRanks(), m_VictoryCalculator->getFinishTimes());
