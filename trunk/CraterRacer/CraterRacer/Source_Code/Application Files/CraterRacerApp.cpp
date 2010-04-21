@@ -450,7 +450,8 @@ void RacerApp::renderTwoPlayer( Device* device )
 void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTime, void* pUserContext  )
 {
 	HRESULT hr;
-	
+	vector<Particle*> particles;
+	Particle* p;
 	// Clear the render target and the zbuffer 
 	V( device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 255,0,0,0 ), 1.0f, 0 ) );
 
@@ -461,7 +462,12 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 		switch( m_AppState )
 		{
 			case APP_STARTUP:
+				/*p = new Particle();
+				p->position = Vec3(10,10,0);
+				p->velocity = Vec3(0,0,0);
+				particles.push_back( p );*/
 				m_Renderer->drawStartupMenu( );
+				//m_Renderer->drawParticles( device, particles );
 				break;
 
 			case APP_SHOW_GAMERULES:

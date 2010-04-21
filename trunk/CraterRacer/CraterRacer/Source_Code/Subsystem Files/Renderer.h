@@ -12,6 +12,22 @@
 #include "GameCamera.h"
 #include "Constants.h"
 #include "ImageConstants.h"
+#include "Particle.h"
+
+// Custom vertex and FVF declaration for point sprite vertex points
+struct PointVertex
+{
+    D3DXVECTOR3 posit;
+    D3DCOLOR    color;
+
+	enum FVF
+	{
+		FVF_Flags = D3DFVF_XYZ | D3DFVF_DIFFUSE
+	};
+};
+
+// Helper function to stuff a FLOAT into a DWORD argument
+inline DWORD FtoDW( FLOAT f ) { return *((DWORD*)&f); }
 
 #define SHADOWMAP_SIZE 512
 
@@ -58,6 +74,7 @@ public:
 
 	// Drawing functions
 	void renderGame			( Device* device, vector<Renderable*>, vector<GameCamera*> cameras, int playerID );
+	HRESULT drawParticles		( Device* device, vector<Particle*> particles );
 	void drawHUD			( int playerNum );
 	void drawPauseScreen	( );
 	void drawStartupMenu	( );
@@ -148,6 +165,19 @@ private:
 	ID3DXEffect*        m_pEffect;
 	Vec3				m_vFromPt;
 	Vec3				m_vLookatPt;
+
+	float				m_fMaxPointSize;
+	bool				m_bDeviceSupportsPSIZE;
+
+	//Particle stuff
+	LPDIRECT3DVERTEXBUFFER9 m_pVB;       // Vertex buffer for point sprites
+    Sprite				m_ptexParticle;  // Particle's texture
+	DWORD				m_dwVBOffset;
+    DWORD				m_dwDiscard;
+	float				m_fSize;
+	DWORD				m_dwFlush;
+
+
 };
 
 

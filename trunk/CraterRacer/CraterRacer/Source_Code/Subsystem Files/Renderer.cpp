@@ -38,6 +38,7 @@ Renderer::Renderer( )
 	m_pShadowMap	= NULL;
 	m_pDSShadow		= NULL;
 	m_pEffect		= NULL;
+	m_dwFlush       = 512;  // Number of point sprites to load before sending them to hardware
 
 	// Initialize the camera
     m_vFromPt = Vec3( -220.0f, 300.0f, 10.0f  );
@@ -112,6 +113,10 @@ Renderer::Renderer( )
 
 	//initialize the resource manager to keep track of all our screens and HUD
     m_GameScreen.Init( &m_ResourceManager );
+
+	m_dwVBOffset       = 0;    // Gives the offset of the vertex buffer chunk that's currently being filled
+    m_dwDiscard        = 2048; // Max number of point sprites the vertex buffer can load until we are forced to discard and start over
+	m_fSize            = 10.0f;
 }
 
 
@@ -211,6 +216,20 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 
     // Initialize the shadow projection matrix
     D3DXMatrixPerspectiveFovLH( &m_mShadowProj, m_fLightFov, 1, 0.01f, 100.0f );
+
+	// Particle stuff
+    if( FAILED( hr = device->CreateVertexBuffer( 
+        m_dwDiscard * sizeof(PointVertex), 
+        D3DUSAGE_DYNAMIC | D3DUSAGE_WRITEONLY | D3DUSAGE_POINTS, 
+        PointVertex::FVF_Flags, // Our custom FVF
+        D3DPOOL_DEFAULT, 
+        &m_pVB, NULL )))
+    {
+        return E_FAIL;
+    }
+
+
+    return S_OK;
 }
 
 
@@ -255,6 +274,24 @@ HRESULT Renderer::OnCreate( Device* device )
     Matrix mIdent;
     D3DXMatrixIdentity( &mIdent );
     V_RETURN( device->SetTransform( D3DTS_WORLD, &mIdent ) );
+
+	// Load Texture Map for particles
+    if( FAILED( D3DXCreateTextureFromFile( device, L"Media\\Images\\Particle.bmp", &m_ptexParticle ) ) )
+        return E_FAIL;
+
+	//Particle stuff
+	// Get max point size
+    D3DCAPS9 d3dCaps;
+    device->GetDeviceCaps( &d3dCaps );
+    m_fMaxPointSize = d3dCaps.MaxPointSize;
+
+	// Check and see if we can change the size of point sprites 
+    // in hardware by sending D3DFVF_PSIZE with the FVF.
+    if( d3dCaps.FVFCaps & D3DFVFCAPS_PSIZE )
+        m_bDeviceSupportsPSIZE = true;
+    else
+        m_bDeviceSupportsPSIZE = false;
+
 }
 
 
@@ -284,6 +321,11 @@ void Renderer::OnLost( )
     SAFE_RELEASE( m_pDSShadow );
     SAFE_RELEASE( m_pShadowMap );
     SAFE_RELEASE( m_pTexDef );
+
+	if( m_pVB != NULL )
+        m_pVB->Release();
+	if( m_ptexParticle != NULL )
+        m_ptexParticle->Release();
 }
 
 
@@ -302,6 +344,11 @@ void Renderer::OnDestroy( )
 
     SAFE_RELEASE( m_pEffect );
     SAFE_RELEASE( m_pVertDecl );
+
+	if( m_pVB != NULL )
+        m_pVB->Release();
+	if( m_ptexParticle != NULL )
+        m_ptexParticle->Release();
 }
 
 
@@ -310,6 +357,113 @@ void Renderer::OnDestroy( )
 //	Public Drawing Functions
 //		
 //////////////////////////////////////////////////////////////////////////////////////////////
+
+
+HRESULT Renderer::drawParticles( Device* device, vector<Particle*> particles )
+{
+	HRESULT hr;
+	//
+    // Set the render states for using point sprites..
+    device->SetRenderState( D3DRS_POINTSPRITEENABLE, TRUE );       // Turn on point sprites
+    device->SetRenderState( D3DRS_POINTSCALEENABLE,  TRUE );       // Allow sprites to be scaled with distance
+    device->SetRenderState( D3DRS_POINTSIZE,     FtoDW(m_fSize) ); // Float value that specifies the size to use for point size computation in cases where point size is not specified for each vertex.
+    device->SetRenderState( D3DRS_POINTSIZE_MIN, FtoDW(1.0f) );    // Float value that specifies the minimum size of point primitives. Point primitives are clamped to this size during rendering. 
+    device->SetRenderState( D3DRS_POINTSCALE_A,  FtoDW(0.0f) );    // Default 1.0
+    device->SetRenderState( D3DRS_POINTSCALE_B,  FtoDW(0.0f) );    // Default 0.0
+    device->SetRenderState( D3DRS_POINTSCALE_C,  FtoDW(1.0f) );    // Default 0.0
+
+	Particle* pParticle;
+    PointVertex *pVertices;
+    DWORD dwNumParticlesToRender = 0;
+
+    // Move the offset forward so we can fill the next chunk of the vertex buffer
+    m_dwVBOffset += m_dwFlush;
+
+    // If we're about to overflow the buffer, reset the offset counter back to 0
+    if( m_dwVBOffset >= m_dwDiscard )
+        m_dwVBOffset = 0;
+
+    if( FAILED( hr = m_pVB->Lock( m_dwVBOffset * sizeof(PointVertex), // Offset to lock
+                                  m_dwFlush * sizeof(PointVertex),    // Size to lock
+                                  (void**) &pVertices, 
+                                  m_dwVBOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD)))
+    {
+        return hr;
+    }
+
+    // Render each particle
+    for( int i=0; i < particles.size(); i++ )
+    {
+		pParticle = particles[i];
+        D3DXVECTOR3 vPos(pParticle->position);
+        D3DXVECTOR3 vVel(pParticle->velocity);
+
+        pVertices->posit = vPos;
+        pVertices->color = D3DXCOLOR(1.0f,1.0f,1.0f,1.0f);
+        pVertices++;
+
+        if( ++dwNumParticlesToRender == m_dwFlush )
+        {
+            // Done filling this chunk of the vertex buffer.  Lets unlock and
+            // draw this portion so we can begin filling the next chunk.
+
+            m_pVB->Unlock();
+
+			device->SetStreamSource( 0, m_pVB, 0, sizeof(PointVertex) );
+			device->SetFVF( PointVertex::FVF_Flags );
+
+            if( FAILED(hr = device->DrawPrimitive( D3DPT_POINTLIST, 
+                m_dwVBOffset, dwNumParticlesToRender)))
+            {
+                return hr;
+            }
+
+            // Lock the next chunk of the vertex buffer.  If we are at the 
+            // end of the vertex buffer, DISCARD the vertex buffer and start
+            // at the beginning.  Otherwise, specify NOOVERWRITE, so we can
+            // continue filling the VB while the previous chunk is drawing.
+            m_dwVBOffset += m_dwFlush;
+
+            // If we're about to overflow the buffer, reset the offset counter back to 0
+            if( m_dwVBOffset >= m_dwDiscard )
+                m_dwVBOffset = 0;
+
+            if( FAILED( hr = m_pVB->Lock( 
+                m_dwVBOffset * sizeof(PointVertex), // Offset to lock
+                m_dwFlush    * sizeof(PointVertex), // Size to lock
+                (void**) &pVertices, 
+                m_dwVBOffset ? D3DLOCK_NOOVERWRITE : D3DLOCK_DISCARD)))
+            {
+                return hr;
+            }
+
+            dwNumParticlesToRender = 0;
+        }
+    }
+
+    // Unlock the vertex buffer
+    m_pVB->Unlock();
+
+    // Render any remaining particles
+    if( dwNumParticlesToRender )
+    {
+		device->SetStreamSource( 0, m_pVB, 0, sizeof(PointVertex) );
+		device->SetFVF( PointVertex::FVF_Flags );
+
+        if(FAILED(hr = device->DrawPrimitive( D3DPT_POINTLIST, m_dwVBOffset, 
+                                                  dwNumParticlesToRender )))
+            return hr;
+    }
+
+	//
+    // Reset render states...
+	//
+    device->SetRenderState( D3DRS_POINTSPRITEENABLE, FALSE );
+    device->SetRenderState( D3DRS_POINTSCALEENABLE,  FALSE );
+
+    return S_OK;
+}
+
 
 //--------------------------------------------------------------------------------------
 // Function: drawPauseGameRules
