@@ -139,21 +139,27 @@ wstring VictoryCalculator::getFormattedString (int index) {
 }
 
 */
-void VictoryCalculator::recordTime(string time) {
+int VictoryCalculator::recordTime(string time) {
 	//if the player is not finished, or we have already recorded the time, return
-	if (!isFinished(0)) return;
-	if (recorded) return;
+	if (!isFinished(0)) return -1;
+	if (recorded) return -1;
 
 	times.clear();
 	int numberOfRecordedTimes = 5;
 
 	//get the current recordings from file
 	ifstream fin("times.txt");
+	string s;
 	while (!fin.eof()) {
-		string s;
 		fin >> s; //read the time from file
-		if (s != "")
+		if (s != "") {
 			times.push_back(s);
+		}
+
+		fin >> s; //read the name from file
+		if (s != "") {
+			names.push_back(s);
+		}
 	}
 	fin.close();
 
@@ -167,8 +173,19 @@ void VictoryCalculator::recordTime(string time) {
 		}
 	}
 
+	//make sure there is the right number of recorded names
+	while (names.size() != numberOfRecordedTimes) {
+		if (names.size() < numberOfRecordedTimes) {
+			names.push_back("---");
+		}
+		else {
+			names.pop_back();
+		}
+	}
+
 	//add the new time to the list of recorded times (means there is one more recording than wanted)
 	times.push_back(time);
+	names.push_back("---");
 	//sort the times
 	int index = numberOfRecordedTimes;
 	while (index > 0) {
@@ -176,6 +193,11 @@ void VictoryCalculator::recordTime(string time) {
 			string temp = times[index];
 			times[index] = times[index-1];
 			times[index-1] = temp;
+
+			temp = names[index];
+			names[index] = names[index-1];
+			names[index-1] = temp;
+
 			index--;
 		}
 		else {
@@ -184,20 +206,32 @@ void VictoryCalculator::recordTime(string time) {
 	}
 	//remove the slowest time (so that there is the right number of recordings again)
 	times.pop_back();
-
-	//print the times back to the file
-	ofstream fout("times.txt");
-	for (int i = 0; i < numberOfRecordedTimes; i++) {
-		fout << times[i] << endl;
-	}
-	fout.close();
+	names.pop_back();
 
 	recorded = true;
+	return index;
+}
+
+void VictoryCalculator::closeFile(int index, string name) {
+	names[index] = name;
+
+	ofstream fout("times.txt");
+	
+	for (int i = 0; i < times.size(); i++) {
+		fout << times[i] << endl;
+		fout << names[i] << endl;
+	}
+	fout.close();
 }
 
 vector<string> VictoryCalculator::getRecordedTimes()
 {
 	return times;
+}
+
+vector<string> VictoryCalculator::getRecordedNames()
+{
+	return names;
 }
 
 

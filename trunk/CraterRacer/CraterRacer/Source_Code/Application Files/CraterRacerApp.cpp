@@ -189,10 +189,15 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 //--------------------------------------------------------------------------------------
 void RacerApp::moveMenuUp( )
 {
-	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_SINGLE_PLAYER ||
-		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_UNPAUSE ||
-		m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_MAINMENU ||
-		m_AppState == APP_SHOWTIMES && m_uiCurrentButton != GUI_BTN_MAINMENU )
+	if (m_AppState == APP_ENTERNAME) {
+		m_uiCurrentButton++;
+		m_uiCurrentButton = m_uiCurrentButton % 26;
+	}
+
+	else if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_SINGLE_PLAYER ||
+			g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_UNPAUSE ||
+			m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_MAINMENU ||
+			m_AppState == APP_SHOWTIMES && m_uiCurrentButton != GUI_BTN_MAINMENU )
 	{
 		//send message to current button to go back to normal state
 		m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
@@ -208,10 +213,17 @@ void RacerApp::moveMenuUp( )
 //--------------------------------------------------------------------------------------
 void RacerApp::moveMenuDown( )
 {
-	if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_EXIT ||
-		g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_EXIT2 ||
-		m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_EXITSMALL ||
-		m_AppState == APP_SHOWTIMES && m_uiCurrentButton != GUI_BTN_EXITSMALL )
+	if (m_AppState == APP_ENTERNAME) {
+		m_uiCurrentButton--;
+		if (m_uiCurrentButton == -1) {
+			m_uiCurrentButton = 25;
+		}
+	}
+
+	else if( m_AppState == APP_STARTUP && m_uiCurrentButton != GUI_BTN_EXIT ||
+			g_pGame && m_AppState == APP_PAUSED && m_uiCurrentButton != GUI_BTN_EXIT2 ||
+			m_AppState == APP_VICTORY && m_uiCurrentButton != GUI_BTN_EXITSMALL ||
+			m_AppState == APP_SHOWTIMES && m_uiCurrentButton != GUI_BTN_EXITSMALL )
 	{
 		//tell current button to go back to normal/unselected state
 		m_Renderer->adjustButtonImage( m_uiCurrentButton, -1 );
@@ -229,8 +241,13 @@ void RacerApp::processMenuSelection( )
 {
 		HWND fWindow; // Window handle to our window
 
-		if( m_AppState == APP_SHOW_GAMERULES || m_AppState == APP_SHOW_GAMERULES2 )
+		if( m_AppState == APP_SHOW_GAMERULES || m_AppState == APP_SHOW_GAMERULES2 ) {
 			m_AppState = m_iPreviousAppState;
+		}
+
+		else if (m_AppState == APP_ENTERNAME) {
+			m_Renderer->addLetter( m_uiCurrentButton + (int)'A');
+		}
 
 		else
 		{
@@ -463,8 +480,9 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 				break;
 
 			case APP_SHOWTIMES:
+			case APP_ENTERNAME:
 
-				m_Renderer->drawTimesScreen( );
+				m_Renderer->drawTimesScreen(m_uiCurrentButton + (int)'A');
 				break;
 				
 			case APP_RENDER_GAME:

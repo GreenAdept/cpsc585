@@ -16,6 +16,7 @@ class VictoryCalculator {
 	vector<bool>   finished;
 	vector<string> finishTimes;
 	vector<string> times;
+	vector<string> names;
 	bool           gameFinished;
 	bool		   emittedGameFinished;
 	bool		   recorded;
@@ -34,8 +35,10 @@ public:
 	bool	       isGameFinished	( );
 	void	       setFinishTime	(int playerNum, string time);
 	vector<string> getFinishTimes	();
-	void		   recordTime		(string time);
+	int			   recordTime		(string time);
+	void		   closeFile		(int index, string name);
 	vector<string> getRecordedTimes	( );
+	vector<string> getRecordedNames	( );
 	void		   setTimeLimit		( string limit );
 	string		   getTimeLimit		( );
 };
