@@ -29,8 +29,10 @@ void MeteorGroupAI::think(EntityManager *em, int myList, int myIndex) {
 		state = trigger->getState();
 
 		if (state == AI::TRIGGERED) {
-			for (int i=0; i < meteorGroup->numMeteors; i++)
-				meteorGroup->meteors[i]->informOfTrigger();
+			for (int i=0; i < meteorGroup->numMeteors; i++) {
+				if (rand() % 2)
+					meteorGroup->meteors[i]->informOfTrigger();
+			}
 		}
 		return;
 	}

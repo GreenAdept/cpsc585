@@ -6,6 +6,8 @@
 
 class Crater: public Entity {
 	public:
-		Crater (void) {}
+		Crater () {}
+
+		void setUpVector (Vec3 up);
 };
 #endif
