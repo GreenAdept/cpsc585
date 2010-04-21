@@ -42,8 +42,6 @@ public:
 	NxVec3	getWheelLateral	 ( );
 
 private:
-	NxMaterial*	m_mMaterial;
-
 	//Friction
 	NxReal		m_rRestitution;
 	NxReal		m_rStaticFriction;

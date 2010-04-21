@@ -10,6 +10,15 @@ SceneLoader::SceneLoader( )
 	m_Device = NULL;
 }
 
+SceneObjects::SceneObjects( )
+{
+	entityManager = 0;
+	simulator = 0;
+	renderer = 0;
+	debugger = 0;
+	varLoader = 0;
+}
+
 
 //--------------------------------------------------------------------------------------
 // Function:  Desctructor
