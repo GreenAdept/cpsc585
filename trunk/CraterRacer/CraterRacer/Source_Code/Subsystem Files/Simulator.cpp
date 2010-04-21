@@ -151,132 +151,6 @@ void Simulator::simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteor
 
 		//set elapsed time in vehicles for speed calculation later
 		vehicles[i]->setTimeElapsed( elapsedTime );
-
-		/*Matrix m2;
-		D3DXMatrixIdentity( &mat );
-		D3DXMatrixIdentity( &m2 );
-		m_Vehicle->getGlobalPose().getColumnMajor44( m );
-		D3DXMatrixIdentity( &rotate );
-		D3DXMatrixRotationY( &rotate, -vehicles[i]->m_Wheels[0].getAngle()*(D3DX_PI/180));
-		D3DXMatrixTranslation( &mat, 0, height/2, 0 );
-		D3DXMatrixMultiply( &mat, &rotate, &mat);
-		D3DXMatrixMultiply( &m, &mat, &m);
-
-		vehicles[i]->m_Wheels[0].update(m);
-		vehicles[i]->m_Wheels[1].update(m);*/
-
-		/*NxVec3 heading = vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(0, 0, 1);
-
-		float angleX = findAngle(NxVec3(1, 0, 0), vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(1, 0, 0));
-		if (heading.x < 0) {
-			angleX = -angleX;
-		}
-
-		float angleY = findAngle(NxVec3(0, 1, 0), vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(0, 1, 0));
-		if (heading.y > 0) {
-			angleY = -angleY;
-		}
-
-		float angleY2 = findAngle(NxVec3(0, 1, 0), vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(0, 1, 0));
-
-		if (i ==0) {
-		//m_Debugger.writeToFile(Vec3(heading.x, heading.y, heading.z));
-			//m_Debugger.writeToFile(angleY2);
-		}
-
-		float angleZ = findAngle(NxVec3(0, 0, 1), vehicles[i]->getPhysicsObj()->getGlobalOrientation() * NxVec3(0, 0, 1));
-		if (heading.z >= 0 && heading.y >= 0 && heading.x >= 0) {
-			angleY2 = -angleY2;
-		}
-		else if (heading.z >= 0 && heading.y >= 0 && heading.x < 0) {
-			angleY2 = angleY2;
-		}
-		else if (heading.z >= 0 && heading.y < 0 && heading.x >= 0) {
-			angleY2 = -angleY2;
-		}
-		else if (heading.z >= 0 && heading.y < 0 && heading.x < 0) {
-			angleY2 = angleY2;
-		}
-		else if (heading.z < 0 && heading.y >= 0 && heading.x >= 0) {
-			angleY2 = -angleY2;
-		}
-		else if (heading.z < 0 && heading.y >= 0 && heading.x < 0) {
-			angleY2 = -angleY2;
-		}
-		else if (heading.z < 0 && heading.y < 0 && heading.x >= 0) {
-			angleY2 = -angleY2;
-		}
-		else if (heading.z < 0 && heading.y < 0 && heading.x < 0) {
-			angleY2 = -angleY2;
-		}
-
-
-		Matrix translate, translate2, transform;
-		Matrix mX, mY, mZ;
-
-		//negative chassis
-		Matrix negChassis, rot, test, test2, chassis;
-		D3DXMatrixIdentity(&negChassis);
-		D3DXMatrixIdentity(&rot);
-		D3DXMatrixIdentity(&chassis);
-		D3DXMatrixTranslation( &negChassis, -vehicles[i]->m_Wheels[0].getChassisPt().x, -vehicles[i]->m_Wheels[0].getChassisPt().y, -vehicles[i]->m_Wheels[0].getChassisPt().z);
-		D3DXMatrixTranslation( &chassis, vehicles[i]->m_Wheels[0].getChassisPt().x, vehicles[i]->m_Wheels[0].getChassisPt().y, vehicles[i]->m_Wheels[0].getChassisPt().z);
-		D3DXMatrixRotationY(&rot, vehicles[i]->m_Wheels[0].getAngle()*(D3DX_PI/180));
-
-		test = rot * negChassis;
-		test2 = chassis * rot;
-
-		Matrix test3;
-		D3DXMatrixIdentity( &test3 );
-		D3DXMatrixRotationY( &test3, vehicles[i]->m_Wheels[0].getAngle()*(D3DX_PI/180));
-
-
-
-		D3DXMatrixIdentity( &translate );
-		D3DXMatrixIdentity( &translate2 );
-		D3DXMatrixIdentity( &mX );
-		D3DXMatrixIdentity( &mY);
-		D3DXMatrixIdentity( &mZ);
-
-		D3DXMatrixRotationX( &mX, angleY*(D3DX_PI/180));
-		D3DXMatrixRotationY( &mY, angleX*(D3DX_PI/180));
-		D3DXMatrixRotationZ( &mZ, angleY2*(D3DX_PI/180));
-
-		D3DXMatrixTranslation( &translate, vec.x, vec.y, vec.z);
-
-		transform = ((mZ * mX * (test3 * mY)) * translate);
-
-		D3DXMatrixTranslation( &translate2, 0, -height/2, 0 );
-		D3DXMatrixMultiply( &transform, &transform, &translate2 );
-
-		//vehicles[i]->m_Wheels[0].update(transform);
-		//vehicles[i]->m_Wheels[1].update(transform);
-		vehicles[i]->m_Wheels[0].update(negChassis * translate);
-		vehicles[i]->m_Wheels[1].update(negChassis * translate);
-
-		/////////////////////////////////////
-
-		D3DXMatrixIdentity( &translate );
-		D3DXMatrixIdentity( &translate2 );
-		D3DXMatrixIdentity( &mX );
-		D3DXMatrixIdentity( &mY);
-		D3DXMatrixIdentity( &mZ);
-
-		D3DXMatrixRotationX( &mX, angleY*(D3DX_PI/180));
-		D3DXMatrixRotationY( &mY, angleX*(D3DX_PI/180));
-		D3DXMatrixRotationZ( &mZ, angleY2*(D3DX_PI/180));
-
-		D3DXMatrixTranslation( &translate, vec.x, vec.y, vec.z);
-
-		transform = (mZ * mX * mY) * translate;
-
-		D3DXMatrixTranslation( &translate2, 0, -height/2, 0 );
-		D3DXMatrixMultiply( &transform, &transform, &translate2 );
-
-		vehicles[i]->m_Wheels[2].update(transform);
-		vehicles[i]->m_Wheels[3].update(transform);*/
-
-
 	}
 
 	//Initialize the meteors and update all the meteor positions
@@ -363,9 +237,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 			case 0: //A_BUTTON - emergency brake
 			{
 				emergencyBrake = true;
-				friction += m_rBrakingFriction;
-				actor->addLocalForceAtLocalPos(NxVec3(-m_rVehicleMass * m_rForceStrength, 0, 0), NxVec3(0, 0, -25));
-				actor->addLocalForceAtLocalPos(NxVec3(-m_rVehicleMass * m_rForceStrength, 0, 0), NxVec3(0, 0, 0));
 				break;
 			}
 			case 1: //B_BUTTON - nothing
@@ -648,9 +519,36 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		//get global orientation, second row for y axis
 		
 	}
-	//Try to keep the vehicle from sticking to walls
+	//Emergency Brake
 	if (onGround) {
-		
+		if (emergencyBrake) {
+			friction += (m_rBrakingFriction/2);
+			//actor->addLocalForceAtLocalPos(NxVec3(-m_rVehicleMass * m_rForceStrength, 0, 0), NxVec3(0, 0, -25));
+			//actor->addLocalForceAtLocalPos(NxVec3(-m_rVehicleMass * m_rForceStrength, 0, 0), NxVec3(0, 0, 0));
+
+			NxMat33 localOrientation;
+			actor->getGlobalOrientation().getInverse(localOrientation);
+			NxVec3 localVelocity = localOrientation * actor->getLinearVelocity();
+
+			NxVec3 heading = NxVec3(0, 0, 1);
+			NxVec3 applied = (localVelocity.dot(heading) / heading.dot(heading))*heading;
+			localVelocity.y = 0;
+			float tempAngle = findAngle(localVelocity, heading);
+			applied *= (tempAngle/m_rMaxWheelAngle);
+			applied.y = 0;
+			applied.z = 0;
+
+			actor->addLocalForceAtLocalPos(applied*m_rVehicleMass*20, NxVec3(0, -3, -100));
+
+			/*if (abs(vehicle->m_Wheels[0].getAngle()) > (m_rMaxWheelAngle/2)) {
+				if (vehicle->m_Wheels[0].getAngle() > 0) {
+					actor->addLocalForceAtLocalPos(NxVec3(m_rVehicleMass * m_rForceStrength * (actor->getLinearVelocity().magnitude()/5), 0, 0), NxVec3(0, -3, 0));
+				}
+				else if (vehicle->m_Wheels[0].getAngle() < 0) {
+					actor->addLocalForceAtLocalPos(NxVec3(-m_rVehicleMass * m_rForceStrength * (actor->getLinearVelocity().magnitude()/5), 0, 0), NxVec3(0, -3, 0));
+				}
+			}*/
+		}
 	}
 	//Keep players from driving around on the outside
 	if (offTrack && onGround) {
