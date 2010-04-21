@@ -50,6 +50,7 @@ public:
 	SceneObjects getSceneObjects	( );
 	void		 setSceneObjects	( SceneObjects& objs );
 	bool		 isFinished			( );
+	void		 setTimeLimit		( string limit );
 
 	VictoryCalculator           m_Victory;
 	EntityManager*				m_Entities;		//collection of all entities

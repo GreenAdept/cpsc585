@@ -8,7 +8,9 @@ VictoryCalculator::VictoryCalculator() {
 	gameFinished = false;
 	recorded = false;
 	hasTimeLimit = false;
+	timeLimit = "";
 	emittedGameFinished = false;
+	completedTimeTrial = true;
 }
 
 //------------------------------------------------------
@@ -72,15 +74,12 @@ void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles, int numPlayer
 			if (i < numPlayers)
 				gameFinished = false;
 		}
-		else if (hasTimeLimit) { //if the vehicle finished, and there is a time limit
-			if (finishTimes[i].compare(timeLimit) > 0) //if finishedTime is greater than timeLimit
-			{	//set completed course to false
-			}
-			else
-			{
-				//set completed course to true, and record time. Decrease time by 30sec
-			}
-		}
+	}
+
+	if (hasTimeLimit && finished[0]) { //if the vehicle finished, and there is a time limit
+		if (finishTimes[0].compare(timeLimit) <= 0)
+			//else show a message with "congrats" or something, and record time.
+			completedTimeTrial = true;
 	}
 
 	if (!emittedGameFinished) {
@@ -264,6 +263,7 @@ void VictoryCalculator::setTimeLimit(string limit)
 {
 	hasTimeLimit = true;
 	timeLimit = limit;
+	completedTimeTrial = false;
 }
 
 string VictoryCalculator::getTimeLimit( )
@@ -272,3 +272,5 @@ string VictoryCalculator::getTimeLimit( )
 		return timeLimit;
 	return NULL;
 }
+
+

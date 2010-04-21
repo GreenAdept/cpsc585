@@ -8,6 +8,7 @@ SceneLoader::SceneLoader( )
 	m_Game = NULL;
 	m_BackSurface = NULL;
 	m_Device = NULL;
+	m_bTimeTrial = false;
 }
 
 SceneObjects::SceneObjects( )
@@ -92,6 +93,22 @@ void SceneLoader::startGame( string filename )
 {
 	string str;
 	if( !m_Game ) return;
+
+	if (filename == "Source_Code\\Scene_Files\\TimeTrial.SCENE"){
+		ifstream fin("times.txt");
+		string s;
+		if (fin.is_open()) {
+			fin >> s; //read the best time from the file
+			fin.close();
+
+			if (s == "")
+				s = "05:00:00";
+		}
+		else
+			s = "05:00:00";
+
+		m_Game->setTimeLimit(s);
+	}
 
 	ifstream file;
 	file.open( filename.c_str() );
@@ -287,17 +304,17 @@ void SceneLoader::processVehicleInfo( ifstream& file )
 {
 	string mesh;
 	string flush;
-	string timeLimit;
+	//string timeLimit;
 	int numPlayers;
 	int numComputers;
 	int numLaps;
 	
 	file >> flush >> flush;
 	
-	if ( flush == "TIME_LIMIT" ){
+	/*if ( flush == "TIME_LIMIT" ){
 		file >> timeLimit;
 		file >> flush;
-	}
+	}*/
 
 	if( flush != "NUM_PLAYERS" ) return;
 	file >> numPlayers;

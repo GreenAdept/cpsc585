@@ -18,9 +18,9 @@
 #include "Clock.h"
 
 //event ids
-enum Events {	EWrongWay, EWrongWayCancel, EPauseGame, EUnpauseGame, EStartClock, 
+enum Events {	EWrongWay, EWrongWayCancel, EPauseGame, EUnpauseGame, EStartClock,
 				EGameFinished, ELapFinished, EPlayerFinished, EVibrate, EStartOrStopRace, 
-				EVehicleCollision, EVictoryScreenUpdate, ENameEntered };
+				EVehicleCollision, EVictoryScreenUpdate, ENameEntered, ESetTimeLimit };
 
 using namespace std;
 //--------------------------------------------------------
@@ -54,6 +54,7 @@ class MessageManager
 	static void ProcessMessage	( int message, long param1, long param2 );
 	static void ProcessMessage	( int message, long param1, string param2 );
 	static void ProcessMessage  ( int message, long param1, long param2, long param3 );
+	static void ProcessMessage	( int message, string param );
 	static void ProcessMessage	( int message );
 	static void AddEmitter		( RacerApp* app );
 	static void AddEmitter		( GameObj* game );
@@ -65,7 +66,7 @@ protected:
 
 	MessageManager( ) { } // constructor
 
-  private:
+private:
 
     //Singleton instance of message manager
     static MessageManager* pInstance;

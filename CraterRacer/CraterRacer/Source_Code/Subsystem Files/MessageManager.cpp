@@ -158,6 +158,7 @@ void MessageManager::ProcessMessage( int message )
 
 	case EGameFinished:
 		if (m_App->m_bIsTimeTrial) {
+			//m_VictoryCalculator->recordTime(m_Clock->getFormattedTime());
 			string time = m_Clock->getFormattedTime();
 			int result = m_VictoryCalculator->recordTime(time);
 			if (result < 5) {
@@ -190,6 +191,14 @@ void MessageManager::ProcessMessage( int message )
 	}
 }
 
+void MessageManager::ProcessMessage( int message, string param )
+{
+	switch(message) {
+		case ESetTimeLimit:
+			m_VictoryCalculator->setTimeLimit(param);
+			break;
+	}
+}
 
 //--------------------------------------------------------------------------------------
 // Function: AddEmitter
