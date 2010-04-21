@@ -538,7 +538,12 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		wheelRadius = w->getBoundingBox().m_fRadius/2;
 
 		//Calculate world wheel position, used for raycast
-		wheelPos = mat * w->getChassisPt();
+		NxVec3 chassisPt = w->getChassisPt();
+		if (chassisPt.x > 0)
+			chassisPt.x += wheelRadius;
+		else
+			chassisPt.x -= wheelRadius;
+		wheelPos = mat * chassisPt;
 
 		//Calculate vehicle up vector
 		upVec = normalize( orient * NxVec3( 0, 1, 0 ));
