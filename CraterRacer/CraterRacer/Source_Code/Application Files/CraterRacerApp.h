@@ -15,6 +15,7 @@
 #include "Sound.h"
 #include <string>
 #include "ApplicationState.h"
+#include "Particle.h"
 
 #define ONE_PLAYER_SCENE_FILE	"Source_Code\\Scene_Files\\OnePlayer.SCENE"
 #define TWO_PLAYER_SCENE_FILE	"Source_Code\\Scene_Files\\TwoPlayer.SCENE"
