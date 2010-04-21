@@ -79,8 +79,7 @@ void Entity::update( Vec3 newPosition )
 		D3DXMatrixIdentity( &m );
 		D3DXMatrixTranslation( &m, newPosition.x, newPosition.y, newPosition.z );
 
-		m_matWorld = m;
-		m_pRenderable->m_matWorld = m;
+		update (m);
 	}
 
 	if (m_nxActor != 0)

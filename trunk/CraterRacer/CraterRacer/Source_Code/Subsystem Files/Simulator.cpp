@@ -807,6 +807,9 @@ void Simulator::createMeteorGroup(MeteorGroup* mg) {
 	}
 }
 
+//--------------------------------------------------------------------------------------
+// Function:  simulateMeteorGroup
+//--------------------------------------------------------------------------------------
 void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle*> vehicles) {
 	for (int i = 0; i < mg->numMeteors; i++) {
 		Meteor* m = mg->meteors[i];
@@ -825,6 +828,7 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 		if (travelled >= toTravel) {
 			currentPos = target;
 			m->informOfCollision();
+			//m->getCraterToSpawn()->setUpVector (Vec3 (0, 1, 0));
 
 			NxVec3 meteorPos(currentPos.x, currentPos.y, currentPos.z);
 			for (int i=0; i<vehicles.size(); i++) {
