@@ -41,6 +41,8 @@ struct SceneObjects
 	DebugWriter*				debugger;
 	VarLoader*					varLoader;
 	vector<XBox360Controller*>	controllers;
+
+	SceneObjects ();
 };
 
 

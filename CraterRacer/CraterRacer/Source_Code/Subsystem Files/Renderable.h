@@ -24,7 +24,7 @@ public:
 
 	//Public Interface -----------------------------------
 
-	Renderable( void ) { m_pMesh = NULL; }
+	Renderable( void ) { m_pMesh = NULL; m_pEffect = NULL; m_pDevice = NULL; }
 	Renderable( const Renderable& renderableCopy ) ;
 	~Renderable( );
 
