@@ -76,10 +76,11 @@ void VictoryCalculator::calculateRanks (vector<Vehicle*> vehicles, int numPlayer
 		}
 	}
 
-	if (hasTimeLimit && finished[0]) { //if the vehicle finished, and there is a time limit
-		if (finishTimes[0].compare(timeLimit) <= 0)
+	if (hasTimeLimit && finished[0] && gameFinished) { //if the vehicle finished, and there is a time limit
+		if (finishTimes[0].compare(timeLimit) <= 0) {
 			//else show a message with "congrats" or something, and record time.
 			completedTimeTrial = true;
+		}
 	}
 
 	if (!emittedGameFinished) {
@@ -250,6 +251,11 @@ void VictoryCalculator::setFinishTime (int playerNum, string time) {
 		finishTimes [-playerNum] = time;
 	else
 		finishTimes [playerNum] = time;
+}
+
+string VictoryCalculator::getFinishTime(int playerNum)
+{
+	return finishTimes[playerNum];
 }
 
 //--------------------------------------------------------------------------------------

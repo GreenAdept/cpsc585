@@ -8,7 +8,6 @@ SceneLoader::SceneLoader( )
 	m_Game = NULL;
 	m_BackSurface = NULL;
 	m_Device = NULL;
-	m_bTimeTrial = false;
 }
 
 SceneObjects::SceneObjects( )

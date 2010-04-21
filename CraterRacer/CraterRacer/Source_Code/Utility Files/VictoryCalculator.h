@@ -25,22 +25,23 @@ class VictoryCalculator {
 	bool		   completedTimeTrial;
 	string		   timeLimit;
 
-	void		   calculateRank  (std::vector<Vehicle*>& vehicles, int index);
+	void		   calculateRank  ( std::vector<Vehicle*>& vehicles, int index );
 
 	DebugWriter		writer;
 
 public:
 	VictoryCalculator();
 
-	void           calculateRanks	(std::vector<Vehicle*> vehicles, int numberOfPlayers);
-	int            getRank			(int index);
+	void           calculateRanks	( std::vector<Vehicle*> vehicles, int numberOfPlayers );
+	int            getRank			( int index );
 	vector<int>    getRanks			( );
-	bool           isFinished		(int index);
+	bool           isFinished		( int index );
 	bool	       isGameFinished	( );
-	void	       setFinishTime	(int playerNum, string time);
+	void	       setFinishTime	( int playerNum, string time );
 	vector<string> getFinishTimes	( );
-	int			   recordTime       (string time);
-	void		   closeFile		(int index, string name);
+	string		   getFinishTime	( int playerNum );
+	int			   recordTime       ( string time );
+	void		   closeFile		( int index, string name );
 	vector<string> getRecordedTimes	( );
 	vector<string> getRecordedNames	( );
 	void		   setTimeLimit		( string limit );

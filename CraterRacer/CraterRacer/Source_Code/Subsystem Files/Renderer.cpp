@@ -322,10 +322,10 @@ void Renderer::OnLost( )
     SAFE_RELEASE( m_pShadowMap );
     SAFE_RELEASE( m_pTexDef );
 
-	if( m_pVB != NULL )
-        m_pVB->Release();
-	if( m_ptexParticle != NULL )
-        m_ptexParticle->Release();
+	if( m_pVB != NULL ) { }
+        //m_pVB->Release();
+	if( m_ptexParticle != NULL ) { }
+//        m_ptexParticle->Release();
 }
 
 
@@ -345,10 +345,10 @@ void Renderer::OnDestroy( )
     SAFE_RELEASE( m_pEffect );
     SAFE_RELEASE( m_pVertDecl );
 
-	if( m_pVB != NULL )
-        m_pVB->Release();
-	if( m_ptexParticle != NULL )
-        m_ptexParticle->Release();
+	if( m_pVB != NULL ) { }
+        //m_pVB->Release();
+	if( m_ptexParticle != NULL ) { }
+        //m_ptexParticle->Release();
 }
 
 
