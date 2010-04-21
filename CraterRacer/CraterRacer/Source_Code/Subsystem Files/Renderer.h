@@ -50,9 +50,11 @@ public:
 	void adjustVictoryRank	( vector<int>& ranks, vector<string>& times );
 	void adjustWrongWay		( int playerNum, bool drawWrongWay );
 	void adjustLapImage		( int playerNum, int lapNum );
-	void adjustBestTimes	( vector<string>& bestTimeEntries );
+	void adjustBestTimes	( vector<string>& bestTimeEntries, vector<string>& bestNameEntries, int index, int letter );
 	void adjustTwoPlayer	( bool isTwoPlayer, int width, int height );
 	void adjustTimeTrial	( );
+	void addLetter			(int letter);
+	void resetBestName		( );
 
 	// Drawing functions
 	void renderGame			( Device* device, vector<Renderable*>, vector<GameCamera*> cameras, int playerID );
@@ -65,7 +67,7 @@ public:
 	void renderFPS			( );
 	void renderCountDown	( int count );
 	void drawVictoryScreen	( );
-	void drawTimesScreen	( );
+	void drawTimesScreen	( int letter );
 	void drawCountdown		( int num );
 
 	void RenderFrame		( Device* device, vector<Renderable*> renderables, 
@@ -120,12 +122,18 @@ private:
 	wstring				m_sVictoryRanks		[ NUM_PLAYERS ];
 	wstring				m_sVictoryTimes		[ NUM_PLAYERS ];
 	wstring				m_sBestTimes		[ 5 ];
+	wstring				m_sBestNames		[ 5 ];
+	wstring				bestTimesName;
+	string				sBestTimesName;
 	RECT				m_VictoryRecs		[ NUM_PLAYERS*2 ];
 	RECT				m_BestTimesRecs		[ 5 ];
+	RECT				m_BestNamesRecs	[ 5 ];
 	bool				m_bIsTwoPlayer;
 	bool				m_bIsTimeTrial;
 	Vec2				m_ScaleVal;
 	Vec2				m_CountdownLocation;
+	int					bestTimesIndex;
+	int					letterIndex;
 
 	//SHADOWS STUFF
 	CFirstPersonCamera	m_LCamera;       // Camera obj to help adjust light

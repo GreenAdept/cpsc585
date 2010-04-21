@@ -74,6 +74,10 @@ Renderer::Renderer( )
 	//victory screen buttons
 	m_iButtonImages[ GUI_BTN_MAINMENU ] = MAINMENU_ACTIVE_IMAGE;
 	m_iButtonImages[ GUI_BTN_EXITSMALL ] = EXIT_SMALL_IMAGE;
+	bestTimesIndex = 5;
+	letterIndex = 0;
+	bestTimesName = L"";
+	sBestTimesName = "";
 
 	//Set up ball animation images for loading screen
 	for( int i=0; i < NUM_LOADING_BALLS; i++ )
@@ -538,17 +542,10 @@ void Renderer::drawVictoryScreen( )
 	}
 
 	//Draw rankings and times as text
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sVictoryRanks[0].c_str(), -1, &m_VictoryRecs[0], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sVictoryTimes[0].c_str(), -1, &m_VictoryRecs[0+NUM_PLAYERS], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[1].c_str(), -1, &m_VictoryRecs[1], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[1].c_str(), -1, &m_VictoryRecs[1+NUM_PLAYERS], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[2].c_str(), -1, &m_VictoryRecs[2], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[2].c_str(), -1, &m_VictoryRecs[2+NUM_PLAYERS], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[3].c_str(), -1, &m_VictoryRecs[3], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[3].c_str(), -1, &m_VictoryRecs[3+NUM_PLAYERS], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	for (int i = 0; i < 5; i++) {
+		m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryRanks[i].c_str(), -1, &m_VictoryRecs[i], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+		m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[i].c_str(), -1, &m_VictoryRecs[i+NUM_PLAYERS], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	}
 
 	m_pImageSprite->End( );
 }
@@ -558,7 +555,7 @@ void Renderer::drawVictoryScreen( )
 // Function:  drawTimesScreen
 // This function renders the times screen. 
 //--------------------------------------------------------------------------------------
-void Renderer::drawTimesScreen( )
+void Renderer::drawTimesScreen(int letter)
 {
 	HRESULT hr;
 	int image = 0;
@@ -578,11 +575,38 @@ void Renderer::drawTimesScreen( )
 	}
 
 	//Draw best times as text
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[0].c_str(), -1, &m_BestTimesRecs[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[1].c_str(), -1, &m_BestTimesRecs[1], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[2].c_str(), -1, &m_BestTimesRecs[2], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[3].c_str(), -1, &m_BestTimesRecs[3], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
-	m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[4].c_str(), -1, &m_BestTimesRecs[4], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+	for (int i = 0; i < 5; i++) {
+		if (i == bestTimesIndex) {
+			m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[i].c_str(), -1, &m_BestTimesRecs[i], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,255 ) );
+			m_pFontVictoryBig->DrawTextW( NULL, bestTimesName.c_str(), -1, &m_BestNamesRecs[i], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,255 ) );
+
+			if (bestTimesName.length() < 3) {
+				wstring tempStr = L"";
+				tempStr.push_back((char)letter);
+				RECT tempRect(m_BestNamesRecs[i]);
+				tempRect.left += (bestTimesName.length()*15);
+
+				m_pFontVictoryBig->DrawTextW( NULL, tempStr.c_str(), -1, &tempRect, DT_EXPANDTABS, D3DCOLOR_ARGB( 255,255,0,0 ) );
+
+				if (bestTimesName.length() < 2) {
+					tempStr = L"-";
+					tempRect = m_BestNamesRecs[i];
+					tempRect.left += 30;
+
+					if (bestTimesName.length() == 0) {
+						tempStr.push_back('-');
+						tempRect.left -= 15;
+					}
+
+					m_pFontVictoryBig->DrawTextW( NULL, tempStr.c_str(), -1, &tempRect, DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,255 ) );
+				}
+			}
+		}
+		else {
+			m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestTimes[i].c_str(), -1, &m_BestTimesRecs[i], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+			m_pFontVictoryBig->DrawTextW( NULL, this->m_sBestNames[i].c_str(), -1, &m_BestNamesRecs[i], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,0,0 ) );
+		}
+	}
 
 	m_pImageSprite->End( );
 }
@@ -885,18 +909,26 @@ void Renderer::adjustWrongWay( int playerNum, bool drawWrongWay )
 //--------------------------------------------------------------------------------------
 // Function: adjustBestTimes
 //--------------------------------------------------------------------------------------
-void Renderer::adjustBestTimes( vector<string>& bestTimeEntries )
+void Renderer::adjustBestTimes( vector<string>& bestTimeEntries, vector<string>& bestNameEntries, int index, int letter )
 {
-	if( bestTimeEntries.size() != 5 )
+	if( bestTimeEntries.size() != 5 || bestNameEntries.size() != 5 )
 		return;
+
+	bestTimesIndex = index;
+	letterIndex = letter;
 
 	//set times text
 	for( int i=0; i < 5; i++ )
 	{
-		m_sBestTimes[i] = L"PLAYER 1              ";
+		m_sBestTimes[i] = L"";
+		m_sBestNames[i] = L"";
 
 		for (int j = 0; j < bestTimeEntries[i].size(); j++) {
 			m_sBestTimes[i].push_back ((WCHAR)bestTimeEntries[i].at(j));
+		}
+
+		for (int j = 0; j < bestNameEntries[i].size(); j++) {
+			m_sBestNames[i].push_back ((WCHAR)bestNameEntries[i].at(j));
 		}
 	}
 }
@@ -949,6 +981,36 @@ void Renderer::adjustTimeTrial( )
 	m_bIsTwoPlayer = false;
 }
 
+//--------------------------------------------------------------------------------------
+// Function: addLetter
+// Adds a letter to the name being entered for high score on time trial
+//--------------------------------------------------------------------------------------
+void Renderer::addLetter( int letter )
+{
+	char ch = (char)letter;
+
+	bestTimesName.push_back(ch);
+	
+	string temp;
+	stringstream ss;
+	ss << ch;
+	ss >> temp;
+	sBestTimesName = sBestTimesName.append(temp);
+
+	if (sBestTimesName.length() == 3) {
+		Emit(Events::ENameEntered, bestTimesIndex, sBestTimesName);
+	}
+}
+
+//--------------------------------------------------------------------------------------
+// Function: resetBestName
+// Resets the two strings containing the best name for time trial
+//--------------------------------------------------------------------------------------
+void Renderer::resetBestName( )
+{
+	bestTimesName = L"";
+	sBestTimesName = "";
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////		
 // 
@@ -1212,20 +1274,38 @@ void Renderer::positionMainImages( int width, int height )
 	h = ( height - 700 ) / 2; if( h<0 ) h=0;
 	
 	//1.
-	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+210;  temp.bottom=temp.top+40;
+	temp.left = w+475;  temp.right=temp.left+400; temp.top=h+210;  temp.bottom=temp.top+40;
 	m_BestTimesRecs[0] = RECT(temp);
 	//2.
-	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+272;  temp.bottom=temp.top+40;
+	temp.left = w+475;  temp.right=temp.left+400; temp.top=h+272;  temp.bottom=temp.top+40;
 	m_BestTimesRecs[1] = RECT(temp);
 	//3.
-	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+335;  temp.bottom=temp.top+40;
+	temp.left = w+475;  temp.right=temp.left+400; temp.top=h+335;  temp.bottom=temp.top+40;
 	m_BestTimesRecs[2] = RECT(temp);
 	//4.
-	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+395;  temp.bottom=temp.top+40;
+	temp.left = w+475;  temp.right=temp.left+400; temp.top=h+395;  temp.bottom=temp.top+40;
 	m_BestTimesRecs[3] = RECT(temp);
 	//5.
-	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+460;  temp.bottom=temp.top+40;
+	temp.left = w+475;  temp.right=temp.left+400; temp.top=h+460;  temp.bottom=temp.top+40;
 	m_BestTimesRecs[4] = RECT(temp);
+
+	//Position best names text
+	
+	//1.
+	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+210;  temp.bottom=temp.top+40;
+	m_BestNamesRecs[0] = RECT(temp);
+	//2.
+	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+272;  temp.bottom=temp.top+40;
+	m_BestNamesRecs[1] = RECT(temp);
+	//3.
+	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+335;  temp.bottom=temp.top+40;
+	m_BestNamesRecs[2] = RECT(temp);
+	//4.
+	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+395;  temp.bottom=temp.top+40;
+	m_BestNamesRecs[3] = RECT(temp);
+	//5.
+	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+460;  temp.bottom=temp.top+40;
+	m_BestNamesRecs[4] = RECT(temp);
 
 
 }

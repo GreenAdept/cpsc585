@@ -92,6 +92,29 @@ void MessageManager::ProcessMessage( int message, long param1, long param2 )
 	}
 }
 
+//--------------------------------------------------------------------------------------
+// Function: ProcessMessage
+// This function processes an incoming message with two parameters
+// INPUTS:	 int message	 - an id from the Events enum list
+//			 long param1	 - different for each message (can be address, number )
+//			 string param2	 - different for each message (can be address, number )
+//--------------------------------------------------------------------------------------
+void MessageManager::ProcessMessage( int message, long param1, string param2 )
+{
+	int playerNum, lapNum;
+	string temp;
+
+	switch( message )
+	{
+	case ENameEntered:
+		m_VictoryCalculator->closeFile(param1, param2);
+		m_App->m_AppState = APP_SHOWTIMES;
+		m_App->m_uiCurrentButton = GUI_BTN_MAINMENU;
+		m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, +1 );
+		break;
+	}
+}
+
 void MessageManager::ProcessMessage( int message, long param1, long param2, long param3 )
 {
 	switch( message )
@@ -135,11 +158,19 @@ void MessageManager::ProcessMessage( int message )
 
 	case EGameFinished:
 		if (m_App->m_bIsTimeTrial) {
-			m_VictoryCalculator->recordTime(m_Clock->getFormattedTime());
-			m_Renderer->adjustBestTimes( m_VictoryCalculator->getRecordedTimes() );
-			m_App->m_AppState = APP_SHOWTIMES;
-			m_App->m_uiCurrentButton = GUI_BTN_MAINMENU;
-			m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, +1 );
+			int result = m_VictoryCalculator->recordTime(m_Clock->getFormattedTime());
+			if (result < 5) {
+				m_Renderer->resetBestName();
+				m_App->m_AppState = APP_ENTERNAME;
+				m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, -1 );
+				m_App->m_uiCurrentButton = A_LETTER;
+			}
+			else {
+				m_App->m_AppState = APP_SHOWTIMES;
+				m_App->m_uiCurrentButton = GUI_BTN_MAINMENU;
+				m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, +1 );
+			}
+			m_Renderer->adjustBestTimes( m_VictoryCalculator->getRecordedTimes(), m_VictoryCalculator->getRecordedNames(), result, 0 );
 		}
 		else {
 			m_Renderer->adjustVictoryRank (m_VictoryCalculator->getRanks(), m_VictoryCalculator->getFinishTimes());
