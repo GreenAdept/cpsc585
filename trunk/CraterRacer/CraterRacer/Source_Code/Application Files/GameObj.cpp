@@ -42,6 +42,10 @@ GameObj::~GameObj( )
 		delete m_Cameras[i];
 }
 
+void GameObj::setTimeLimit(string limit)
+{
+	m_Victory.setTimeLimit(limit);
+}
 
 //--------------------------------------------------------------------------------------
 // Function: getTime

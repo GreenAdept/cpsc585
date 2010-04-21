@@ -6,6 +6,7 @@
 #include "Clock.h"
 #include <vector>
 #include <string>
+#include "DebugWriter.h"
 
 //-----------------------------------------
 // Class: VictoryCalculator
@@ -21,9 +22,12 @@ class VictoryCalculator {
 	bool		   emittedGameFinished;
 	bool		   recorded;
 	bool		   hasTimeLimit;
+	bool		   completedTimeTrial;
 	string		   timeLimit;
 
 	void		   calculateRank  (std::vector<Vehicle*>& vehicles, int index);
+
+	DebugWriter		writer;
 
 public:
 	VictoryCalculator();
@@ -34,13 +38,14 @@ public:
 	bool           isFinished		(int index);
 	bool	       isGameFinished	( );
 	void	       setFinishTime	(int playerNum, string time);
-	vector<string> getFinishTimes	();
-	int			   recordTime		(string time);
+	vector<string> getFinishTimes	( );
+	int			   recordTime       (string time);
 	void		   closeFile		(int index, string name);
 	vector<string> getRecordedTimes	( );
 	vector<string> getRecordedNames	( );
 	void		   setTimeLimit		( string limit );
 	string		   getTimeLimit		( );
+
 };
 
 

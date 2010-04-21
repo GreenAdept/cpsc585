@@ -85,6 +85,7 @@ private:
 	GameObj*			m_Game;
 	SceneObjects		m_Objs;
 	string				m_InitFilename;
+	bool				m_bTimeTrial;
 };
 
 #endif //SCENE_LOADER_H
