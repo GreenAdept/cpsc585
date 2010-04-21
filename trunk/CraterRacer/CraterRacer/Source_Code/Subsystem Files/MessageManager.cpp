@@ -158,8 +158,8 @@ void MessageManager::ProcessMessage( int message )
 
 	case EGameFinished:
 		if (m_App->m_bIsTimeTrial) {
-			//m_VictoryCalculator->recordTime(m_Clock->getFormattedTime());
-			string time = m_Clock->getFormattedTime();
+			//string time = m_Clock->getFormattedTime();
+			string time = m_VictoryCalculator->getFinishTime(0);
 			int result = m_VictoryCalculator->recordTime(time);
 			if (result < 5) {
 				m_Renderer->resetBestName();
