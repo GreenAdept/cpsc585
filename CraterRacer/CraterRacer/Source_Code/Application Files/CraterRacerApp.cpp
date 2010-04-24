@@ -30,6 +30,9 @@ string					RacerApp::m_sGameFilename;
 int						RacerApp::m_iCount;
 Clock*					RacerApp::m_Clock;
 int						RacerApp::m_iLastTime;
+D3DVIEWPORT9			RacerApp::m_ResetViewPort;
+D3DVIEWPORT9			RacerApp::m_TopViewPort;
+D3DVIEWPORT9			RacerApp::m_BottomViewPort;
 
 //--------------------------------------------------------------------------------------
 // Function:  OnUpdateGame
@@ -361,6 +364,30 @@ HRESULT CALLBACK RacerApp::OnResetDevice( IDirect3DDevice9* device, const D3DSUR
     device->SetTransform( D3DTS_PROJECTION, &matProj );
 	device->SetRenderState( D3DRS_LIGHTING,  FALSE );
 
+	//Initialize viewport for one player and time trial games (fills entire screen)
+	m_ResetViewPort;
+	m_ResetViewPort.X      = 0;
+    m_ResetViewPort.Y      = 0;
+    m_ResetViewPort.Width  = m_iBackWidth;
+    m_ResetViewPort.Height = m_iBackHeight;
+    m_ResetViewPort.MinZ   = 0.0f;
+    m_ResetViewPort.MaxZ   = 1.0f;
+
+	//Initialize two player viewports (top half and bottom half)
+    m_TopViewPort.X      = 0;
+    m_TopViewPort.Y      = 0;
+    m_TopViewPort.Width  = m_iBackWidth;
+    m_TopViewPort.Height = m_iBackHeight / 2;
+    m_TopViewPort.MinZ   = 0.0f;
+    m_TopViewPort.MaxZ   = 1.0f;
+
+	m_BottomViewPort.X      = 0;
+    m_BottomViewPort.Y      = m_iBackHeight / 2;
+    m_BottomViewPort.Width  = m_iBackWidth;
+    m_BottomViewPort.Height = m_iBackHeight / 2;
+    m_BottomViewPort.MinZ   = 0.0f;
+    m_BottomViewPort.MaxZ   = 1.0f;
+
 	return S_OK;
 }
 
@@ -411,20 +438,7 @@ bool CALLBACK RacerApp::ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSetting
 void RacerApp::renderTwoPlayer( Device* device )
 {
 	// Render first player in top half of screen
-    D3DVIEWPORT9 topViewPort;
-
-    topViewPort.X      = 0;
-    topViewPort.Y      = 0;
-    topViewPort.Width  = m_iBackWidth;
-    topViewPort.Height = m_iBackHeight / 2;
-    topViewPort.MinZ   = 0.0f;
-    topViewPort.MaxZ   = 1.0f;
-
-    device->SetViewport( &topViewPort );
-    device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_COLORVALUE( 0.0f, 0.0f, 0.0f, 1.0f ), 1.0f, 0 );
-
-	//get the game to render all of its components
-	g_pGame->render( device, m_Renderer, PLAYER1 );
+	g_pGame->render( device, m_Renderer, PLAYER1, &m_TopViewPort );
 
 	m_Renderer->renderFPS( );
 	m_Renderer->drawHUD( PLAYER1 );
@@ -432,32 +446,13 @@ void RacerApp::renderTwoPlayer( Device* device )
     device->EndScene();
  
     // Render second player to the bottom half of the screen
-    D3DVIEWPORT9 bottomViewPort;
-
-    bottomViewPort.X      = 0;
-    bottomViewPort.Y      = m_iBackHeight / 2;
-    bottomViewPort.Width  = m_iBackWidth;
-    bottomViewPort.Height = m_iBackHeight/2;
-    bottomViewPort.MinZ   = 0.0f;
-    bottomViewPort.MaxZ   = 1.0f;
-
-    device->SetViewport( &bottomViewPort );
-    device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_COLORVALUE( 0.0f, 0.0f, 0.0f, 1.0f ), 1.0f, 0 );
-
     device->BeginScene();
     {
-		//get the game to render all of its components
-		g_pGame->render( device, m_Renderer, PLAYER2 );
+		g_pGame->render( device, m_Renderer, PLAYER2, &m_BottomViewPort );
 		m_Renderer->drawHUD( PLAYER2 );
     }
-	D3DVIEWPORT9 resetViewPort;
-	resetViewPort.X      = 0;
-    resetViewPort.Y      = 0;
-    resetViewPort.Width  = m_iBackWidth;
-    resetViewPort.Height = m_iBackHeight;
-    resetViewPort.MinZ   = 0.0f;
-    resetViewPort.MaxZ   = 1.0f;
-	device->SetViewport( &resetViewPort );
+
+	device->SetViewport( &m_ResetViewPort );
 }
 
 
@@ -544,7 +539,7 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 					else
 					{
 						//get the game to render all of its components
-						g_pGame->render( device, m_Renderer, PLAYER1 );
+						g_pGame->render( device, m_Renderer, PLAYER1, &m_ResetViewPort );
 
 						m_Renderer->renderFPS( );
 						m_Renderer->drawHUD( PLAYER1 );

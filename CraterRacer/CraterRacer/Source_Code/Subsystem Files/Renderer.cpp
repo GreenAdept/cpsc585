@@ -733,7 +733,7 @@ void Renderer::drawTimesScreen(int letter)
 // by the renderer.  
 //--------------------------------------------------------------------------------------
 void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX* pmView,
-                  const D3DXMATRIX* pmProj, const D3DXMATRIX* pmWorld, vector<Renderable*> renderables )
+                  const D3DXMATRIX* pmProj, vector<Renderable*> renderables )
 {
     HRESULT hr;
 	Vec3		vScale( 0.5, 1.0, 0.9 );
@@ -757,8 +757,7 @@ void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX
     V( m_pEffect->SetVector( "g_vLightDir", &v4 ) );
 
     // Clear the render buffers
-    V( device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER,
-                          0x00000000, 1.0f, 0L ) );
+    V( device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L ) );
 
     if( bRenderShadow )
         V( m_pEffect->SetTechnique( "RenderShadow" ) );
@@ -783,8 +782,8 @@ void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX
 			mView = *pmView;
 
 		// create the world view projection matrix
-        Matrix mWorldView = *pmWorld * tempR->m_matWorld;
-        D3DXMatrixMultiply( &mWorldView, &mWorldView, &mView );
+        Matrix mWorldView;
+        D3DXMatrixMultiply( &mWorldView, &tempR->m_matWorld, &mView );
         V( m_pEffect->SetMatrix( "g_mWorldView", &mWorldView ) );
 
             UINT cPass;
@@ -819,7 +818,7 @@ void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX
 // repainted. After this function has returned, DXUT will call 
 // IDirect3DDevice9::Present to display the contents of the next buffer in the swap chain
 //--------------------------------------------------------------------------------------
-void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vector<GameCamera*> cameras, int playerID )
+void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vector<GameCamera*> cameras, int playerID, D3DVIEWPORT9* viewport )
 {
     HRESULT hr;
 	MCamera	camera = cameras[ playerID ]->getCamera();
@@ -834,13 +833,16 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
     if( SUCCEEDED( m_pShadowMap->GetSurfaceLevel( 0, &pShadowSurf ) ) )
     {
         device->SetRenderTarget( 0, pShadowSurf );
+		device->SetViewport( viewport );
         SAFE_RELEASE( pShadowSurf );
     }
     Surface pOldDS = NULL;
     if( SUCCEEDED( device->GetDepthStencilSurface( &pOldDS ) ) )
+	{
         device->SetDepthStencilSurface( m_pDSShadow );
+	}
 
-	RenderScene( device, true, &mLightView, &m_mShadowProj, camera.GetWorldMatrix(), renderables );
+	RenderScene( device, true, &mLightView, &m_mShadowProj, renderables );
 
     if( pOldDS )
     {
@@ -848,6 +850,7 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
         pOldDS->Release();
     }
     device->SetRenderTarget( 0, pOldRT );
+	device->SetViewport( viewport );
     SAFE_RELEASE( pOldRT );
 
     // Now that we have the shadow map, render the scene.
@@ -863,7 +866,7 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
     D3DXMatrixMultiply( &mViewToLightProj, &mViewToLightProj, &m_mShadowProj );
     V( m_pEffect->SetMatrix( "g_mViewToLightProj", &mViewToLightProj ) );
     
-	RenderScene( device, false, camera.GetViewMatrix(), camera.GetProjMatrix(), camera.GetWorldMatrix(), renderables );
+	RenderScene( device, false, camera.GetViewMatrix(), camera.GetProjMatrix(), renderables );
     
     m_pEffect->SetTexture( "g_txShadow", NULL );
 
