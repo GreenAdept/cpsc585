@@ -349,6 +349,18 @@ HRESULT CALLBACK RacerApp::OnResetDevice( IDirect3DDevice9* device, const D3DSUR
 	m_iBackWidth = pBackBufferSurfaceDesc->Width;
 	m_iBackHeight = pBackBufferSurfaceDesc->Height;
 
+	//Set the default viewport and perspective matrices
+	D3DXMATRIX matView;
+    D3DXMatrixLookAtLH( &matView, &D3DXVECTOR3(0.0f, 0.0f,-10.0f), 
+		                          &D3DXVECTOR3(0.0f, 0.0f, 0.0f), 
+		                          &D3DXVECTOR3(0.0f, 1.0f, 0.0f ) );
+    device->SetTransform( D3DTS_VIEW, &matView );
+
+    D3DXMATRIX matProj;
+    D3DXMatrixPerspectiveFovLH( &matProj, D3DXToRadian( 45.0f ), 1.0f, 1.0f, 200.0f );
+    device->SetTransform( D3DTS_PROJECTION, &matProj );
+	device->SetRenderState( D3DRS_LIGHTING,  FALSE );
+
 	return S_OK;
 }
 
@@ -366,6 +378,12 @@ void CALLBACK RacerApp::OnLostDevice(void* pUserContext )
 	m_Renderer->OnLost( );
 }
 
+
+//--------------------------------------------------------------------------------------
+// Function:  ModeifyDeviceSettings
+// This function is called before the device is created, so in here we can put conditions
+// on the device.  We use it to turn off vsync.
+//--------------------------------------------------------------------------------------
 bool CALLBACK RacerApp::ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSettings, void* pUserContext )
 {
     assert( DXUT_D3D9_DEVICE == pDeviceSettings->ver );
@@ -378,7 +396,7 @@ bool CALLBACK RacerApp::ModifyDeviceSettings( DXUTDeviceSettings* pDeviceSetting
                             pDeviceSettings->d3d9.DeviceType,
                             &caps ) );
 
-    // Turn vsync off
+    // Turn vsync off by uncommenting this line.
     //pDeviceSettings->d3d9.pp.PresentationInterval = D3DPRESENT_INTERVAL_IMMEDIATE;
 
     return true;
@@ -451,7 +469,8 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 {
 	HRESULT hr;
 	vector<Particle*> particles;
-	Particle* p;
+	Particle* p, *p2, *p3;
+
 	// Clear the render target and the zbuffer 
 	V( device->Clear( 0, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, D3DCOLOR_ARGB( 255,0,0,0 ), 1.0f, 0 ) );
 
@@ -462,12 +481,22 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 		switch( m_AppState )
 		{
 			case APP_STARTUP:
-				/*p = new Particle();
-				p->position = Vec3(10,10,0);
-				p->velocity = Vec3(0,0,0);
-				particles.push_back( p );*/
+				//Testing particle rendering in startup screen...
+				p = new Particle();
+				p->position = Vec3(-3,0,0);
+				particles.push_back( p );
+				p2 = new Particle();
+				p2->position = Vec3(-2.5,0.5,0);
+				particles.push_back( p2 );
+				p3 = new Particle();
+				p3->position = Vec3(-2.6,-1.0,0);
+				particles.push_back( p3 );
+				m_Renderer->drawParticles( device, particles );
+				delete p;
+				delete p2;
+				delete p3;
+
 				m_Renderer->drawStartupMenu( );
-				//m_Renderer->drawParticles( device, particles );
 				break;
 
 			case APP_SHOW_GAMERULES:
@@ -691,8 +720,6 @@ void RacerApp::cleanupAll( )
 {
 	if( g_pGame )
 	{
-		OnLostDevice( NULL );
-		OnDestroyDevice( NULL );
 		delete g_pGame;
 		g_pGame = NULL;
 	}
