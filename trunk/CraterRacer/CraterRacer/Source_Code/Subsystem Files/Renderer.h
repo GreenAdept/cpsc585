@@ -73,8 +73,7 @@ public:
 	void resetBestName		( );
 
 	// Drawing functions
-	void renderGame			( Device* device, vector<Renderable*>, vector<GameCamera*> cameras, int playerID );
-	HRESULT drawParticles		( Device* device, vector<Particle*> particles );
+	HRESULT drawParticles	( Device* device, vector<Particle*> particles );
 	void drawHUD			( int playerNum );
 	void drawPauseScreen	( );
 	void drawStartupMenu	( );
@@ -87,11 +86,9 @@ public:
 	void drawTimesScreen	( int letter );
 	void drawCountdown		( int num );
 
-	void RenderFrame		( Device* device, vector<Renderable*> renderables, 
-								vector<GameCamera*> cameras, int playerID );
+	void RenderFrame		( Device*, vector<Renderable*>, vector<GameCamera*>, int, D3DVIEWPORT9* viewport );
 
-	void RenderScene( Device* pd3dDevice, bool bRenderShadow, const D3DXMATRIX* pmView,
-                  const D3DXMATRIX* pmProj, const D3DXMATRIX* pmWorld, vector<Renderable*> renderables );
+	void RenderScene( Device*, bool, const D3DXMATRIX*, const D3DXMATRIX*, vector<Renderable*>);
 
 private:
 

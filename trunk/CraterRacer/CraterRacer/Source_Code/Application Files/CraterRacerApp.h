@@ -111,6 +111,10 @@ public:
 	static int					m_iCount; //counter for the count down
 	static Clock*				m_Clock;
 	static int					m_iLastTime; //the time since last number was drawn
+
+	static D3DVIEWPORT9			m_ResetViewPort;
+	static D3DVIEWPORT9			m_TopViewPort;
+	static D3DVIEWPORT9			m_BottomViewPort;
 };
 
 extern GameObj *g_pGame; //Our global instantiation of the game which will be used by the RacerApp class

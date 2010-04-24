@@ -273,14 +273,14 @@ void GameObj::processInput( float fElapsedTime )
 // Function: render
 // This function renders the game's scene to the specified device.
 //--------------------------------------------------------------------------------------
-void GameObj::render( Device* device, Renderer* renderer, int playerID )
+void GameObj::render( Device* device, Renderer* renderer, int playerID, D3DVIEWPORT9* viewport )
 {
 	vector<Renderable*> renderables = m_Entities->getRenderables();
 
 	int test;
 
 	// pass the renderables off to the renderer to do all the work
-	renderer->RenderFrame( device, renderables, m_Cameras, playerID );
+	renderer->RenderFrame( device, renderables, m_Cameras, playerID, viewport );
 }
 
 

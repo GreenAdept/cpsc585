@@ -39,7 +39,7 @@ public:
 	void processInput	 ( float fElapsedTime );
 	void addInput		 ( bool isKeyDown, UINT virtualKeyCode );
 	void simulate		 ( float fElapsedTime );
-	void render			 ( Device* device, Renderer* renderer, int playerID );
+	void render			 ( Device* device, Renderer* renderer, int playerID, D3DVIEWPORT9* viewport );
 	void processCallback ( ProcessType type, Device* d=NULL , const D3DSURFACE_DESC* b=NULL);
 	void vibrate		 ( int controllerID, double intensity, double duration );
 	void disableVibrate  ( int controllerID );
