@@ -52,6 +52,7 @@ typedef LPDIRECT3DINDEXBUFFER9		IndexBuffer;
 typedef D3DINDEXBUFFER_DESC			IBufferDesc;
 typedef CDXUTDialogResourceManager	ResourceManager;
 typedef D3DVERTEXELEMENT9			VElement;
+typedef IDirect3DCubeTexture9		ICubeTex;
 
 
 //--------------------------------------------------------

@@ -120,6 +120,8 @@ Renderer::Renderer( )
 	m_dwVBOffset       = 0;    // Gives the offset of the vertex buffer chunk that's currently being filled
     m_dwDiscard        = 2048; // Max number of point sprites the vertex buffer can load until we are forced to discard and start over
 	m_fSize            = 50.0f;
+
+	m_pSkyBox = new SkyBox( );
 }
 
 
@@ -144,6 +146,9 @@ Renderer::~Renderer( )
 
 	if( m_ptexParticle != NULL )
 		m_ptexParticle->Release();
+
+	if( m_pSkyBox )
+		delete m_pSkyBox;
 }
 
 
@@ -183,7 +188,6 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 	loadImages( device, width, height );
 
 	// Load Texture Map for particles
-	//createTexture( m_ptexParticle,  "Media\\Images\\particle.bmp", device );
 	D3DXCreateTextureFromFile( device, L"Media\\Images\\particle.bmp", &m_ptexParticle );
 
 	device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
@@ -240,6 +244,8 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
         return E_FAIL;
     }
 
+	if( m_pSkyBox )
+		m_pSkyBox->OnResetDevice( );
 
     return S_OK;
 }
@@ -253,7 +259,6 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 HRESULT Renderer::OnCreate( Device* device )
 {
 	HRESULT hr;
-	//D3DXCreateTextureFromFile( device, L"Media//Images//Logo.png", &m_Skybox );
 
 	//initialize the resource manager for our HUD and Pause Screen.
 	V_RETURN( m_ResourceManager.OnD3D9CreateDevice( device ) );
@@ -301,6 +306,8 @@ HRESULT Renderer::OnCreate( Device* device )
     else
         m_bDeviceSupportsPSIZE = false;
 
+	//Setup Skybox
+	m_pSkyBox->init( device, 1000 );
 }
 
 
@@ -336,6 +343,9 @@ void Renderer::OnLost( )
 
     if( m_ptexParticle != NULL )
 		m_ptexParticle->Release();
+
+	if( m_pSkyBox )
+		m_pSkyBox->OnLostDevice( );
 }
 
 
@@ -757,7 +767,7 @@ void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX
     V( m_pEffect->SetVector( "g_vLightDir", &v4 ) );
 
     // Clear the render buffers
-    V( device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L ) );
+   // V( device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L ) );
 
     if( bRenderShadow )
         V( m_pEffect->SetTechnique( "RenderShadow" ) );
@@ -853,7 +863,9 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
 	device->SetViewport( viewport );
     SAFE_RELEASE( pOldRT );
 
-    // Now that we have the shadow map, render the scene.
+	m_pSkyBox->renderSkyBox( &camera );
+
+	// Now that we have the shadow map, render the scene.
     const D3DXMATRIX* pmView = m_LCamera.GetViewMatrix();
 
     // Initialize required parameter
