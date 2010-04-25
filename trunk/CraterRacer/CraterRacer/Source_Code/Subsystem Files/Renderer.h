@@ -86,6 +86,7 @@ public:
 	void drawVictoryScreen	( );
 	void drawTimesScreen	( int letter );
 	void drawCountdown		( int num );
+	void drawFinished		( int playerNum, int rank, string time );
 
 	void RenderFrame		( Device*, vector<Renderable*>, vector<GameCamera*>, int, D3DVIEWPORT9* viewport );
 
@@ -117,6 +118,7 @@ private:
 	Vec3				m_HUDImageLocations	[ NUM_HUD_IMAGES ];		//list of all image locations used in the game
 	Sprite				m_HUDImages2		[ NUM_HUD_IMAGES ];		//list of all images used in the game for player2
 	Vec3				m_HUDImageLocations2[ NUM_HUD_IMAGES ];		//list of all image locations used in the game for player2
+	RECT				m_FinishedMessageLoc[ 2 ];					//locations of the finished race message
 	int					m_iTimeImages		[ 16 ];					//clock image indexes( index into m_Images )
 	Vec3				m_TimeLocations		[ 16 ];					//clock image locations
 	int					m_iLapImages		[ 2 ];
@@ -142,7 +144,7 @@ private:
 	wstring				finishTime;
 	RECT				m_VictoryRecs		[ NUM_PLAYERS*2 ];
 	RECT				m_BestTimesRecs		[ 5 ];
-	RECT				m_BestNamesRecs	[ 5 ];
+	RECT				m_BestNamesRecs		[ 5 ];
 	RECT				m_finishTime;
 	bool				m_bIsTwoPlayer;
 	bool				m_bIsTimeTrial;

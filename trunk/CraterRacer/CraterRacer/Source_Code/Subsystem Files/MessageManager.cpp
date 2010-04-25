@@ -54,6 +54,10 @@ void MessageManager::ProcessMessage( int message, long param )
 		m_Game->disableVibrate(playerNum);
 		temp = m_Clock->getFormattedTime();
 		m_VictoryCalculator->setFinishTime( playerNum, temp );
+
+		if (playerNum < 2) {// if 1st or 2nd player wins, display a message.
+			m_Renderer->drawFinished(playerNum, m_VictoryCalculator->getRank(playerNum), temp);
+		}
 		break;
 	case EStartOrStopRace:
 		//if param != 1, start race, else stop race

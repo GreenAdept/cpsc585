@@ -1626,6 +1626,15 @@ void Renderer::drawAHUD( Sprite* images, Vec3* locations, int playerID )
 	m_pImageSprite->SetTransform( &mat );
 }
 
+//displays a finished message for the player who won
+void Renderer::drawFinished ( int playerNum, int rank, string time )
+{
+	//position finished race message area
+//	RECT temp;
+//	temp.left = 75; temp.right = width-75; temp.top = (Height/2)-20; temp.bottom = (Height/2)+20;
+
+}
+
 
 //--------------------------------------------------------------------------------------
 // Function: positionHUDImages

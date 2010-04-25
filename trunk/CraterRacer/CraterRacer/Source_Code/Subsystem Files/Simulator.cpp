@@ -87,9 +87,6 @@ void Simulator::setContacts()
 				m_Scene->setActorPairFlags(*m_Vehicles[i], *m_Vehicles[j], NX_NOTIFY_ON_START_TOUCH);
 			}
 		}
-		/*for (int j = 0; j < m_Ramps.size(); j++) {
-			m_Scene->setActorPairFlags(*m_Vehicles[i], *m_Ramps[j], NX_NOTIFY_ON_TOUCH);
-		}*/
 	}
 }
 
@@ -221,7 +218,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	
 	Input* input = vehicle->getInputObj();
 	bool* buttons = input->getButtons();
-	const NxVec3 velocity = actor->getLinearVelocity();;
+	const NxVec3 velocity = actor->getLinearVelocity();
 	NxReal friction = m_rDynamicFriction;
 	bool noInput = true;
 	bool emergencyBrake = false;
@@ -577,18 +574,17 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		vehicle->m_clock = Clock();
 	}
 
+	//NxVec3 rampForce1 = localWheelForce[2] * m_rRampForceConstant;
+	//NxVec3 rampForce1 = localWheelForce[3] * m_rRampForceConstant;
 	if (vehicle->isOnRamp()) {
-		//NxVec3 v = actor->getLinearVelocity();
-		//Vec3 v2 = Vec3(v.x, v.y, v.z);
-		//m_Debugger.writeToFile(v2);
-		//localWheelForce[0] *= m_rRampForceConstant;
-		//localWheelForce[1] *= m_rRampForceConstant;
+		localWheelForce[2] += velocity;
+		localWheelForce[3] += velocity;
 		localWheelForce[2] *= m_rRampForceConstant;
 		localWheelForce[3] *= m_rRampForceConstant;
 	}
 
 	//Friction (dynamic friction and breaking)
-	if (velocity.magnitude() > 1 && !vehicle->isOnRamp()) 
+	if (velocity.magnitude() > 1) 
 	{
 		NxVec3 velocityDir = normalize(velocity);
 	
