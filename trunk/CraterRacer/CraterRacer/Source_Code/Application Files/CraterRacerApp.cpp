@@ -519,6 +519,11 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 			case APP_SHOW_GAMERULES2:
 			case APP_PAUSED:
 
+				if ( m_AppState == APP_PAUSED ) 
+					m_Renderer->m_bIsPaused = true;
+				else
+					m_Renderer->m_bIsPaused = false;
+
 				if( g_pGame )
 				{
 					//Adjust all HUD images to reflect current state
@@ -535,8 +540,10 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 						m_Renderer->adjustSpeedImage( g_pGame->getVehicleSpeed( PLAYER2 ), PLAYER2 );
 					}
 
-					if( m_bIsTwoPlayer )
+					if( m_bIsTwoPlayer ) {
 						renderTwoPlayer( device );
+						m_Renderer->drawFinished( );
+					}
 					else
 					{
 						//get the game to render all of its components
@@ -551,9 +558,8 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 					}
 				}
 
-				if( m_AppState == APP_PAUSED )
+				if( m_AppState == APP_PAUSED ) 
 					m_Renderer->drawPauseScreen( );
-
 
 				if( m_AppState == APP_SHOW_GAMERULES2 )
 					m_Renderer->drawPauseGameRules( );

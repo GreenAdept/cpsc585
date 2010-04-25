@@ -114,6 +114,10 @@ Renderer::Renderer( )
 	m_bIsTimeTrial = false;
 	m_ScaleVal = Vec2( 1.0, 1.0 );
 
+	m_bPlayer1Finished = false;
+	m_bPlayer2Finished = false;
+	m_bIsPaused = false;
+
 	//initialize the resource manager to keep track of all our screens and HUD
     m_GameScreen.Init( &m_ResourceManager );
 
@@ -776,6 +780,41 @@ void Renderer::drawTimesScreen(int letter)
 	m_pImageSprite->End( );
 }
 
+//displays a finished message for the player who won
+void Renderer::drawFinished ( )
+{
+	if (!m_bIsPaused) {
+		if (m_bPlayer1Finished) {
+			m_pFontVictoryBig->DrawTextW( NULL, m_sMessageP1.c_str(), -1, &m_FinishedMessage[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,215,150,70 ) );
+		}
+		else if (m_bPlayer2Finished) {
+			m_pFontVictoryBig->DrawTextW( NULL, m_sMessageP2.c_str(), -1, &m_FinishedMessage[1], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,215,150,70 ) );
+		}
+	}
+}
+
+void Renderer::setPlayerFinished( int playerNum, int rank )
+{
+	if (m_bIsTwoPlayer) {
+		wstring finishMessage = L"Congratulations! You are in place ";
+		WCHAR wc[1];
+		char c[1];
+		itoa(rank, c, 10);
+		finishMessage.push_back((WCHAR)c[0]);
+		finishMessage.append(L"!");
+
+		if (playerNum == 0)
+		{
+			m_sMessageP1 = finishMessage;
+			m_bPlayer1Finished = true;
+		}
+		else if (playerNum == 1)
+		{
+			m_sMessageP2 = finishMessage;
+			m_bPlayer2Finished = true;
+		}
+	}
+}
 
 //--------------------------------------------------------------------------------------
 // Function: RenderScene
@@ -865,6 +904,11 @@ void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX
             }
             V( m_pEffect->End() );
         }
+
+	/*if (m_bPlayer1Finished)
+		drawFinished(0);
+	else if (m_bPlayer2Finished)
+		drawFinished(1);*/
 }
 
 //--------------------------------------------------------------------------------------
@@ -1144,6 +1188,7 @@ void Renderer::adjustBestTimes( vector<string>& bestTimeEntries, vector<string>&
 	}
 
 }
+
 
 
 //--------------------------------------------------------------------------------------
@@ -1522,6 +1567,16 @@ void Renderer::positionMainImages( int width, int height )
 	//Position the finish time text
 	temp.left = w+200;  temp.right=temp.left+450; temp.top=h+570;  temp.bottom=temp.top+80;
 	m_finishTime = RECT(temp);
+
+	int wcenter = width/2;
+	int hcenter = height/2;
+	//Position the finished message for 2 player games
+	//1st player
+	temp.left = wcenter-200; temp.right = wcenter+200; temp.top = (hcenter*0.5)-20; temp.bottom = temp.top+40;
+	m_FinishedMessage[0] = RECT(temp);
+	//2nd player
+	temp.left = wcenter-200; temp.right = wcenter+200; temp.top = (hcenter*3/2)-20; temp.bottom = temp.top+40;
+	m_FinishedMessage[1] = RECT(temp);
 }
 
 
@@ -1628,15 +1683,6 @@ void Renderer::drawAHUD( Sprite* images, Vec3* locations, int playerID )
 	//reset sprite transform matrix so all sprites aren't rotated
 	D3DXMatrixIdentity( &mat );
 	m_pImageSprite->SetTransform( &mat );
-}
-
-//displays a finished message for the player who won
-void Renderer::drawFinished ( int playerNum, int rank, string time )
-{
-	//position finished race message area
-//	RECT temp;
-//	temp.left = 75; temp.right = width-75; temp.top = (Height/2)-20; temp.bottom = (Height/2)+20;
-
 }
 
 

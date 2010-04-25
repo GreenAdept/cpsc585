@@ -86,11 +86,15 @@ public:
 	void drawVictoryScreen	( );
 	void drawTimesScreen	( int letter );
 	void drawCountdown		( int num );
-	void drawFinished		( int playerNum, int rank, string time );
+	void drawFinished		( );
+	void setPlayerFinished	( int playerNum, int rank );
 
 	void RenderFrame		( Device*, vector<Renderable*>, vector<GameCamera*>, int, D3DVIEWPORT9* viewport );
 
 	void RenderScene( Device*, bool, const D3DXMATRIX*, const D3DXMATRIX*, vector<Renderable*>);
+
+
+	bool m_bIsPaused;
 
 private:
 
@@ -118,7 +122,6 @@ private:
 	Vec3				m_HUDImageLocations	[ NUM_HUD_IMAGES ];		//list of all image locations used in the game
 	Sprite				m_HUDImages2		[ NUM_HUD_IMAGES ];		//list of all images used in the game for player2
 	Vec3				m_HUDImageLocations2[ NUM_HUD_IMAGES ];		//list of all image locations used in the game for player2
-	RECT				m_FinishedMessageLoc[ 2 ];					//locations of the finished race message
 	int					m_iTimeImages		[ 16 ];					//clock image indexes( index into m_Images )
 	Vec3				m_TimeLocations		[ 16 ];					//clock image locations
 	int					m_iLapImages		[ 2 ];
@@ -151,6 +154,13 @@ private:
 	Vec2				m_ScaleVal;
 	Vec2				m_CountdownLocation;
 	int					bestTimesIndex;
+
+	//finished message stuff
+	RECT				m_FinishedMessage	[ 2 ];					//locations of the finished race message
+	wstring				m_sMessageP1;
+	wstring				m_sMessageP2;
+	bool				m_bPlayer1Finished;
+	bool				m_bPlayer2Finished;
 
 	//SHADOWS STUFF
 	CFirstPersonCamera	m_LCamera;       // Camera obj to help adjust light
