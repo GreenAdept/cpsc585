@@ -202,7 +202,7 @@ void SceneLoader::processMeteorInfo( ifstream& file )
 {
 	string	str, flush;
 	string	mesh, effect;
-	int		numMeteorGroups, meteorGroupID, numMeteors, craterIndex, spawnOnLap;
+	int		numMeteorGroups, meteorGroupID, numMeteors, craterIndex, spawnOnLap, spawnProb;
 	float	x, y, z, radius;
 
 	file >> flush >> str;
@@ -212,6 +212,10 @@ void SceneLoader::processMeteorInfo( ifstream& file )
 	file >> str;
 	if( str != "EFFECT_FILENAME" ) return;
 	file >> effect;
+
+	file >> str;
+	if( str != "PROB_TO_SPAWN" ) return;
+	file >> spawnProb;
 
 	file >> str;
 	if( str != "NUM_METEOR_GROUPS" ) return;
@@ -239,6 +243,7 @@ void SceneLoader::processMeteorInfo( ifstream& file )
 		file >> numMeteors;
 
 		MeteorGroup* meteorGroup = m_Objs.entityManager->makeMeteorGroup (Vec3(x,y,z), meteorGroupID, numMeteors, radius, spawnOnLap);
+		meteorGroup->setMeteorSpawnProbability (spawnProb);
 
 		for (int j = 0; j < numMeteors; j++) {
 			file >> x >> y >> z;

@@ -3,6 +3,7 @@
 
 MeteorGroupAI::MeteorGroupAI (float radius, int spawnOnLap) {
 	trigger = new TriggerCylinder (radius, spawnOnLap);
+	spawnProbability = 50;
 }
 MeteorGroupAI::~MeteorGroupAI () {
 	delete trigger;
@@ -30,13 +31,21 @@ void MeteorGroupAI::think(EntityManager *em, int myList, int myIndex) {
 
 		if (state == AI::TRIGGERED) {
 			for (int i=0; i < meteorGroup->numMeteors; i++) {
-				if (rand() % 2)
+				if (rand() % 100 < spawnProbability)
 					meteorGroup->meteors[i]->informOfTrigger();
 			}
 		}
 		return;
 	}
 }
+
+void MeteorGroupAI::setSpawnProbability (int sp) {
+	if (sp >= 0 || sp <= 100)
+		spawnProbability = sp;
+}
+
+
+
 
 MeteorGroup::MeteorGroup (int id, int numMeteors, float radius, int spawnOnLap) {
 	this->id = id;
