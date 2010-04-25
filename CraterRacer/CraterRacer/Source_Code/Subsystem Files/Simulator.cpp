@@ -35,10 +35,6 @@ Simulator::Simulator()
 	forward = false;
 
 	m_ContactReport = new ContactReport();
-
-	//init contact report
-	
-	//m_Scene->setGroupCollisionFlag(1,0,true);
 	
 }
 
@@ -248,9 +244,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 				//actor->setAngularVelocity(NxVec3(0, 0, 0));
 				//actor->setLinearVelocity(NxVec3(0, 0, 0));
 				//break;
-
+				/*
 				float pressure = input->getPressure();
 				friction += m_rBrakingFriction * pressure;
+				*/
 				break;
 			}
 			case 3: //Y_BUTTON - print waypoint for now

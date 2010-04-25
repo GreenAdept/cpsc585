@@ -202,9 +202,15 @@ void GameObj::processInput( float fElapsedTime )
 			{
 				v->setDir(Input::A_BUTTON);
 			}
+			//rear view mirror: while right shoulder is pressed, looking at rear view, else
+			//normal view
 			if (m_Controllers[i]->B.WasPressedOrHeld())
 			{
-				v->setDir(Input::B_BUTTON);
+				m_Cameras[i]->setRearView(true);
+			}
+			else
+			{
+				m_Cameras[i]->setRearView(false);
 			}
 			if (m_Controllers[i]->Y.WasPressed())
 			{
@@ -251,18 +257,7 @@ void GameObj::processInput( float fElapsedTime )
 				//respawn car
 				v->setDir(Input::BACK_BUTTON);
 			}
-
-			//rear view mirror: while right shoulder is pressed, looking at rear view, else
-			//normal view
-			if (m_Controllers[i]->RightShoulder.WasPressedOrHeld())
-			{
-				m_Cameras[i]->setRearView(true);
-			}
-			else
-			{
-				m_Cameras[i]->setRearView(false);
-			}
-
+`
 			//using xbox controller
 			v->setController(true);
 		}
