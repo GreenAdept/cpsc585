@@ -2,7 +2,7 @@
 #ifndef MeteorGroup_H
 #define MeteorGroup_H
 
-#include "constants.h"
+#include "Constants.h"
 #include "Entity.h"
 #include "AI.h"
 #include "TriggerVolumeAI.h"

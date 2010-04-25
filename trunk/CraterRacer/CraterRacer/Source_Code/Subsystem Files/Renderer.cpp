@@ -798,13 +798,17 @@ void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX
     V( m_pEffect->SetMatrix( "g_mProj", pmProj ) );
 
     // Get light parameters from the light camera.
+    D3DXVECTOR3 v( *m_LCamera.GetEyePt() );
+    //D3DXVECTOR4 v4;
+    //D3DXVec3Transform( &v4, &v, pmView );
     D3DXVECTOR4 v4;
     D3DXVec3Transform( &v4, &m_vFromPt, pmView );
     V( m_pEffect->SetVector( "g_vLightPos", &v4 ) );
     *( Vec3* )&v4 = *m_LCamera.GetWorldAhead();
     v4.w = 0.0f;  // Set w 0 so that the translation part doesn't come to play
     D3DXVec4Transform( &v4, &v4, pmView );  // Direction in view space
-    D3DXVec3Normalize( ( D3DXVECTOR3* )&v4, ( D3DXVECTOR3* )&v4 );
+    D3DXVec3Normalize( ( D3DXVECTOR3* )&v4, ( 
+		D3DXVECTOR3* )&v4 );
     V( m_pEffect->SetVector( "g_vLightDir", &v4 ) );
 
     // Clear the render buffers
@@ -923,29 +927,29 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
     
     m_pEffect->SetTexture( "g_txShadow", NULL );
 
-	//vector<Particle*> particles;
-	//Particle* p, *p2, *p3;
+	vector<Particle*> particles;
+	Particle* p, *p2, *p3;
 
-	//Matrix w;
-	//D3DXMatrixIdentity( &w );
-	//device->SetTransform( D3DTS_WORLD, &w );
-	////Set the default viewport and perspective matrices
-	//device->SetTransform( D3DTS_VIEW, camera.GetViewMatrix() ); 
-	//device->SetTransform( D3DTS_PROJECTION, camera.GetProjMatrix() );
-	//p = new Particle();
-	//p->position = Vec3(245, 31, 10);
-	//particles.push_back( p );
-	//p2 = new Particle();
-	//p2->position = Vec3(245, 41, 10);
-	//particles.push_back( p2 );
-	//p3 = new Particle();
-	//p3->position = Vec3(235, 41, 10);
-	//particles.push_back( p3 );
-	//
-	//drawParticles( device, particles );
-	//delete p;
-	//delete p2;
-	//delete p3;
+	Matrix w;
+	D3DXMatrixIdentity( &w );
+	device->SetTransform( D3DTS_WORLD, &w );
+	//Set the default viewport and perspective matrices
+	device->SetTransform( D3DTS_VIEW, camera.GetViewMatrix() ); 
+	device->SetTransform( D3DTS_PROJECTION, camera.GetProjMatrix() );
+	p = new Particle();
+	p->position = Vec3(245, 31, 10);
+	particles.push_back( p );
+	p2 = new Particle();
+	p2->position = Vec3(245, 41, 10);
+	particles.push_back( p2 );
+	p3 = new Particle();
+	p3->position = Vec3(235, 41, 10);
+	particles.push_back( p3 );
+	
+	drawParticles( device, particles );
+	delete p;
+	delete p2;
+	delete p3;
 }
 
 
