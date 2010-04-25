@@ -117,6 +117,7 @@ private:
 	NxReal				m_rDamperScale;
 	NxReal				m_rSpringScale;
 	NxReal				m_rSteeringPower;
+	NxReal				m_rRampForceConstant;
 
 	//Time 
 	double				m_dDeltaTime;

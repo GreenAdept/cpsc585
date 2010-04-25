@@ -83,6 +83,8 @@ public:
 	int		getRank			( );
 	void	setRank			( int rank );
 	bool	isPlayer		( );
+	bool	isOnRamp		( );
+	void	setOnRamp		( bool on );
 
 	Wheel m_Wheels[4];
 	Clock m_clock;
@@ -101,6 +103,7 @@ protected:
 	int			m_iPlayerNumber;
 	int			m_iRank;
 	bool		m_bIsPlayer;
+	bool		m_bOnRamp;
 };
 
 

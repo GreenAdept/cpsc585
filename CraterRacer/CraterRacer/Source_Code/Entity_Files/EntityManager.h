@@ -1,7 +1,6 @@
 #ifndef ENTITY_MANAGER_H
 #define ENTITY_MANAGER_H
 
-
 #include <vector>
 #include "Vehicle.h"
 #include "Meteor.h"
@@ -9,7 +8,6 @@
 #include "Prop.h"
 #include "Terrain.h"
 #include "MeteorGroup.h"
-
 
 //------------------------------------------------------
 // The list enums provide indices into the EntityManager's
@@ -22,7 +20,7 @@ enum lists {PLAYERS, COMPUTERS, METEORS, CRATERS, PROPS, TERRAIN, METEORGROUPS};
 // NUM_LISTS defines the number of seperate entity lists to
 // be maintained by the EntityManager
 //------------------------------------------------------
-#define NUM_LISTS 7
+#define NUM_LISTS 8
 
 
 //------------------------------------------------------
@@ -61,7 +59,7 @@ public:
 	Meteor*        makeMeteor   (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
 	Crater*        makeCrater   (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
 	Prop*          makeProp     (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
-	Terrain*       makeTerrain  (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR filename2, LPCWSTR effectFilename);
+	Terrain*       makeTerrain  (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR effectFilename);
 	MeteorGroup*   makeMeteorGroup (Vec3 pos, int id, int numMeteors, float radius, int spawnOnLap);
 
 	std::vector<Entity*> & operator[] (int i) { return entities[i]; }

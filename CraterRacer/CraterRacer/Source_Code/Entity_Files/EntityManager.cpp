@@ -172,7 +172,7 @@ vector<Terrain*> EntityManager::getTerrain () {
 }
 
 Terrain* EntityManager::getTerrain (int id) {
-	if( id < 0 || id > 1 || entities[TERRAIN].size() <= id )
+	if( id < 0 || entities[TERRAIN].size() <= id )
 		return 0;
 	else
 		return (Terrain*) entities[TERRAIN][id];
@@ -257,8 +257,6 @@ int EntityManager::getNumberOfPlayers () {
 	return entities[PLAYERS].size();
 }
 
-
-
 //------------------------------------------------------
 // make Functions
 // These functions create an entity of the desired type,
@@ -297,13 +295,10 @@ Prop* EntityManager::makeProp (Device* device, Vec3 pos, LPCWSTR filename, LPCWS
 
 	return p;
 }
-Terrain* EntityManager::makeTerrain (Device* device, Vec3 pos, LPCWSTR filename, LPCWSTR filename2, LPCWSTR effectFilename ) {
+Terrain* EntityManager::makeTerrain (Device* device, Vec3 pos, LPCWSTR filename,LPCWSTR effectFilename ) {
 	Terrain* t = new Terrain();
 	t->initialize (device, pos, filename, effectFilename );
 	entities[TERRAIN].push_back( t );
-	Terrain* t2 = new Terrain();
-	t2->initialize (device, pos, filename2, effectFilename );
-	entities[TERRAIN].push_back( t2 );
 	return t;
 }
 MeteorGroup* EntityManager::makeMeteorGroup (Vec3 pos, int id, int numMeteors, float radius, int spawnOnLap) {

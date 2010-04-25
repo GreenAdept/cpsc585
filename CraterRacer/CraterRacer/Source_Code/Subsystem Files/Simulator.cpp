@@ -31,6 +31,7 @@ Simulator::Simulator()
 	m_rDamperScale			= 0.6;
 	m_rSteeringPower		= 5;
 	m_bStartRace			= false;
+	m_rRampForceConstant	= 1530;
 
 	forward = false;
 
@@ -253,13 +254,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 			}
 			case 2: //X_BUTTON - brake
 			{
-				//actor->setAngularVelocity(NxVec3(0, 0, 0));
-				//actor->setLinearVelocity(NxVec3(0, 0, 0));
-				//break;
-				/*
-				float pressure = input->getPressure();
-				friction += m_rBrakingFriction * pressure;
-				*/
 				break;
 			}
 			case 3: //Y_BUTTON - print waypoint for now
@@ -303,11 +297,11 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 				}
 				//else, accelerate
 				double maxVelocity = MAX_FORWARD_VELOCITY;
-				if (vehicle->getRank() == 8)
-					maxVelocity *= 1.2;
-				if ((vehicle->getRank() == 1) && (!vehicle->isPlayer()))
-					maxVelocity *= 0.9;
-				if((velocity.magnitude() < maxVelocity) && m_bStartRace)
+				if (!vehicle->isPlayer() || vehicle->getRank() != 1)
+					maxVelocity *= (vehicle->getRank() - 1) * 0.042857 + 0.9;
+				/*if ((vehicle->getRank() == 1) && (!vehicle->isPlayer()))
+					maxVelocity *= 0.9;*/
+				if(((velocity.magnitude() < maxVelocity) && m_bStartRace) || vehicle->isOnRamp())
 				{
 					localWheelForce[2] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) )*(idealFrameRate*time);
 					localWheelForce[3] += NxVec3(0, 0, m_rVehicleMass * m_rForceStrength * (0.5+pressure) )*(idealFrameRate*time);
@@ -346,26 +340,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	NxMat33 orient = actor->getGlobalOrientation();
 	BoundingBox BB = vehicle->getBoundingBox();
 
-	//Friction (dynamic friction and breaking)
-	if (velocity.magnitude() > 1) 
-	{
-		NxVec3 velocityDir = normalize(velocity);
-	
-		NxVec3 frictionForce = velocityDir * ( -m_rVehicleMass * m_rForceStrength * friction);
-
-		globalWheelForce[0] += frictionForce;
-		globalWheelForce[1] += frictionForce;
-		if (!emergencyBrake) {
-			globalWheelForce[2] += frictionForce;
-			globalWheelForce[3] += frictionForce;
-		}
-	}
-	else {
-		if (noInput) {
-			actor->setAngularVelocity(NxVec3(0, 0, 0));
-			actor->setLinearVelocity(NxVec3(0, velocity.y, 0));
-		}
-	}
 
 	//STEERING
 	//(m_rMaxWheelAngle*4 means it will take 1/4 of a second for the wheels to go from straight to m_rMaxWheelAngle)
@@ -407,6 +381,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	bool inAir = true;
 	bool onGround = true;
 	bool offTrack = true;
+	vehicle->setOnRamp(false);
 
 	NxVec3 offset;
 	float effectiveness;
@@ -465,6 +440,9 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		{
 			if (hitObject->userData != "OuterTerrain") {
 				offTrack = false;
+			}
+			if (hitObject->userData == "Ramp"){
+				vehicle->setOnRamp(true);
 			}
 			inAir = false;
 
@@ -596,6 +574,31 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		vehicle->m_clock = Clock();
 	}
 
+	if (vehicle->isOnRamp()) {
+		globalWheelForce[2] *= m_rRampForceConstant;
+		globalWheelForce[3] *= m_rRampForceConstant;
+	}
+
+	//Friction (dynamic friction and breaking)
+	if (velocity.magnitude() > 1 && !vehicle->isOnRamp()) 
+	{
+		NxVec3 velocityDir = normalize(velocity);
+	
+		NxVec3 frictionForce = velocityDir * ( -m_rVehicleMass * m_rForceStrength * friction);
+
+		globalWheelForce[0] += frictionForce;
+		globalWheelForce[1] += frictionForce;
+		if (!emergencyBrake) {
+			globalWheelForce[2] += frictionForce;
+			globalWheelForce[3] += frictionForce;
+		}
+	}
+	else {
+		if (noInput) {
+			actor->setAngularVelocity(NxVec3(0, 0, 0));
+			actor->setLinearVelocity(NxVec3(0, velocity.y, 0));
+		}
+	}
 	//Apply accumulated forces to wheels
 	for (int i = 0; i < 4; i++) {
 		w = &vehicle->m_Wheels[ i ];
@@ -839,9 +842,9 @@ void Simulator::addTerrainFromX( Terrain* terrain, int id )
 
 	NxTriangleMeshShapeDesc ShapeDesc = this->createTriMeshShape( mesh );
 
-	if(id)
+	if (id == 1)
 		ShapeDesc.userData = "OuterTerrain";
-	else
+	else if (id == 0)
 		ShapeDesc.userData = "InnerTerrain";
 
 	// Create terrain and add to scene
@@ -887,7 +890,8 @@ void Simulator::addRamps( vector<Mesh*> meshes )
 	{
 		NxTriangleMeshShapeDesc ShapeDesc = createTriMeshShape( meshes[i] );
 
-		ShapeDesc.userData = (char*)(string( "Ramp" + i ).c_str());
+		//ShapeDesc.userData = (char*)(string( "Ramp" + i ).c_str());
+		ShapeDesc.userData = "Ramp";
 
 		// Create terrain and add to scene
 		NxActorDesc actorDesc;

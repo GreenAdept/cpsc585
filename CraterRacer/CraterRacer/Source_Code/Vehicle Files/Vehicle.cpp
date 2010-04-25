@@ -216,3 +216,13 @@ bool Vehicle::isPlayer()
 {
 	return m_bIsPlayer;
 }
+
+bool Vehicle::isOnRamp()
+{
+	return m_bOnRamp;
+}
+
+void Vehicle::setOnRamp(bool on)
+{
+	m_bOnRamp = on;
+}

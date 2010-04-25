@@ -150,8 +150,9 @@ void SceneLoader::processTerrainInfo( ifstream& file )
 	file >> terrainEffectFile;
 
 	// Create the terrain in the Entity Manager
-	m_Objs.entityManager->makeTerrain( m_Device, Vec3(0, 0, 0), toLPCWSTR(terrainFile1).c_str(), toLPCWSTR(terrainFile2).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
-	
+	//m_Objs.entityManager->makeTerrain( m_Device, Vec3(0, 0, 0), toLPCWSTR(terrainFile1).c_str(), toLPCWSTR(terrainFile2).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
+	m_Objs.entityManager->makeTerrain( m_Device, Vec3(0, 0, 0), toLPCWSTR(terrainFile1).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
+	m_Objs.entityManager->makeTerrain( m_Device, Vec3(0, 0, 0), toLPCWSTR(terrainFile2).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
 	file >> flush;
 	file >> numRamps;
 
@@ -164,6 +165,8 @@ void SceneLoader::processTerrainInfo( ifstream& file )
 		m->Create( m_Device, toLPCWSTR(rampFile).c_str() );
 		this->m_Ramps.push_back( m );
 	}
+
+
 }
 
 
