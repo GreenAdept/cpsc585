@@ -327,7 +327,10 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 
 	if (!m_bStartRace)
 		noInput = true;
-
+	if (vehicle->isOnRamp()){
+		localWheelForce[2] *= m_rRampForceConstant;
+		localWheelForce[3] *= m_rRampForceConstant;
+	}
 	Wheel*	w; 
 	NxVec3	wheelPos,
 			upVec,
@@ -572,15 +575,6 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 
 	if (!offTrack) {
 		vehicle->m_clock = Clock();
-	}
-
-	//NxVec3 rampForce1 = localWheelForce[2] * m_rRampForceConstant;
-	//NxVec3 rampForce1 = localWheelForce[3] * m_rRampForceConstant;
-	if (vehicle->isOnRamp()) {
-		localWheelForce[2] += velocity;
-		localWheelForce[3] += velocity;
-		localWheelForce[2] *= m_rRampForceConstant;
-		localWheelForce[3] *= m_rRampForceConstant;
 	}
 
 	//Friction (dynamic friction and breaking)
