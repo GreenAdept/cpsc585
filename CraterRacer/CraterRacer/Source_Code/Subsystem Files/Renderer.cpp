@@ -677,7 +677,7 @@ void Renderer::drawVictoryScreen( )
 	char buffer[2];
 
 	
-	if( m_iPlayerOneRank > 4 )
+	if( (m_iPlayerOneRank - FIRST_IMAGE) >= 4 )
 	{
 		int rank = m_iPlayerOneRank - FIRST_IMAGE;
 		wstring tempStr = L"Player 1, your ranking is ", temp2;
@@ -692,7 +692,7 @@ void Renderer::drawVictoryScreen( )
 		tempStr.append( L"." );
 		m_pFontVictoryBig->DrawTextW( NULL, tempStr.c_str(), -1, &tempRect, DT_EXPANDTABS, D3DCOLOR_ARGB(255,255,255,255 ) );
 	}
-	if( m_bIsTwoPlayer && m_iPlayerTwoRank > 4 )
+	if( m_bIsTwoPlayer && (m_iPlayerTwoRank - FIRST_IMAGE) >= 4 )
 	{
 		int rank = m_iPlayerTwoRank - FIRST_IMAGE;
 		tempRect.top += 50;
