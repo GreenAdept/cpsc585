@@ -105,14 +105,25 @@ Material PDX01_-_Default {
  }
 }
 
-Material PDX02_-_Default {
+Material PDX16_-_Default {
+ 1.000000;1.000000;1.000000;1.000000;;
+ 16.000000;
+ 0.000000;0.000000;0.000000;;
+ 0.000000;0.000000;0.000000;;
+
+ TextureFilename {
+  "grey.bmp";
+ }
+}
+
+Material PDX03_-_Default {
  1.000000;1.000000;1.000000;1.000000;;
  3.200000;
  0.000000;0.000000;0.000000;;
  0.000000;0.000000;0.000000;;
 
  TextureFilename {
-  "moon.bmp";
+  "moon2.bmp";
  }
 }
 
@@ -168,6 +179,28 @@ Material PDX14_-_Default {
 
  TextureFilename {
   "StartLine.bmp";
+ }
+}
+
+Material PDX04_-_Default {
+ 1.000000;1.000000;1.000000;1.000000;;
+ 3.200000;
+ 0.000000;0.000000;0.000000;;
+ 0.000000;0.000000;0.000000;;
+
+ TextureFilename {
+  "purple.bmp";
+ }
+}
+
+Material PDX19_-_Default {
+ 1.000000;1.000000;1.000000;1.000000;;
+ 3.200000;
+ 0.000000;0.000000;0.000000;;
+ 0.000000;0.000000;0.000000;;
+
+ TextureFilename {
+  "green.bmp";
  }
 }
 
