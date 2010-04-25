@@ -3,6 +3,13 @@
 MESH_FILENAME1			Media\\Meshes\\Track_Inner.x
 MESH_FILENAME2			Media\\Meshes\\Track_Outer.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+RAMP_NUMBERS			6
+RAMP1_FILE				Media\\Meshes\\Ramp1.x
+RAMP2_FILE				Media\\Meshes\\Ramp2.x
+RAMP3_FILE				Media\\Meshes\\Ramp3.x
+RAMP4_FILE				Media\\Meshes\\Ramp4.x
+RAMP5_FILE				Media\\Meshes\\Ramp5.x
+RAMP6_FILE				Media\\Meshes\\Ramp6.x
 
 
 **PATH_INFORMATION ------------------------------------------------

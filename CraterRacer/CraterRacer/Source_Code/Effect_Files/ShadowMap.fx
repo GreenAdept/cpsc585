@@ -15,16 +15,15 @@
 
 float4x4 g_mWorldView;
 float4x4 g_mProj;
-float4x4 g_mViewToLightProj;  // Transform from view space to light projection space
+float4x4 g_mViewToLightProj;	// Transform from view space to light projection space
 float4   g_vMaterial;
 texture  g_txScene;
 texture  g_txShadow;
-float3   g_vLightPos;  // Light position in view space
-float3   g_vLightDir;  // Light direction in view space
+float3   g_vLightPos;			// Light position in view space
+float3   g_vLightDir;			// Light direction in view space
 float4   g_vLightDiffuse = float4( 1.0f, 1.0f, 1.0f, 1.0f );  // Light diffuse color
-float4   g_vLightAmbient = float4( 0.8f, 0.8f, 0.8f, 1.0f );  // Use an ambient light of 0.3
-float    g_fCosTheta;  // Cosine of theta of the spot light
-
+float4   g_vLightAmbient = float4(	1.0f, 1.0f, 1.0f, 1.0f );  // Use an ambient light of 0.3
+float    g_fCosTheta;			// Cosine of theta of the spot light
 
 
 sampler2D g_samScene =
@@ -35,7 +34,6 @@ sampler_state
     MagFilter = Linear;
     MipFilter = Linear;
 };
-
 
 
 

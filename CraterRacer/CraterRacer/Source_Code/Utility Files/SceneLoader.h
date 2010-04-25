@@ -85,6 +85,7 @@ private:
 	GameObj*			m_Game;
 	SceneObjects		m_Objs;
 	string				m_InitFilename;
+	vector<Mesh*>		m_Ramps;
 };
 
 #endif //SCENE_LOADER_H
