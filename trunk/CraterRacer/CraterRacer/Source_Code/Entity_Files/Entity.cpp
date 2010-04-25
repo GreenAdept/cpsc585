@@ -60,7 +60,7 @@ BoundingBox Entity::getBoundingBox( )
 // Function:  update
 // Update the entity's new position in the game.
 //--------------------------------------------------------------------------------------
-void Entity::update( Matrix matWorldTransform )
+void Entity::update( Matrix & matWorldTransform )
 {
 	m_pRenderable->m_matWorld = matWorldTransform;
 	m_matWorld = matWorldTransform;
@@ -90,7 +90,7 @@ void Entity::update( Vec3 newPosition )
 // Function:  update
 // Update the entity's new position in the game.
 //--------------------------------------------------------------------------------------
-void Entity::update( Vec3 newPosition, Matrix matWorldTransform )
+void Entity::update( Vec3 newPosition, Matrix & matWorldTransform )
 {
 	m_vPosition = newPosition;
 

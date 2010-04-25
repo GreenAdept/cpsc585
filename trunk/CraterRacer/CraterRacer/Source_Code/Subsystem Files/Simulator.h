@@ -43,9 +43,10 @@ public:
 
 	void simulate( vector<Vehicle*> vehicles, vector<MeteorGroup*> meteorGroups, double elapsedTime );
 	void createVehicle( Vehicle* vehicle );
-	void createMeteorGroup(MeteorGroup *mg);
+	void createMeteorGroup( MeteorGroup *mg );
 	void createCrater( Crater* crater );
-	void simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle*> vehicles);
+	void simulateMeteorGroup( MeteorGroup* mg, double time, vector<Vehicle*> vehicles );
+	Vec3 findTerrainNormal( Vec3 v );
 	void removeFromSimulation( Entity* entity );
 	void addRamps( vector<Mesh*> meshes );
 
