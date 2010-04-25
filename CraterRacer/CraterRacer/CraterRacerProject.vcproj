@@ -809,6 +809,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Source_Code\Utility Files\SkyBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Utility Files\SkyBox.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Source_Code\Utility Files\Stream.cpp"
 				>
 			</File>
@@ -850,6 +858,10 @@
 			</File>
 			<File
 				RelativePath=".\Source_Code\Effect_Files\ShadowMap.fx"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Effect_Files\SkyBox.fx"
 				>
 			</File>
 		</Filter>
