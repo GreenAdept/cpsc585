@@ -15,12 +15,14 @@
 
 class MeteorGroupAI : public AI {
 	TriggerCylinder* trigger;
+	int spawnProbability;
 
 public:
 	MeteorGroupAI (float radius, int spawnOnLap);
 	~MeteorGroupAI ();
 
 	void think (EntityManager *em, int myList, int myIndex);
+	void setSpawnProbability (int sp);
 };
 
 //---------------------------------------------
@@ -36,6 +38,7 @@ public:
 
 	AI* getAI ();
 	void addMeteor (int index, Meteor* m);
+	void setMeteorSpawnProbability (int sp) { mind->setSpawnProbability (sp); }
 
 	int id;
 	int numMeteors;
