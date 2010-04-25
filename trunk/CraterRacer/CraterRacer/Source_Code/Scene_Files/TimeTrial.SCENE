@@ -9,7 +9,7 @@ NUM_LAPS				1
 
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody1.x
-POSITION:			-243 31 20
+POSITION:			-246 31 88
 
 
 **COMPUTER_VEHICLES ----------------------------------------------
