@@ -718,9 +718,9 @@ void Renderer::drawTimesScreen(int letter)
 		}
 	}
 
-	if (bestTimesIndex >= 5) {
+	//if (bestTimesIndex >= 5) {
 		m_pFontVictoryBig->DrawTextW( NULL, finishTime.c_str(), -1, &m_finishTime, DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,255,0 ) );
-	}
+	//}
 
 	m_pImageSprite->End( );
 }
@@ -1050,13 +1050,25 @@ void Renderer::adjustWrongWay( int playerNum, bool drawWrongWay )
 //--------------------------------------------------------------------------------------
 // Function: adjustBestTimes
 //--------------------------------------------------------------------------------------
-void Renderer::adjustBestTimes( vector<string>& bestTimeEntries, vector<string>& bestNameEntries, string time, int index)
+void Renderer::adjustBestTimes( vector<string>& bestTimeEntries, vector<string>& bestNameEntries, string time, int index, bool top5)
 {
 	if( bestTimeEntries.size() != 5 || bestNameEntries.size() != 5 )
 		return;
 
 	bestTimesIndex = index;
-	finishTime = L"Your Time: ";
+	
+	if (index == 0) {
+		finishTime = L"\nYou beat the time trial! Congratulations!";
+	}
+	else if (top5)
+		finishTime = L"\nToo slow... Keep trying!";
+	else {
+		finishTime = L"Your Time: ";
+		for (int i = 0; i < time.length(); i++) {
+			finishTime.push_back((WCHAR)time.at(i));
+		}
+		finishTime.append(L"\nToo slow... Keep trying!");
+	}
 
 	//set times text
 	for( int i=0; i < 5; i++ )
@@ -1073,9 +1085,6 @@ void Renderer::adjustBestTimes( vector<string>& bestTimeEntries, vector<string>&
 		}
 	}
 
-	for (int i = 0; i < time.length(); i++) {
-		finishTime.push_back((WCHAR)time.at(i));
-	}
 }
 
 
@@ -1453,7 +1462,7 @@ void Renderer::positionMainImages( int width, int height )
 	m_BestNamesRecs[4] = RECT(temp);
 
 	//Position the finish time text
-	temp.left = w+250;  temp.right=temp.left+400; temp.top=h+600;  temp.bottom=temp.top+40;
+	temp.left = w+200;  temp.right=temp.left+450; temp.top=h+570;  temp.bottom=temp.top+80;
 	m_finishTime = RECT(temp);
 }
 

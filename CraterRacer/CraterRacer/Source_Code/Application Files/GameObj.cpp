@@ -15,6 +15,7 @@ GameObj::GameObj( )
 	m_VarLoader = new VarLoader( );
 	m_Entities	= new EntityManager();
 	m_bIsFinished = false;
+	m_Clock.stop();
 }
 
 

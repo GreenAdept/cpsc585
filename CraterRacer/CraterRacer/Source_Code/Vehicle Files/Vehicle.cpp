@@ -123,7 +123,7 @@ void Vehicle::setMass( int mass )
 void Vehicle::setPlayerNum( int num )
 {
 	m_iPlayerNumber = num;
-	//mind->setPlayerNum( num );
+	mind->setPlayerNum( num );
 }
 
 

@@ -10,6 +10,7 @@ Clock::Clock()
 	totalPausedTimeMS = 0;
 	startPausedMS = 0;
 	started = false;
+	stopped = true;
 }
 
 //--------------------------------------------------------------------------------------
@@ -25,6 +26,13 @@ void Clock::start()
 	totalTimeMS = 0;
 	totalPausedTimeMS = 0;
 	startPausedMS = 0;
+	started = true;
+	stopped = false;
+}
+
+void Clock::stop()
+{
+	stopped = true;
 	started = true;
 }
 
@@ -66,6 +74,8 @@ bool Clock::togglePause() //change from paused to resume, and vice versa
 //--------------------------------------------------------------------------------------
 int Clock::getTotalTimeInMS() //returns the elapsed time in milliseconds
 {
+	if (stopped)
+		return 0;
 	long time = GetTickCount(); //get current time
 
 	if (paused)
@@ -96,6 +106,8 @@ int Clock::getTotalTimeInSec() //returns the elapsed time in seconds
 //--------------------------------------------------------------------------------------
 int Clock::getElapsedTimeInMS()
 {
+	if (stopped)
+		return 0;
 	int nowTime = getTotalTimeInMS();
 	//elapsed time is total time now - last time retrieved
 	int elapsedTimeMS = nowTime - lastTimeMS; 
@@ -128,6 +140,8 @@ string Clock::getFormattedTime(int time) //in milliseconds
 
 	if (time >= 3600000)
 		s = "59:59:99";
+	else if (stopped)
+		s = "00:00:00";
 	else {
 		int minutes = time/60000;
 		int remaining = time - (minutes * 60000); //number of ms left

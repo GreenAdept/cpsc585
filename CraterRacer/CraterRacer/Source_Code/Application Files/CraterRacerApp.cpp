@@ -524,6 +524,7 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 					//Adjust all HUD images to reflect current state
 					if (!m_bIsTimeTrial)
 						m_Renderer->adjustRankImage( g_pGame->m_Victory.getRank( PLAYER1 ), PLAYER1 );
+
 					m_Renderer->adjustClockImages( g_pGame->getTime(), PLAYER1 );
 					m_Renderer->adjustSpeedImage( g_pGame->getVehicleSpeed( PLAYER1 ), PLAYER1 );
 
@@ -545,8 +546,8 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 						m_Renderer->drawHUD( PLAYER1 );
 					}
 					if (m_iCount >= 0) {
-						m_Renderer->renderCountDown(m_iCount);
 						countDown();
+						m_Renderer->renderCountDown(m_iCount);
 					}
 				}
 

@@ -58,11 +58,13 @@ void MessageManager::ProcessMessage( int message, long param )
 	case EStartOrStopRace:
 		//if param != 1, start race, else stop race
 		if (param == 1) {
-			m_Simulator->startOrStopRace(true);
 			m_Clock->start();
+			m_Simulator->startOrStopRace(true);
 		}
-		else
+		else {
+			m_Clock->stop();
 			m_Simulator->startOrStopRace(false);
+		}
 	}
 }
 
@@ -161,18 +163,20 @@ void MessageManager::ProcessMessage( int message )
 			//string time = m_Clock->getFormattedTime();
 			string time = m_VictoryCalculator->getFinishTime(0);
 			int result = m_VictoryCalculator->recordTime(time);
+			bool top5 = false;
 			if (result < 5) {
 				m_Renderer->resetBestName();
 				m_App->m_AppState = APP_ENTERNAME;
 				m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, -1 );
 				m_App->m_uiCurrentButton = A_LETTER;
+				top5 = true;
 			}
 			else {
 				m_App->m_AppState = APP_SHOWTIMES;
 				m_App->m_uiCurrentButton = GUI_BTN_MAINMENU;
 				m_Renderer->adjustButtonImage( GUI_BTN_MAINMENU, +1 );
 			}
-			m_Renderer->adjustBestTimes( m_VictoryCalculator->getRecordedTimes(), m_VictoryCalculator->getRecordedNames(), time, result);
+			m_Renderer->adjustBestTimes( m_VictoryCalculator->getRecordedTimes(), m_VictoryCalculator->getRecordedNames(), time, result, top5);
 		}
 		else {
 			m_Renderer->adjustVictoryRank (m_VictoryCalculator->getRanks(), m_VictoryCalculator->getFinishTimes());
