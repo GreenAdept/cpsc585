@@ -625,6 +625,9 @@ void Renderer::renderCountDown( int count )
 	Matrix mat;
 	Vec2 trans = Vec2( this->m_CountdownLocation.x, m_CountdownLocation.y );
 
+	if( count == 0 )
+		trans.x -= 150;
+
 	Vec2 scaling( 1.0, 1.0 );
 	int numImage = ZERO_COUNT_IMAGE + count;
 	
