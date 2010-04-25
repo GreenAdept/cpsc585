@@ -31,7 +31,7 @@ Simulator::Simulator()
 	m_rDamperScale			= 0.6;
 	m_rSteeringPower		= 5;
 	m_bStartRace			= false;
-	m_rRampForceConstant	= 1530;
+	m_rRampForceConstant	= 5;
 
 	forward = false;
 
@@ -84,9 +84,12 @@ void Simulator::setContacts()
 	for (int i = 0; i < m_Vehicles.size(); i++) {
 		for (int j = 0; j < m_Vehicles.size(); j++) {
 			if (i != j) {
-				m_Scene->setActorPairFlags(*m_Vehicles[0], *m_Vehicles[j], NX_NOTIFY_ON_START_TOUCH);
+				m_Scene->setActorPairFlags(*m_Vehicles[i], *m_Vehicles[j], NX_NOTIFY_ON_START_TOUCH);
 			}
 		}
+		/*for (int j = 0; j < m_Ramps.size(); j++) {
+			m_Scene->setActorPairFlags(*m_Vehicles[i], *m_Ramps[j], NX_NOTIFY_ON_TOUCH);
+		}*/
 	}
 }
 
@@ -441,8 +444,8 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 			if (hitObject->userData != "OuterTerrain") {
 				offTrack = false;
 			}
-			if (hitObject->userData == "Ramp"){
-				vehicle->setOnRamp(true);
+			if (hitObject->userData == "Ramp") {
+					vehicle->setOnRamp(true);
 			}
 			inAir = false;
 
@@ -575,8 +578,13 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	}
 
 	if (vehicle->isOnRamp()) {
-		globalWheelForce[2] *= m_rRampForceConstant;
-		globalWheelForce[3] *= m_rRampForceConstant;
+		//NxVec3 v = actor->getLinearVelocity();
+		//Vec3 v2 = Vec3(v.x, v.y, v.z);
+		//m_Debugger.writeToFile(v2);
+		//localWheelForce[0] *= m_rRampForceConstant;
+		//localWheelForce[1] *= m_rRampForceConstant;
+		localWheelForce[2] *= m_rRampForceConstant;
+		localWheelForce[3] *= m_rRampForceConstant;
 	}
 
 	//Friction (dynamic friction and breaking)
@@ -899,6 +907,7 @@ void Simulator::addRamps( vector<Mesh*> meshes )
 
 		NxActor* pActor = m_Scene->createActor( actorDesc );
 		m_Actors.push_back( pActor );
+		m_Ramps.push_back( pActor );
 	}
 }
 

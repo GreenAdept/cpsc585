@@ -123,6 +123,7 @@ public:
 		mind = new VehicleAI();
 		m_iRank = -1;
 		m_bIsPlayer = true;
+		m_bOnRamp = false;
 	}
 };
 
@@ -143,6 +144,7 @@ public:
 		mind = new CompVehicleAI(); 
 		m_iRank = -1;
 		m_bIsPlayer = false;
+		m_bOnRamp = false;
 	}
 };
 

@@ -125,6 +125,7 @@ private:
 	//Actors
 	vector<NxActor*>	m_Actors;
 	vector<NxActor*>	m_Vehicles;
+	vector<NxActor*>	m_Ramps;
 
 	//Debugging
 	DebugWriter			m_Debugger;
