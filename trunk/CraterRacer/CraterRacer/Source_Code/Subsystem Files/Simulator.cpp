@@ -843,6 +843,28 @@ void Simulator::createCrater( Crater* crater )
 
 
 //--------------------------------------------------------------------------------------
+// Function:  addRamps
+// Adds boost ramps to the simulator scene.
+//--------------------------------------------------------------------------------------
+void Simulator::addRamps( vector<Mesh*> meshes )
+{
+	for( int i=0; i < meshes.size(); i++ )
+	{
+		NxTriangleMeshShapeDesc ShapeDesc = createTriMeshShape( meshes[i] );
+
+		ShapeDesc.userData = (char*)(string( "Ramp" + i ).c_str());
+
+		// Create terrain and add to scene
+		NxActorDesc actorDesc;
+		actorDesc.shapes.pushBack( &ShapeDesc );
+
+		NxActor* pActor = m_Scene->createActor( actorDesc );
+		m_Actors.push_back( pActor );
+	}
+}
+
+
+//--------------------------------------------------------------------------------------
 // Function:  createTriMeshShape
 //--------------------------------------------------------------------------------------
 NxTriangleMeshShapeDesc Simulator::createTriMeshShape( Mesh* mesh )

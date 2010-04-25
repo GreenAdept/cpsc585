@@ -47,6 +47,7 @@ public:
 	void createCrater( Crater* crater );
 	void simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle*> vehicles);
 	void removeFromSimulation( Entity* entity );
+	void addRamps( vector<Mesh*> meshes );
 
 	NxTriangleMeshShapeDesc createTriMeshShape( Mesh* mesh );
 

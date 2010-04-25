@@ -27,6 +27,9 @@ SceneLoader::~SceneLoader( )
 {
 	if( m_BackSurface )
 		delete m_BackSurface;
+
+	for( int i=0; i < m_Ramps.size(); i++ )
+		delete m_Ramps[i];
 }
 
 
@@ -78,6 +81,7 @@ void SceneLoader::initScene( GameObj** obj )
 	processMeteorInfo( file );
 	file >> str;
 	processPropInfo( file );
+	file >> str;
 
 	file.close();
 }
@@ -129,9 +133,9 @@ void SceneLoader::startGame( string filename )
 void SceneLoader::processTerrainInfo( ifstream& file )
 {
 	string	terrainFile1, terrainFile2, 
-			terrainEffectFile,
+			terrainEffectFile, rampFile,
 			flush;
-	int		laps;
+	int		laps, numRamps;
 
 	file >> flush >> terrainFile1;
 	if( terrainFile1 != "MESH_FILENAME1" ) return;
@@ -147,6 +151,19 @@ void SceneLoader::processTerrainInfo( ifstream& file )
 
 	// Create the terrain in the Entity Manager
 	m_Objs.entityManager->makeTerrain( m_Device, Vec3(0, 0, 0), toLPCWSTR(terrainFile1).c_str(), toLPCWSTR(terrainFile2).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
+	
+	file >> flush;
+	file >> numRamps;
+
+	Mesh* m;
+	for( int i=0; i < numRamps; i++ )
+	{
+		file >> flush;
+		file >> rampFile;
+		m = new Mesh( toLPCWSTR(rampFile).c_str() );
+		m->Create( m_Device, toLPCWSTR(rampFile).c_str() );
+		this->m_Ramps.push_back( m );
+	}
 }
 
 
@@ -421,6 +438,7 @@ void SceneLoader::initializeSimulator( )
 	if( terrains.size() <= 0 ) return;
 
 	m_Objs.simulator->InitNx( terrains );
+	m_Objs.simulator->addRamps( m_Ramps );
 }
 
 //--------------------------------------------------------------------------------------

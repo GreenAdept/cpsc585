@@ -44,19 +44,19 @@ Renderer::Renderer( )
 	m_ptexParticle = NULL;
 
 	// Initialize the camera
-    m_vFromPt = Vec3( -220.0f, 300.0f, 10.0f  );
-    m_vLookatPt = Vec3( -219.0f, -1.0f, -1.0f );
+    m_vFromPt = Vec3( -200.0f, 200.0f, 0.0f  );
+    m_vLookatPt = Vec3( -219.0f, -1.0f, 0.0f );
     m_LCamera.SetViewParams( &m_vFromPt, &m_vLookatPt );
 
     // Initialize the spot light
-    m_fLightFov = D3DX_PI / 1.5f;
+    m_fLightFov = D3DX_PI / 2.0f;
 
     m_Light.Diffuse.r = 1.0f;
     m_Light.Diffuse.g = 1.0f;
     m_Light.Diffuse.b = 1.0f;
     m_Light.Diffuse.a = 1.0f;
-    m_Light.Position = Vec3( -220.0f, 200.0f, 0.0f );
-    m_Light.Direction = Vec3( 0.0f, -1.0f, 0.0f );
+    m_Light.Position = Vec3( -200.0f, 200.0f, 0.0f );
+    m_Light.Direction = Vec3( 1.0f, -1.0f, 0.0f  );
     D3DXVec3Normalize( ( Vec3* )&m_Light.Direction, ( Vec3* )&m_Light.Direction );
     m_Light.Range = 1000.0f;
     m_Light.Theta = m_fLightFov / 2.0f;
@@ -231,7 +231,7 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
                                                      NULL ) );
 
     // Initialize the shadow projection matrix
-    D3DXMatrixPerspectiveFovLH( &m_mShadowProj, m_fLightFov, fAspectRatio, 0.01f, 100.0f );
+    D3DXMatrixPerspectiveFovLH( &m_mShadowProj, m_fLightFov, 1, 0.01f, 100.0f );
 
 	// Particle stuff
     if( FAILED( hr = device->CreateVertexBuffer( 
@@ -866,13 +866,13 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
 	m_pSkyBox->renderSkyBox( &camera );
 
 	// Now that we have the shadow map, render the scene.
-    const D3DXMATRIX* pmView = m_LCamera.GetViewMatrix();
+   // const D3DXMATRIX* pmView = camera.GetViewMatrix();
 
     // Initialize required parameter
     V( m_pEffect->SetTexture( "g_txShadow", m_pShadowMap ) );
 
     // Compute the matrix to transform from view space to light projection space.  
-    Matrix mViewToLightProj = *pmView;
+    Matrix mViewToLightProj = *camera.GetViewMatrix();
     D3DXMatrixInverse( &mViewToLightProj, NULL, &mViewToLightProj );
     D3DXMatrixMultiply( &mViewToLightProj, &mViewToLightProj, &mLightView );
     D3DXMatrixMultiply( &mViewToLightProj, &mViewToLightProj, &m_mShadowProj );
@@ -930,6 +930,7 @@ void Renderer::adjustButtonImage( int buttonIndex, int adjust )
 
 	m_iButtonImages[ buttonIndex ] += adjust;
 }
+
 
 
 //--------------------------------------------------------------------------------------
