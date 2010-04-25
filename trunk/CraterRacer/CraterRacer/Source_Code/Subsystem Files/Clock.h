@@ -13,6 +13,7 @@ class Clock{
 public:
 	Clock();
 	void start(); //to start or reset the clock
+	void stop();
 	bool isPaused(); //returns true if clock is currently paused
 	bool togglePause(); //change from paused to resume, and vice versa
 	int getStartTimeInMS();
@@ -31,6 +32,7 @@ private:
 	int startPausedMS;
 	bool paused;
 	bool started;
+	bool stopped;
 };
 
 #endif

@@ -66,7 +66,7 @@ public:
 	void adjustVictoryRank	( vector<int>& ranks, vector<string>& times );
 	void adjustWrongWay		( int playerNum, bool drawWrongWay );
 	void adjustLapImage		( int playerNum, int lapNum );
-	void adjustBestTimes	( vector<string>& bestTimeEntries, vector<string>& bestNameEntries, string time, int index);
+	void adjustBestTimes	( vector<string>& bestTimeEntries, vector<string>& bestNameEntries, string time, int index, bool top5);
 	void adjustTwoPlayer	( bool isTwoPlayer, int width, int height );
 	void adjustTimeTrial	( );
 	void addLetter			(int letter);
