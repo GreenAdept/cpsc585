@@ -55,8 +55,9 @@ void MessageManager::ProcessMessage( int message, long param )
 		temp = m_Clock->getFormattedTime();
 		m_VictoryCalculator->setFinishTime( playerNum, temp );
 
-		if (playerNum < 2) {// if 1st or 2nd player wins, display a message.
-			m_Renderer->drawFinished(playerNum, m_VictoryCalculator->getRank(playerNum), temp);
+		if (playerNum == 0 || playerNum == 1) {// if 1st or 2nd player wins, display a message.
+			m_Renderer->setPlayerFinished(playerNum, m_VictoryCalculator->getRank(playerNum));
+			//m_Renderer->drawFinished(playerNum, m_VictoryCalculator->getRank(playerNum));
 		}
 		break;
 	case EStartOrStopRace:
