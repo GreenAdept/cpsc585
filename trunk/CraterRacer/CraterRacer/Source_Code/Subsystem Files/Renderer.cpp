@@ -684,9 +684,9 @@ void Renderer::drawVictoryScreen( )
 		itoa ( rank+1, buffer, 10);
 		tempStr.push_back( buffer[0] );
 		tempStr.append( L" out of 8, with Time: " );
-		if( m_sVictoryTimes[ rank-1 ].length() > 6 )
+		if( m_sVictoryTimes[ rank ].length() > 6 )
 		{
-		temp2 =  m_sVictoryTimes[ rank-1 ].substr( 6,   m_sVictoryTimes[ rank-1 ].length());
+		temp2 =  m_sVictoryTimes[ rank ].substr( 6,   m_sVictoryTimes[ rank ].length());
 		tempStr.append( temp2 );
 		}
 		tempStr.append( L"." );
@@ -701,9 +701,9 @@ void Renderer::drawVictoryScreen( )
 		itoa ( rank+1, buffer, 10);
 		tempStr.push_back( buffer[0] );
 		tempStr.append( L" out of 8, with Time: " );
-		if( m_sVictoryTimes[ rank-1 ].length() > 6 )
+		if( m_sVictoryTimes[ rank ].length() > 6 )
 		{
-		temp2 =  m_sVictoryTimes[ rank-1 ].substr( 6, m_sVictoryTimes[ rank-1 ].length());
+		temp2 =  m_sVictoryTimes[ rank ].substr( 6, m_sVictoryTimes[ rank ].length());
 		tempStr.append( temp2 );
 		}
 		tempStr.append( L"." );
