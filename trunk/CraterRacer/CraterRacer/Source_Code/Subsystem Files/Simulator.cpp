@@ -223,6 +223,18 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	bool emergencyBrake = false;
 	int idealFrameRate = 60;
 
+	NxMat33 localOrientation;
+	actor->getGlobalOrientation().getInverse(localOrientation);
+	NxVec3 localVelocity = localOrientation * actor->getLinearVelocity();
+
+	NxVec3 heading = NxVec3(0, 0, 1);
+	float angleVelocityHeading = findAngle(localVelocity, heading);
+	angleVelocityHeading = abs(angleVelocityHeading);
+	if (angleVelocityHeading > 90) {
+		angleVelocityHeading = 180-angleVelocityHeading;
+	}
+	angleVelocityHeading = max(min(angleVelocityHeading, 50.0f), 1.0f);
+
 	//INPUT
 	for( int i = 0; i < 7; i++ )
 	{
@@ -440,7 +452,12 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		NxVec3 applied = (pointVelocity.dot(normal) / normal.dot(normal))*normal;
 		applied = -applied*m_rSteeringPower;
 		
-		localWheelForce[i] += applied*(idealFrameRate*time);
+		if (!emergencyBrake) {
+			localWheelForce[i] += applied*(idealFrameRate*time);
+		}
+		else {
+			localWheelForce[i] += applied*(idealFrameRate*time)*0.5*((50-angleVelocityHeading)/50);
+		}
 		//END NEW STEERING
 		
 		//apply forces to wheel if it is on the ground
@@ -519,7 +536,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 	//Emergency Brake
 	if (onGround) {
 		if (emergencyBrake) {
-			friction += (m_rBrakingFriction/2);
+			//friction += (m_rBrakingFriction/2);
 			//actor->addLocalForceAtLocalPos(NxVec3(-m_rVehicleMass * m_rForceStrength, 0, 0), NxVec3(0, 0, -25));
 			//actor->addLocalForceAtLocalPos(NxVec3(-m_rVehicleMass * m_rForceStrength, 0, 0), NxVec3(0, 0, 0));
 
@@ -531,11 +548,13 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 			NxVec3 applied = (localVelocity.dot(heading) / heading.dot(heading))*heading;
 			localVelocity.y = 0;
 			float tempAngle = findAngle(localVelocity, heading);
-			applied *= (tempAngle/m_rMaxWheelAngle);
+			applied = applied * (tempAngle/m_rMaxWheelAngle) * 10;
 			applied.y = 0;
 			applied.z = 0;
 
-			actor->addLocalForceAtLocalPos(applied*m_rVehicleMass*20, NxVec3(0, -3, -100));
+			actor->addLocalForceAtLocalPos(applied*m_rVehicleMass*200000, NxVec3(0, -3, -1));
+			//actor->addLocalForceAtLocalPos(actor->getLinearVelocity().normalize()*NxVec3(0, 0, 1)*tempAngle, NxVec3(0, -3, 0));
+			
 
 			/*if (abs(vehicle->m_Wheels[0].getAngle()) > (m_rMaxWheelAngle/2)) {
 				if (vehicle->m_Wheels[0].getAngle() > 0) {
