@@ -13,6 +13,7 @@
 #include "Constants.h"
 #include "ImageConstants.h"
 #include "Particle.h"
+#include "SkyBox.h"
 
 // Custom vertex and FVF declaration for point sprite vertex points
 struct PointVertex
@@ -49,7 +50,7 @@ public:
 	Renderer ( );
 	~Renderer( );
 
-	void setLightParams( Vec3& pos, Vec3& lookAt );
+	void	setLightParams( Vec3& pos, Vec3& lookAt );
 
 	// Device-related functions
 	HRESULT OnReset			( Device* device, const D3DSURFACE_DESC* pBack );
@@ -101,7 +102,7 @@ private:
 	void positionMainImages		( int width, int height );
 
 
-	//Date Members ---------------------------------------
+	//Data Members ---------------------------------------
 
 	ID3DXFont*          m_pFont;									//font used to render FPS
 	ID3DXFont*          m_pFontVictoryBig;							//
@@ -121,7 +122,6 @@ private:
 	int					m_iLapImages		[ 2 ];
 	bool				m_bDrawWrongWay		[ 2 ];
 	float				m_fSpeedRotations	[ 2 ];					//degree in radians to rotate speedometer wand image
-	//Sprite			m_Skybox;
 
 	Vec3				m_BallLocations		[ NUM_LOADING_BALLS ];	//ball image locations
 	int					m_iButtonImages		[ NUM_BUTTONS ];		//current button images (index into m_Images)
@@ -173,7 +173,8 @@ private:
     DWORD				m_dwDiscard;
 	float				m_fSize;
 	DWORD				m_dwFlush;
-
+	
+	SkyBox*				m_pSkyBox;		// Starry sky
 
 };
 
