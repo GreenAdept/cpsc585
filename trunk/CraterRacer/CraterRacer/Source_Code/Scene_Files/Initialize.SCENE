@@ -3,6 +3,7 @@
 MESH_FILENAME1			Media\\Meshes\\Track_Inner.x
 MESH_FILENAME2			Media\\Meshes\\Track_Outer.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+TERRAIN_INNER2_FILENAME	Media\\Meshes\\Track_Inner2.x
 RAMP_NUMBERS			6
 RAMP1_FILE				Media\\Meshes\\Ramp1.x
 RAMP2_FILE				Media\\Meshes\\Ramp2.x
@@ -14,7 +15,7 @@ RAMP6_FILE				Media\\Meshes\\Ramp6.x
 
 **PATH_INFORMATION ------------------------------------------------
 
-NUM_WAYPOINTS			76
+NUM_WAYPOINTS				76
 -242.843 27.0506 35.1911	DONE
 -244.66 22.4819 69.0396		DONE
 -247.419 19.4363 93.5235	DONE
@@ -88,7 +89,7 @@ NUM_WAYPOINTS			76
 -283.918 50.317 -121.485	DONE
 -266.121 43.8008 -73.8621	DONE
 -256.368 36.5182 -26.8903	DONE
--250.459 27.3507 35.7606	DONE
+-250.459 27.3507 35.7		DONE
 -246.936 20.0413 89.9672	DONE
 -242.843 27.0506 35.1911	DONE
 
@@ -200,7 +201,7 @@ POSITION				0 -100 0
 
 MESH_FILENAME			Media\\Meshes\\Meteor.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-PROB_TO_SPAWN			0
+PROB_TO_SPAWN			70
 NUM_METEOR_GROUPS		5
 
 METEOR_GROUP			1
