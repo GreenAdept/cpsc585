@@ -86,6 +86,7 @@ private:
 	SceneObjects		m_Objs;
 	string				m_InitFilename;
 	vector<Mesh*>		m_Ramps;
+	Terrain*			m_InnerTerrain;
 };
 
 #endif //SCENE_LOADER_H

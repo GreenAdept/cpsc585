@@ -30,6 +30,9 @@ SceneLoader::~SceneLoader( )
 
 	for( int i=0; i < m_Ramps.size(); i++ )
 		delete m_Ramps[i];
+
+	if( m_InnerTerrain )
+		delete m_InnerTerrain;
 }
 
 
@@ -153,6 +156,14 @@ void SceneLoader::processTerrainInfo( ifstream& file )
 	//m_Objs.entityManager->makeTerrain( m_Device, Vec3(0, 0, 0), toLPCWSTR(terrainFile1).c_str(), toLPCWSTR(terrainFile2).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
 	m_Objs.entityManager->makeTerrain( m_Device, Vec3(0, 0, 0), toLPCWSTR(terrainFile1).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
 	m_Objs.entityManager->makeTerrain( m_Device, Vec3(0, 0, 0), toLPCWSTR(terrainFile2).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
+	
+	file >> terrainFile2;
+	if( terrainFile2 != "TERRAIN_INNER2_FILENAME" ) return;
+	file >> terrainFile2;
+
+	this->m_InnerTerrain = new Terrain();
+	m_InnerTerrain->initialize( m_Device, Vec3(0,0,0), toLPCWSTR(terrainFile2).c_str(), toLPCWSTR(terrainEffectFile).c_str() );
+	
 	file >> flush;
 	file >> numRamps;
 
@@ -444,9 +455,14 @@ void SceneLoader::initializeSimulator( )
 	//initialize simulator with terrain
 	vector<Terrain*> terrains = m_Objs.entityManager->getTerrain();
 	if( terrains.size() <= 0 ) return;
+	terrains[0] = this->m_InnerTerrain;
 
 	m_Objs.simulator->InitNx( terrains );
 	m_Objs.simulator->addRamps( m_Ramps );
+
+	if( m_InnerTerrain )
+		delete m_InnerTerrain;
+	m_InnerTerrain = NULL;
 }
 
 //--------------------------------------------------------------------------------------

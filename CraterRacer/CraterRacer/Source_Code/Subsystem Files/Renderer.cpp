@@ -667,6 +667,44 @@ void Renderer::drawVictoryScreen( )
 		m_pFontVictorySmall->DrawTextW( NULL, this->m_sVictoryTimes[i].c_str(), -1, &m_VictoryRecs[i+NUM_PLAYERS], DT_CENTER, D3DCOLOR_ARGB( 255,0,0,0 ) );
 	}
 
+	RECT tempRect( m_VictoryRecs[1] );
+	tempRect.top += 140;
+	tempRect.bottom += 170;
+	tempRect.right += 600;
+	char buffer[2];
+
+	
+	if( m_iPlayerOneRank > 4 )
+	{
+		wstring tempStr = L"Player 1, your ranking is ", temp2;
+		itoa ( m_iPlayerOneRank, buffer, 10);
+		tempStr.push_back( buffer[0] );
+		tempStr.append( L" out of 8, with Time: " );
+		if( m_sVictoryTimes[ m_iPlayerOneRank-1 ].length() > 6 )
+		{
+		temp2 =  m_sVictoryTimes[ m_iPlayerOneRank-1 ].substr( 6,   m_sVictoryTimes[ m_iPlayerOneRank-1 ].length());
+		tempStr.append( temp2 );
+		}
+		tempStr.append( L"." );
+		m_pFontVictoryBig->DrawTextW( NULL, tempStr.c_str(), -1, &tempRect, DT_EXPANDTABS, D3DCOLOR_ARGB(255,255,255,255 ) );
+	}
+	if( m_bIsTwoPlayer && m_iPlayerTwoRank > 4 )
+	{
+		tempRect.top += 50;
+		tempRect.bottom += 50;
+		wstring tempStr = L"Player 2, your ranking is ", temp2;
+		itoa ( m_iPlayerTwoRank, buffer, 10);
+		tempStr.push_back( buffer[0] );
+		tempStr.append( L" out of 8, with Time: " );
+		if( m_sVictoryTimes[ m_iPlayerTwoRank-1 ].length() > 6 )
+		{
+		temp2 =  m_sVictoryTimes[ m_iPlayerTwoRank-1 ].substr( 6, m_sVictoryTimes[ m_iPlayerTwoRank-1 ].length());
+		tempStr.append( temp2 );
+		}
+		tempStr.append( L"." );
+		m_pFontVictoryBig->DrawTextW( NULL, tempStr.c_str(), -1, &tempRect, DT_EXPANDTABS, D3DCOLOR_ARGB(255,255,255,255 ) );
+	}
+
 	m_pImageSprite->End( );
 }
 
@@ -728,9 +766,7 @@ void Renderer::drawTimesScreen(int letter)
 		}
 	}
 
-	//if (bestTimesIndex >= 5) {
-		m_pFontVictoryBig->DrawTextW( NULL, finishTime.c_str(), -1, &m_finishTime, DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,255,0 ) );
-	//}
+	m_pFontVictoryBig->DrawTextW( NULL, finishTime.c_str(), -1, &m_finishTime, DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,255,0 ) );
 
 	m_pImageSprite->End( );
 }
