@@ -5,6 +5,7 @@ void ContactReport::onContactNotify(NxContactPair& pair, NxU32 events)
 {
 	if (pair.actors[0] && pair.actors[1])
 	{
+		//for vibrations
 		UserData *user1 = (UserData*)pair.actors[0]->userData;
 		UserData *user2 = (UserData*)pair.actors[1]->userData;
 		if (user1->id < 2)

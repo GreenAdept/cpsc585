@@ -2,14 +2,14 @@
 
 NUM_PLAYERS				1
 NUM_COMPUTERS			0
-NUM_LAPS				1
+NUM_LAPS				2
 
 
 **PLAYER_VEHICLES ------------------------------------------------
 
 EFFECT_FILENAME:	Source_Code\\Effect_Files\\Scene.fx
 MESH_FILENAME:		Media\\Meshes\\CarBody1.x
-POSITION:			-246 31 88
+POSITION:			-243 31 20
 
 
 **COMPUTER_VEHICLES ----------------------------------------------
