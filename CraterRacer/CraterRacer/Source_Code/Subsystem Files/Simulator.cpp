@@ -721,9 +721,10 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 
 		//check if collided with the ground
 		if (travelled >= toTravel) {
+			Vec3 up = findTerrainNormal (target);
 			currentPos = target;
 			m->informOfCollision();
-			//m->getCraterToSpawn()->setUpVector (Vec3 (0, 1, 0));
+			m->getCraterToSpawn()->setUpVector (up);
 
 			NxVec3 meteorPos(currentPos.x, currentPos.y, currentPos.z);
 			for (int i=0; i<vehicles.size(); i++) {
@@ -755,6 +756,21 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 			m->update (currentPos);
 		}
 	}
+}
+
+Vec3 Simulator::findTerrainNormal( Vec3 v )
+{
+	NxVec3 p (v.x, v.y+10, v.z);
+	NxVec3 down (0, -1, 0);
+
+	NxRaycastHit hit;
+	hit.flags = NX_RAYCAST_NORMAL;
+	NxShape* hitObject;
+
+	NxRay ray (p, down);
+	hitObject = m_Scene->raycastClosestShape (ray, NX_STATIC_SHAPES, hit);
+	p = hit.worldNormal;
+	return Vec3 (p.x, p.y, p.z);
 }
 
 void Simulator::removeFromSimulation( Entity* entity )

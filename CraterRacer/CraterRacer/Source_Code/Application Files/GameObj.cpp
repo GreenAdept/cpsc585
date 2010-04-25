@@ -257,7 +257,7 @@ void GameObj::processInput( float fElapsedTime )
 				//respawn car
 				v->setDir(Input::BACK_BUTTON);
 			}
-`
+
 			//using xbox controller
 			v->setController(true);
 		}
