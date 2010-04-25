@@ -679,13 +679,14 @@ void Renderer::drawVictoryScreen( )
 	
 	if( m_iPlayerOneRank > 4 )
 	{
+		int rank = m_iPlayerOneRank - FIRST_IMAGE;
 		wstring tempStr = L"Player 1, your ranking is ", temp2;
-		itoa ( m_iPlayerOneRank, buffer, 10);
+		itoa ( rank+1, buffer, 10);
 		tempStr.push_back( buffer[0] );
 		tempStr.append( L" out of 8, with Time: " );
-		if( m_sVictoryTimes[ m_iPlayerOneRank-1 ].length() > 6 )
+		if( m_sVictoryTimes[ rank-1 ].length() > 6 )
 		{
-		temp2 =  m_sVictoryTimes[ m_iPlayerOneRank-1 ].substr( 6,   m_sVictoryTimes[ m_iPlayerOneRank-1 ].length());
+		temp2 =  m_sVictoryTimes[ rank-1 ].substr( 6,   m_sVictoryTimes[ rank-1 ].length());
 		tempStr.append( temp2 );
 		}
 		tempStr.append( L"." );
@@ -693,15 +694,16 @@ void Renderer::drawVictoryScreen( )
 	}
 	if( m_bIsTwoPlayer && m_iPlayerTwoRank > 4 )
 	{
+		int rank = m_iPlayerTwoRank - FIRST_IMAGE;
 		tempRect.top += 50;
 		tempRect.bottom += 50;
 		wstring tempStr = L"Player 2, your ranking is ", temp2;
-		itoa ( m_iPlayerTwoRank, buffer, 10);
+		itoa ( rank+1, buffer, 10);
 		tempStr.push_back( buffer[0] );
 		tempStr.append( L" out of 8, with Time: " );
-		if( m_sVictoryTimes[ m_iPlayerTwoRank-1 ].length() > 6 )
+		if( m_sVictoryTimes[ rank-1 ].length() > 6 )
 		{
-		temp2 =  m_sVictoryTimes[ m_iPlayerTwoRank-1 ].substr( 6, m_sVictoryTimes[ m_iPlayerTwoRank-1 ].length());
+		temp2 =  m_sVictoryTimes[ rank-1 ].substr( 6, m_sVictoryTimes[ rank-1 ].length());
 		tempStr.append( temp2 );
 		}
 		tempStr.append( L"." );
