@@ -445,7 +445,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 		//apply forces to wheel if it is on the ground
 		if( hit.distance < ( m_rMaxWheelDisplacement + wheelRadius )) 
 		{
-			if (hitObject->userData != "OuterTerrain") {
+			if (hitObject->userData != "OuterTerrain" && hitObject->userData != "Prop") {
 				offTrack = false;
 			}
 			if (hitObject->userData == "Ramp") {
@@ -910,7 +910,7 @@ void Simulator::addRocks( vector<Prop*> props )
 	for (int i = 0; i < props.size(); i++)
 	{
 		NxSphereShapeDesc ShapeDesc;
-		ShapeDesc.radius = 5.0;
+		ShapeDesc.radius = 6.0;
 		ShapeDesc.userData = "Prop";
 		
 		NxActorDesc actorDesc;

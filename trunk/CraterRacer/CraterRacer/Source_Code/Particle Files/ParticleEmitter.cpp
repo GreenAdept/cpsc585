@@ -6,7 +6,7 @@ ParticleEmitter::ParticleEmitter(Vec3 pos) {
 	position = pos;
 	particlesAdded = 0;
 	timeElapsed = 0;
-	maxParticles = 100;
+	maxParticles = 1;
 	life = 5;
 	timeBetweenParticles = 0.001;
 	radius = 1;

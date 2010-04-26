@@ -186,6 +186,10 @@ void Renderer::resetBools()
 void Renderer::OnFrameMove( float fElapsed )
 {
 	m_LCamera.FrameMove( fElapsed );
+	/*Vec3 vFromPt = Vec3( 100, 1000, 0 );	//light position
+    Vec3 vLookatPt = Vec3( 100, 999, 0 );
+	float fov = 2.9;
+	setLightParams(vFromPt, vLookatPt, fov);*/
 }
 
 //--------------------------------------------------------------------------------------

@@ -291,7 +291,7 @@ void GameObj::render( Device* device, Renderer* renderer, int playerID, D3DVIEWP
 void GameObj::simulate( float fElapsedTime )
 {
 	m_Simulator->simulate( m_Entities->getVehicles(), m_Entities->getMeteorGroups(), fElapsedTime );
-	m_ParticleSystem.update(fElapsedTime);
+	//m_ParticleSystem.update(fElapsedTime);
 }
 
 
