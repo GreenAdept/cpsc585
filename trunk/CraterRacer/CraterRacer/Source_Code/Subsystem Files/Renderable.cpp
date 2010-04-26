@@ -5,6 +5,15 @@
 
 #include "Renderable.h"
 
+VElement g_VertDecl[] =
+{
+    { 0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
+    { 0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,   0 },
+    { 0, 24, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0 },
+    D3DDECL_END()
+};
+
+
 //--------------------------------------------------------------------------------------
 // Constructor
 //
@@ -27,6 +36,7 @@ Renderable::Renderable( const Renderable& renderableCopy  )
 	// Load the mesh
 	m_pMesh = new Mesh( m_Filename );
 	m_pMesh->Create( m_pDevice, m_Filename );
+	m_pMesh->SetVertexDecl( m_pDevice, g_VertDecl );
 
 	// Create vertex/pixel shader effect from file
     D3DXCreateEffectFromFile( m_pDevice, m_EffectFilename, NULL, NULL, 0,

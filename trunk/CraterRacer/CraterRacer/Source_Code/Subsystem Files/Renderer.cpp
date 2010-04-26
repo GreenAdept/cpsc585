@@ -6,6 +6,8 @@
 #include "Renderer.h"
 #include "MessageManager.h"
 
+CFirstPersonCamera	m_LCamera;       // Camera obj to help adjust light
+
 VElement g_aVertDecl[] =
 {
     { 0, 0,  D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0 },
@@ -43,9 +45,12 @@ Renderer::Renderer( )
 	m_pVB = NULL;
 	m_ptexParticle = NULL;
 
+	m_LCamera.SetScalers( 0.01f, 8.0f );
+    m_LCamera.SetRotateButtons( false, false, false );
+
 	// Initialize the camera
-    m_vFromPt = Vec3( -200.0f, 200.0f, 0.0f  );
-    m_vLookatPt = Vec3( -219.0f, -1.0f, 0.0f );
+    m_vFromPt = Vec3( -1.0f, 10.0f, 0.0f  );
+    m_vLookatPt = Vec3( 0.0f, -1.0f, 0.0f );
     m_LCamera.SetViewParams( &m_vFromPt, &m_vLookatPt );
 
     // Initialize the spot light
@@ -55,10 +60,10 @@ Renderer::Renderer( )
     m_Light.Diffuse.g = 1.0f;
     m_Light.Diffuse.b = 1.0f;
     m_Light.Diffuse.a = 1.0f;
-    m_Light.Position = Vec3( -200.0f, 200.0f, 0.0f );
+    m_Light.Position = Vec3( 0.0f, 200.0f, 0.0f );
     m_Light.Direction = Vec3( 1.0f, -1.0f, 0.0f  );
     D3DXVec3Normalize( ( Vec3* )&m_Light.Direction, ( Vec3* )&m_Light.Direction );
-    m_Light.Range = 1000.0f;
+    m_Light.Range = 100.0f;
     m_Light.Theta = m_fLightFov / 2.0f;
     m_Light.Phi = m_fLightFov / 2.0f;
 
@@ -163,6 +168,12 @@ Renderer::~Renderer( )
 //		
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+
+void Renderer::OnFrameMove( float fElapsed )
+{
+	m_LCamera.FrameMove( fElapsed );
+}
+
 //--------------------------------------------------------------------------------------
 // Function: OnReset
 // Creates sprites, loads images and sets the render state for the device.
@@ -199,9 +210,8 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 	if( m_pEffect )
         V_RETURN( m_pEffect->OnResetDevice() );
 
-	    // Setup the camera's projection parameters
+	// Setup the camera's projection parameters
     float fAspectRatio = pBack->Width / ( FLOAT )pBack->Height;
-
     m_LCamera.SetProjParams( D3DX_PI / 4, fAspectRatio, 0.1f, 100.0f );
 
     // Create the default texture (used when a triangle does not use a texture)
@@ -776,7 +786,6 @@ void Renderer::drawTimesScreen(int letter)
 	}
 
 	m_pFontVictoryBig->DrawTextW( NULL, finishTime.c_str(), -1, &m_finishTime, DT_EXPANDTABS, D3DCOLOR_ARGB( 255,0,255,0 ) );
-
 	m_pImageSprite->End( );
 }
 
@@ -837,21 +846,19 @@ void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX
     V( m_pEffect->SetMatrix( "g_mProj", pmProj ) );
 
     // Get light parameters from the light camera.
-    D3DXVECTOR3 v( *m_LCamera.GetEyePt() );
-    //D3DXVECTOR4 v4;
-    //D3DXVec3Transform( &v4, &v, pmView );
+    D3DXVECTOR3 v;
+	v = ( *m_LCamera.GetEyePt() );
     D3DXVECTOR4 v4;
     D3DXVec3Transform( &v4, &m_vFromPt, pmView );
     V( m_pEffect->SetVector( "g_vLightPos", &v4 ) );
-    *( Vec3* )&v4 = *m_LCamera.GetWorldAhead();
+    *( Vec3* )&v4 = *(m_LCamera.GetWorldAhead());
     v4.w = 0.0f;  // Set w 0 so that the translation part doesn't come to play
     D3DXVec4Transform( &v4, &v4, pmView );  // Direction in view space
-    D3DXVec3Normalize( ( D3DXVECTOR3* )&v4, ( 
-		D3DXVECTOR3* )&v4 );
+    D3DXVec3Normalize( ( D3DXVECTOR3* )&v4, ( D3DXVECTOR3* )&v4 );
     V( m_pEffect->SetVector( "g_vLightDir", &v4 ) );
 
     // Clear the render buffers
-   // V( device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L ) );
+    V( device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L ) );
 
     if( bRenderShadow )
         V( m_pEffect->SetTechnique( "RenderShadow" ) );
@@ -923,7 +930,8 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
 	MCamera	camera = cameras[ playerID ]->getCamera();
   
     // Compute the view matrix for the light
-    Matrix mLightView = *m_LCamera.GetViewMatrix();
+    Matrix mLightView;
+	mLightView = *(m_LCamera.GetViewMatrix());
     
     // Render the shadow map
     Surface pOldRT = NULL;
@@ -955,13 +963,11 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
 	m_pSkyBox->renderSkyBox( &camera );
 
 	// Now that we have the shadow map, render the scene.
-   // const D3DXMATRIX* pmView = camera.GetViewMatrix();
-
     // Initialize required parameter
     V( m_pEffect->SetTexture( "g_txShadow", m_pShadowMap ) );
 
     // Compute the matrix to transform from view space to light projection space.  
-    Matrix mViewToLightProj = *camera.GetViewMatrix();
+    Matrix mViewToLightProj = *(camera.GetViewMatrix());
     D3DXMatrixInverse( &mViewToLightProj, NULL, &mViewToLightProj );
     D3DXMatrixMultiply( &mViewToLightProj, &mViewToLightProj, &mLightView );
     D3DXMatrixMultiply( &mViewToLightProj, &mViewToLightProj, &m_mShadowProj );
@@ -971,29 +977,29 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
     
     m_pEffect->SetTexture( "g_txShadow", NULL );
 
-	vector<Particle*> particles;
-	Particle* p, *p2, *p3;
+	//vector<Particle*> particles;
+	//Particle* p, *p2, *p3;
 
-	Matrix w;
-	D3DXMatrixIdentity( &w );
-	device->SetTransform( D3DTS_WORLD, &w );
-	//Set the default viewport and perspective matrices
-	device->SetTransform( D3DTS_VIEW, camera.GetViewMatrix() ); 
-	device->SetTransform( D3DTS_PROJECTION, camera.GetProjMatrix() );
-	p = new Particle();
-	p->position = Vec3(245, 31, 10);
-	particles.push_back( p );
-	p2 = new Particle();
-	p2->position = Vec3(245, 41, 10);
-	particles.push_back( p2 );
-	p3 = new Particle();
-	p3->position = Vec3(235, 41, 10);
-	particles.push_back( p3 );
-	
-	drawParticles( device, particles );
-	delete p;
-	delete p2;
-	delete p3;
+	//Matrix w;
+	//D3DXMatrixIdentity( &w );
+	//device->SetTransform( D3DTS_WORLD, &w );
+	////Set the default viewport and perspective matrices
+	//device->SetTransform( D3DTS_VIEW, camera.GetViewMatrix() ); 
+	//device->SetTransform( D3DTS_PROJECTION, camera.GetProjMatrix() );
+	//p = new Particle();
+	//p->position = Vec3(245, 31, 10);
+	//particles.push_back( p );
+	//p2 = new Particle();
+	//p2->position = Vec3(245, 41, 10);
+	//particles.push_back( p2 );
+	//p3 = new Particle();
+	//p3->position = Vec3(235, 41, 10);
+	//particles.push_back( p3 );
+	//
+	//drawParticles( device, particles );
+	//delete p;
+	//delete p2;
+	//delete p3;
 }
 
 

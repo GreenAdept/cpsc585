@@ -22,7 +22,7 @@ texture  g_txShadow;
 float3   g_vLightPos;			// Light position in view space
 float3   g_vLightDir;			// Light direction in view space
 float4   g_vLightDiffuse = float4( 1.0f, 1.0f, 1.0f, 1.0f );  // Light diffuse color
-float4   g_vLightAmbient = float4(	1.0f, 1.0f, 1.0f, 1.0f );  // Use an ambient light of 0.3
+float4   g_vLightAmbient = float4(	0.1f, 0.1f, 0.1f, 1.0f );  // Use an ambient light of 0.3
 float    g_fCosTheta;			// Cosine of theta of the spot light
 
 
@@ -77,7 +77,8 @@ void VertScene( float4 iPos : POSITION,
     //
     // Compute view space normal
     //
-    vNormal = mul( iNormal, (float3x3)g_mWorldView );
+    vNormal = mul( iNormal,
+     (float3x3)g_mWorldView );
 
     //
     // Propagate texture coord

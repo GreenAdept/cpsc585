@@ -57,6 +57,7 @@ public:
 	HRESULT OnCreate		( Device* device );
 	void	OnLost			( );
 	void	OnDestroy		( );
+	void	OnFrameMove		( float fElapsed );
 
 	// Utility functions
 	void adjustBallImage	( int ballIndex, int adjust );
@@ -163,7 +164,6 @@ private:
 	bool				m_bPlayer2Finished;
 
 	//SHADOWS STUFF
-	CFirstPersonCamera	m_LCamera;       // Camera obj to help adjust light
 	VDecl				m_pVertDecl;	 // Vertex decl for the sample
 	Sprite				m_pTexDef;       // Default texture for objects
 	D3DLIGHT9           m_Light;         // The spot light in the scene
@@ -187,8 +187,8 @@ private:
 	DWORD				m_dwFlush;
 	
 	SkyBox*				m_pSkyBox;		// Starry sky
-
 };
+extern CFirstPersonCamera	m_LCamera;       // Camera obj to help adjust light
 
 
 #endif

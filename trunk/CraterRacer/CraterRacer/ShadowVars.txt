@@ -1,2 +1,2 @@
--220,100,10	//light position
--229,0,10			//light lookat position
+-240,200,10	//light position
+-239,0,10			//light lookat position
