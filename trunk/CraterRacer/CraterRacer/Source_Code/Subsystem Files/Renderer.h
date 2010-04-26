@@ -92,7 +92,7 @@ public:
 	void drawFinished		( );
 	void setPlayerFinished	( int playerNum, int rank );
 
-	void RenderFrame		( Device*, vector<Renderable*>, vector<GameCamera*>, int, D3DVIEWPORT9* viewport );
+	void RenderFrame		( Device*, vector<Renderable*>, vector<GameCamera*>, int, D3DVIEWPORT9* viewport, vector<Particle*> );
 
 	void RenderScene( Device*, bool, const D3DXMATRIX*, const D3DXMATRIX*, vector<Renderable*>);
 

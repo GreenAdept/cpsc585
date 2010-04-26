@@ -1044,6 +1044,14 @@
 				RelativePath=".\Source_Code\Particle Files\ParticleEmitter.h"
 				>
 			</File>
+			<File
+				RelativePath=".\Source_Code\Particle Files\ParticleSystem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\Source_Code\Particle Files\ParticleSystem.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\README.txt"

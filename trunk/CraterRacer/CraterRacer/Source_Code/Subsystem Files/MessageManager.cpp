@@ -73,6 +73,25 @@ void MessageManager::ProcessMessage( int message, long param )
 	}
 }
 
+//--------------------------------------------------------------------------------------
+// Function: ProcessMessage
+// This function processes an incoming message with a parameter
+// INPUTS:	 int message - an id from the Events enum list
+//			 Vec3 param	 - different for each message
+//--------------------------------------------------------------------------------------
+void MessageManager::ProcessMessage( int message, Vec3 param )
+{
+	int playerNum;
+	string temp;
+
+	switch( message )
+	{
+	case EMeteorCrashed:
+		m_Game->m_ParticleSystem.addEmitter(param);
+		break;
+	}
+}
+
 
 //--------------------------------------------------------------------------------------
 // Function: ProcessMessage

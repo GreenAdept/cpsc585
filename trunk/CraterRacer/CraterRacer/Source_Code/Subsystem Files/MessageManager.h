@@ -20,7 +20,8 @@
 //event ids
 enum Events {	EWrongWay, EWrongWayCancel, EPauseGame, EUnpauseGame, EStartClock,
 				EGameFinished, ELapFinished, EPlayerFinished, EVibrate, EStartOrStopRace, 
-				EVehicleCollision, EVictoryScreenUpdate, ENameEntered, ESetTimeLimit };
+				EVehicleCollision, EVictoryScreenUpdate, ENameEntered, ESetTimeLimit,
+				EMeteorCrashed};
 
 using namespace std;
 //--------------------------------------------------------
@@ -51,6 +52,7 @@ class MessageManager
 	static MessageManager* Inst( );
 
 	static void ProcessMessage	( int message, long param );
+	static void ProcessMessage	( int message, Vec3 param );
 	static void ProcessMessage	( int message, long param1, long param2 );
 	static void ProcessMessage	( int message, long param1, string param2 );
 	static void ProcessMessage  ( int message, long param1, long param2, long param3 );

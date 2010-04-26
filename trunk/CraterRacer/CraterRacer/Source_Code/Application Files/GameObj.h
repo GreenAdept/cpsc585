@@ -14,6 +14,7 @@
 #include "SceneLoader.h"
 #include "Clock.h"
 #include "VictoryCalculator.h"
+#include "ParticleSystem.h"
 
 struct SceneObjects; //forward declaration
 
@@ -52,6 +53,7 @@ public:
 	bool		 isFinished			( );
 	void		 setTimeLimit		( string limit );
 
+	ParticleSystem				m_ParticleSystem;
 	VictoryCalculator           m_Victory;
 	EntityManager*				m_Entities;		//collection of all entities
 	Simulator*					m_Simulator;
