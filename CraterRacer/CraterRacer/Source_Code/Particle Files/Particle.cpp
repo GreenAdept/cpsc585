@@ -2,6 +2,9 @@
 
 Particle::Particle() {
 	timeElapsed = 0;
+	velocity = Vec3(0, 0, 0);
+	acceleration = Vec3(0, 0, 0);
+	life = 5;
 }
 
 bool Particle::update(float deltaTime) {
@@ -19,8 +22,8 @@ bool Particle::update(float deltaTime) {
 	velocity += acceleration * deltaTime;
 
 	//update the colour
-	float ratio = timeElapsed/life;
-	colour = (startColour * (1 - ratio)) + (endColour * ratio);
+	//float ratio = timeElapsed/life;
+	//colour = (startColour * (1 - ratio)) + (endColour * ratio);
 
 	return true;
 }

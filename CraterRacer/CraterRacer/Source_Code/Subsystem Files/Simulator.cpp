@@ -745,7 +745,7 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 			currentPos = target;
 			m->informOfCollision();
 			m->getCraterToSpawn()->setUpVector (up);
-
+			Emit(Events::EMeteorCrashed, Vec3(0, 0, 0));
 			NxVec3 meteorPos(currentPos.x, currentPos.y, currentPos.z);
 			for (int i=0; i<vehicles.size(); i++) {
 				NxActor* actor = vehicles[i]->getPhysicsObj();

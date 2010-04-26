@@ -16,6 +16,7 @@ public:
 	~ParticleEmitter();
 	
 	void update(float deltaTime);
+	vector<Particle*> getParticles();
 
 private:
 	Vec3 position;

@@ -274,10 +274,14 @@ void GameObj::render( Device* device, Renderer* renderer, int playerID, D3DVIEWP
 {
 	vector<Renderable*> renderables = m_Entities->getRenderables();
 
-	int test;
-
 	// pass the renderables off to the renderer to do all the work
-	renderer->RenderFrame( device, renderables, m_Cameras, playerID, viewport );
+	vector<Particle*> particles = m_ParticleSystem.getParticles();
+	renderer->RenderFrame( device, renderables, m_Cameras, playerID, viewport, particles );
+	//renderer->RenderFrame( device, renderables, m_Cameras, playerID, viewport, m_ParticleSystem.getParticles() );
+	/*for (int i = 0; i < particles.size(); i++) {
+		delete particles[i];
+	}*/
+	//renderer->RenderFrame( device, renderables, m_Cameras, playerID, viewport);
 }
 
 
@@ -287,6 +291,7 @@ void GameObj::render( Device* device, Renderer* renderer, int playerID, D3DVIEWP
 void GameObj::simulate( float fElapsedTime )
 {
 	m_Simulator->simulate( m_Entities->getVehicles(), m_Entities->getMeteorGroups(), fElapsedTime );
+	m_ParticleSystem.update(fElapsedTime);
 }
 
 

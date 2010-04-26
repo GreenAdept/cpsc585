@@ -421,7 +421,7 @@ HRESULT Renderer::drawParticles( Device* device, vector<Particle*> particles )
 	// Set the render states for using point sprites..
     device->SetRenderState( D3DRS_POINTSPRITEENABLE, TRUE );		// Turn on point sprites
     device->SetRenderState( D3DRS_POINTSCALEENABLE,  TRUE );		// Allow sprites to be scaled with distance
-    device->SetRenderState( D3DRS_POINTSIZE,     FtoDW(1.0f) );		// Float value that specifies the size to use for point size computation in cases where point size is not specified for each vertex.
+    device->SetRenderState( D3DRS_POINTSIZE,     FtoDW(50.0f) );		// Float value that specifies the size to use for point size computation in cases where point size is not specified for each vertex.
     device->SetRenderState( D3DRS_POINTSIZE_MIN, FtoDW(0.0f) );		// Float value that specifies the minimum size of point primitives. Point primitives are clamped to this size during rendering. 
     device->SetRenderState( D3DRS_POINTSCALE_A,  FtoDW(0.0f) );     // Default 1.0
     device->SetRenderState( D3DRS_POINTSCALE_B,  FtoDW(0.0f) );     // Default 0.0
@@ -942,7 +942,7 @@ void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX
 // repainted. After this function has returned, DXUT will call 
 // IDirect3DDevice9::Present to display the contents of the next buffer in the swap chain
 //--------------------------------------------------------------------------------------
-void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vector<GameCamera*> cameras, int playerID, D3DVIEWPORT9* viewport )
+void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vector<GameCamera*> cameras, int playerID, D3DVIEWPORT9* viewport, vector<Particle*> particles )
 {
     HRESULT hr;
 	MCamera	camera = cameras[ playerID ]->getCamera();
@@ -1001,22 +1001,23 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
 	//vector<Particle*> particles;
 	//Particle* p, *p2, *p3;
 
-	//Matrix w;
-	//D3DXMatrixIdentity( &w );
-	//device->SetTransform( D3DTS_WORLD, &w );
-	////Set the default viewport and perspective matrices
-	//device->SetTransform( D3DTS_VIEW, camera.GetViewMatrix() ); 
-	//device->SetTransform( D3DTS_PROJECTION, camera.GetProjMatrix() );
-	//p = new Particle();
-	//p->position = Vec3(245, 31, 10);
-	//particles.push_back( p );
-	//p2 = new Particle();
-	//p2->position = Vec3(245, 41, 10);
-	//particles.push_back( p2 );
-	//p3 = new Particle();
-	//p3->position = Vec3(235, 41, 10);
-	//particles.push_back( p3 );
-	//
+	Matrix w;
+	D3DXMatrixIdentity( &w );
+	device->SetTransform( D3DTS_WORLD, &w );
+	//Set the default viewport and perspective matrices
+	device->SetTransform( D3DTS_VIEW, camera.GetViewMatrix() ); 
+	device->SetTransform( D3DTS_PROJECTION, camera.GetProjMatrix() );
+	/*p = new Particle();
+	p->position = Vec3(245, 0, 10);
+	particles.push_back( p );
+	p2 = new Particle();
+	p2->position = Vec3(245, 41, 10);
+	particles.push_back( p2 );
+	p3 = new Particle();
+	//p3->position = Vec3(235, 100, 10);
+	p3->position = Vec3(-244.285, 18.1736, 101.405);
+	particles.push_back( p3 );*/
+	
 	//drawParticles( device, particles );
 	//delete p;
 	//delete p2;
