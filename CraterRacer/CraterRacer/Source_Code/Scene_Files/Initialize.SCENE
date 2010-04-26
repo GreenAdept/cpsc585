@@ -267,16 +267,40 @@ NUM_METEORS				9
 
 **PROP_INFORMATION ------------------------------------------------
 
-NUM_PROPS				1
+NUM_PROPS				9
 
 MESH_FILENAME			Media\\Meshes\\Rock.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-POSITION				-235.363 18.0527 100.668
+POSITION				-18.0569 -0.828995 -186.896
 
-MESH_FILENAME			Media\\Meshes\\CarBody.x
+MESH_FILENAME			Media\\Meshes\\Rock.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-POSITION				-380 0 300
+POSITION				6.74068 -1.99621 -190.178
 
-MESH_FILENAME			Media\\Meshes\\CarBody.x
+MESH_FILENAME			Media\\Meshes\\Rock.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-POSITION				80 0 200
+POSITION				34.7004 -2.32089 -187.556
+
+MESH_FILENAME			Media\\Meshes\\Rock.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				72.8796 -3.21739 -188.335
+
+MESH_FILENAME			Media\\Meshes\\Rock.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				107.17 0.887585 -174.547
+
+MESH_FILENAME			Media\\Meshes\\Rock.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				16.3071 -0.285886 -179.502
+
+MESH_FILENAME			Media\\Meshes\\Rock.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				48.1737 -1.26224 -180.459
+
+MESH_FILENAME			Media\\Meshes\\Rock.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				27.6494 1.19274 -170.643
+
+MESH_FILENAME			Media\\Meshes\\Rock.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				-5.19893 -0.312899 -181.639
