@@ -50,7 +50,7 @@ public:
 	Renderer ( );
 	~Renderer( );
 
-	void	setLightParams( Vec3& pos, Vec3& lookAt );
+	void	setLightParams( Vec3& pos, Vec3& lookAt, float fov );
 
 	// Device-related functions
 	HRESULT OnReset			( Device* device, const D3DSURFACE_DESC* pBack );
@@ -187,6 +187,8 @@ private:
 	DWORD				m_dwFlush;
 	
 	SkyBox*				m_pSkyBox;		// Starry sky
+	float				m_Height;
+	float				m_Width;
 };
 extern CFirstPersonCamera	m_LCamera;       // Camera obj to help adjust light
 
