@@ -1,7 +1,7 @@
 Signature = XACT3;
-Version = 17;
-Content Version = 44;
-Release = August 2008;
+Version = 18;
+Content Version = 46;
+Release = August 2009;
 
 Options
 {
@@ -16,8 +16,8 @@ Global Settings
     Header File = C:\Users\Rob\Documents\Visual Studio 2008\Projects\trunk\CraterRacer\CraterRacer\Media\Audio\BGMusic.h;
     Exclude Category Names = 0;
     Exclude Variable Names = 0;
-    Last Modified Low = 2912931043;
-    Last Modified High = 30068626;
+    Last Modified Low = 1181103072;
+    Last Modified High = 30074243;
 
     Category
     {
@@ -252,7 +252,7 @@ Global Settings
         Reserved = 0;
         Read Only = 0;
         Time = 0;
-        Value = 2852.216797;
+        Value = 3000.000000;
         Initial Value = 0.000000;
         Min = -3000.000000;
         Max = 3000.000000;
@@ -264,7 +264,7 @@ Global Settings
 
         RPC Curve
         {
-            Name = 1::17d1d348-a976-4aae-b088-322d99600164;
+            Name = 1::dc271577-8edc-4956-a0c4-ff3205401d88;
             Property = 1;
             Sound = 0;
             Line Color = 4278212278;
@@ -277,57 +277,57 @@ Global Settings
 
             RPC Point
             {
-                X = -2926.108398;
-                Y = -303.114166;
+                X = -3000.000000;
+                Y = 776.470581;
                 Curve = 1;
             }
 
             RPC Point
             {
-                X = -2142.857178;
-                Y = -435.986145;
+                X = -2246.305420;
+                Y = 469.204132;
                 Curve = 1;
             }
 
             RPC Point
             {
-                X = -1152.709351;
-                Y = -577.162659;
+                X = -1182.265991;
+                Y = 336.332184;
                 Curve = 1;
             }
 
             RPC Point
             {
-                X = 0.000000;
-                Y = -600.000000;
+                X = 14.778330;
+                Y = 186.851212;
                 Curve = 2;
             }
 
             RPC Point
             {
-                X = 1064.039429;
-                Y = -510.726654;
+                X = 1167.487671;
+                Y = 369.550171;
                 Curve = 2;
             }
 
             RPC Point
             {
-                X = 2142.857178;
-                Y = -361.245667;
+                X = 2201.970459;
+                Y = 560.553650;
                 Curve = 2;
             }
 
             RPC Point
             {
                 X = 3000.000000;
-                Y = -186.851212;
+                Y = 909.342590;
                 Curve = 2;
             }
         }
 
         RPC Curve
         {
-            Name = 1::82189f93-9ecf-4fd7-b14c-118e1efef008;
+            Name = 1::d788811a-5df8-458a-ad67-a570790b6f75;
             Property = 0;
             Sound = 0;
             Line Color = 4284373633;
@@ -387,8 +387,8 @@ Wave Bank
     Compression Preset Name = Compression for BG Music;
     Xbox Bank Last Modified Low = 0;
     Xbox Bank Last Modified High = 0;
-    PC Bank Last Modified Low = 4012512014;
-    PC Bank Last Modified High = 30068604;
+    PC Bank Last Modified Low = 1962262256;
+    PC Bank Last Modified High = 30074239;
     Header Last Modified Low = 0;
     Header Last Modified High = 0;
     Bank Last Revised Low = 2739296800;
@@ -619,7 +619,7 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 2852644096;
+            Last Modified Low = 2842644096;
             Last Modified High = 30068574;
         }
     }
@@ -636,12 +636,10 @@ Wave Bank
     Compression Preset Name = <none>;
     Xbox Bank Last Modified Low = 0;
     Xbox Bank Last Modified High = 0;
-    PC Bank Last Modified Low = 58618821;
-    PC Bank Last Modified High = 30068605;
-    Header Last Modified Low = 0;
-    Header Last Modified High = 0;
-    Bank Last Revised Low = 591834520;
-    Bank Last Revised High = 30064389;
+    PC Bank Last Modified Low = 1840923888;
+    PC Bank Last Modified High = 30074247;
+    Bank Last Revised Low = 1597573888;
+    Bank Last Revised High = 30074247;
 
     Wave
     {
@@ -653,16 +651,16 @@ Wave Bank
         Cache
         {
             Format Tag = 0;
-            Channels = 1;
+            Channels = 2;
             Sampling Rate = 44100;
             Bits Per Sample = 1;
             Play Region Offset = 44;
-            Play Region Length = 499200;
+            Play Region Length = 108916;
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 2665745152;
-            Last Modified High = 30064388;
+            Last Modified Low = 2637617920;
+            Last Modified High = 30074230;
         }
     }
 
@@ -688,6 +686,52 @@ Wave Bank
             Last Modified High = 30064386;
         }
     }
+
+    Wave
+    {
+        Name = Collision;
+        File = SoundEffects\Collision.wav;
+        Build Settings Last Modified Low = 3124304144;
+        Build Settings Last Modified High = 30074236;
+
+        Cache
+        {
+            Format Tag = 0;
+            Channels = 1;
+            Sampling Rate = 44100;
+            Bits Per Sample = 1;
+            Play Region Offset = 44;
+            Play Region Length = 441000;
+            Loop Region Offset = 0;
+            Loop Region Length = 0;
+            File Type = 1;
+            Last Modified Low = 2102650624;
+            Last Modified High = 30074231;
+        }
+    }
+
+    Wave
+    {
+        Name = Boost;
+        File = SoundEffects\Boost.wav;
+        Build Settings Last Modified Low = 1293853888;
+        Build Settings Last Modified High = 30074247;
+
+        Cache
+        {
+            Format Tag = 0;
+            Channels = 1;
+            Sampling Rate = 11025;
+            Bits Per Sample = 1;
+            Play Region Offset = 44;
+            Play Region Length = 21728;
+            Loop Region Offset = 0;
+            Loop Region Length = 0;
+            File Type = 1;
+            Last Modified Low = 545553888;
+            Last Modified High = 30074247;
+        }
+    }
 }
 
 Sound Bank
@@ -697,8 +741,8 @@ Sound Bank
     Windows File = Win\MainSoundBank.xsb;
     Xbox Bank Path Edited = 0;
     Windows Bank Path Edited = 0;
-    Bank Last Modified Low = 2918712145;
-    Bank Last Modified High = 30068626;
+    Bank Last Modified Low = 2895822000;
+    Bank Last Modified High = 30074250;
     Header Last Modified High = 0;
     Header Last Modified Low = 0;
 
@@ -732,7 +776,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -756,13 +800,13 @@ Sound Bank
             RPC Curve Entry
             {
                 RPC Name = RPC Preset;
-                RPC Curve Name = 1::82189f93-9ecf-4fd7-b14c-118e1efef008;
+                RPC Curve Name = 1::d788811a-5df8-458a-ad67-a570790b6f75;
             }
 
             RPC Curve Entry
             {
                 RPC Name = RPC Preset;
-                RPC Curve Name = 1::17d1d348-a976-4aae-b088-322d99600164;
+                RPC Curve Name = 1::dc271577-8edc-4956-a0c4-ff3205401d88;
             }
         }
     }
@@ -791,7 +835,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -838,7 +882,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -885,7 +929,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -932,7 +976,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -979,7 +1023,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -1026,7 +1070,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -1073,7 +1117,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -1120,7 +1164,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -1167,7 +1211,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -1214,7 +1258,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -1261,7 +1305,7 @@ Sound Bank
                 Use Center Speaker = 1;
                 New Speaker Position On Loop = 1;
                 Speaker Position Angle = 0.000000;
-                Speaer Position Arc = 0.000000;
+                Speaker Position Arc = 0.000000;
 
                 Event Header
                 {
@@ -1277,6 +1321,100 @@ Sound Bank
                     Bank Index = 0;
                     Entry Name = VictoryMusic;
                     Entry Index = 9;
+                    Weight = 255;
+                    Weight Min = 0;
+                }
+            }
+        }
+    }
+
+    Sound
+    {
+        Name = Collision;
+        Volume = -1200;
+        Pitch = 0;
+        Priority = 0;
+
+        Category Entry
+        {
+            Name = Effect;
+        }
+
+        Track
+        {
+            Volume = 0;
+            Use Filter = 0;
+
+            Play Wave Event
+            {
+                Break Loop = 0;
+                Use Speaker Position = 0;
+                Use Center Speaker = 1;
+                New Speaker Position On Loop = 1;
+                Speaker Position Angle = 0.000000;
+                Speaker Position Arc = 0.000000;
+
+                Event Header
+                {
+                    Timestamp = 0;
+                    Relative = 0;
+                    Random Recurrence = 0;
+                    Random Offset = 0;
+                }
+
+                Wave Entry
+                {
+                    Bank Name = SoundEffectWaveBank;
+                    Bank Index = 1;
+                    Entry Name = Collision;
+                    Entry Index = 2;
+                    Weight = 255;
+                    Weight Min = 0;
+                }
+            }
+        }
+    }
+
+    Sound
+    {
+        Name = Boost;
+        Volume = -1200;
+        Pitch = 0;
+        Priority = 0;
+
+        Category Entry
+        {
+            Name = Effect;
+        }
+
+        Track
+        {
+            Volume = 0;
+            Use Filter = 0;
+
+            Play Wave Event
+            {
+                Break Loop = 0;
+                Use Speaker Position = 0;
+                Use Center Speaker = 1;
+                New Speaker Position On Loop = 1;
+                Speaker Position Angle = 0.000000;
+                Speaker Position Arc = 0.000000;
+
+                Event Header
+                {
+                    Timestamp = 0;
+                    Relative = 0;
+                    Random Recurrence = 0;
+                    Random Offset = 0;
+                }
+
+                Wave Entry
+                {
+                    Bank Name = SoundEffectWaveBank;
+                    Bank Index = 1;
+                    Entry Name = Boost;
+                    Entry Index = 3;
                     Weight = 255;
                     Weight Min = 0;
                 }
@@ -1499,6 +1637,72 @@ Sound Bank
         {
             Name = VictoryMusic;
             Index = 11;
+            Weight Min = 0;
+            Weight Max = 255;
+        }
+
+        Instance Limit
+        {
+            Max Instances = 1;
+            Behavior = 0;
+
+            Crossfade
+            {
+                Fade In = 0;
+                Fade Out = 0;
+                Crossfade Type = 0;
+            }
+        }
+    }
+
+    Cue
+    {
+        Name = Collision;
+
+        Variation
+        {
+            Variation Type = 3;
+            Variation Table Type = 1;
+            New Variation on Loop = 0;
+        }
+
+        Sound Entry
+        {
+            Name = Collision;
+            Index = 12;
+            Weight Min = 0;
+            Weight Max = 255;
+        }
+
+        Instance Limit
+        {
+            Max Instances = 1;
+            Behavior = 2;
+
+            Crossfade
+            {
+                Fade In = 0;
+                Fade Out = 0;
+                Crossfade Type = 0;
+            }
+        }
+    }
+
+    Cue
+    {
+        Name = Boost;
+
+        Variation
+        {
+            Variation Type = 3;
+            Variation Table Type = 1;
+            New Variation on Loop = 0;
+        }
+
+        Sound Entry
+        {
+            Name = Boost;
+            Index = 13;
             Weight Min = 0;
             Weight Max = 255;
         }
