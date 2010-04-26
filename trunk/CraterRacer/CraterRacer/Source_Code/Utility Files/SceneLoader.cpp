@@ -108,10 +108,10 @@ void SceneLoader::startGame( string filename )
 			fin.close();
 
 			if (s == "")
-				s = "05:00:00";
+				s = "02:00:00";
 		}
 		else
-			s = "05:00:00";
+			s = "02:00:00";
 
 		m_Game->setTimeLimit(s);
 	}
