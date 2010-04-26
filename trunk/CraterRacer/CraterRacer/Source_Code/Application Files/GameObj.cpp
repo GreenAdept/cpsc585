@@ -114,7 +114,7 @@ float GameObj::getVehicleSpeed( int playerNum )
 // Function: addInput
 //--------------------------------------------------------------------------------------
 void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
-{
+{/*
 	Input* v = m_Entities->getPlayerInputObj( PLAYER1 );
 
 	v->setController( false );
@@ -152,6 +152,7 @@ void GameObj::addInput( bool isKeyDown, UINT virtualKeyCode )
 	default:
 		break;
 	}
+	*/
 }
 
 

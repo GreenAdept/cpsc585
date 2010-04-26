@@ -50,6 +50,8 @@ public:
 	Renderer ( );
 	~Renderer( );
 
+	void	resetBools		( );
+
 	void	setLightParams( Vec3& pos, Vec3& lookAt, float fov );
 
 	// Device-related functions
