@@ -479,21 +479,6 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 		switch( m_AppState )
 		{
 			case APP_STARTUP:
-				//Testing particle rendering in startup screen...
-				p = new Particle();
-				p->position = Vec3(-3,0,0);
-				particles.push_back( p );
-				p2 = new Particle();
-				p2->position = Vec3(-2.5,0.5,0);
-				particles.push_back( p2 );
-				p3 = new Particle();
-				p3->position = Vec3(-2.6,-1.0,0);
-				particles.push_back( p3 );
-				m_Renderer->drawParticles( device, particles );
-				delete p;
-				delete p2;
-				delete p3;
-
 				m_Renderer->drawStartupMenu( );
 				break;
 
