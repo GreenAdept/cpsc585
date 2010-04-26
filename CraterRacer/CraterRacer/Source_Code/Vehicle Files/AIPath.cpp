@@ -81,23 +81,33 @@ Vec3 Waypoint::getDirectionToWP_ClosestToGivenDir (Vec3 p, Vec3 d) {
 
 
 Vec3 AIPath::getPositionOfWP (Vec3 p, int waypntIndex) {
+	if (waypntIndex < 0)
+		waypntIndex += wps.size();
 	return wps[waypntIndex % wps.size()].getClosestPosition (p);
 }
 
 Vec3 AIPath::getDirectionToWP (Vec3 p, int waypntIndex) {
+	if (waypntIndex < 0)
+		waypntIndex += wps.size();
 	return wps[waypntIndex % wps.size()].getDirectionToWP_ClosestToGivenPos (p);
 }
 
 float AIPath::getDistanceToWP (Vec3 p, int waypntIndex) {
+	if (waypntIndex < 0)
+		waypntIndex += wps.size();
 	return wps[waypntIndex % wps.size()].getDistanceToWP (p);
 }
 
 bool AIPath::reachedWaypoint (Vec3 p, int waypntIndex, float waypntRadius) {
+	if (waypntIndex < 0)
+		waypntIndex += wps.size();
 	float d = wps[waypntIndex % wps.size()].getDistanceSquaredToWP (p);
 	return d <= waypntRadius * waypntRadius;
 }
 
 bool AIPath::goingWrongWay (Vec3 p, Vec3 d, int waypntIndex) {
+	if (waypntIndex < 0)
+		waypntIndex += wps.size();
 	Vec3 desiredDir = wps[(waypntIndex+1) % wps.size()].getDirectionToWP_ClosestToGivenDir (p, d);
 	return D3DXVec3Dot (&d, &desiredDir) < 0;
 }

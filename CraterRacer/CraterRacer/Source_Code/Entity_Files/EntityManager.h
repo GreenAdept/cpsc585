@@ -20,7 +20,7 @@ enum lists {PLAYERS, COMPUTERS, METEORS, CRATERS, PROPS, TERRAIN, METEORGROUPS};
 // NUM_LISTS defines the number of seperate entity lists to
 // be maintained by the EntityManager
 //------------------------------------------------------
-#define NUM_LISTS 8
+#define NUM_LISTS 7
 
 
 //------------------------------------------------------

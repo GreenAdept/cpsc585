@@ -164,8 +164,7 @@ Renderer::~Renderer( )
 		SAFE_RELEASE( m_HUDImages2[i] );
 	}
 
-	if( m_ptexParticle != NULL )
-		m_ptexParticle->Release();
+	SAFE_RELEASE( m_ptexParticle );
 
 	if( m_pSkyBox )
 		delete m_pSkyBox;
@@ -214,7 +213,7 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 	loadImages( device, width, height );
 
 	// Load Texture Map for particles
-	D3DXCreateTextureFromFile( device, L"Media\\Images\\particle.bmp", &m_ptexParticle );
+	createTexture( m_ptexParticle, "Media\\Images\\particle.bmp", device );
 
 	device->SetSamplerState(0, D3DSAMP_MINFILTER, D3DTEXF_LINEAR);
 	device->SetSamplerState(0, D3DSAMP_MAGFILTER, D3DTEXF_LINEAR);
@@ -370,8 +369,7 @@ void Renderer::OnLost( )
 	if( m_pVB != NULL )
 		m_pVB->Release();
 
-    if( m_ptexParticle != NULL )
-		m_ptexParticle->Release();
+    SAFE_RELEASE( m_ptexParticle );
 
 	if( m_pSkyBox )
 		m_pSkyBox->OnLostDevice( );
@@ -411,7 +409,7 @@ HRESULT Renderer::drawParticles( Device* device, vector<Particle*> particles )
 	HRESULT hr;
 	
 	//Set up render states
-	device->SetTexture(0,this->m_ptexParticle);
+	device->SetTexture(0, m_ptexParticle);
 	device->SetRenderState( D3DRS_ALPHABLENDENABLE, true );
 	device->SetRenderState( D3DRS_DESTBLEND,D3DBLEND_ONE );
 	device->SetRenderState( D3DRS_ZWRITEENABLE, FALSE );
