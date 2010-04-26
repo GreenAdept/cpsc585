@@ -490,6 +490,7 @@ void CALLBACK RacerApp::OnRender( Device* device, double dTime, float fElapsedTi
 
 				m_Renderer->drawLoadingScreen( );
 				m_bIsLoading = m_bIsLoading ? false : true;
+				m_Renderer->resetBools();
 				break;
 
 			case APP_VICTORY:

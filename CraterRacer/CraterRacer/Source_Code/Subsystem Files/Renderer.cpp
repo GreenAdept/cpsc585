@@ -170,7 +170,11 @@ Renderer::~Renderer( )
 		delete m_pSkyBox;
 }
 
-
+void Renderer::resetBools()
+{
+	m_bPlayer1Finished = false;
+	m_bPlayer2Finished = false;
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////		
 // 
@@ -809,7 +813,7 @@ void Renderer::drawFinished ( )
 		if (m_bPlayer1Finished) {
 			m_pFontVictoryBig->DrawTextW( NULL, m_sMessageP1.c_str(), -1, &m_FinishedMessage[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,215,150,70 ) );
 		}
-		else if (m_bPlayer2Finished) {
+		if (m_bPlayer2Finished) {
 			m_pFontVictoryBig->DrawTextW( NULL, m_sMessageP2.c_str(), -1, &m_FinishedMessage[1], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,215,150,70 ) );
 		}
 	}
