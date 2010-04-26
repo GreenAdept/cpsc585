@@ -811,10 +811,10 @@ void Renderer::drawFinished ( )
 {
 	if (!m_bIsPaused) {
 		if (m_bPlayer1Finished) {
-			m_pFontVictoryBig->DrawTextW( NULL, m_sMessageP1.c_str(), -1, &m_FinishedMessage[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,215,150,70 ) );
+			m_pFontVictoryBig->DrawTextW( NULL, m_sMessageP1.c_str(), -1, &m_FinishedMessage[0], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,215,126,0 ) );
 		}
 		if (m_bPlayer2Finished) {
-			m_pFontVictoryBig->DrawTextW( NULL, m_sMessageP2.c_str(), -1, &m_FinishedMessage[1], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,215,150,70 ) );
+			m_pFontVictoryBig->DrawTextW( NULL, m_sMessageP2.c_str(), -1, &m_FinishedMessage[1], DT_EXPANDTABS, D3DCOLOR_ARGB( 255,215,126,0 ) );
 		}
 	}
 }

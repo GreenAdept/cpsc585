@@ -16,6 +16,7 @@
 #include "Simulator.h"
 #include "GameCamera.h"
 #include "Sound.h"
+#include "Prop.h"
 #include "XBox360Controller.h"
 #include "Renderer.h"
 #include "Input.h"
@@ -86,6 +87,7 @@ private:
 	SceneObjects		m_Objs;
 	string				m_InitFilename;
 	vector<Mesh*>		m_Ramps;
+	vector<Prop*>		m_Props;
 	Terrain*			m_InnerTerrain;
 };
 

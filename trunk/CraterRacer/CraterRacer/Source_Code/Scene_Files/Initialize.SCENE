@@ -267,7 +267,11 @@ NUM_METEORS				9
 
 **PROP_INFORMATION ------------------------------------------------
 
-NUM_PROPS				0
+NUM_PROPS				1
+
+MESH_FILENAME			Media\\Meshes\\Rock.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				-235.363 18.0527 100.668
 
 MESH_FILENAME			Media\\Meshes\\CarBody.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
