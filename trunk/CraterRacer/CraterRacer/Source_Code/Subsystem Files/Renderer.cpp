@@ -945,10 +945,11 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
     HRESULT hr;
 	MCamera	camera = cameras[ playerID ]->getCamera();
   
-
     // Compute the view matrix for the light
     Matrix mLightView;
 	mLightView = *(m_LCamera.GetViewMatrix());
+	
+	device->SetViewport( viewport );
     
 	m_pSkyBox->renderSkyBox( &camera );
 
@@ -959,7 +960,7 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
     if( SUCCEEDED( m_pShadowMap->GetSurfaceLevel( 0, &pShadowSurf ) ) )
     {
         device->SetRenderTarget( 0, pShadowSurf );
-		//device->SetViewport( viewport );
+		device->SetViewport( viewport );
         SAFE_RELEASE( pShadowSurf );
     }
     Surface pOldDS = NULL;
