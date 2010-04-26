@@ -29,6 +29,10 @@
 #define SE_WAVEBANK_FILE		L"Media\\Audio\\Win\\SoundEffectWaveBank.xwb"
 #define BG_SOUNDBANK_FILE		L"Media\\Audio\\Win\\MainSoundBank.xsb"
 #define BG_SETTINGS_FILE		L"Media\\Audio\\Win\\BGMusic.xgs"
+#define OLD_BG_WAVEBANK_FILE	L"Media\\Audio\\Win\\OldBGMusicWaveBank.xwb"
+#define OLD_SE_WAVEBANK_FILE	L"Media\\Audio\\Win\\OldSoundEffectWaveBank.xwb"
+#define OLD_BG_SOUNDBANK_FILE	L"Media\\Audio\\Win\\OldMainSoundBank.xsb"
+#define OLD_BG_SETTINGS_FILE	L"Media\\Audio\\Win\\OldBGMusic.xgs"
 
 //--------------------------------------------------------
 //		CLASS: RacerApp

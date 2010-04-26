@@ -16,12 +16,13 @@
 #include "CraterRacerApp.h"
 #include "Renderer.h"
 #include "Clock.h"
+#include "Sound.h"
 
 //event ids
 enum Events {	EWrongWay, EWrongWayCancel, EPauseGame, EUnpauseGame, EStartClock,
 				EGameFinished, ELapFinished, EPlayerFinished, EVibrate, EStartOrStopRace, 
 				EVehicleCollision, EVictoryScreenUpdate, ENameEntered, ESetTimeLimit,
-				EMeteorCrashed};
+				EMeteorCrashed, EBoostRamp};
 
 using namespace std;
 //--------------------------------------------------------

@@ -229,7 +229,7 @@ void GameObj::processInput( float fElapsedTime )
 				v->setPressure(m_Controllers[i]->RightTrigger.GetValue());
 
 				//Increase vehicle RPM for sound
-				g_audioState.nRPM += 15.0f;
+				g_audioState.nRPM += 25.0f;
                 if( g_audioState.nRPM > 3000.0f )
                     g_audioState.nRPM = 3000.0f;
                 //g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );
@@ -241,9 +241,9 @@ void GameObj::processInput( float fElapsedTime )
 				v->setDir(Input::LT_BUTTON);
 				v->setPressure(m_Controllers[i]->LeftTrigger.GetValue());
 				if(g_audioState.nRPM > 0)
-					g_audioState.nRPM -= 50.0f;
+					g_audioState.nRPM -= 100.0f;
 				else
-					g_audioState.nRPM -= 25.0f;
+					g_audioState.nRPM -= 50.0f;
 				if( g_audioState.nRPM < -3000.0f )
 					g_audioState.nRPM = -3000.0f;
 				//g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );

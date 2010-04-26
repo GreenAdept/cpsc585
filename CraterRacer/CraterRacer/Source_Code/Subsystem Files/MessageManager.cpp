@@ -70,6 +70,16 @@ void MessageManager::ProcessMessage( int message, long param )
 			m_Clock->stop();
 			m_Simulator->startOrStopRace(false);
 		}
+		break;
+	case EVehicleCollision:
+		//param1 is the id of the first vehicle, param2 is the id of the second vehicle
+		if(!(m_App->m_AppState == APP_VICTORY))
+			g_audioState.pSoundBank->Play(g_audioState.iCollision, 0, 0, NULL);
+		break;
+	case EBoostRamp:
+		if(!(m_App->m_AppState == APP_VICTORY))
+			g_audioState.pSoundBank->Play(g_audioState.iBoost, 0, 0, NULL);
+		break;
 	}
 }
 
@@ -88,6 +98,7 @@ void MessageManager::ProcessMessage( int message, Vec3 param )
 	{
 	case EMeteorCrashed:
 		m_Game->m_ParticleSystem.addEmitter(param);
+		g_audioState.pSoundBank->Play(g_audioState.iImpact, 0, 0, NULL);
 		break;
 	}
 }
@@ -111,9 +122,6 @@ void MessageManager::ProcessMessage( int message, long param1, long param2 )
 		playerNum = param1;
 		lapNum = param2;
 		m_Renderer->adjustLapImage( playerNum, lapNum );
-		break;
-	case EVehicleCollision:
-		//param1 is the id of the first vehicle, param2 is the id of the second vehicle
 		break;
 	}
 }
