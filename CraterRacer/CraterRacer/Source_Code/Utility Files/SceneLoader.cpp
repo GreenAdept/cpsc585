@@ -327,8 +327,10 @@ void SceneLoader::processPropInfo( ifstream& file ) {
 		if (str != "POSITION") return;
 		file >> pos.x >> pos.y >> pos.z;
 
-		m_Objs.entityManager->makeProp( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() ); 
+		Prop* p = m_Objs.entityManager->makeProp( m_Device, pos, toLPCWSTR(mesh).c_str(), toLPCWSTR(effect).c_str() );
+		m_Props.push_back(p);
 	}
+	m_Objs.simulator->addRocks( m_Props );
 }
 
 //--------------------------------------------------------------------------------------

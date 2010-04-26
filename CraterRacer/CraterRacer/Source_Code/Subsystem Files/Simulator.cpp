@@ -898,7 +898,24 @@ void Simulator::addRamps( vector<Mesh*> meshes )
 
 		NxActor* pActor = m_Scene->createActor( actorDesc );
 		m_Actors.push_back( pActor );
-		m_Ramps.push_back( pActor );
+	}
+}
+
+void Simulator::addRocks( vector<Prop*> props )
+{
+	for (int i = 0; i < props.size(); i++)
+	{
+		NxSphereShapeDesc ShapeDesc;
+		ShapeDesc.radius = 5.0;
+		ShapeDesc.userData = "Prop";
+		
+		NxActorDesc actorDesc;
+		Vec3 pos = props[i]->getPosition();
+		actorDesc.globalPose.t = NxVec3(pos.x, pos.y, pos.z);
+		actorDesc.shapes.pushBack( &ShapeDesc );
+
+		NxActor* pActor = m_Scene->createActor( actorDesc );
+		m_Actors.push_back( pActor );
 	}
 }
 

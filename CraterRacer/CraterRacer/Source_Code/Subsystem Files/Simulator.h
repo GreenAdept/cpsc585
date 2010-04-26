@@ -14,6 +14,7 @@
 #include "MeteorGroup.h"
 #include "Crater.h"
 #include "Terrain.h"
+#include "Prop.h"
 #include "DebugWriter.h"
 #include "Sound.h"
 #include "ContactReport.h"
@@ -49,6 +50,7 @@ public:
 	Vec3 findTerrainNormal( Vec3 v );
 	void removeFromSimulation( Entity* entity );
 	void addRamps( vector<Mesh*> meshes );
+	void addRocks( vector<Prop*> props );
 
 	NxTriangleMeshShapeDesc createTriMeshShape( Mesh* mesh );
 
@@ -125,7 +127,6 @@ private:
 	//Actors
 	vector<NxActor*>	m_Actors;
 	vector<NxActor*>	m_Vehicles;
-	vector<NxActor*>	m_Ramps;
 
 	//Debugging
 	DebugWriter			m_Debugger;

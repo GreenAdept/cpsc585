@@ -39,7 +39,7 @@ void ParticleEmitter::update(float deltaTime) {
 		particles.push_back(new Particle());
 	}*/
 
-	/*if (particles.size() < 5) {
+	/*if (particles.size() < 1) {
 		particles.push_back(new Particle());
 	}*/
 }
