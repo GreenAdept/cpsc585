@@ -267,11 +267,7 @@ NUM_METEORS				9
 
 **PROP_INFORMATION ------------------------------------------------
 
-NUM_PROPS				9
-
-MESH_FILENAME			Media\\Meshes\\Rock.x
-EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
-POSITION				-18.0569 -0.828995 -186.896
+NUM_PROPS				15
 
 MESH_FILENAME			Media\\Meshes\\Rock.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
@@ -304,3 +300,27 @@ POSITION				27.6494 1.19274 -170.643
 MESH_FILENAME			Media\\Meshes\\Rock.x
 EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
 POSITION				-5.19893 -0.312899 -181.639
+
+MESH_FILENAME			Media\\Meshes\\dish.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				-184.09 3.4644 205.382
+
+MESH_FILENAME			Media\\Meshes\\dish.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				31.2236 2.99173 98.9669
+
+MESH_FILENAME			Media\\Meshes\\dish.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				489.743 7.8894 -21.3404
+
+MESH_FILENAME			Media\\Meshes\\dish.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				84.319 5.81559 -341.5
+
+MESH_FILENAME			Media\\Meshes\\spaceship.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				598.749 10.32455 -185.726
+
+MESH_FILENAME			Media\\Meshes\\platform.x
+EFFECT_FILENAME			Source_Code\\Effect_Files\\Scene.fx
+POSITION				-67.6251 1 -17.8758
