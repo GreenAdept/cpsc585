@@ -45,7 +45,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 												// PAUSE or BREAK -> pause time
     DXUTSetCursorSettings( true, true );		// Show the cursor and clip it when in full screen
     DXUTCreateWindow( L"Crater Racer" );
-    DXUTCreateDevice( true, 1200, 900 ); //false = full screen mode
+    DXUTCreateDevice( false, 1200, 900 ); //false = full screen mode
 
     // Start the render loop
     DXUTMainLoop();

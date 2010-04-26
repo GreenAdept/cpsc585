@@ -160,11 +160,11 @@ void CALLBACK RacerApp::OnKeyboard ( UINT nChar, bool bKeyDown, bool bAltDown, v
 					Emit( EPauseGame );
 				break;
 
-			case 0x4C:
+		/*	case 0x4C:
 				v = new VarLoader();
 				v->loadVars( m_Renderer );
 				delete v;
-				break;
+				break;*/
 
 			default:
 				break;

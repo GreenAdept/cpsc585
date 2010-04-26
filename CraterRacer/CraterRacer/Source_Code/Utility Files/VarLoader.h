@@ -32,7 +32,7 @@
 using namespace std;
 
 const int NUM_VARIABLES = 14;
-const int NUM_SHADOW_VARIABLES = 2;
+const int NUM_SHADOW_VARIABLES = 3;
 
 class VarLoader {
 public:

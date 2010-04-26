@@ -17,11 +17,19 @@ VElement g_aVertDecl[] =
 };
 
 
-void Renderer::setLightParams( Vec3& pos, Vec3& lookAt )
+void Renderer::setLightParams( Vec3& pos, Vec3& lookAt, float fov )
 {
 	m_vFromPt = pos;
 	m_vLookatPt = lookAt;
 	m_LCamera.SetViewParams( &m_vFromPt, &m_vLookatPt );
+	// Initialize the shadow projection matrix
+	this->m_fLightFov = fov;
+	float fAspectRatio = m_Width / ( FLOAT )m_Height;
+    m_LCamera.SetProjParams( D3DX_PI / 4, fAspectRatio, 0.01f, 100.0f );
+    D3DXMatrixPerspectiveFovLH( &m_mShadowProj, m_fLightFov, 1, 0.001f, 10000.0f );
+
+	this->m_Light.Theta = m_fLightFov/2.0;
+	m_pEffect->SetFloat( "g_fCosTheta", cosf( m_Light.Theta ) );
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////		
@@ -45,25 +53,28 @@ Renderer::Renderer( )
 	m_pVB = NULL;
 	m_ptexParticle = NULL;
 
-	m_LCamera.SetScalers( 0.01f, 8.0f );
+	m_LCamera.SetScalers( 0.0, 0.0 );
     m_LCamera.SetRotateButtons( false, false, false );
+	m_LCamera.SetEnablePositionMovement( false );
+	m_LCamera.SetEnableYAxisMovement( false );
+	m_LCamera.SetResetCursorAfterMove( false );
 
 	// Initialize the camera
-    m_vFromPt = Vec3( -1.0f, 10.0f, 0.0f  );
-    m_vLookatPt = Vec3( 0.0f, -1.0f, 0.0f );
+    m_vFromPt = Vec3( 100, 1000, 0 );	//light position
+    m_vLookatPt = Vec3( 100, 999, 0 );
     m_LCamera.SetViewParams( &m_vFromPt, &m_vLookatPt );
 
     // Initialize the spot light
-    m_fLightFov = D3DX_PI / 2.0f;
+    m_fLightFov = 2.9;
 
-    m_Light.Diffuse.r = 1.0f;
-    m_Light.Diffuse.g = 1.0f;
-    m_Light.Diffuse.b = 1.0f;
+    m_Light.Diffuse.r = 0.7f;
+    m_Light.Diffuse.g = 0.7f;
+    m_Light.Diffuse.b = 0.2f;
     m_Light.Diffuse.a = 1.0f;
-    m_Light.Position = Vec3( 0.0f, 200.0f, 0.0f );
-    m_Light.Direction = Vec3( 1.0f, -1.0f, 0.0f  );
+    m_Light.Position = Vec3( -1.0f, 49.8692f, 10.4617f );
+    m_Light.Direction = Vec3( -234.34f, -1.0, 10.4617f   );
     D3DXVec3Normalize( ( Vec3* )&m_Light.Direction, ( Vec3* )&m_Light.Direction );
-    m_Light.Range = 100.0f;
+    m_Light.Range = 1000.0f;
     m_Light.Theta = m_fLightFov / 2.0f;
     m_Light.Phi = m_fLightFov / 2.0f;
 
@@ -212,7 +223,10 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
 
 	// Setup the camera's projection parameters
     float fAspectRatio = pBack->Width / ( FLOAT )pBack->Height;
-    m_LCamera.SetProjParams( D3DX_PI / 4, fAspectRatio, 0.1f, 100.0f );
+	m_Height = pBack->Height;
+	m_Width = pBack->Width;
+    m_LCamera.SetProjParams( D3DX_PI / 4, fAspectRatio, 0.01f, 1000.0f );
+	//m_LCamera.FrameMove(0.0);
 
     // Create the default texture (used when a triangle does not use a texture)
     V_RETURN( device->CreateTexture( 1, 1, 1, D3DUSAGE_DYNAMIC, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &m_pTexDef, NULL ) );
@@ -245,7 +259,8 @@ HRESULT Renderer::OnReset( Device* device, const D3DSURFACE_DESC* pBack )
                                                      NULL ) );
 
     // Initialize the shadow projection matrix
-    D3DXMatrixPerspectiveFovLH( &m_mShadowProj, m_fLightFov, 1, 0.01f, 100.0f );
+    D3DXMatrixPerspectiveFovLH( &m_mShadowProj, m_fLightFov, 1, 0.001f, 10000.0f );
+    //D3DXMatrixPerspectiveFovLH( &m_mShadowProj, m_fLightFov, 1, 0.01f, 100.0f );
 
 	// Particle stuff
     if( FAILED( hr = device->CreateVertexBuffer( 
@@ -321,7 +336,7 @@ HRESULT Renderer::OnCreate( Device* device )
         m_bDeviceSupportsPSIZE = false;
 
 	//Setup Skybox
-	m_pSkyBox->init( device, 1000 );
+	m_pSkyBox->init( device, 10000 );
 }
 
 
@@ -849,7 +864,8 @@ void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX
     D3DXVECTOR3 v;
 	v = ( *m_LCamera.GetEyePt() );
     D3DXVECTOR4 v4;
-    D3DXVec3Transform( &v4, &m_vFromPt, pmView );
+	//v4.x = v.x; v4.y = v.y; v4.z = v.z;
+    D3DXVec3Transform( &v4, &v, pmView );
     V( m_pEffect->SetVector( "g_vLightPos", &v4 ) );
     *( Vec3* )&v4 = *(m_LCamera.GetWorldAhead());
     v4.w = 0.0f;  // Set w 0 so that the translation part doesn't come to play
@@ -858,7 +874,7 @@ void Renderer::RenderScene( Device* device, bool bRenderShadow, const D3DXMATRIX
     V( m_pEffect->SetVector( "g_vLightDir", &v4 ) );
 
     // Clear the render buffers
-    V( device->Clear( 0L, NULL, D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L ) );
+    V( device->Clear( 0L, NULL, D3DCLEAR_ZBUFFER, 0x00000000, 1.0f, 0L ) );
 
     if( bRenderShadow )
         V( m_pEffect->SetTechnique( "RenderShadow" ) );
@@ -929,10 +945,13 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
     HRESULT hr;
 	MCamera	camera = cameras[ playerID ]->getCamera();
   
+
     // Compute the view matrix for the light
     Matrix mLightView;
 	mLightView = *(m_LCamera.GetViewMatrix());
     
+	m_pSkyBox->renderSkyBox( &camera );
+
     // Render the shadow map
     Surface pOldRT = NULL;
     V( device->GetRenderTarget( 0, &pOldRT ) );
@@ -940,7 +959,7 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
     if( SUCCEEDED( m_pShadowMap->GetSurfaceLevel( 0, &pShadowSurf ) ) )
     {
         device->SetRenderTarget( 0, pShadowSurf );
-		device->SetViewport( viewport );
+		//device->SetViewport( viewport );
         SAFE_RELEASE( pShadowSurf );
     }
     Surface pOldDS = NULL;
@@ -960,8 +979,6 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
 	device->SetViewport( viewport );
     SAFE_RELEASE( pOldRT );
 
-	m_pSkyBox->renderSkyBox( &camera );
-
 	// Now that we have the shadow map, render the scene.
     // Initialize required parameter
     V( m_pEffect->SetTexture( "g_txShadow", m_pShadowMap ) );
@@ -976,6 +993,7 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
 	RenderScene( device, false, camera.GetViewMatrix(), camera.GetProjMatrix(), renderables );
     
     m_pEffect->SetTexture( "g_txShadow", NULL );
+
 
 	//vector<Particle*> particles;
 	//Particle* p, *p2, *p3;
@@ -1000,6 +1018,7 @@ void Renderer::RenderFrame( Device* device, vector<Renderable*> renderables, vec
 	//delete p;
 	//delete p2;
 	//delete p3;
+
 }
 
 

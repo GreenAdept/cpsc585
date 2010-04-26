@@ -57,7 +57,7 @@ void VarLoader::loadVars( Renderer* r )
 	}
 	file.close();
 
-	r->setLightParams( parseVec(strings[0]), parseVec(strings[1]) );
+	r->setLightParams( parseVec(strings[0]), parseVec(strings[1]), getDouble(strings[2]) );
 }
 
 void VarLoader::parse(string strings[])
