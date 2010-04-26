@@ -18,7 +18,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
     _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 #endif
 
-	_crtBreakAlloc = 18;
+	//_crtBreakAlloc = 18;
 	RacerApp* pApp = new RacerApp(); //The application managing the game and gui
 
 	InitEmitter( pApp );
@@ -36,7 +36,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 	DXUTSetCallbackKeyboard( RacerApp::OnKeyboard );
 	DXUTSetCallbackD3D9DeviceAcceptable( RacerApp::IsD3D9DeviceAcceptable );
 	DXUTSetCallbackDeviceChanging( RacerApp::ModifyDeviceSettings );
-
+	
     // Initialize DXUT and create the desired Win32 window and Direct3D device for the application
     DXUTInit( true, true );						
     DXUTSetHotkeyHandling( false, false, false );  // handle the default hotkeys 
@@ -45,7 +45,7 @@ INT WINAPI wWinMain( HINSTANCE, HINSTANCE, LPWSTR, int )
 												// PAUSE or BREAK -> pause time
     DXUTSetCursorSettings( true, true );		// Show the cursor and clip it when in full screen
     DXUTCreateWindow( L"Crater Racer" );
-    DXUTCreateDevice( true, 1200, 900 ); //false = full screen mode
+    DXUTCreateDevice( true, 1280, 720 ); //false = full screen mode
 	//DXUTCreateDevice( true, 1200, 900 );
 
     // Start the render loop

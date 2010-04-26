@@ -1,5 +1,6 @@
 #include "Simulator.h"
 #include "MessageManager.h"
+#include <cmath>
 
 //--------------------------------------------------------------------------------------
 // Function:  Constructor
@@ -211,6 +212,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 {
 	NxVec3 localWheelForce[4];
 	NxVec3 globalWheelForce[4];
+	double maxVelocity;
 
 	for (int i = 0; i < 4; i++) {
 		localWheelForce[i] = globalWheelForce[i] = NxVec3(0, 0, 0);
@@ -296,7 +298,7 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 					break;
 				}
 				//else, accelerate
-				double maxVelocity = MAX_FORWARD_VELOCITY;
+				maxVelocity = MAX_FORWARD_VELOCITY;
 				if (!vehicle->isPlayer() || vehicle->getRank() != 1)
 					maxVelocity *= (vehicle->getRank() - 1) * 0.042857 + 0.9;
 				/*if ((vehicle->getRank() == 1) && (!vehicle->isPlayer()))
@@ -324,12 +326,14 @@ void Simulator::processForceKeys(NxActor* actor, Vehicle* vehicle, int index, do
 			}
 		}
 	}
-
+	
 	if (!m_bStartRace)
 		noInput = true;
 	if (vehicle->isOnRamp()){
 		localWheelForce[2] *= m_rRampForceConstant;
 		localWheelForce[3] *= m_rRampForceConstant;
+		if(vehicle->isPlayer())
+			Emit(Events::EBoostRamp, 0.0f);
 	}
 	Wheel*	w; 
 	NxVec3	wheelPos,

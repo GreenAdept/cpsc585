@@ -113,7 +113,6 @@ void Meteor::informOfCollision () {
 	mind->informOfCollision();
 	update (toSpawn->getPosition());
 	toSpawn->update (target);
-//	g_audioState.pSoundBank->Play(g_audioState.iImpact, 0, 0, NULL);
 }
 
 void Meteor::informOfTrigger () {

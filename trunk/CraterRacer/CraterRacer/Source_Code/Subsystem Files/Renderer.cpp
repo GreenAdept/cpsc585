@@ -1125,6 +1125,9 @@ void Renderer::adjustSpeedImage( float speed, int playerID )
 		speed = maxSpeed;
 
 	m_fSpeedRotations[playerID] = maxRadians * ( speed / maxSpeed );
+	
+	g_audioState.nRPM = 3000 * ( speed / maxSpeed );
+	g_audioState.pEngine->SetGlobalVariable( g_audioState.iRPMVariable, g_audioState.nRPM );
 }
 
 

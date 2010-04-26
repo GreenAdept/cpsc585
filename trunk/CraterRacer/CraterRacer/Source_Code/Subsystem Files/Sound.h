@@ -38,6 +38,8 @@ struct AUDIO_STATE
 	XACTINDEX iVictoryMusic;
 	XACTINDEX iEngine;
 	XACTINDEX iImpact;
+	XACTINDEX iCollision;
+	XACTINDEX iBoost;
 
 	XACTCATEGORY iMusicCategory;
     XACTCATEGORY iEffectCategory;

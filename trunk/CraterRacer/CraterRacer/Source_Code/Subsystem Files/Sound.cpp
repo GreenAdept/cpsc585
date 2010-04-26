@@ -201,6 +201,8 @@ HRESULT PrepareXACT( LPCWSTR bgWavebankFile, LPCWSTR seWavebankFile, LPCWSTR bgS
 	g_audioState.iPauseMenu = g_audioState.pSoundBank->GetCueIndex( "PauseMenu" );
 	g_audioState.iEngine = g_audioState.pSoundBank->GetCueIndex( "Engine" );
 	g_audioState.iImpact = g_audioState.pSoundBank->GetCueIndex( "MeteorImpact" );
+	g_audioState.iCollision = g_audioState.pSoundBank->GetCueIndex( "Collision" );
+	g_audioState.iBoost = g_audioState.pSoundBank->GetCueIndex( "Boost" );
 	g_audioState.iVictoryMusic = g_audioState.pSoundBank->GetCueIndex( "VictoryMusic" );
 
 	// Get indices to XACT categories 
@@ -271,6 +273,7 @@ void UpdateAudio(ApplicationState appState)
 
 	if(appState == APP_STARTUP){
 		g_audioState.pSoundBank->Stop(g_audioState.iEngine, 0);
+		g_audioState.pSoundBank->Stop(g_audioState.iVictoryMusic, 0);
 		g_audioState.pSoundBank->Stop(g_audioState.iPauseMenu, 0);
 		g_audioState.pSoundBank->Stop(g_audioState.iGameStart, 0);
 		g_audioState.pSoundBank->Play(g_audioState.iStartMenu, 0, 0, NULL);
@@ -309,7 +312,7 @@ void UpdateAudio(ApplicationState appState)
 	else if(appState == APP_PAUSED){
 		g_audioState.pSoundBank->Stop(g_audioState.iGameStart, 0);
 		g_audioState.fMusicVolume = 0.8f;
-		g_audioState.fEffectVolume = 0.3f;
+		g_audioState.fEffectVolume = 0.0f;
 		g_audioState.pEngine->SetVolume( g_audioState.iMusicCategory, g_audioState.fMusicVolume );
 		g_audioState.pEngine->SetVolume( g_audioState.iEffectCategory, g_audioState.fEffectVolume );
 		g_audioState.pSoundBank->Play(g_audioState.iPauseMenu, 0, 0, NULL);

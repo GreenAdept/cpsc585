@@ -12,6 +12,8 @@ void ContactReport::onContactNotify(NxContactPair& pair, NxU32 events)
 			Emit(Events::EVibrate, user1->id, 80, 30);
 		if (user2->id < 2)
 			Emit(Events::EVibrate, user2->id, 80, 30);
+		if(user1->id < 2 || user2->id < 2)
+			Emit(Events::EVehicleCollision, 0.0f);
 		//ActorUserData* ud = (ActorUserData*)pair.actors[0]->userData;
 		//if (ud)  ud->contactEvents = events;
 	}
