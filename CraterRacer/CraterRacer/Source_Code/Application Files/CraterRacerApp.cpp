@@ -48,7 +48,10 @@ void CALLBACK RacerApp::OnUpdateGame( double fTime, float fElapsedTime, void* pU
 	bool doControllerProcessing = false;
 	DWORD dwReturnVal;
 	
-	//UpdateAudio(m_AppState);
+	m_Renderer->OnFrameMove( fElapsedTime );
+
+
+//	UpdateAudio(m_AppState);
 	if( m_bIsLoading )
 		startGame( 0 );
 
@@ -701,7 +704,7 @@ RacerApp::RacerApp()
 	m_Clock			  = new Clock();
 
 	// Set up the audio
-//	HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, SE_WAVEBANK_FILE, BG_SETTINGS_FILE, BG_SOUNDBANK_FILE );
+	//HRESULT hr = PrepareXACT( BG_WAVEBANK_FILE, SE_WAVEBANK_FILE, BG_SETTINGS_FILE, BG_SOUNDBANK_FILE );
 }
 
 

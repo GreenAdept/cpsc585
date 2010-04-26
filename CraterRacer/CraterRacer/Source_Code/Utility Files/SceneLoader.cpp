@@ -31,8 +31,8 @@ SceneLoader::~SceneLoader( )
 	for( int i=0; i < m_Ramps.size(); i++ )
 		delete m_Ramps[i];
 
-	if( m_InnerTerrain )
-		delete m_InnerTerrain;
+	/*if( m_InnerTerrain )
+		delete m_InnerTerrain;*/
 }
 
 
