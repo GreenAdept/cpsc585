@@ -751,6 +751,7 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 				NxActor* actor = vehicles[i]->getPhysicsObj();
 				NxVec3 vehiclePos = actor->getGlobalPosition();
 				NxVec3 distance = meteorPos - vehiclePos;
+				distance.y = 0.0f;
 				double d = distance.magnitude();
 
 				//if distance of collision and player vehicle is within a certain distance, vibrate that controller
@@ -762,10 +763,10 @@ void Simulator::simulateMeteorGroup(MeteorGroup* mg, double time, vector<Vehicle
 				}
 
 				//if distance of collision and vehicle is within a certain distance, make sure the vehicle does not get stuck in the crater
-				if (d < 5) {
+				if (d <= 12) {
 					vehiclePos.y += 10;
 					actor->setGlobalPosition (vehiclePos);
-					actor->addForce (NxVec3 (0, 4000*actor->getMass(), 0));
+					actor->addForce (NxVec3 (0, 2400*actor->getMass(), 0));
 				}
 			}
 		}
