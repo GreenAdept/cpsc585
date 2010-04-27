@@ -690,7 +690,8 @@ void Simulator::createVehicle( Vehicle* vehicle )
 	vehicle->setPhysicsObj( pActor );
 	m_Actors.push_back( pActor );
 	m_Vehicles.push_back( pActor );
-	pActor->userData = new UserData(m_Vehicles.size()-1);
+	bool isPlayer = vehicle->isPlayer();
+	pActor->userData = new UserData(m_Vehicles.size()-1, isPlayer);
 
 	//put vehicles in collision group 1
 	setActorGroup(pActor, 1);
